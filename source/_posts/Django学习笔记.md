@@ -13,7 +13,7 @@ https://www.bilibili.com/video/BV1rx411X717
 
 <!--more-->
 
-### 创建工程test
+### 创建工程
 
 ```python
 django-admin startproject HelloDjango
