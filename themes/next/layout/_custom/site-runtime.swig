@@ -1,0 +1,60 @@
+<div id="site-runtime">
+  <span class="post-meta-item-icon">
+    <i class="fa fa-clock-o"></i>
+  </span>
+  <span id="runtime"></span>
+</div>
+<script language="javascript">
+  function isPC() {
+    var userAgentInfo = navigator.userAgent;
+    var agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+    for (var i = 0; i < agents.length; i++) {
+      if (userAgentInfo.indexOf(agents[i]) > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function siteTime(openOnPC, start) {
+    window.setTimeout("siteTime(openOnPC, start)", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+
+    {% if theme.footer.runtime.start %}
+      start = new Date("{{ theme.footer.runtime.start }}");
+    {% endif %}
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var date = now.getDate();
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+    var second = now.getSeconds();
+    var diff = now - start;
+
+    var diffYears = Math.floor(diff / years);
+    var diffDays = Math.floor((diff / days) - diffYears * 365);
+    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+
+    if (openOnPC) {
+      document.getElementById("runtime").innerHTML = "Running: " + diffYears + " years " + diffDays + " days " + diffHours + " hours " + diffMinutes + " mins " + diffSeconds + " secs";
+    } else {
+      document.getElementById("runtime").innerHTML = "Running: " + diffYears + "y " + diffDays + "d " + diffHours + "h " + diffMinutes + "m " + diffSeconds + "s";
+    }
+  }
+
+  var showOnMobile = {{ theme.footer.runtime.mobile }};
+  var openOnPC = isPC();
+  var start = new Date();
+  siteTime(openOnPC, start);
+
+  if (!openOnPC && !showOnMobile) {
+    document.getElementById('site-runtime').style.display = 'none';
+  }
+</script>
