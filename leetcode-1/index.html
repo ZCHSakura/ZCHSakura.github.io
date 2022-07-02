@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<script>
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163934312-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-163934312-1');
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_logosc/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon_logosc/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这里记录在leetcode上做题的经过，包含自己的解法和优秀解法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode_1">
+<meta property="og:url" content="http://example.com/leetcode-1/index.html">
+<meta property="og:site_name" content="周小天的Blog">
+<meta property="og:description" content="这里记录在leetcode上做题的经过，包含自己的解法和优秀解法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200701222958.gif">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201325.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201432.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201455.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201510.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201624.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211621.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211753.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211846.png">
+<meta property="article:published_time" content="2020-06-30T12:13:05.000Z">
+<meta property="article:modified_time" content="2022-07-02T06:51:38.917Z">
+<meta property="article:author" content="周小天">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200701222958.gif">
+
+<link rel="canonical" href="http://example.com/leetcode-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>leetcode_1 | 周小天的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="周小天的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周小天的Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">30</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">23</span></a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/leetcode-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%B0%8F%E5%9F%8B.jpg">
+      <meta itemprop="name" content="周小天">
+      <meta itemprop="description" content="知识因被记录而产生价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周小天的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          leetcode_1
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-30 20:13:05" itemprop="dateCreated datePublished" datetime="2020-06-30T20:13:05+08:00">2020-06-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-02 14:51:38" itemprop="dateModified" datetime="2022-07-02T14:51:38+08:00">2022-07-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/leetcode-1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/leetcode-1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这里记录在leetcode上做题的经过，包含自己的解法和优秀解法</p>
+<a id="more"></a>
+<h2 id="p1_两数之和">p1_两数之和</h2>
+<p>给定一个整数数组<code>nums</code>和一个目标值<code>target</code>，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。</p>
+<blockquote>
+<p>示例:</p>
+<p>给定 nums = [2, 7, 11, 15], target = 9</p>
+<p>因为 nums[0] + nums[1] = 2 + 7 = 9</p>
+<p>所以返回 [0, 1]</p>
+</blockquote>
+<h3 id="mine">mine</h3>
+<p>强行搜索</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two_sum</span><span class="params">(nums, target)</span>:</span></span><br><span class="line">    j = <span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">        num2 = target - nums[i]</span><br><span class="line">        <span class="keyword">if</span> num2 <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> nums.index(num2) == i <span class="keyword">and</span> nums.count(num2) == <span class="number">1</span>: <span class="comment">#防止两个相同的数字出现</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                j = nums.index(num2, i+<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">if</span> j &gt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> [i, j]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> []</span><br></pre></td></tr></table></figure>
+<h3 id="others">others</h3>
+<p>解题思路是在方法一的基础上，优化解法。想着，<code>num2</code> 的查找并不需要每次从 <code>nums</code> 查找一遍，只需要从 <code>num1</code>位置之前或之后查找即可。但为了方便 index 这里选择从 <code>num1</code>位置之前查找：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(nums, target)</span>:</span></span><br><span class="line">    lens = len(nums)</span><br><span class="line">    j=<span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,lens):</span><br><span class="line">        temp = nums[:i]</span><br><span class="line">        <span class="keyword">if</span> (target - nums[i]) <span class="keyword">in</span> temp:</span><br><span class="line">            j = temp.index(target - nums[i])</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">if</span> j&gt;=<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> [j,i]</span><br></pre></td></tr></table></figure>
+<p>参考了大神们的解法，通过哈希来求解，这里通过字典来模拟哈希查询的过程。 个人理解这种办法相较于方法一其实就是字典记录了 <code>num1</code> 和 <code>num2</code> 的值和位置，而省了再查找<code>num2</code> 索引的步骤。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(nums, target)</span>:</span></span><br><span class="line">    hashmap=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> ind,num <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">        hashmap[num] = ind</span><br><span class="line">    <span class="keyword">for</span> i,num <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">        j = hashmap.get(target - num)</span><br><span class="line">        <span class="keyword">if</span> j <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> i!=j:</span><br><span class="line">            <span class="keyword">return</span> [i,j]</span><br></pre></td></tr></table></figure>
+<p>enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enumerate(sequence, [start=<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;seasons = [<span class="string">'Spring'</span>, <span class="string">'Summer'</span>, <span class="string">'Fall'</span>, <span class="string">'Winter'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(enumerate(seasons))</span><br><span class="line">[(<span class="number">0</span>, <span class="string">'Spring'</span>), (<span class="number">1</span>, <span class="string">'Summer'</span>), (<span class="number">2</span>, <span class="string">'Fall'</span>), (<span class="number">3</span>, <span class="string">'Winter'</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(enumerate(seasons, start=<span class="number">1</span>))       <span class="comment"># 下标从 1 开始</span></span><br><span class="line">[(<span class="number">1</span>, <span class="string">'Spring'</span>), (<span class="number">2</span>, <span class="string">'Summer'</span>), (<span class="number">3</span>, <span class="string">'Fall'</span>), (<span class="number">4</span>, <span class="string">'Winter'</span>)]</span><br></pre></td></tr></table></figure>
+<p>遍历列表同时查字典，只用遍历一遍</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two_sum</span><span class="params">(nums, target)</span>:</span></span><br><span class="line">    <span class="string">"""这样写更直观，遍历列表同时查字典"""</span></span><br><span class="line">    dct = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i, n <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">        <span class="keyword">if</span> target - n <span class="keyword">in</span> dct:</span><br><span class="line">            <span class="keyword">return</span> [dct[target - n], i]	<span class="comment"># 由于我们是一边构建字典一边查找所以查找到的时候目前这个i应该在后面</span></span><br><span class="line">        dct[n] = i <span class="comment">#这句不能放在if语句之前，解决list中有重复值或target-num=num的情况</span></span><br></pre></td></tr></table></figure>
+<h3 id="summary">summary</h3>
+<ol type="1">
+<li>enumerate的用法，将一个可遍历对象转化为索引序列</li>
+<li><code>if target - n in dct</code>判断的是dct的key值</li>
+<li>在不确定字典里面是否包含该key值时应该使用get，直接取值会报错。<code>hashmap.get(target - num)</code></li>
+</ol>
+<h2 id="p1521_两个栈实现队列">p1521_两个栈实现队列</h2>
+<p>用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 appendTail 和 deleteHead ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，deleteHead 操作返回 -1 )</p>
+<p>示例 1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[<span class="string">"CQueue"</span>,<span class="string">"appendTail"</span>,<span class="string">"deleteHead"</span>,<span class="string">"deleteHead"</span>]</span><br><span class="line">[[],[<span class="number">3</span>],[],[]]</span><br><span class="line">输出：</span><br><span class="line">[null,null,<span class="number">3</span>,<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p>示例 2：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[<span class="string">"CQueue"</span>,<span class="string">"deleteHead"</span>,<span class="string">"appendTail"</span>,<span class="string">"appendTail"</span>,<span class="string">"deleteHead"</span>,<span class="string">"deleteHead"</span>]</span><br><span class="line">[[],[],[<span class="number">5</span>],[<span class="number">2</span>],[],[]]</span><br><span class="line">输出：</span><br><span class="line">[null,<span class="number">-1</span>,null,null,<span class="number">5</span>,<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<ul>
+<li>1 &lt;= values &lt;= 10000</li>
+<li>最多会对 appendTail、deleteHead 进行 10000 次调用</li>
+</ul>
+<h3 id="mine-1">mine</h3>
+<p><del>说实话，python基础还没学，不是很会，就很尴尬</del></p>
+<h3 id="others-1">others</h3>
+<p><strong>解题思路</strong></p>
+<ul>
+<li>栈无法实现队列功能： 栈底元素（对应队首元素）无法直接删除，需要将上方所有元素出栈。</li>
+<li>双栈可实现列表倒序： 设有含三个元素的栈 A = [1,2,3] 和空栈 B = []。若循环执行 A 元素出栈并添加入栈 B ，直到栈 A 为空，则 A = [], B = [3,2,1]，即 栈 B 元素实现栈 A 元素倒序 。</li>
+<li>利用栈 B 删除队首元素： 倒序后，B 执行出栈则相当于删除了 A 的栈底元素，即对应队首元素。</li>
+</ul>
+<p><strong>复杂度分析：</strong></p>
+<blockquote>
+<p>由于问题特殊，以下分析仅满足添加 N 个元素并删除 N 个元素，即栈初始和结束状态下都为空的情况。</p>
+</blockquote>
+<ul>
+<li>时间复杂度： appendTail()函数为 O(1) ；deleteHead() 函数在 N 次队首元素删除操作中总共需完成 N 个元素的倒序。</li>
+<li>空间复杂度 O(N) ： 最差情况下，栈 A 和 B 共保存 N 个元素。</li>
+</ul>
+<p><strong>实现</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CQueue</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># A用来入栈，B用来出栈</span></span><br><span class="line">        self.A, self.B = [], []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">appendTail</span><span class="params">(self, value: int)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.A.append(value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleteHead</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="comment"># 如果B是不是空的，那么将B栈顶弹出，即队首</span></span><br><span class="line">        <span class="keyword">if</span> self.B:</span><br><span class="line">            <span class="keyword">return</span> self.B.pop()</span><br><span class="line">        <span class="comment"># 如果B已经空了，而A也空了，那么说明队列中没有元素了</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.A:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">        <span class="comment"># 如果B空了，但是A没空，那么把A一个个取除并压入B，则B的栈顶为队首</span></span><br><span class="line">        <span class="keyword">while</span> self.A:</span><br><span class="line">            self.B.append(self.A.pop())</span><br><span class="line">        <span class="keyword">return</span> self.B.pop()</span><br></pre></td></tr></table></figure>
+<h3 id="summary-1">summary</h3>
+<ol type="1">
+<li>主要是两个栈，一个做入队，一个做出队</li>
+<li>入队直接在入队的那个栈顶入栈即可</li>
+<li>出队需要判断两个栈的情况，分别讨论</li>
+</ol>
+<h2 id="p718_最长重复子数组">p718_最长重复子数组</h2>
+<p>给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组的长度。</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">A: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">B: [<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">7</span>]</span><br><span class="line">输出：<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<p>长度最长的公共子数组是 [3, 2, 1] 。</p>
+<p>提示：</p>
+<ul>
+<li>1 &lt;= len(A), len(B) &lt;= 1000</li>
+<li>0 &lt;= A[i], B[i] &lt; 100</li>
+</ul>
+<h3 id="mine-2">mine</h3>
+<p>暴力方法其实很简单，只要两个for循环，两个数组中的元素一个个比较，比较通过了就比较下一位，不通过就是下一次for，只要注意防止数组越界就可以了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findLength</span><span class="params">(self, A, B)</span> -&gt; int:</span></span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(A)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(B)):</span><br><span class="line">            <span class="keyword">if</span> A[i] == B[j]:</span><br><span class="line">                temp = <span class="number">1</span></span><br><span class="line">                <span class="comment"># A[i+temp] == B[j+temp]一定要放在后面，不然一旦越界就报错</span></span><br><span class="line">                <span class="keyword">while</span> i+temp &lt; len(A) <span class="keyword">and</span> j+temp &lt; len(B) <span class="keyword">and</span> A[i+temp] == B[j+temp]:</span><br><span class="line">                    temp += <span class="number">1</span></span><br><span class="line">                result = max(result, temp)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>但是最大的问题就是效率太低了，数据短还可以，一旦数据量大就很难处理</p>
+<h3 id="others-2">others</h3>
+<p><strong>滑动窗口</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200701222958.gif" alt="bc7d3a75a57f9abd6d1f6d789e176af0ab65f5522f6c7119178b073c67ae6494-leetcode-718-lcs-window" /><figcaption aria-hidden="true">bc7d3a75a57f9abd6d1f6d789e176af0ab65f5522f6c7119178b073c67ae6494-leetcode-718-lcs-window</figcaption>
+</figure>
+<p>这个图很形象的展示出了什么是滑动窗口，有一个问题就是窗口的获取，python中的zip函数可以很好的解决这个问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findLength</span><span class="params">(self, A, B)</span> -&gt; int:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">getMaxLen</span><span class="params">(A, B)</span>:</span></span><br><span class="line">            result = temp = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> a, b <span class="keyword">in</span> zip(A, B):</span><br><span class="line">                <span class="keyword">if</span> a == b:</span><br><span class="line">                    temp += <span class="number">1</span>   <span class="comment"># 相同加1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    result = max(result, temp)   <span class="comment"># 不同时把临时赋给真正，临时清零，进行下项</span></span><br><span class="line">                    temp = <span class="number">0</span></span><br><span class="line">            <span class="keyword">return</span> max(result, temp)    <span class="comment"># 不能只返回result，不然当最大temp出现在末尾不会被记录</span></span><br><span class="line"></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="comment"># B不动A往左滑</span></span><br><span class="line">        <span class="keyword">for</span> ai <span class="keyword">in</span> range(len(A)):  <span class="comment"># 求 A[ai]对齐B[0] 的情况</span></span><br><span class="line">            ans = max(ans, getMaxLen(A[ai:], B))</span><br><span class="line">        <span class="comment"># A不动B往左滑</span></span><br><span class="line">        <span class="keyword">for</span> bi <span class="keyword">in</span> range(len(B)):  <span class="comment"># A[0]对齐B[0]的已经做过了，故初始bi=1</span></span><br><span class="line">            ans = max(ans, getMaxLen(A, B[bi:]))</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<h3 id="summary-2">summary</h3>
+<ol type="1">
+<li>zip函数的用法</li>
+</ol>
+<p><strong>zip()</strong> 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>zipped = zip(a,b)     <span class="comment"># 打包为元组的列表</span></span><br><span class="line">[(<span class="number">1</span>, <span class="number">4</span>), (<span class="number">2</span>, <span class="number">5</span>), (<span class="number">3</span>, <span class="number">6</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>zip(a,c)              <span class="comment"># 元素个数与最短的列表一致</span></span><br><span class="line">[(<span class="number">1</span>, <span class="number">4</span>), (<span class="number">2</span>, <span class="number">5</span>), (<span class="number">3</span>, <span class="number">6</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>zip(*zipped)          <span class="comment"># 与 zip 相反，*zipped 可理解为解压，返回二维矩阵式</span></span><br><span class="line">[(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)]</span><br></pre></td></tr></table></figure>
+<h2 id="p378_有序矩阵中第k小的元素">p378_有序矩阵中第k小的元素</h2>
+<p>给定一个 n x n 矩阵，其中每行和每列元素均按升序排序，找到矩阵中第 k 小的元素。 请注意，它是排序后的第 k 小元素，而不是第 k 个不同的元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">matrix &#x3D; [</span><br><span class="line">   [ 1,  5,  9],</span><br><span class="line">   [10, 11, 13],</span><br><span class="line">   [12, 13, 15]</span><br><span class="line">]</span><br><span class="line">k &#x3D; 8,</span><br><span class="line"></span><br><span class="line">返回 13。</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<ul>
+<li>你可以假设 k 的值永远是有效的，1 ≤ k ≤ n^2 。</li>
+</ul>
+<h3 id="mine-3">mine</h3>
+<p>最简单的直接解法就是将matrix中的每一个元素（列表）合并成为一个列表，然后再对这个列表排序取第k个元素即可，有趣的是可以使用<code>sum</code>将一个可迭代对象求和，但是要注意第二个参数位置要放上[]，不然默认是int类型的求和，放上一个[]就能变为列表的求和。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span><span class="params">(self, matrix, k)</span> -&gt; int:</span></span><br><span class="line">        res = sorted(sum(matrix, []))</span><br><span class="line">        <span class="keyword">return</span> res[k<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="others-3">others</h3>
+<p><strong>归并排序（堆）</strong></p>
+<p>首先，我们先不考虑对堆的使用，我先来概括一下使用这个方法的最关键思路：</p>
+<p>在整个矩阵中，每次弹出矩阵中最小的值，第k个被弹出的就是我们需要的数字。   现在我们的目的很明确：每次弹出矩阵中最小的值。</p>
+<p>当我们看到下面这个有序矩阵时，我们知道左上角的数字是整个矩阵最小的，但弹出它后我们如何保证接下来每一次都还能找到全矩阵最小的值呢？</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201325.png" alt="1e9354f41d0e82d81d6be6538cc7b285d31418c5f14ed7937cee5765e20b8d76-屏幕快照 2020-07-02 下午6.38.01" /><figcaption aria-hidden="true">1e9354f41d0e82d81d6be6538cc7b285d31418c5f14ed7937cee5765e20b8d76-屏幕快照 2020-07-02 下午6.38.01</figcaption>
+</figure>
+<p>其实解决这个问题的关键，在于维护一组“最小值候选人”：</p>
+<p>你需要保证最小值必然从这组候选人中产生，于是每次只要从候选人中弹出最小的一个即可。</p>
+<p>我们来选择第一组候选人，在这里可以选择第一列，因为每一个数字都是其对应行的最小值，全局最小值也必然在其中。</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201432.png" alt="299edf92ce9acad73613ff76037c8e2c1ec4a53737b5e7ac02fe536d0713dae6-屏幕快照 2020-07-02 下午6.38.13" /><figcaption aria-hidden="true">299edf92ce9acad73613ff76037c8e2c1ec4a53737b5e7ac02fe536d0713dae6-屏幕快照 2020-07-02 下午6.38.13</figcaption>
+</figure>
+<p>第一次弹出很简单，将左上角的1弹出即可。</p>
+<p>1弹出之后，我们如何找到下一个候选人呢？</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201455.png" alt="c9980b3010f6696231c7caa016303dc815b35b14347d20ee7980fff537c30750-屏幕快照 2020-07-02 下午6.38.50" /><figcaption aria-hidden="true">c9980b3010f6696231c7caa016303dc815b35b14347d20ee7980fff537c30750-屏幕快照 2020-07-02 下午6.38.50</figcaption>
+</figure>
+<p>其实非常简单，刚才弹出的位置右移一格就行了，这样不是还是能保证候选人列表中每一个数字是每一行的最小值吗，那全局最小值必然在其中！</p>
+<p>我们每次弹出候选人当中的最小值，然后把上次弹出候选人的右边一个补进来，就能一直保证全局最小值在候选人列表中产生，</p>
+<p>示例：（穿蓝色衣服的为候选人）</p>
+<p>（顺序是每一行都是从左向右看）(当某一行弹到没东西，候选人列表的长度就会少1)</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201510.png" alt="d550255f65fd12fb57130240046c176165c19689add0e817ccca5f88dc9340df-屏幕快照 2020-07-02 下午6.41.52" /><figcaption aria-hidden="true">d550255f65fd12fb57130240046c176165c19689add0e817ccca5f88dc9340df-屏幕快照 2020-07-02 下午6.41.52</figcaption>
+</figure>
+<p>######################堆(HEAP)######################</p>
+<p>要具体实现这个过程，我们需要什么呢？</p>
+<p>我们需要每次帮我们管理候选人的工具(能弹出一个候选人，还能加入一个候选人)，它就是堆了。   堆这个数据结构，它保证每一个父节点&gt;=或者&lt;=其子节点。</p>
+<p>如果每个父节点&gt;=其子节点，那这就是一个Max Heap</p>
+<p>如果每个父节点&lt;=其子节点，那这就是一个Min Heap</p>
+<p>在这里我们需要的是Min Heap，一般Heap是二元的，也就是说每个爸爸有两个儿子，一个二元Min Heap可以参考这个图：</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201624.png" alt="2d2ea402d1a101c2186f00008fb77e98b4ecbd14f2daf633076cbb6abd20ec9b-屏幕快照 2020-07-02 下午2.29.11" /><figcaption aria-hidden="true">2d2ea402d1a101c2186f00008fb77e98b4ecbd14f2daf633076cbb6abd20ec9b-屏幕快照 2020-07-02 下午2.29.11</figcaption>
+</figure>
+<p>(图源：https://www.youtube.com/watch?v=wptevk0bshY)</p>
+<p>可以看到最顶上的总是最小的数字   其实对于这道题，你只需要知道Heap的两个操作对我们来说很实用：</p>
+<p>1.弹出最顶上的数字（弹出候选人）</p>
+<p>2.加入一个新数字（加入新的候选人）</p>
+<p>######################Python中的heapq###################### 接下来，讲一下Python中的heapq模块如何实现上述1、2两个操作，不需要的同学可以不看这一part</p>
+<p>0.创建一个heap</p>
+<p>1.弹出最顶上的数字（弹出候选人）</p>
+<p>2.加入一个新数字（加入新的候选人）</p>
+<p>0.创建一个heap</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">heapq.heapify(x)</span><br><span class="line">把List x变为一个heap</span><br></pre></td></tr></table></figure>
+<p>1.弹出最顶上的数字（弹出候选人）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">heapq.heappop(heap)</span><br><span class="line">从heap中弹出一个候选人，并返回弹出的东西</span><br></pre></td></tr></table></figure>
+<p>2.加入一个新数字（加入新的候选人）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">heapq.heappush(heap,item)</span><br><span class="line">在heap中加入一个新的候选人item</span><br></pre></td></tr></table></figure>
+<p>整个代码的注释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span><span class="params">(self, matrix: List[List[int]], k: int)</span> -&gt; int:</span></span><br><span class="line">        n = len(matrix) <span class="comment">#注：题目中这个矩阵是n*n的，所以长宽都是n</span></span><br><span class="line">        pq = [(matrix[i][<span class="number">0</span>], i, <span class="number">0</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(n)] <span class="comment">#取出第一列候选人</span></span><br><span class="line">        <span class="comment">#matrix[i][0]是具体的值，后面的(i,0)是在记录候选人在矩阵中的位置，方便每次右移添加下一个候选人</span></span><br><span class="line"></span><br><span class="line">        heapq.heapify(pq) <span class="comment">#变成一个heap</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(k - <span class="number">1</span>): <span class="comment">#一共弹k-1次</span></span><br><span class="line">            num, x, y = heapq.heappop(pq) <span class="comment">#弹出候选人里最小一个</span></span><br><span class="line">            <span class="keyword">if</span> y != n - <span class="number">1</span>: <span class="comment">#如果这一行还没被弹完</span></span><br><span class="line">                heapq.heappush(pq, (matrix[x][y + <span class="number">1</span>], x, y + <span class="number">1</span>)) <span class="comment">#加入这一行的下一个候选人</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> heapq.heappop(pq)[<span class="number">0</span>]	<span class="comment"># 弹出第k个</span></span><br></pre></td></tr></table></figure>
+<hr />
+<p><strong>二分查找</strong></p>
+<p>由题目给出的性质可知，这个矩阵内的元素是从左上到右下递增的（假设矩阵左上角为 <code>matrix[0][0]</code>）。以下图为例：</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211621.png" alt="378_fig1" /><figcaption aria-hidden="true">378_fig1</figcaption>
+</figure>
+<p>我们知道整个二维数组中<code>matrix[0][0]</code>为最小值，<code>matrix[n-1][n−1]</code>为最大值，现在我们将其分别记作 l和 r。</p>
+<p>可以发现一个性质：任取一个数 mid 满足 l≤mid≤r，那么矩阵中不大于 mid的数，肯定全部分布在矩阵的左上角。</p>
+<p>例如下图，取 mid=8：</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211753.png" alt="378_fig2" /><figcaption aria-hidden="true">378_fig2</figcaption>
+</figure>
+<p>我们可以看到，矩阵中大于 mid的数就和不大于 mid 的数分别形成了两个板块，沿着一条锯齿线将这个矩形分开。其中左上角板块的大小即为矩阵中不大于 mid 的数的数量。</p>
+<p>读者也可以自己取一些 mid 值，通过画图以加深理解。</p>
+<p>我们只要沿着这条锯齿线走一遍即可计算出这两个板块的大小，也自然就统计出了这个矩阵中不大于 mid 的数的个数了。</p>
+<p>走法演示如下，依然取 mid=8：</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211846.png" alt="378_fig3" /><figcaption aria-hidden="true">378_fig3</figcaption>
+</figure>
+<p>可以这样描述走法：</p>
+<p>初始位置在 <code>matrix[n-1][0]</code>（即左下角）；</p>
+<p>设当前位置为 <code>matrix[i][j]</code>。若 <code>matrix[i][j]≤mid</code>，则将当前所在列的不大于 mid 的数的数量（即 i + 1）累加到答案中，并向右移动，否则向上移动；</p>
+<p>不断移动直到走出格子为止。</p>
+<p>我们发现这样的走法时间复杂度为 O(n)，即我们可以线性计算对于任意一个 mid，矩阵中有多少数不大于它。这满足了二分查找的性质。</p>
+<p>不妨假设答案为 x，那么可以知道<code>l≤x≤r</code>，这样就确定了二分查找的上下界。</p>
+<p>每次对于「猜测」的答案 mid，计算矩阵中有多少数不大于mid ：</p>
+<ul>
+<li><p>如果数量不少于 k，那么说明最终答案 x 不大于 mid；</p></li>
+<li><p>如果数量少于 k，那么说明最终答案 x 大于 mid。</p></li>
+</ul>
+<p>这样我们就可以计算出最终的结果 x 了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span><span class="params">(self, matrix, k: int)</span> -&gt; int:</span></span><br><span class="line">        n = len(matrix)</span><br><span class="line">        right = matrix[n<span class="number">-1</span>][n<span class="number">-1</span>]</span><br><span class="line">        left = matrix[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查该mid左上角的数字是不是大于等于k</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">chick</span><span class="params">(mid)</span>:</span></span><br><span class="line">            i, j = n<span class="number">-1</span>, <span class="number">0</span></span><br><span class="line">            num = <span class="number">0</span></span><br><span class="line">            <span class="keyword">while</span> i &gt;= <span class="number">0</span> <span class="keyword">and</span> j &lt; n:</span><br><span class="line">                <span class="comment"># 如果这个数不大于mid，即在mid左上角</span></span><br><span class="line">                <span class="keyword">if</span> matrix[i][j] &lt;= mid:</span><br><span class="line">                    num += i + <span class="number">1</span></span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    i -= <span class="number">1</span></span><br><span class="line">            <span class="comment"># 返回不大于本次mid的数是否大于等于k</span></span><br><span class="line">            print(num)</span><br><span class="line">            <span class="keyword">return</span> num &gt;= k</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 想象一下，mid = 7， k = 5</span></span><br><span class="line">        <span class="comment"># 说明matrix中小于等于7的值只有（0-4）个，</span></span><br><span class="line">        <span class="comment"># 举个例子：</span></span><br><span class="line">        <span class="comment">#     matrix中有&#123;1 2 7 7 8 9&#125;</span></span><br><span class="line">        <span class="comment">#     小于等于7的有&#123;1， 2， 7， 7&#125;</span></span><br><span class="line">        <span class="comment">#     第5大的数字，肯定就是从8开始找咯</span></span><br><span class="line">        <span class="comment"># 那我们要找的是第k小的数字，这个数字肯定要比mid大吧，从mid+1开始找吧</span></span><br><span class="line">        <span class="comment"># 否则，就从小于等于mid的这个部分来找吧</span></span><br><span class="line">        <span class="keyword">while</span> left &lt; right:</span><br><span class="line">            mid = (left + right)//<span class="number">2</span>     <span class="comment"># 整数除法</span></span><br><span class="line">            print(<span class="string">"left:"</span>, left, <span class="string">"mid:"</span>, mid, <span class="string">"right:"</span>, right)</span><br><span class="line">            <span class="comment"># 不大于本次mid的数大于等于k，说明mid需要缩小</span></span><br><span class="line">            <span class="keyword">if</span> chick(mid):</span><br><span class="line">                right = mid</span><br><span class="line">            <span class="comment"># 不大于本次mid的数小于k，说明mid需要扩大</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                left = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> left</span><br></pre></td></tr></table></figure>
+<h3 id="summary-3">summary</h3>
+<ol type="1">
+<li>sum函数可以将可迭代数据求和</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;sum([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])  </span><br><span class="line"><span class="number">3</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum((<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>), <span class="number">1</span>)        <span class="comment"># 元组计算总和后再加 1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], <span class="number">2</span>)      <span class="comment"># 列表计算总和后再加 2</span></span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>python中堆的用法</li>
+</ol>
+<p>一种著名的数据结构是堆（heap），它是一种优先队列。优先队列让你能够以任意顺序添加对象，并随时（可能是在两次添加对象之间）找出（并删除）最小的元素。相比于列表方法min，这样做的效率要高得多。 实际上，Python没有独立的堆类型，而只有一个包含一些堆操作函数的模块。这个模块名为heapq（其中的q表示队列），它包含6个函数，其中前4个与堆操作直接相关。必须使用列表来表示堆对象本身。</p>
+<table>
+<thead>
+<tr class="header">
+<th>函 数</th>
+<th>描 述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>heappush(heap, x)</td>
+<td>将x压入堆中</td>
+</tr>
+<tr class="even">
+<td>heappop(heap)</td>
+<td>从堆中弹出最小的元素</td>
+</tr>
+<tr class="odd">
+<td>heapify(heap)</td>
+<td>让列表具备堆特征</td>
+</tr>
+<tr class="even">
+<td>heapreplace(heap, x)</td>
+<td>弹出最小的元素，并将x压入堆中</td>
+</tr>
+<tr class="odd">
+<td>nlargest(n, iter)</td>
+<td>返回iter中n个最大的元素</td>
+</tr>
+<tr class="even">
+<td>nsmallest(n, iter)</td>
+<td>返回iter中n个最小的元素</td>
+</tr>
+</tbody>
+</table>
+<ol start="3" type="1">
+<li></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+     <!-- 文章结束表示语-->
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 啦 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
+    
+</div>
+
+      
+    </div>
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\Django学习笔记\" rel="bookmark">Django学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\xpath常用相关\" rel="bookmark">xpath常用相关</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/WeChatpay.png" alt="周小天 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/Alipay.png" alt="周小天 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>周小天
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://http//example.com/leetcode-1/" title="leetcode_1" rel="noopener" target="_blank">http://example.com/leetcode-1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/" rel="prev" title="Python常用内置函数">
+      <i class="fa fa-chevron-left"></i> Python常用内置函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/" rel="next" title="从考研到995">
+      从考研到995 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#p1_两数之和"><span class="nav-text">p1_两数之和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p1521_两个栈实现队列"><span class="nav-text">p1521_两个栈实现队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-1"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-1"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-1"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p718_最长重复子数组"><span class="nav-text">p718_最长重复子数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-2"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-2"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-2"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p378_有序矩阵中第k小的元素"><span class="nav-text">p378_有序矩阵中第k小的元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-3"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-3"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-3"><span class="nav-text">summary</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="周小天"
+      src="/images/%E5%B0%8F%E5%9F%8B.jpg">
+  <p class="site-author-name" itemprop="name">周小天</p>
+  <div class="site-description" itemprop="description">知识因被记录而产生价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/KezhiAdore" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;KezhiAdore" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yuzhaokz@163.com" title="E-Mail → mailto:yuzhaokz@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://gwyxjtu.github.io/" title="https:&#x2F;&#x2F;gwyxjtu.github.io&#x2F;" rel="noopener" target="_blank">果果的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/collection/" title="&#x2F;collection&#x2F;">于小鸡的收藏</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/linux-command/" title="&#x2F;linux-command&#x2F;">Linux命令查询</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+      <!--数字时钟-->
+      
+      
+      
+      <div style="">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      
+      <!--音乐播放器-->
+      <div>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 
+        src="https://music.163.com/outchain/player?type=2&id=1412266089&auto=1&height=66"></iframe>
+      </div>
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">陕ICP备20004764号 </a>
+      <img src="/images/备案图标.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周小天</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">85k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:18</span>
+</div>
+
+
+
+
+    <script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
+    本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+    <span class="post-meta-divider">|</span>
+    本站访客数<span id="busuanzi_value_site_uv"></span>人
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.1/es5/tex-mml-chtml.min.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'FnNdu3eMMy5MBI9uBtoGkOq8-gzGzoHsz',
+      appKey     : 'eaqzpiD8qTAmamfDoRSzQqnA',
+      placeholder: "在这里输入评论内容，请不要忘记留下邮箱地址以便接收通知^_^",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '5' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+
+
+  
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+
+
+  <script src="/js/wobblewindow.js"></script>
+  <script>
+    //只在桌面版网页启用特效
+    if( window.innerWidth > 768  ){
+      $(document).ready(function () {
+        
+          $('#header').wobbleWindow({
+            radius: 50,
+            movementTop: false,
+            movementLeft: false,
+            movementRight: false,
+            debug: false,
+          });
+        
+
+        
+          $('#sidebar').wobbleWindow({
+            radius: 50,
+            movementLeft: false,
+            movementTop: false,
+            movementBottom: false,
+            position: 'fixed',
+            debug: false,
+          });
+        
+
+        
+          $('#footer').wobbleWindow({
+            radius: 50,
+            movementBottom: false,
+            movementLeft: false,
+            movementRight: false,
+            offsetX: ,
+            position: 'absolute',
+            debug: false,
+          });
+        
+      });
+    }
+  </script>
+
+
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</body>
+</html>

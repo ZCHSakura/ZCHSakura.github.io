@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-07-02T07:02:18.943Z</updated>
+  <updated>2022-07-02T06:55:41.623Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,580 +17,502 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hexo本地写作环境配置</title>
-    <link href="http://example.com/Hexo%E6%9C%AC%E5%9C%B0%E5%86%99%E4%BD%9C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
-    <id>http://example.com/Hexo%E6%9C%AC%E5%9C%B0%E5%86%99%E4%BD%9C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</id>
-    <published>2022-07-02T07:02:18.943Z</published>
-    <updated>2022-07-02T07:02:18.943Z</updated>
+    <title>深度学习笔记(四)---优化方法理解</title>
+    <link href="http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E5%9B%9B)---%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%90%86%E8%A7%A3/"/>
+    <id>http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E5%9B%9B)---%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%90%86%E8%A7%A3/</id>
+    <published>2020-10-23T08:14:15.000Z</published>
+    <updated>2022-07-02T06:55:41.623Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;写作缘由&quot;&gt;写作缘由&lt;/h2&gt;
-&lt;p&gt;由于经常换电脑设备，每次更换设备时都需要重新配置Hexo环境，故对配置流程进行记录，以供后续使用。&lt;/p&gt;
+      &lt;p&gt;记录网络模型的各种优化&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="经验积累" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/"/>
+      <category term="深度学习" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="Hexo" scheme="http://example.com/tags/Hexo/"/>
+      <category term="深度学习" scheme="http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
-      <category term="node.js" scheme="http://example.com/tags/node-js/"/>
+      <category term="正则化" scheme="http://example.com/tags/%E6%AD%A3%E5%88%99%E5%8C%96/"/>
+    
+      <category term="归一化" scheme="http://example.com/tags/%E5%BD%92%E4%B8%80%E5%8C%96/"/>
     
   </entry>
   
   <entry>
-    <title>实数六大基本定理的相互证明</title>
-    <link href="http://example.com/%E5%AE%9E%E6%95%B0%E5%85%AD%E5%A4%A7%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86%E7%9A%84%E7%9B%B8%E4%BA%92%E8%AF%81%E6%98%8E/"/>
-    <id>http://example.com/%E5%AE%9E%E6%95%B0%E5%85%AD%E5%A4%A7%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86%E7%9A%84%E7%9B%B8%E4%BA%92%E8%AF%81%E6%98%8E/</id>
-    <published>2022-06-30T07:26:13.000Z</published>
-    <updated>2022-07-02T07:02:18.947Z</updated>
+    <title>深度学习笔记(三)---基础理解</title>
+    <link href="http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/"/>
+    <id>http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</id>
+    <published>2020-10-21T06:31:27.000Z</published>
+    <updated>2022-07-02T06:55:30.568Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;简介&quot;&gt;简介&lt;/h2&gt;
-&lt;p&gt;翟老师的&lt;泛函分析&gt;课程带我重新认识了实数。实数中有一些基本定理，但具体有几个存在着很多不同的观点。本文以六大定理为准，这六大定理分别为&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;确界原理&lt;/li&gt;
-&lt;li&gt;单调有界原理&lt;/li&gt;
-&lt;li&gt;Cantor闭区间套定理&lt;/li&gt;
-&lt;li&gt;致密性定理（聚点定理）&lt;/li&gt;
-&lt;li&gt;Cauchy收敛准则&lt;/li&gt;
-&lt;li&gt;有限覆盖定理&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;本文对这六大定理之间进行了循环证明，共计30个证明，如有不正之处，可在评论区指出，我会及时进行修正。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/202206301525923.jpg&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;稍微记录一下看吴恩达课程后对深度学习各种概念的理解&lt;/p&gt;
     
     </summary>
     
     
-      <category term="理论学习" scheme="http://example.com/categories/%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="深度学习" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="实数" scheme="http://example.com/tags/%E5%AE%9E%E6%95%B0/"/>
-    
-      <category term="证明" scheme="http://example.com/tags/%E8%AF%81%E6%98%8E/"/>
-    
-      <category term="数学分析" scheme="http://example.com/tags/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/"/>
+      <category term="深度学习" scheme="http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
   <entry>
-    <title>修改操作系统安装时间</title>
-    <link href="http://example.com/%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E6%97%B6%E9%97%B4/"/>
-    <id>http://example.com/%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E6%97%B6%E9%97%B4/</id>
-    <published>2022-06-23T11:52:49.000Z</published>
-    <updated>2022-07-02T07:02:18.946Z</updated>
+    <title>研究生组会</title>
+    <link href="http://example.com/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/"/>
+    <id>http://example.com/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/</id>
+    <published>2020-10-21T04:50:55.000Z</published>
+    <updated>2022-07-02T06:55:59.630Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;由于某些不可名状的原因，导致了有修改操作系统安装时间的需求，在此小记。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/202206231950445.png&quot; width=30%&gt;&lt;/p&gt;
+      &lt;p&gt;记录组会内容&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-    
-      <category term="经验积累" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/"/>
+      <category term="组会" scheme="http://example.com/categories/%E7%BB%84%E4%BC%9A/"/>
     
     
-      <category term="操作系统" scheme="http://example.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+      <category term="图像处理" scheme="http://example.com/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"/>
     
-      <category term="安装时间" scheme="http://example.com/tags/%E5%AE%89%E8%A3%85%E6%97%B6%E9%97%B4/"/>
-    
-      <category term="系统修改" scheme="http://example.com/tags/%E7%B3%BB%E7%BB%9F%E4%BF%AE%E6%94%B9/"/>
+      <category term="组会" scheme="http://example.com/tags/%E7%BB%84%E4%BC%9A/"/>
     
   </entry>
   
   <entry>
-    <title>影片《字节跳动》创作阐述</title>
-    <link href="http://example.com/%E5%BD%B1%E7%89%87%E3%80%8A%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E3%80%8B%E5%88%9B%E4%BD%9C%E9%98%90%E8%BF%B0/"/>
-    <id>http://example.com/%E5%BD%B1%E7%89%87%E3%80%8A%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E3%80%8B%E5%88%9B%E4%BD%9C%E9%98%90%E8%BF%B0/</id>
-    <published>2022-06-07T08:25:29.000Z</published>
-    <updated>2022-07-02T07:02:18.948Z</updated>
+    <title>服务器安装jupyter</title>
+    <link href="http://example.com/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85jupyter/"/>
+    <id>http://example.com/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85jupyter/</id>
+    <published>2020-10-15T02:07:28.000Z</published>
+    <updated>2022-07-02T06:54:12.621Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;序&quot;&gt;序&lt;/h2&gt;
-&lt;p&gt;《字节跳动》创作于2022年5月下旬至6月上旬，历时半个月。是截至目前为止本人参与的短片拍摄最高水平。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/202206071619140.jpg&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;属实不想用xshell上的ipython，命令行也确实没有jupyter方便，毕竟jupyter还可以保存运行过程，还可以进行拓展。所以我在服务器上搭建了一个jupyter&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="影视创作" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E5%BD%B1%E8%A7%86%E5%88%9B%E4%BD%9C/"/>
+      <category term="服务器配置" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
     
     
-      <category term="创作" scheme="http://example.com/tags/%E5%88%9B%E4%BD%9C/"/>
+      <category term="服务器" scheme="http://example.com/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
-      <category term="影视创作" scheme="http://example.com/tags/%E5%BD%B1%E8%A7%86%E5%88%9B%E4%BD%9C/"/>
-    
-      <category term="微电影" scheme="http://example.com/tags/%E5%BE%AE%E7%94%B5%E5%BD%B1/"/>
-    
-      <category term="协作" scheme="http://example.com/tags/%E5%8D%8F%E4%BD%9C/"/>
+      <category term="jupyter" scheme="http://example.com/tags/jupyter/"/>
     
   </entry>
   
   <entry>
-    <title>关于影视创作</title>
-    <link href="http://example.com/%E5%85%B3%E4%BA%8E%E5%BD%B1%E8%A7%86%E5%88%9B%E4%BD%9C/"/>
-    <id>http://example.com/%E5%85%B3%E4%BA%8E%E5%BD%B1%E8%A7%86%E5%88%9B%E4%BD%9C/</id>
-    <published>2022-05-25T09:25:13.000Z</published>
-    <updated>2022-07-02T07:02:18.946Z</updated>
+    <title>深度学习笔记(零)---英语</title>
+    <link href="http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/"/>
+    <id>http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/</id>
+    <published>2020-10-14T06:20:20.000Z</published>
+    <updated>2020-10-23T07:00:01.519Z</updated>
     
     <summary type="html">
     
-      &lt;blockquote class=&quot;blockquote-center&quot;&gt;
-            &lt;p&gt;电影是经由极度刻意而达到的自然&lt;/p&gt;
-
-          &lt;/blockquote&gt;
-&lt;h2 id=&quot;影视创作的基本流程&quot;&gt;影视创作的基本流程&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/202205251718490.webp&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;记录一下常用英语词汇&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="影视创作" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E5%BD%B1%E8%A7%86%E5%88%9B%E4%BD%9C/"/>
+      <category term="深度学习" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="拍摄" scheme="http://example.com/tags/%E6%8B%8D%E6%91%84/"/>
+      <category term="深度学习" scheme="http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
-      <category term="电影" scheme="http://example.com/tags/%E7%94%B5%E5%BD%B1/"/>
-    
-      <category term="创作" scheme="http://example.com/tags/%E5%88%9B%E4%BD%9C/"/>
-    
-      <category term="感悟" scheme="http://example.com/tags/%E6%84%9F%E6%82%9F/"/>
+      <category term="英语" scheme="http://example.com/tags/%E8%8B%B1%E8%AF%AD/"/>
     
   </entry>
   
   <entry>
-    <title>网站收藏</title>
-    <link href="http://example.com/%E7%BD%91%E7%AB%99%E6%94%B6%E8%97%8F/"/>
-    <id>http://example.com/%E7%BD%91%E7%AB%99%E6%94%B6%E8%97%8F/</id>
-    <published>2022-05-16T11:54:58.000Z</published>
-    <updated>2022-07-02T07:02:18.952Z</updated>
+    <title>深度学习笔记(二)---框架</title>
+    <link href="http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%BA%8C)---%E6%A1%86%E6%9E%B6/"/>
+    <id>http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%BA%8C)---%E6%A1%86%E6%9E%B6/</id>
+    <published>2020-10-13T01:09:28.000Z</published>
+    <updated>2022-07-02T06:55:16.002Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/202205251650671.webp&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;昨天大致了解了一下什么是深度学习，深度学习，人工智能，机器学习之间有什么关系，深度学习框架的总览。今天来找找各个框架之间的对比和目前比较常用的tensorflow和pytorch一些资料。我觉得框架属实是个好东西，让我可以不用写CUDA，反正Django的ORM是属实舒服，轻松摆脱巨长的MySql，但是会有一些自己特殊的地方，比如插入一个带外键的数据时要先获取其主键Model，还是要多了解多记录。&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="码来用" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%A0%81%E6%9D%A5%E7%94%A8/"/>
+      <category term="深度学习" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="软件" scheme="http://example.com/tags/%E8%BD%AF%E4%BB%B6/"/>
+      <category term="深度学习" scheme="http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
-      <category term="网站" scheme="http://example.com/tags/%E7%BD%91%E7%AB%99/"/>
+      <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
     
-      <category term="收藏" scheme="http://example.com/tags/%E6%94%B6%E8%97%8F/"/>
+      <category term="Tensorflow" scheme="http://example.com/tags/Tensorflow/"/>
+    
+      <category term="Pytorch" scheme="http://example.com/tags/Pytorch/"/>
     
   </entry>
   
   <entry>
-    <title>来选头像</title>
-    <link href="http://example.com/%E6%9D%A5%E9%80%89%E5%A4%B4%E5%83%8F/"/>
-    <id>http://example.com/%E6%9D%A5%E9%80%89%E5%A4%B4%E5%83%8F/</id>
-    <published>2022-05-11T07:52:09.000Z</published>
-    <updated>2022-07-02T07:02:18.950Z</updated>
+    <title>深度学习笔记(一)---基础</title>
+    <link href="http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/"/>
+    <id>http://example.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/</id>
+    <published>2020-10-12T07:06:19.000Z</published>
+    <updated>2022-07-02T06:55:51.192Z</updated>
     
     <summary type="html">
     
-      &lt;iframe src=&quot;//www.kezhi.tech/avatar/&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt;
-&lt;/iframe&gt;
+      &lt;p&gt;待录取已经下来了，应该没什么意外就尘埃落定了，这几天都没怎么睡好，下午困得很。今天下午和晚上就看看什么是深度学习，稍微了解一下，晚上跑个步回去早点睡。&lt;/p&gt;
     
     </summary>
     
     
-      <category term="日常生活" scheme="http://example.com/categories/%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="深度学习" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
+      <category term="深度学习" scheme="http://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="CUAD" scheme="http://example.com/tags/CUAD/"/>
+    
+      <category term="神经网络" scheme="http://example.com/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="机器学习" scheme="http://example.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
   <entry>
-    <title>于小鸡历险记（一）</title>
-    <link href="http://example.com/%E4%BA%8E%E5%B0%8F%E9%B8%A1%E5%8E%86%E9%99%A9%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>http://example.com/%E4%BA%8E%E5%B0%8F%E9%B8%A1%E5%8E%86%E9%99%A9%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/</id>
-    <published>2022-05-10T15:09:25.000Z</published>
-    <updated>2022-07-02T07:02:18.946Z</updated>
+    <title>从考研到995</title>
+    <link href="http://example.com/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/"/>
+    <id>http://example.com/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/</id>
+    <published>2020-10-12T01:43:40.000Z</published>
+    <updated>2020-10-13T01:34:54.333Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;引子&quot;&gt;引子&lt;/h2&gt;
-&lt;p&gt;有时候，生活会带给人一些惊喜。或许是一次翘课偶然碰到的晚霞，亦或是一觉醒来突然开放的花苞。在这个不断向前的工业化时代里，我们每个人都身不由己，裹挟其中。这在我上了研究生，进一步了解这个世界之后，最深的感触。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/202205102220466.jpg&quot; width=30%&gt;&lt;/p&gt;
+      &lt;p&gt;这么久都没更博了，主要是之前在准备参加考研，9月底突然得知因为疫情扩保把本弟弟保上了，说实话运气很好，属实要好好感谢学校，只要学校够努力就能抬我一手。今天保研尘埃落定了虽然直接开始995，但是心理压力没那么大了，还要学习新的知识，肯定要多记录记录。&lt;/p&gt;
     
     </summary>
     
     
-      <category term="日常生活" scheme="http://example.com/categories/%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB/"/>
+      <category term="碎碎念" scheme="http://example.com/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
     
-    
-      <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
     
   </entry>
   
   <entry>
-    <title>Git commit message 规范</title>
-    <link href="http://example.com/Git-commit-message-%E8%A7%84%E8%8C%83/"/>
-    <id>http://example.com/Git-commit-message-%E8%A7%84%E8%8C%83/</id>
-    <published>2022-04-07T14:05:01.000Z</published>
-    <updated>2022-07-02T07:02:18.942Z</updated>
+    <title>leetcode_1</title>
+    <link href="http://example.com/leetcode-1/"/>
+    <id>http://example.com/leetcode-1/</id>
+    <published>2020-06-30T12:13:05.000Z</published>
+    <updated>2022-07-02T06:51:38.917Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;git-commit-message-规范&quot;&gt;Git commit message 规范&lt;/h2&gt;
-&lt;h3 id=&quot;commit-message-格式&quot;&gt;commit message 格式&lt;/h3&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;type&amp;gt;(&amp;lt;scope&amp;gt;): &amp;lt;subject&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      &lt;p&gt;这里记录在leetcode上做题的经过，包含自己的解法和优秀解法&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-    
-      <category term="经验积累" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/"/>
+      <category term="算法" scheme="http://example.com/categories/%E7%AE%97%E6%B3%95/"/>
     
     
-      <category term="git" scheme="http://example.com/tags/git/"/>
+      <category term="python" scheme="http://example.com/tags/python/"/>
     
-      <category term="语法规范" scheme="http://example.com/tags/%E8%AF%AD%E6%B3%95%E8%A7%84%E8%8C%83/"/>
+      <category term="算法" scheme="http://example.com/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
   <entry>
-    <title>Python高性能编程</title>
-    <link href="http://example.com/Python%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%96%E7%A8%8B/"/>
-    <id>http://example.com/Python%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%96%E7%A8%8B/</id>
-    <published>2022-04-07T14:03:09.000Z</published>
-    <updated>2022-07-02T07:02:18.944Z</updated>
+    <title>Python常用内置函数</title>
+    <link href="http://example.com/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/"/>
+    <id>http://example.com/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</id>
+    <published>2020-05-29T14:09:00.000Z</published>
+    <updated>2022-07-02T06:52:45.372Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;python-高性能编程&quot;&gt;Python 高性能编程&lt;/h1&gt;
+      &lt;p&gt;记录Python常用的内置函数&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="经验积累" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/"/>
+      <category term="Python" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
       <category term="Python" scheme="http://example.com/tags/Python/"/>
     
-      <category term="Cython" scheme="http://example.com/tags/Cython/"/>
-    
-      <category term="numpy" scheme="http://example.com/tags/numpy/"/>
-    
   </entry>
   
   <entry>
-    <title>NexT标签云配置</title>
-    <link href="http://example.com/Next%E6%A0%87%E7%AD%BE%E4%BA%91%E9%85%8D%E7%BD%AE/"/>
-    <id>http://example.com/Next%E6%A0%87%E7%AD%BE%E4%BA%91%E9%85%8D%E7%BD%AE/</id>
-    <published>2022-03-22T09:11:28.000Z</published>
-    <updated>2022-07-02T07:02:18.944Z</updated>
+    <title>阿里云安全组开放端口不生效</title>
+    <link href="http://example.com/%E9%98%BF%E9%87%8C%E4%BA%91%E5%AE%89%E5%85%A8%E7%BB%84%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%94%9F%E6%95%88/"/>
+    <id>http://example.com/%E9%98%BF%E9%87%8C%E4%BA%91%E5%AE%89%E5%85%A8%E7%BB%84%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%94%9F%E6%95%88/</id>
+    <published>2020-05-20T14:36:18.000Z</published>
+    <updated>2022-07-02T06:53:38.315Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;本文引自&lt;a href=&quot;https://alex-mcavoy.github.io/hexo/7be258c0.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Next 7.0+ TagCanvas 标签云 | Alex_McAvoy (alex-mcavoy.github.io)&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/20220322172925.jpg&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;有一天开始练习Django，然后发现怎么都在7997端口上跑不起来，一开始我还以为是新版本和老版本方式不一样，因为我7997已经在阿里云控制台放行了，但是在之前开放的8000端口却能够正常运行，这时我感觉应该是端口的问题，后来发现是不知道为什么阿里云里面已经开放了但是ufw却没有允许7997端口，原因我不知道是为什么，只找到了解决方法。这里记录一些ufw用法。&lt;/p&gt;
+&lt;p&gt;参考：https://blog.csdn.net/bigdata_mining/article/details/80699180&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="经验积累" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/"/>
+      <category term="服务器配置" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
     
     
-      <category term="Hexo" scheme="http://example.com/tags/Hexo/"/>
-    
-      <category term="NexT" scheme="http://example.com/tags/NexT/"/>
+      <category term="服务器" scheme="http://example.com/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
   </entry>
   
   <entry>
-    <title>创新港体育场馆自动预定</title>
-    <link href="http://example.com/%E5%88%9B%E6%96%B0%E6%B8%AF%E4%BD%93%E8%82%B2%E5%9C%BA%E9%A6%86%E8%87%AA%E5%8A%A8%E9%A2%84%E5%AE%9A/"/>
-    <id>http://example.com/%E5%88%9B%E6%96%B0%E6%B8%AF%E4%BD%93%E8%82%B2%E5%9C%BA%E9%A6%86%E8%87%AA%E5%8A%A8%E9%A2%84%E5%AE%9A/</id>
-    <published>2022-03-21T13:05:38.000Z</published>
-    <updated>2022-07-02T07:02:18.947Z</updated>
+    <title>pycharm远程调试项目</title>
+    <link href="http://example.com/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/"/>
+    <id>http://example.com/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/</id>
+    <published>2020-05-20T14:27:45.000Z</published>
+    <updated>2022-07-02T06:52:22.919Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;项目由来&quot;&gt;项目由来&lt;/h2&gt;
-&lt;p&gt;创新港羽毛球场馆每天的预定需求较大。在线预定系统每天早上 8:40 左右开放，并且开放时间不定。这些因素给手动预定场馆带来了很大的麻烦，因此考虑由脚本自动化实现场馆预定过程。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/202203212104191.jpg&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。&lt;/p&gt;
+&lt;p&gt;参考：https://www.cnblogs.com/weihengblog/p/9656257.html&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="Web" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/Web/"/>
+      <category term="Python" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
       <category term="python" scheme="http://example.com/tags/python/"/>
     
-      <category term="自动化" scheme="http://example.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/"/>
+      <category term="pycharm" scheme="http://example.com/tags/pycharm/"/>
     
   </entry>
   
   <entry>
-    <title>nlp工具nltk的安装及使用</title>
-    <link href="http://example.com/nlp%E5%B7%A5%E5%85%B7nltk%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/"/>
-    <id>http://example.com/nlp%E5%B7%A5%E5%85%B7nltk%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/</id>
-    <published>2021-10-21T13:24:53.000Z</published>
-    <updated>2022-07-02T07:02:18.945Z</updated>
+    <title>强制关闭端口</title>
+    <link href="http://example.com/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/"/>
+    <id>http://example.com/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/</id>
+    <published>2020-05-18T12:59:29.000Z</published>
+    <updated>2020-06-28T08:36:08.946Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;nltk简介&quot;&gt;nltk简介&lt;/h2&gt;
-&lt;p&gt;NLTK是构建Python程序以使用人类语言数据的领先平台。它为50多种语料库和词汇资源（如WordNet）提供了易于使用的界面，还提供了一套用于分类，标记化，词干化，标记，解析和语义推理的文本处理库。NLTK是Python上著名的⾃然语⾔处理库 ⾃带语料库，具有词性分类库 ⾃带分类，分词，等等功能。&lt;/p&gt;
+      &lt;p&gt;很多情况下我们会遇到程序非正常退出那么它所占用的端口很有可能就没有被正常释放，导致我们下一次启动他的时候无法启动，这时候我们就需要手动释放端口。&lt;/p&gt;
+&lt;p&gt;参考：https://blog.csdn.net/why444216978/article/details/84062977&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="经验积累" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/"/>
+      <category term="服务器配置" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
+    
+    
+      <category term="服务器" scheme="http://example.com/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Django学习笔记</title>
+    <link href="http://example.com/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2020-05-18T10:32:33.000Z</published>
+    <updated>2022-07-02T06:50:32.427Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录Django学习笔记&lt;/p&gt;
+&lt;p&gt;https://www.bilibili.com/video/BV1rx411X717&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Django" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/Django/"/>
     
     
       <category term="python" scheme="http://example.com/tags/python/"/>
     
-      <category term="nlp" scheme="http://example.com/tags/nlp/"/>
+      <category term="Django" scheme="http://example.com/tags/Django/"/>
     
   </entry>
   
   <entry>
-    <title>社会心理学（一）</title>
-    <link href="http://example.com/%E7%A4%BE%E4%BC%9A%E5%BF%83%E7%90%86%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>http://example.com/%E7%A4%BE%E4%BC%9A%E5%BF%83%E7%90%86%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89/</id>
-    <published>2021-06-08T13:37:03.000Z</published>
-    <updated>2022-07-02T07:02:18.952Z</updated>
+    <title>python操作redis大全</title>
+    <link href="http://example.com/python%E6%93%8D%E4%BD%9Credis%E5%A4%A7%E5%85%A8/"/>
+    <id>http://example.com/python%E6%93%8D%E4%BD%9Credis%E5%A4%A7%E5%85%A8/</id>
+    <published>2020-05-09T13:31:53.000Z</published>
+    <updated>2020-06-28T08:31:53.573Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;社会中的自我&quot;&gt;社会中的自我&lt;/h2&gt;
-&lt;h3 id=&quot;自我概念我是谁&quot;&gt;自我概念：我是谁&lt;/h3&gt;
+      &lt;p&gt;redis是一个很常见的键值对数据库，用途广泛，我现在主要是在实现增量爬虫的时候使用了redis中的hashes类型，这里记录一些redis的相关操作。&lt;/p&gt;
     
     </summary>
     
     
-      <category term="我爱读书" scheme="http://example.com/categories/%E6%88%91%E7%88%B1%E8%AF%BB%E4%B9%A6/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/Python/"/>
     
     
-      <category term="读书笔记" scheme="http://example.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+      <category term="python" scheme="http://example.com/tags/python/"/>
     
-      <category term="心理学" scheme="http://example.com/tags/%E5%BF%83%E7%90%86%E5%AD%A6/"/>
+      <category term="redis" scheme="http://example.com/tags/redis/"/>
     
   </entry>
   
   <entry>
-    <title>摘抄</title>
-    <link href="http://example.com/%E6%91%98%E6%8A%84/"/>
-    <id>http://example.com/%E6%91%98%E6%8A%84/</id>
-    <published>2021-06-08T11:09:06.000Z</published>
-    <updated>2022-07-02T07:02:18.949Z</updated>
+    <title>xpath常用相关</title>
+    <link href="http://example.com/xpath%E5%B8%B8%E7%94%A8%E7%9B%B8%E5%85%B3/"/>
+    <id>http://example.com/xpath%E5%B8%B8%E7%94%A8%E7%9B%B8%E5%85%B3/</id>
+    <published>2020-05-09T09:34:34.000Z</published>
+    <updated>2022-07-02T06:53:23.157Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;section&quot;&gt;2021.04&lt;/h2&gt;
-&lt;blockquote class=&quot;blockquote-center&quot;&gt;
-            &lt;p&gt;矫揉做作地喜好各种规矩就是“有系统”，孜孜不倦且兴致勃勃地处理鸡毛蒜皮的公事就是“勤勉”；该做的事优柔寡断就是“谨慎”；不该做的事盲目地坚持到底就是“决心”。&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;-- 《银河帝国2：基地与帝国》&lt;/b&gt;&lt;/p&gt;
-
-          &lt;/blockquote&gt;
+      &lt;p&gt;xpath常用语法&lt;/p&gt;
     
     </summary>
     
     
-      <category term="我爱读书" scheme="http://example.com/categories/%E6%88%91%E7%88%B1%E8%AF%BB%E4%B9%A6/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-    
-      <category term="读书笔记" scheme="http://example.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="摘抄" scheme="http://example.com/tags/%E6%91%98%E6%8A%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vue学习笔记</title>
-    <link href="http://example.com/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    <id>http://example.com/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
-    <published>2021-04-13T03:32:27.000Z</published>
-    <updated>2022-07-02T07:02:18.944Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;vue&quot;&gt;Vue&lt;/h2&gt;
-&lt;h3 id=&quot;与flask一起使用时的注意事项&quot;&gt;与Flask一起使用时的注意事项&lt;/h3&gt;
-&lt;p&gt;Vue与Flask一起使用时会出现冲突，更改配置即可解决。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Flask&lt;/li&gt;
-&lt;/ul&gt;
-&lt;
-      
-    
-    </summary>
-    
-    
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-    
-      <category term="Web" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/Web/"/>
-    
-    
-      <category term="Vue" scheme="http://example.com/tags/Vue/"/>
-    
-      <category term="前端框架" scheme="http://example.com/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>scrapy爬虫相关</title>
-    <link href="http://example.com/scrapy%E7%88%AC%E8%99%AB%E7%9B%B8%E5%85%B3/"/>
-    <id>http://example.com/scrapy%E7%88%AC%E8%99%AB%E7%9B%B8%E5%85%B3/</id>
-    <published>2020-10-24T15:10:17.000Z</published>
-    <updated>2022-07-02T07:02:18.945Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;请求伪装&quot;&gt;请求伪装&lt;/h2&gt;
-&lt;p&gt;在爬取腾讯天气时，发现无法成功爬取到天气数据，经过尝试发现是请求头除了问题。爬虫在爬取网页时的默认请求头为：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://download.kezhi.tech/img/20201024223544.png&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;这种默认的请求头在爬取很多网站时会被禁止，无法获取到网页数据，因此需要使用请求头伪装，让网站认为是浏览器在访问。操作步骤如下：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
-    
-      <category term="经验积累" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF/"/>
+      <category term="爬虫" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
     
     
       <category term="python" scheme="http://example.com/tags/python/"/>
     
       <category term="scrapy" scheme="http://example.com/tags/scrapy/"/>
     
-      <category term="爬虫" scheme="http://example.com/tags/%E7%88%AC%E8%99%AB/"/>
-    
   </entry>
   
   <entry>
-    <title>爬取B站所有番剧数据并进行数据分析</title>
-    <link href="http://example.com/%E7%88%AC%E5%8F%96B%E7%AB%99%E6%89%80%E6%9C%89%E7%95%AA%E5%89%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
-    <id>http://example.com/%E7%88%AC%E5%8F%96B%E7%AB%99%E6%89%80%E6%9C%89%E7%95%AA%E5%89%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</id>
-    <published>2020-10-14T16:24:39.000Z</published>
-    <updated>2022-07-02T07:02:18.951Z</updated>
+    <title>爬虫常用操作笔记</title>
+    <link href="http://example.com/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</id>
+    <published>2020-05-09T09:09:46.000Z</published>
+    <updated>2022-07-02T06:54:57.864Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;简介&quot;&gt;简介&lt;/h2&gt;
-&lt;p&gt;Bilibili（以下简称B站）中有大量的番剧版权，截止目前一共有3161部。每一部番剧都可以找到它的&lt;span class=&quot;label primary&quot;&gt;播放量&lt;/span&gt;，&lt;span class=&quot;label success&quot;&gt;追番量&lt;/span&gt;，&lt;span class=&quot;label info&quot;&gt;弹幕数量&lt;/span&gt;等播放数据，除此之外，每部番剧还有其相应的标签（如“漫画改”，“热血”，“搞笑”）。本项目旨在分析番剧播放数据与番剧标签之间的关系，同时也是一项数据分析的大作业，采用APriori频繁项集挖掘进行分析。&lt;/p&gt;
-&lt;p&gt;GitHub地址：&lt;a href=&quot;https://github.com/KezhiAdore/BilibiliAnimeData_Analysis&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/KezhiAdore/BilibiliAnimeData_Analysis&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;码云地址：&lt;a href=&quot;https://gitee.com/KezhiAdore/BilibiliAnimeData_Analysis&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://gitee.com/KezhiAdore/BilibiliAnimeData_Analysis&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;记录一些常用的代码，免得老去翻代码&lt;/p&gt;
     
     </summary>
     
     
-      <category term="工程实践" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
     
-      <category term="数据分析" scheme="http://example.com/categories/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+      <category term="爬虫" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
+    
+    
+      <category term="python" scheme="http://example.com/tags/python/"/>
+    
+      <category term="MySQL" scheme="http://example.com/tags/MySQL/"/>
+    
+      <category term="scrapy" scheme="http://example.com/tags/scrapy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>scrapy中的yield请求未被正常抛出</title>
+    <link href="http://example.com/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/"/>
+    <id>http://example.com/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/</id>
+    <published>2020-05-08T13:19:36.000Z</published>
+    <updated>2022-07-02T06:52:56.116Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个&lt;code&gt;scrapy.Request&lt;/code&gt;执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="爬虫" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
+    
+    
+      <category term="scrapy" scheme="http://example.com/tags/scrapy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>lxml相关操作</title>
+    <link href="http://example.com/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/"/>
+    <id>http://example.com/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</id>
+    <published>2020-04-30T09:12:39.000Z</published>
+    <updated>2022-07-02T06:52:05.720Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="爬虫" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
     
     
       <category term="python" scheme="http://example.com/tags/python/"/>
     
       <category term="爬虫" scheme="http://example.com/tags/%E7%88%AC%E8%99%AB/"/>
     
-      <category term="大数据分析" scheme="http://example.com/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
-    
-      <category term="Aprior算法" scheme="http://example.com/tags/Aprior%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="K-means" scheme="http://example.com/tags/K-means/"/>
+      <category term="信息提取" scheme="http://example.com/tags/%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96/"/>
     
   </entry>
   
   <entry>
-    <title>黄蜂群算法改进的多机器人区域覆盖</title>
-    <link href="http://example.com/%E9%BB%84%E8%9C%82%E7%BE%A4%E7%AE%97%E6%B3%95%E6%94%B9%E8%BF%9B%E7%9A%84%E5%A4%9A%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%8C%BA%E5%9F%9F%E8%A6%86%E7%9B%96/"/>
-    <id>http://example.com/%E9%BB%84%E8%9C%82%E7%BE%A4%E7%AE%97%E6%B3%95%E6%94%B9%E8%BF%9B%E7%9A%84%E5%A4%9A%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%8C%BA%E5%9F%9F%E8%A6%86%E7%9B%96/</id>
-    <published>2020-06-22T17:30:24.000Z</published>
-    <updated>2022-07-02T07:02:18.953Z</updated>
+    <title>Ubuntu安装MySQL</title>
+    <link href="http://example.com/Ubuntu%E5%AE%89%E8%A3%85mysql/"/>
+    <id>http://example.com/Ubuntu%E5%AE%89%E8%A3%85mysql/</id>
+    <published>2020-04-29T03:19:00.000Z</published>
+    <updated>2022-07-02T06:53:13.212Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;GitHub地址：&lt;a href=&quot;https://github.com/KezhiAdore/MultiRobots_CoverMap&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/KezhiAdore/MultiRobots_CoverMap&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;码云地址：&lt;a href=&quot;https://gitee.com/KezhiAdore/MultiRobots_CoverMap&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://gitee.com/KezhiAdore/MultiRobots_CoverMap&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;一问题提出&quot;&gt;一、问题提出&lt;/h2&gt;
-&lt;h3 id=&quot;背景&quot;&gt;1. 背景&lt;/h3&gt;
-&lt;p&gt;机器人在工业、国防和科学技术中的应用日益广泛， 它能够在枯燥和危险的复杂非结构化环境下工作。使用机器人大大提高了人们的工作效率， 改变了人们的生活方式， 带来了巨大的经济和社会效益， 有力地推动了有关学科和技术领域的发展。&lt;/p&gt;
-&lt;p&gt;区域覆盖是指携带有一定探测范围的传感器如激光、声纳等的机器人探索访问整个区域， 并完成相应任务的过程。区域覆盖是自主移动机器人的一项基本任务。&lt;/p&gt;
+      &lt;p&gt;服务器安装MySQL有些方法搞的十分麻烦，这里记录一个Ubuntu适用的简单的方法，同时修改字符集为utf8mb4（毕竟MySQL的utf8是个赝品）&lt;/p&gt;
     
     </summary>
     
     
-      <category term="科学研究" scheme="http://example.com/categories/%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6/"/>
+      <category term="技术" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="MySQL" scheme="http://example.com/categories/%E6%8A%80%E6%9C%AF/MySQL/"/>
     
     
-      <category term="智能计算" scheme="http://example.com/tags/%E6%99%BA%E8%83%BD%E8%AE%A1%E7%AE%97/"/>
+      <category term="Ubuntu" scheme="http://example.com/tags/Ubuntu/"/>
     
-      <category term="多机器人" scheme="http://example.com/tags/%E5%A4%9A%E6%9C%BA%E5%99%A8%E4%BA%BA/"/>
+      <category term="MySQL" scheme="http://example.com/tags/MySQL/"/>
     
-      <category term="覆盖问题" scheme="http://example.com/tags/%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98/"/>
-    
-      <category term="算法改进" scheme="http://example.com/tags/%E7%AE%97%E6%B3%95%E6%94%B9%E8%BF%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数字图像处理（六）频域滤波器</title>
-    <link href="http://example.com/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E5%85%AD%EF%BC%89%E9%A2%91%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
-    <id>http://example.com/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E5%85%AD%EF%BC%89%E9%A2%91%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8/</id>
-    <published>2020-05-08T13:17:21.000Z</published>
-    <updated>2022-07-02T07:02:18.950Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;频域滤波器简介&quot;&gt;频域滤波器简介&lt;/h2&gt;
-&lt;p&gt;频域滤波器与空域滤波器相对，空域滤波器是空间卷积块与空间图像做卷积运算，而频域滤波是在将图像进行了离散傅里叶变换之后在频域上与滤波器做乘法，之后再进行傅里叶反变换得到滤波之后的图像。&lt;/p&gt;
-&lt;p&gt;使用频域滤波器对图像进行滤波的基本步骤：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;对图像进行DFT变换得到原图像的频域图像&lt;/li&gt;
-&lt;li&gt;频域图像与频域滤波器相乘得到新的频域图像&lt;/li&gt;
-&lt;li&gt;对新的频域图像进行IDFT变换到空域得到新图像。&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-      <category term="理论学习" scheme="http://example.com/categories/%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="数字图像处理" scheme="http://example.com/categories/%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"/>
-    
-    
-      <category term="python" scheme="http://example.com/tags/python/"/>
-    
-      <category term="数字图像" scheme="http://example.com/tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F/"/>
-    
-      <category term="滤波器" scheme="http://example.com/tags/%E6%BB%A4%E6%B3%A2%E5%99%A8/"/>
-    
-      <category term="频域" scheme="http://example.com/tags/%E9%A2%91%E5%9F%9F/"/>
+      <category term="utf8mb4" scheme="http://example.com/tags/utf8mb4/"/>
     
   </entry>
   
