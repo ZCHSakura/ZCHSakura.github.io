@@ -126,6 +126,159 @@ E(w,b)=\frac12\sum_{j=0}^{n-1}(d_j-y_j)^2
       </tags>
   </entry>
   <entry>
+    <title>Git常用命令</title>
+    <url>/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="git文件管理系统">Git文件管理系统</h2>
+<blockquote>
+<p>本博客为转载，原文地址<a href="https://www.cnblogs.com/chenwolong/p/GIT.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenwolong/p/GIT.html</a></p>
+</blockquote>
+<p><img src="http://download.kezhi.tech/img/20200424230007.png" /></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>Workspace：工作区</li>
+<li>Index / Stage：暂存区</li>
+<li>Repository：仓库区（或本地仓库）</li>
+<li>Remote：远程仓库</li>
+</ul>
+</blockquote>
+<h2 id="新建代码仓库">新建代码仓库</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在当前目录新建一个Git代码库</span></span><br><span class="line">$ git init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个目录，将其初始化为Git代码库</span></span><br><span class="line">$ git init [project-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载一个项目和它的整个代码历史</span></span><br><span class="line">$ git clone [url]</span><br></pre></td></tr></table></figure>
+<h2 id="配置">配置</h2>
+<p>Git的设置文件为<code>.gitconfig</code>，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示当前的Git配置</span></span><br><span class="line">$ git config --list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑Git配置文件</span></span><br><span class="line">$ git config -e [--<span class="keyword">global</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置提交代码时的用户信息</span></span><br><span class="line">$ git config [--<span class="keyword">global</span>] user.name <span class="string">"[name]"</span></span><br><span class="line">$ git config [--<span class="keyword">global</span>] user.email <span class="string">"[email address]"</span></span><br></pre></td></tr></table></figure>
+<h2 id="增加删除文件">增加/删除文件</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 添加指定文件到暂存区</span></span><br><span class="line">$ git add [file1] [file2] ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加指定目录到暂存区，包括子目录</span></span><br><span class="line">$ git add [dir]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加当前目录的所有文件到暂存区</span></span><br><span class="line">$ git add .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加每个变化前，都会要求确认</span></span><br><span class="line"><span class="comment"># 对于同一个文件的多处变化，可以实现分次提交</span></span><br><span class="line">$ git add -p</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除工作区文件，并且将这次删除放入暂存区</span></span><br><span class="line">$ git rm [file1] [file2] ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止追踪指定文件，但该文件会保留在工作区</span></span><br><span class="line">$ git rm --cached [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改名文件，并且将这个改名放入暂存区</span></span><br><span class="line">$ git mv [file-original] [file-renamed]</span><br></pre></td></tr></table></figure>
+<h2 id="代码提交">代码提交</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 提交暂存区到仓库区</span></span><br><span class="line">$ git commit -m [message]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交暂存区的指定文件到仓库区</span></span><br><span class="line">$ git commit [file1] [file2] ... -m [message]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交工作区自上次commit之后的变化，直接到仓库区</span></span><br><span class="line">$ git commit -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交时显示所有diff信息</span></span><br><span class="line">$ git commit -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用一次新的commit，替代上一次提交</span></span><br><span class="line"><span class="comment"># 如果代码没有任何新变化，则用来改写上一次commit的提交信息</span></span><br><span class="line">$ git commit --amend -m [message]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重做上一次commit，并包括指定文件的新变化</span></span><br><span class="line">$ git commit --amend [file1] [file2] ...</span><br></pre></td></tr></table></figure>
+<h2 id="分支">分支</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出所有本地分支</span></span><br><span class="line">$ git branch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有远程分支</span></span><br><span class="line">$ git branch -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有本地分支和远程分支</span></span><br><span class="line">$ git branch -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，但依然停留在当前分支</span></span><br><span class="line">$ git branch [branch-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，并切换到该分支</span></span><br><span class="line">$ git checkout -b [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，指向指定commit</span></span><br><span class="line">$ git branch [branch] [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，与指定的远程分支建立追踪关系</span></span><br><span class="line">$ git branch --track [branch] [remote-branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到指定分支，并更新工作区</span></span><br><span class="line">$ git checkout [branch-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到上一个分支</span></span><br><span class="line">$ git checkout -</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立追踪关系，在现有分支与指定的远程分支之间</span></span><br><span class="line">$ git branch --set-upstream [branch] [remote-branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并指定分支到当前分支</span></span><br><span class="line">$ git merge [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择一个commit，合并进当前分支</span></span><br><span class="line">$ git cherry-pick [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除分支</span></span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除远程分支</span></span><br><span class="line">$ git push origin --delete [branch-name]</span><br><span class="line">$ git branch -dr [remote/branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地存在一个分支，名称叫：develop_chen，但远程没有怎么办？</span></span><br><span class="line">$ git push origin develop_chen</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这样就在远程建立一个和本地一样的分支</span></span><br><span class="line"></span><br><span class="line">$ git branch --set-upstream-to=origin/develop  develop  本地分支和远程分支简历跟踪关系</span><br></pre></td></tr></table></figure>
+<h2 id="标签">标签</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出所有tag</span></span><br><span class="line">$ git tag</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个tag在当前commit</span></span><br><span class="line">$ git tag [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个tag在指定commit</span></span><br><span class="line">$ git tag [tag] [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除本地tag</span></span><br><span class="line">$ git tag -d [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除远程tag</span></span><br><span class="line">$ git push origin :refs/tags/[tagName]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看tag信息</span></span><br><span class="line">$ git show [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交指定tag</span></span><br><span class="line">$ git push [remote] [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交所有tag</span></span><br><span class="line">$ git push [remote] --tags</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，指向某个tag</span></span><br><span class="line">$ git checkout -b [branch] [tag]</span><br></pre></td></tr></table></figure>
+<h2 id="查看信息">查看信息</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示有变更的文件</span></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示当前分支的版本历史</span></span><br><span class="line">$ git log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示commit历史，以及每次commit发生变更的文件</span></span><br><span class="line">$ git log --stat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索提交历史，根据关键词</span></span><br><span class="line">$ git log -S [keyword]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个commit之后的所有变动，每个commit占据一行</span></span><br><span class="line">$ git log [tag] HEAD --pretty=format:%s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件</span></span><br><span class="line">$ git log [tag] HEAD --grep feature</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个文件的版本历史，包括文件改名</span></span><br><span class="line">$ git log --follow [file]</span><br><span class="line">$ git whatchanged [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定文件相关的每一次diff</span></span><br><span class="line">$ git log -p [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示过去5次提交</span></span><br><span class="line">$ git log <span class="number">-5</span> --pretty --oneline</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有提交过的用户，按提交次数排序</span></span><br><span class="line">$ git shortlog -sn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定文件是什么人在什么时间修改过</span></span><br><span class="line">$ git blame [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示暂存区和工作区的代码差异</span></span><br><span class="line">$ git diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示暂存区和上一个commit的差异</span></span><br><span class="line">$ git diff --cached [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示工作区与当前分支最新commit之间的差异</span></span><br><span class="line">$ git diff HEAD</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示两次提交之间的差异</span></span><br><span class="line">$ git diff [first-branch]...[second-branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示今天你写了多少行代码</span></span><br><span class="line">$ git diff --shortstat <span class="string">"@&#123;0 day ago&#125;"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某次提交的元数据和内容变化</span></span><br><span class="line">$ git show [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某次提交发生变化的文件</span></span><br><span class="line">$ git show --name-only [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某次提交时，某个文件的内容</span></span><br><span class="line">$ git show [commit]:[filename]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示当前分支的最近几次提交</span></span><br><span class="line">$ git reflog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从本地master拉取代码更新当前分支：branch 一般为master</span></span><br><span class="line">$ git rebase [branch]</span><br></pre></td></tr></table></figure>
+<h2 id="远程同步">远程同步</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">$ git remote update  --更新远程仓储</span><br><span class="line"><span class="comment"># 下载远程仓库的所有变动</span></span><br><span class="line">$ git fetch [remote]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有远程仓库</span></span><br><span class="line">$ git remote -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个远程仓库的信息</span></span><br><span class="line">$ git remote show [remote]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加一个新的远程仓库，并命名</span></span><br><span class="line">$ git remote add [shortname] [url]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取回远程仓库的变化，并与本地分支合并</span></span><br><span class="line">$ git pull [remote] [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传本地指定分支到远程仓库</span></span><br><span class="line">$ git push [remote] [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强行推送当前分支到远程仓库，即使有冲突</span></span><br><span class="line">$ git push [remote] --force</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送所有分支到远程仓库</span></span><br><span class="line">$ git push [remote] --all</span><br></pre></td></tr></table></figure>
+<h2 id="撤销">撤销</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 恢复暂存区的指定文件到工作区</span></span><br><span class="line">$ git checkout [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复某个commit的指定文件到暂存区和工作区</span></span><br><span class="line">$ git checkout [commit] [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复暂存区的所有文件到工作区</span></span><br><span class="line">$ git checkout .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变</span></span><br><span class="line">$ git reset [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置暂存区与工作区，与上一次commit保持一致</span></span><br><span class="line">$ git reset --hard</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变</span></span><br><span class="line">$ git reset [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</span></span><br><span class="line">$ git reset --hard [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置当前HEAD为指定commit，但保持暂存区和工作区不变</span></span><br><span class="line">$ git reset --keep [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个commit，用来撤销指定commit</span></span><br><span class="line"><span class="comment"># 后者的所有变化都将被前者抵消，并且应用到当前分支</span></span><br><span class="line">$ git revert [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂时将未提交的变化移除，稍后再移入</span></span><br><span class="line">$ git stash</span><br><span class="line">$ git stash pop</span><br></pre></td></tr></table></figure>
+<h2 id="其他">其他</h2>
+<ol type="1">
+<li>将开发分支代码合入到master中</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">$ git checkout dev           <span class="comment">#切换到dev开发分支</span></span><br><span class="line">$ git pull</span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge dev              <span class="comment">#合并dev分支到master上</span></span><br><span class="line">$ git push origin master     <span class="comment">#将代码推到master上</span></span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>将master的代码同步更新到开发分支中。merge方法：保证主干提交线干净(可以安全回溯)</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">$ git checkout dev           <span class="comment">#切换到dev开发分支</span></span><br><span class="line">$ git pull</span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge dev              <span class="comment">#合并dev分支到master上</span></span><br><span class="line">$ git push origin master     <span class="comment">#将代码推到master上</span></span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>生成可被发布的压缩包</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成一个可供发布的压缩包</span></span><br><span class="line">$ git archive</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>工程实践</category>
+        <category>经验积累</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>命令行</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo本地写作环境配置</title>
+    <url>/Hexo%E6%9C%AC%E5%9C%B0%E5%86%99%E4%BD%9C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="写作缘由">写作缘由</h2>
+<p>由于经常换电脑设备，每次更换设备时都需要重新配置Hexo环境，故对配置流程进行记录，以供后续使用。</p>
+<a id="more"></a>
+<h2 id="本地环境搭建">本地环境搭建</h2>
+<ol type="1">
+<li><p>安装node.js （这里最好安装版本 v12 否则可能出现部署不成功的情况）</p>
+<p>window 安装：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Download | Node.js (nodejs.org)</a></p>
+<p>Linux 安装：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install nodejs</span><br><span class="line">$ sudo apt-get install npm</span><br></pre></td></tr></table></figure>
+<p>安装完成后输入以下命令检查是否安装成功：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">$ npm -v</span><br></pre></td></tr></table></figure></li>
+<li><p>安装Hexo</p>
+<p>首先修改 npm 到国内源：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> registry http://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<p>输入以下命令进行确认：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="variable">$npm</span> get registry</span><br></pre></td></tr></table></figure>
+<p>在 Blog 所在文件夹根目录打开命令行，输入以下命令强制安装Hexo：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo-cli --force</span><br></pre></td></tr></table></figure>
+<p>安装完成后输入以下命令检查是否安装成功：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ hexo -v</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="插件">插件</h2>
+<h3 id="steam-展示">steam 展示</h3>
+<p>项目链接：https://github.com/HCLonely/hexo-steam-games</p>
+<ol type="1">
+<li><p>安装插件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-steam-games --save</span></span><br></pre></td></tr></table></figure></li>
+<li><p>配置<code>hexo</code>的<code>_config.yml</code>文件</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">steam:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">steamId:</span> <span class="string">'*****'</span> <span class="comment">#steam 64位Id</span></span><br><span class="line">  <span class="attr">path:</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Steam游戏库</span></span><br><span class="line">  <span class="attr">quote:</span> <span class="string">'人人都是头号玩家'</span></span><br><span class="line">  <span class="attr">tab:</span> <span class="string">all</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">1000</span></span><br><span class="line">  <span class="attr">imgUrl:</span> <span class="string">'*****'</span></span><br><span class="line">  <span class="attr">proxy:</span></span><br><span class="line">    <span class="attr">host:</span></span><br><span class="line">    <span class="attr">port:</span></span><br><span class="line">  <span class="attr">extra_options:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">value</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>enable</strong>: 是否启用</li>
+<li><strong>steamId</strong>: steam 64位Id(需要放在引号里面，不然会有BUG), <strong><em>需要将steam库设置为公开！</em></strong></li>
+<li><strong>path</strong>: 页面路径，默认<code>steamgames/index.html</code></li>
+<li><strong>title</strong>: 该页面的标题</li>
+<li><strong>quote</strong>: 写在页面开头的一段话,支持html语法</li>
+<li><strong>tab</strong>: <code>all</code>或<code>recent</code>, <code>all: 所有游戏</code>, <code>recent: 最近游玩的游戏</code></li>
+<li><strong>length</strong>: 要显示游戏的数量，游戏太多的话可以限制一下</li>
+<li><strong>imgUrl</strong>: 图片链接，在<code>quote</code>下面放一张图片，图片链接到Steam个人资料，可留空</li>
+<li>proxy: 如果无法访问steam社区的话请使用代理
+<ul>
+<li><strong>host</strong>: 代理ip或域名</li>
+<li><strong>port</strong>: 代理端口</li>
+</ul></li>
+<li><strong>extra_options</strong>: 此配置会扩展到Hexo的<code>page</code>变量中</li>
+</ul></li>
+<li><p>使用</p>
+<ol type="1">
+<li>在<code>hexo generate</code>或<code>hexo deploy</code>之前使用<code>hexo steam -u</code>命令更新steam游戏库数据！</li>
+<li>删除游戏库数据指令:<code>hexo steam -d</code></li>
+</ol></li>
+</ol>
+<h3 id="添加-bilibili-追番追剧列表">添加 Bilibili 追番/追剧列表</h3>
+<p>参考自：https://opensourcelibs.com/lib/hexo-bilibili-bangumi</p>
+<ol type="1">
+<li><p>安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-bilibili-bangumi --save</span></span><br></pre></td></tr></table></figure></li>
+<li><p>配置<code>hexo</code>的<code>_config.yml</code>文件</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 追番设置</span></span><br><span class="line"><span class="attr">bangumi:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">path:</span></span><br><span class="line">  <span class="attr">vmid:</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">'追番列表'</span></span><br><span class="line">  <span class="attr">quote:</span> <span class="string">'生命不息，追番不止！'</span></span><br><span class="line">  <span class="attr">show:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">lazyload:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">loading:</span></span><br><span class="line">  <span class="attr">metaColor:</span></span><br><span class="line">  <span class="attr">color:</span></span><br><span class="line">  <span class="attr">webp:</span></span><br><span class="line">  <span class="attr">progress:</span></span><br><span class="line">  <span class="attr">extra_options:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">value</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 追剧设置</span></span><br><span class="line"><span class="attr">cinema:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">path:</span></span><br><span class="line">  <span class="attr">vmid:</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">'追剧列表'</span></span><br><span class="line">  <span class="attr">quote:</span> <span class="string">'生命不息，追剧不止！'</span></span><br><span class="line">  <span class="attr">show:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">lazyload:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">loading:</span></span><br><span class="line">  <span class="attr">metaColor:</span></span><br><span class="line">  <span class="attr">color:</span></span><br><span class="line">  <span class="attr">webp:</span></span><br><span class="line">  <span class="attr">progress:</span></span><br><span class="line">  <span class="attr">extra_options:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">value</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>enable</strong>: 是否启用</li>
+<li><strong>path</strong>: 页面路径，默认<code>bangumis/index.html</code>, <code>cinemas/index.html</code></li>
+<li><strong>vmid</strong>: 哔哩哔哩的 <code>vmid(uid)</code>,<a href="https://opensourcelibs.com/lib/hexo-bilibili-bangumi#获取uid" target="_blank" rel="noopener">如何获取？</a></li>
+<li><strong>title</strong>: 该页面的标题</li>
+<li><strong>quote</strong>: 写在页面开头的一段话，支持 html 语法，可留空。</li>
+<li><strong>show</strong>: 初始显示页面：<code>0: 想看</code>, <code>1: 在看</code>, <code>2: 看过</code>，默认为<code>1</code></li>
+<li><strong>lazyload</strong>: 是否启用图片懒加载，如果与主题的懒加载冲突请关闭，默认<code>true</code></li>
+<li><strong>loading</strong>: 图片加载完成前的 loading 图片，需启用图片懒加载</li>
+<li><strong>metaColor</strong>: meta 部分(简介上方)字体颜色</li>
+<li><strong>color</strong>: 简介字体颜色</li>
+<li><strong>webp</strong>: 番剧封面使用<code>webp</code>格式(此格式在<code>safari</code>浏览器下不显示，但是图片大小可以缩小 100 倍左右), 默认<code>true</code></li>
+<li><strong>progress</strong>: 获取番剧数据时是否显示进度条，默认<code>true</code></li>
+<li><strong>extra_options</strong>: 此配置会扩展到Hexo<code>page</code>变量中</li>
+</ul></li>
+<li><p>使用</p>
+<ol type="1">
+<li>在<code>hexo generate</code>或<code>hexo deploy</code>之前使用<code>hexo bangumi -u</code>命令更新追番数据，使用<code>hexo cinema -u</code>命令更新追剧数据！</li>
+<li>删除数据命令:<code>hexo bangumi -d</code>/<code>hexo cinema -d</code></li>
+</ol></li>
+</ol>
+<h2 id="小结">小结</h2>
+<p>以上步骤结束后一般即可以进行写作和部署，若依然存在问题可以访问<a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting | Hexo</a>进行错误排查。</p>
+]]></content>
+      <categories>
+        <category>工程实践</category>
+        <category>经验积累</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeTaX数学公式常用语法</title>
     <url>/LeTaX%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<center>
@@ -231,100 +384,6 @@ l &amp; \textrm{all day long}
       </tags>
   </entry>
   <entry>
-    <title>Hexo本地写作环境配置</title>
-    <url>/Hexo%E6%9C%AC%E5%9C%B0%E5%86%99%E4%BD%9C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h2 id="写作缘由">写作缘由</h2>
-<p>由于经常换电脑设备，每次更换设备时都需要重新配置Hexo环境，故对配置流程进行记录，以供后续使用。</p>
-<a id="more"></a>
-<h2 id="本地环境搭建">本地环境搭建</h2>
-<ol type="1">
-<li><p>安装node.js （这里最好安装版本 v12 否则可能出现部署不成功的情况）</p>
-<p>window 安装：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Download | Node.js (nodejs.org)</a></p>
-<p>Linux 安装：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install nodejs</span><br><span class="line">$ sudo apt-get install npm</span><br></pre></td></tr></table></figure>
-<p>安装完成后输入以下命令检查是否安装成功：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">$ npm -v</span><br></pre></td></tr></table></figure></li>
-<li><p>安装Hexo</p>
-<p>首先修改 npm 到国内源：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> registry http://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<p>输入以下命令进行确认：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="variable">$npm</span> get registry</span><br></pre></td></tr></table></figure>
-<p>在 Blog 所在文件夹根目录打开命令行，输入以下命令强制安装Hexo：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo-cli --force</span><br></pre></td></tr></table></figure>
-<p>安装完成后输入以下命令检查是否安装成功：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ hexo -v</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="插件">插件</h2>
-<h3 id="steam-展示">steam 展示</h3>
-<p>项目链接：https://github.com/HCLonely/hexo-steam-games</p>
-<ol type="1">
-<li><p>安装插件</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-steam-games --save</span></span><br></pre></td></tr></table></figure></li>
-<li><p>配置<code>hexo</code>的<code>_config.yml</code>文件</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">steam:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">steamId:</span> <span class="string">'*****'</span> <span class="comment">#steam 64位Id</span></span><br><span class="line">  <span class="attr">path:</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Steam游戏库</span></span><br><span class="line">  <span class="attr">quote:</span> <span class="string">'人人都是头号玩家'</span></span><br><span class="line">  <span class="attr">tab:</span> <span class="string">all</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">1000</span></span><br><span class="line">  <span class="attr">imgUrl:</span> <span class="string">'*****'</span></span><br><span class="line">  <span class="attr">proxy:</span></span><br><span class="line">    <span class="attr">host:</span></span><br><span class="line">    <span class="attr">port:</span></span><br><span class="line">  <span class="attr">extra_options:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">value</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>enable</strong>: 是否启用</li>
-<li><strong>steamId</strong>: steam 64位Id(需要放在引号里面，不然会有BUG), <strong><em>需要将steam库设置为公开！</em></strong></li>
-<li><strong>path</strong>: 页面路径，默认<code>steamgames/index.html</code></li>
-<li><strong>title</strong>: 该页面的标题</li>
-<li><strong>quote</strong>: 写在页面开头的一段话,支持html语法</li>
-<li><strong>tab</strong>: <code>all</code>或<code>recent</code>, <code>all: 所有游戏</code>, <code>recent: 最近游玩的游戏</code></li>
-<li><strong>length</strong>: 要显示游戏的数量，游戏太多的话可以限制一下</li>
-<li><strong>imgUrl</strong>: 图片链接，在<code>quote</code>下面放一张图片，图片链接到Steam个人资料，可留空</li>
-<li>proxy: 如果无法访问steam社区的话请使用代理
-<ul>
-<li><strong>host</strong>: 代理ip或域名</li>
-<li><strong>port</strong>: 代理端口</li>
-</ul></li>
-<li><strong>extra_options</strong>: 此配置会扩展到Hexo的<code>page</code>变量中</li>
-</ul></li>
-<li><p>使用</p>
-<ol type="1">
-<li>在<code>hexo generate</code>或<code>hexo deploy</code>之前使用<code>hexo steam -u</code>命令更新steam游戏库数据！</li>
-<li>删除游戏库数据指令:<code>hexo steam -d</code></li>
-</ol></li>
-</ol>
-<h3 id="添加-bilibili-追番追剧列表">添加 Bilibili 追番/追剧列表</h3>
-<p>参考自：https://opensourcelibs.com/lib/hexo-bilibili-bangumi</p>
-<ol type="1">
-<li><p>安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-bilibili-bangumi --save</span></span><br></pre></td></tr></table></figure></li>
-<li><p>配置<code>hexo</code>的<code>_config.yml</code>文件</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 追番设置</span></span><br><span class="line"><span class="attr">bangumi:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">path:</span></span><br><span class="line">  <span class="attr">vmid:</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">'追番列表'</span></span><br><span class="line">  <span class="attr">quote:</span> <span class="string">'生命不息，追番不止！'</span></span><br><span class="line">  <span class="attr">show:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">lazyload:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">loading:</span></span><br><span class="line">  <span class="attr">metaColor:</span></span><br><span class="line">  <span class="attr">color:</span></span><br><span class="line">  <span class="attr">webp:</span></span><br><span class="line">  <span class="attr">progress:</span></span><br><span class="line">  <span class="attr">extra_options:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">value</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 追剧设置</span></span><br><span class="line"><span class="attr">cinema:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">path:</span></span><br><span class="line">  <span class="attr">vmid:</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">'追剧列表'</span></span><br><span class="line">  <span class="attr">quote:</span> <span class="string">'生命不息，追剧不止！'</span></span><br><span class="line">  <span class="attr">show:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">lazyload:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">loading:</span></span><br><span class="line">  <span class="attr">metaColor:</span></span><br><span class="line">  <span class="attr">color:</span></span><br><span class="line">  <span class="attr">webp:</span></span><br><span class="line">  <span class="attr">progress:</span></span><br><span class="line">  <span class="attr">extra_options:</span></span><br><span class="line">    <span class="attr">key:</span> <span class="string">value</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>enable</strong>: 是否启用</li>
-<li><strong>path</strong>: 页面路径，默认<code>bangumis/index.html</code>, <code>cinemas/index.html</code></li>
-<li><strong>vmid</strong>: 哔哩哔哩的 <code>vmid(uid)</code>,<a href="https://opensourcelibs.com/lib/hexo-bilibili-bangumi#获取uid" target="_blank" rel="noopener">如何获取？</a></li>
-<li><strong>title</strong>: 该页面的标题</li>
-<li><strong>quote</strong>: 写在页面开头的一段话，支持 html 语法，可留空。</li>
-<li><strong>show</strong>: 初始显示页面：<code>0: 想看</code>, <code>1: 在看</code>, <code>2: 看过</code>，默认为<code>1</code></li>
-<li><strong>lazyload</strong>: 是否启用图片懒加载，如果与主题的懒加载冲突请关闭，默认<code>true</code></li>
-<li><strong>loading</strong>: 图片加载完成前的 loading 图片，需启用图片懒加载</li>
-<li><strong>metaColor</strong>: meta 部分(简介上方)字体颜色</li>
-<li><strong>color</strong>: 简介字体颜色</li>
-<li><strong>webp</strong>: 番剧封面使用<code>webp</code>格式(此格式在<code>safari</code>浏览器下不显示，但是图片大小可以缩小 100 倍左右), 默认<code>true</code></li>
-<li><strong>progress</strong>: 获取番剧数据时是否显示进度条，默认<code>true</code></li>
-<li><strong>extra_options</strong>: 此配置会扩展到Hexo<code>page</code>变量中</li>
-</ul></li>
-<li><p>使用</p>
-<ol type="1">
-<li>在<code>hexo generate</code>或<code>hexo deploy</code>之前使用<code>hexo bangumi -u</code>命令更新追番数据，使用<code>hexo cinema -u</code>命令更新追剧数据！</li>
-<li>删除数据命令:<code>hexo bangumi -d</code>/<code>hexo cinema -d</code></li>
-</ol></li>
-</ol>
-<h2 id="小结">小结</h2>
-<p>以上步骤结束后一般即可以进行写作和部署，若依然存在问题可以访问<a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting | Hexo</a>进行错误排查。</p>
-]]></content>
-      <categories>
-        <category>工程实践</category>
-        <category>经验积累</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>node.js</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>NexT写作常用样式</title>
     <url>/Next%E5%86%99%E4%BD%9C%E5%B8%B8%E7%94%A8%E6%A0%B7%E5%BC%8F/</url>
     <content><![CDATA[<p>一些markdown之外的语法规则，让文章更美观</p>
@@ -414,65 +473,6 @@ danger no-icon
       </tags>
   </entry>
   <entry>
-    <title>Git常用命令</title>
-    <url>/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="git文件管理系统">Git文件管理系统</h2>
-<blockquote>
-<p>本博客为转载，原文地址<a href="https://www.cnblogs.com/chenwolong/p/GIT.html" target="_blank" rel="noopener">https://www.cnblogs.com/chenwolong/p/GIT.html</a></p>
-</blockquote>
-<p><img src="http://download.kezhi.tech/img/20200424230007.png" /></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>Workspace：工作区</li>
-<li>Index / Stage：暂存区</li>
-<li>Repository：仓库区（或本地仓库）</li>
-<li>Remote：远程仓库</li>
-</ul>
-</blockquote>
-<h2 id="新建代码仓库">新建代码仓库</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在当前目录新建一个Git代码库</span></span><br><span class="line">$ git init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个目录，将其初始化为Git代码库</span></span><br><span class="line">$ git init [project-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载一个项目和它的整个代码历史</span></span><br><span class="line">$ git clone [url]</span><br></pre></td></tr></table></figure>
-<h2 id="配置">配置</h2>
-<p>Git的设置文件为<code>.gitconfig</code>，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示当前的Git配置</span></span><br><span class="line">$ git config --list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑Git配置文件</span></span><br><span class="line">$ git config -e [--<span class="keyword">global</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置提交代码时的用户信息</span></span><br><span class="line">$ git config [--<span class="keyword">global</span>] user.name <span class="string">"[name]"</span></span><br><span class="line">$ git config [--<span class="keyword">global</span>] user.email <span class="string">"[email address]"</span></span><br></pre></td></tr></table></figure>
-<h2 id="增加删除文件">增加/删除文件</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 添加指定文件到暂存区</span></span><br><span class="line">$ git add [file1] [file2] ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加指定目录到暂存区，包括子目录</span></span><br><span class="line">$ git add [dir]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加当前目录的所有文件到暂存区</span></span><br><span class="line">$ git add .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加每个变化前，都会要求确认</span></span><br><span class="line"><span class="comment"># 对于同一个文件的多处变化，可以实现分次提交</span></span><br><span class="line">$ git add -p</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除工作区文件，并且将这次删除放入暂存区</span></span><br><span class="line">$ git rm [file1] [file2] ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止追踪指定文件，但该文件会保留在工作区</span></span><br><span class="line">$ git rm --cached [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改名文件，并且将这个改名放入暂存区</span></span><br><span class="line">$ git mv [file-original] [file-renamed]</span><br></pre></td></tr></table></figure>
-<h2 id="代码提交">代码提交</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 提交暂存区到仓库区</span></span><br><span class="line">$ git commit -m [message]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交暂存区的指定文件到仓库区</span></span><br><span class="line">$ git commit [file1] [file2] ... -m [message]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交工作区自上次commit之后的变化，直接到仓库区</span></span><br><span class="line">$ git commit -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交时显示所有diff信息</span></span><br><span class="line">$ git commit -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用一次新的commit，替代上一次提交</span></span><br><span class="line"><span class="comment"># 如果代码没有任何新变化，则用来改写上一次commit的提交信息</span></span><br><span class="line">$ git commit --amend -m [message]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重做上一次commit，并包括指定文件的新变化</span></span><br><span class="line">$ git commit --amend [file1] [file2] ...</span><br></pre></td></tr></table></figure>
-<h2 id="分支">分支</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出所有本地分支</span></span><br><span class="line">$ git branch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有远程分支</span></span><br><span class="line">$ git branch -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有本地分支和远程分支</span></span><br><span class="line">$ git branch -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，但依然停留在当前分支</span></span><br><span class="line">$ git branch [branch-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，并切换到该分支</span></span><br><span class="line">$ git checkout -b [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，指向指定commit</span></span><br><span class="line">$ git branch [branch] [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，与指定的远程分支建立追踪关系</span></span><br><span class="line">$ git branch --track [branch] [remote-branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到指定分支，并更新工作区</span></span><br><span class="line">$ git checkout [branch-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到上一个分支</span></span><br><span class="line">$ git checkout -</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立追踪关系，在现有分支与指定的远程分支之间</span></span><br><span class="line">$ git branch --set-upstream [branch] [remote-branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并指定分支到当前分支</span></span><br><span class="line">$ git merge [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择一个commit，合并进当前分支</span></span><br><span class="line">$ git cherry-pick [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除分支</span></span><br><span class="line">$ git branch -d [branch-name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除远程分支</span></span><br><span class="line">$ git push origin --delete [branch-name]</span><br><span class="line">$ git branch -dr [remote/branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地存在一个分支，名称叫：develop_chen，但远程没有怎么办？</span></span><br><span class="line">$ git push origin develop_chen</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这样就在远程建立一个和本地一样的分支</span></span><br><span class="line"></span><br><span class="line">$ git branch --set-upstream-to=origin/develop  develop  本地分支和远程分支简历跟踪关系</span><br></pre></td></tr></table></figure>
-<h2 id="标签">标签</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出所有tag</span></span><br><span class="line">$ git tag</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个tag在当前commit</span></span><br><span class="line">$ git tag [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个tag在指定commit</span></span><br><span class="line">$ git tag [tag] [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除本地tag</span></span><br><span class="line">$ git tag -d [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除远程tag</span></span><br><span class="line">$ git push origin :refs/tags/[tagName]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看tag信息</span></span><br><span class="line">$ git show [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交指定tag</span></span><br><span class="line">$ git push [remote] [tag]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交所有tag</span></span><br><span class="line">$ git push [remote] --tags</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个分支，指向某个tag</span></span><br><span class="line">$ git checkout -b [branch] [tag]</span><br></pre></td></tr></table></figure>
-<h2 id="查看信息">查看信息</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 显示有变更的文件</span></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示当前分支的版本历史</span></span><br><span class="line">$ git log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示commit历史，以及每次commit发生变更的文件</span></span><br><span class="line">$ git log --stat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索提交历史，根据关键词</span></span><br><span class="line">$ git log -S [keyword]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个commit之后的所有变动，每个commit占据一行</span></span><br><span class="line">$ git log [tag] HEAD --pretty=format:%s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件</span></span><br><span class="line">$ git log [tag] HEAD --grep feature</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个文件的版本历史，包括文件改名</span></span><br><span class="line">$ git log --follow [file]</span><br><span class="line">$ git whatchanged [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定文件相关的每一次diff</span></span><br><span class="line">$ git log -p [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示过去5次提交</span></span><br><span class="line">$ git log <span class="number">-5</span> --pretty --oneline</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有提交过的用户，按提交次数排序</span></span><br><span class="line">$ git shortlog -sn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定文件是什么人在什么时间修改过</span></span><br><span class="line">$ git blame [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示暂存区和工作区的代码差异</span></span><br><span class="line">$ git diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示暂存区和上一个commit的差异</span></span><br><span class="line">$ git diff --cached [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示工作区与当前分支最新commit之间的差异</span></span><br><span class="line">$ git diff HEAD</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示两次提交之间的差异</span></span><br><span class="line">$ git diff [first-branch]...[second-branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示今天你写了多少行代码</span></span><br><span class="line">$ git diff --shortstat <span class="string">"@&#123;0 day ago&#125;"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某次提交的元数据和内容变化</span></span><br><span class="line">$ git show [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某次提交发生变化的文件</span></span><br><span class="line">$ git show --name-only [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某次提交时，某个文件的内容</span></span><br><span class="line">$ git show [commit]:[filename]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示当前分支的最近几次提交</span></span><br><span class="line">$ git reflog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从本地master拉取代码更新当前分支：branch 一般为master</span></span><br><span class="line">$ git rebase [branch]</span><br></pre></td></tr></table></figure>
-<h2 id="远程同步">远程同步</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">$ git remote update  --更新远程仓储</span><br><span class="line"><span class="comment"># 下载远程仓库的所有变动</span></span><br><span class="line">$ git fetch [remote]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有远程仓库</span></span><br><span class="line">$ git remote -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个远程仓库的信息</span></span><br><span class="line">$ git remote show [remote]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加一个新的远程仓库，并命名</span></span><br><span class="line">$ git remote add [shortname] [url]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取回远程仓库的变化，并与本地分支合并</span></span><br><span class="line">$ git pull [remote] [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传本地指定分支到远程仓库</span></span><br><span class="line">$ git push [remote] [branch]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强行推送当前分支到远程仓库，即使有冲突</span></span><br><span class="line">$ git push [remote] --force</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送所有分支到远程仓库</span></span><br><span class="line">$ git push [remote] --all</span><br></pre></td></tr></table></figure>
-<h2 id="撤销">撤销</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 恢复暂存区的指定文件到工作区</span></span><br><span class="line">$ git checkout [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复某个commit的指定文件到暂存区和工作区</span></span><br><span class="line">$ git checkout [commit] [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复暂存区的所有文件到工作区</span></span><br><span class="line">$ git checkout .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变</span></span><br><span class="line">$ git reset [file]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置暂存区与工作区，与上一次commit保持一致</span></span><br><span class="line">$ git reset --hard</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变</span></span><br><span class="line">$ git reset [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</span></span><br><span class="line">$ git reset --hard [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置当前HEAD为指定commit，但保持暂存区和工作区不变</span></span><br><span class="line">$ git reset --keep [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一个commit，用来撤销指定commit</span></span><br><span class="line"><span class="comment"># 后者的所有变化都将被前者抵消，并且应用到当前分支</span></span><br><span class="line">$ git revert [commit]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂时将未提交的变化移除，稍后再移入</span></span><br><span class="line">$ git stash</span><br><span class="line">$ git stash pop</span><br></pre></td></tr></table></figure>
-<h2 id="其他">其他</h2>
-<ol type="1">
-<li>将开发分支代码合入到master中</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">$ git checkout dev           <span class="comment">#切换到dev开发分支</span></span><br><span class="line">$ git pull</span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge dev              <span class="comment">#合并dev分支到master上</span></span><br><span class="line">$ git push origin master     <span class="comment">#将代码推到master上</span></span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>将master的代码同步更新到开发分支中。merge方法：保证主干提交线干净(可以安全回溯)</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">$ git checkout dev           <span class="comment">#切换到dev开发分支</span></span><br><span class="line">$ git pull</span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge dev              <span class="comment">#合并dev分支到master上</span></span><br><span class="line">$ git push origin master     <span class="comment">#将代码推到master上</span></span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>生成可被发布的压缩包</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成一个可供发布的压缩包</span></span><br><span class="line">$ git archive</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>工程实践</category>
-        <category>经验积累</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-        <tag>命令行</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>NexT标签云配置</title>
     <url>/Next%E6%A0%87%E7%AD%BE%E4%BA%91%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>本文引自<a href="https://alex-mcavoy.github.io/hexo/7be258c0.html" target="_blank" rel="noopener">Next 7.0+ TagCanvas 标签云 | Alex_McAvoy (alex-mcavoy.github.io)</a></p>
@@ -506,57 +506,27 @@ danger no-icon
       </tags>
   </entry>
   <entry>
-    <title>nlp工具nltk的安装及使用</title>
-    <url>/nlp%E5%B7%A5%E5%85%B7nltk%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="nltk简介">nltk简介</h2>
-<p>NLTK是构建Python程序以使用人类语言数据的领先平台。它为50多种语料库和词汇资源（如WordNet）提供了易于使用的界面，还提供了一套用于分类，标记化，词干化，标记，解析和语义推理的文本处理库。NLTK是Python上著名的⾃然语⾔处理库 ⾃带语料库，具有词性分类库 ⾃带分类，分词，等等功能。</p>
-<a id="more"></a>
-<h2 id="package安装">package安装</h2>
-<p>首先使用pip安装nltk包</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install nltk</span><br></pre></td></tr></table></figure>
-<p>可以使用清华源对其加速</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install nltk -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
-<h2 id="nltk-data下载">nltk-data下载</h2>
-<p>安装好的nltk包是不能拿来直接使用的，还需要下载相关数据模型才可以使用。下载方法如下。</p>
-<p>nltk包安装完成后打开python命令行运行以下命令（也可以新建python文件写入以下命令并运行）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> nltk</span><br><span class="line">nltk.download()</span><br></pre></td></tr></table></figure>
-<p>会出现以下界面：</p>
-<p><img src="http://download.kezhi.tech/img/202110212046568.png" /></p>
-<p>最开始这个列表是空白的，点击右下方<code>refresh</code>后出现nltk-data的列表。</p>
-<p>点击左下角的<code>Download</code>开始下载数据，等下载完成后即可正常使用</p>
-<h2 id="国内加速下载">国内加速下载</h2>
-<p>在国内下载可能会出现找不到DNS或者下载到一半出错的情况。遇到该情况最便捷的解决思路如下：</p>
+    <title>Vue学习笔记</title>
+    <url>/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="vue">Vue</h2>
+<h3 id="与flask一起使用时的注意事项">与Flask一起使用时的注意事项</h3>
+<p>Vue与Flask一起使用时会出现冲突，更改配置即可解决。</p>
 <ul>
-<li><p>执行以下命令之一下载nltk-data到本地，大小700M左右</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/nltk/nltk_data.git</span><br><span class="line"><span class="comment"># 无法链接到GitHub的也可以使用如下链接之一进行clone</span></span><br><span class="line">git <span class="built_in">clone</span> http://gitclone.com/github.com/nltk/nltk_data.git</span><br><span class="line">git <span class="built_in">clone</span> https://hub.fastgit.org/nltk/nltk_data.git</span><br></pre></td></tr></table></figure></li>
-<li><p>进入下载到本地的nltk-data目录，修改nltk_data目录下的index.xml文件，将所有的</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">s://raw.githubusercontent.com/nltk/nltk_data/gh-pages</span><br></pre></td></tr></table></figure>
-<p>替换为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">://localhost:8000</span><br></pre></td></tr></table></figure></li>
-<li><p>在该目录下运行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m http.server 8000</span><br></pre></td></tr></table></figure>
-<p>这个时候我们会在本机提供nltk_data数据下载服务的服务器。nltk下载器通过访问本地地址既可以获取到需要的文件。</p></li>
-<li><p>重新在python中执行如下语句：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> nltk</span><br><span class="line">nltk.download()</span><br></pre></td></tr></table></figure></li>
-<li><p>将server index中的地址替换为<code>http://localhost:8000/index.xml</code>如下图:</p>
-<figure>
-<img src="http://download.kezhi.tech/img/202110212123817.png" alt="image-20211021212307774" /><figcaption aria-hidden="true">image-20211021212307774</figcaption>
-</figure>
-<p>依次点击<code>refresh</code>和<code>Download</code>即可开始安装。</p></li>
+<li>Flask</li>
 </ul>
-<h2 id="reference">Reference</h2>
-<p>[1] <a href="https://zhuanlan.zhihu.com/p/347931749" target="_blank" rel="noopener">国内下载GITHUB库加速方法及快速安装NLTK - 知乎 (zhihu.com)</a></p>
-<p>[2] <a href="https://blog.csdn.net/qiang12qiang12/article/details/81254595" target="_blank" rel="noopener">直接快速下载NLTK数据_今春一别难相逢-CSDN博客_nltk下载</a></p>
-<p>[3] <a href="https://github.com/nltk/nltk_data" target="_blank" rel="noopener">nltk/nltk_data: NLTK Data (github.com)</a></p>
-<p>[4] <a href="https://www.jianshu.com/p/a3cb9f986e69" target="_blank" rel="noopener">自然语言处理| NLTK - 简书 (jianshu.com)</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.jinja_env.variable_start_string = <span class="string">'[['</span></span><br><span class="line">    app.jinja_env.variable_end_string = <span class="string">']]'</span></span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Vue</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    delimiters: [<span class="string">'[['</span>,<span class="string">']]'</span>]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>工程实践</category>
-        <category>经验积累</category>
+        <category>Web</category>
       </categories>
       <tags>
-        <tag>python</tag>
-        <tag>nlp</tag>
+        <tag>Vue</tag>
+        <tag>前端框架</tag>
       </tags>
   </entry>
   <entry>
@@ -716,30 +686,6 @@ danger no-icon
       </tags>
   </entry>
   <entry>
-    <title>Vue学习笔记</title>
-    <url>/Vue%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="vue">Vue</h2>
-<h3 id="与flask一起使用时的注意事项">与Flask一起使用时的注意事项</h3>
-<p>Vue与Flask一起使用时会出现冲突，更改配置即可解决。</p>
-<ul>
-<li>Flask</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.jinja_env.variable_start_string = <span class="string">'[['</span></span><br><span class="line">    app.jinja_env.variable_end_string = <span class="string">']]'</span></span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Vue</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    delimiters: [<span class="string">'[['</span>,<span class="string">']]'</span>]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>工程实践</category>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
-        <tag>前端框架</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>scrapy爬虫相关</title>
     <url>/scrapy%E7%88%AC%E8%99%AB%E7%9B%B8%E5%85%B3/</url>
     <content><![CDATA[<h2 id="请求伪装">请求伪装</h2>
@@ -766,6 +712,60 @@ danger no-icon
         <tag>python</tag>
         <tag>scrapy</tag>
         <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nlp工具nltk的安装及使用</title>
+    <url>/nlp%E5%B7%A5%E5%85%B7nltk%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="nltk简介">nltk简介</h2>
+<p>NLTK是构建Python程序以使用人类语言数据的领先平台。它为50多种语料库和词汇资源（如WordNet）提供了易于使用的界面，还提供了一套用于分类，标记化，词干化，标记，解析和语义推理的文本处理库。NLTK是Python上著名的⾃然语⾔处理库 ⾃带语料库，具有词性分类库 ⾃带分类，分词，等等功能。</p>
+<a id="more"></a>
+<h2 id="package安装">package安装</h2>
+<p>首先使用pip安装nltk包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install nltk</span><br></pre></td></tr></table></figure>
+<p>可以使用清华源对其加速</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install nltk -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<h2 id="nltk-data下载">nltk-data下载</h2>
+<p>安装好的nltk包是不能拿来直接使用的，还需要下载相关数据模型才可以使用。下载方法如下。</p>
+<p>nltk包安装完成后打开python命令行运行以下命令（也可以新建python文件写入以下命令并运行）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> nltk</span><br><span class="line">nltk.download()</span><br></pre></td></tr></table></figure>
+<p>会出现以下界面：</p>
+<p><img src="http://download.kezhi.tech/img/202110212046568.png" /></p>
+<p>最开始这个列表是空白的，点击右下方<code>refresh</code>后出现nltk-data的列表。</p>
+<p>点击左下角的<code>Download</code>开始下载数据，等下载完成后即可正常使用</p>
+<h2 id="国内加速下载">国内加速下载</h2>
+<p>在国内下载可能会出现找不到DNS或者下载到一半出错的情况。遇到该情况最便捷的解决思路如下：</p>
+<ul>
+<li><p>执行以下命令之一下载nltk-data到本地，大小700M左右</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/nltk/nltk_data.git</span><br><span class="line"><span class="comment"># 无法链接到GitHub的也可以使用如下链接之一进行clone</span></span><br><span class="line">git <span class="built_in">clone</span> http://gitclone.com/github.com/nltk/nltk_data.git</span><br><span class="line">git <span class="built_in">clone</span> https://hub.fastgit.org/nltk/nltk_data.git</span><br></pre></td></tr></table></figure></li>
+<li><p>进入下载到本地的nltk-data目录，修改nltk_data目录下的index.xml文件，将所有的</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">s://raw.githubusercontent.com/nltk/nltk_data/gh-pages</span><br></pre></td></tr></table></figure>
+<p>替换为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">://localhost:8000</span><br></pre></td></tr></table></figure></li>
+<li><p>在该目录下运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m http.server 8000</span><br></pre></td></tr></table></figure>
+<p>这个时候我们会在本机提供nltk_data数据下载服务的服务器。nltk下载器通过访问本地地址既可以获取到需要的文件。</p></li>
+<li><p>重新在python中执行如下语句：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> nltk</span><br><span class="line">nltk.download()</span><br></pre></td></tr></table></figure></li>
+<li><p>将server index中的地址替换为<code>http://localhost:8000/index.xml</code>如下图:</p>
+<figure>
+<img src="http://download.kezhi.tech/img/202110212123817.png" alt="image-20211021212307774" /><figcaption aria-hidden="true">image-20211021212307774</figcaption>
+</figure>
+<p>依次点击<code>refresh</code>和<code>Download</code>即可开始安装。</p></li>
+</ul>
+<h2 id="reference">Reference</h2>
+<p>[1] <a href="https://zhuanlan.zhihu.com/p/347931749" target="_blank" rel="noopener">国内下载GITHUB库加速方法及快速安装NLTK - 知乎 (zhihu.com)</a></p>
+<p>[2] <a href="https://blog.csdn.net/qiang12qiang12/article/details/81254595" target="_blank" rel="noopener">直接快速下载NLTK数据_今春一别难相逢-CSDN博客_nltk下载</a></p>
+<p>[3] <a href="https://github.com/nltk/nltk_data" target="_blank" rel="noopener">nltk/nltk_data: NLTK Data (github.com)</a></p>
+<p>[4] <a href="https://www.jianshu.com/p/a3cb9f986e69" target="_blank" rel="noopener">自然语言处理| NLTK - 简书 (jianshu.com)</a></p>
+]]></content>
+      <categories>
+        <category>工程实践</category>
+        <category>经验积累</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>nlp</tag>
       </tags>
   </entry>
   <entry>
@@ -834,6 +834,34 @@ danger no-icon
       <tags>
         <tag>protues</tag>
         <tag>单片机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>修改操作系统安装时间</title>
+    <url>/%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E6%97%B6%E9%97%B4/</url>
+    <content><![CDATA[<p>由于某些不可名状的原因，导致了有修改操作系统安装时间的需求，在此小记。</p>
+<p><img src="https://download.kezhi.tech/img/202206231950445.png" width=30%></p>
+<a id="more"></a>
+<h2 id="windows">Windows</h2>
+<p>Windows修改操作系统安装时间主要通过修改注册表实现，步骤如下：</p>
+<ol type="1">
+<li><code>win</code>+<code>R</code> 输入 <code>regedit</code> 打开注册表</li>
+<li>进入路径<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion</code></li>
+<li>右侧的<code>InstallData</code>即为系统安装时间</li>
+<li>将修改的时间戳值写入十进制格式即可</li>
+</ol>
+<blockquote>
+<p>时间戳的转换可以访问：http://tool.chinaz.com/Tools/unixtime.aspx</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>工程实践</category>
+        <category>经验积累</category>
+      </categories>
+      <tags>
+        <tag>操作系统</tag>
+        <tag>安装时间</tag>
+        <tag>系统修改</tag>
       </tags>
   </entry>
   <entry>
@@ -980,34 +1008,6 @@ danger no-icon
       </categories>
       <tags>
         <tag>日常</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>修改操作系统安装时间</title>
-    <url>/%E4%BF%AE%E6%94%B9%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E6%97%B6%E9%97%B4/</url>
-    <content><![CDATA[<p>由于某些不可名状的原因，导致了有修改操作系统安装时间的需求，在此小记。</p>
-<p><img src="https://download.kezhi.tech/img/202206231950445.png" width=30%></p>
-<a id="more"></a>
-<h2 id="windows">Windows</h2>
-<p>Windows修改操作系统安装时间主要通过修改注册表实现，步骤如下：</p>
-<ol type="1">
-<li><code>win</code>+<code>R</code> 输入 <code>regedit</code> 打开注册表</li>
-<li>进入路径<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion</code></li>
-<li>右侧的<code>InstallData</code>即为系统安装时间</li>
-<li>将修改的时间戳值写入十进制格式即可</li>
-</ol>
-<blockquote>
-<p>时间戳的转换可以访问：http://tool.chinaz.com/Tools/unixtime.aspx</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>工程实践</category>
-        <category>经验积累</category>
-      </categories>
-      <tags>
-        <tag>操作系统</tag>
-        <tag>安装时间</tag>
-        <tag>系统修改</tag>
       </tags>
   </entry>
   <entry>
@@ -1421,6 +1421,43 @@ H_1=\{U(x_i,\delta_{x_i}|x_i\in [-M,+M],i=1,2,3,...\}
       </tags>
   </entry>
   <entry>
+    <title>数字图像处理（一）图像插值(python)</title>
+    <url>/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E5%9B%BE%E5%83%8F%E6%8F%92%E5%80%BC/</url>
+    <content><![CDATA[<p>数字图像在当代社会有着非常重要的作用，图像的插值作为一种基本的图像处理方法，在很多情况下可以很好的提高图像分辨率，提升图像观感。图像的插值方法主要有以下三种：</p>
+<ul>
+<li>最近邻插值</li>
+<li>双线性插值</li>
+<li>双三次插值 <a id="more"></a></li>
+</ul>
+<h2 id="最近邻插值">最近邻插值</h2>
+<p>最近邻插值，顾名思义，在插值时寻找距离图像像素点最近的像素点的值进行图像像素的填充。这种图像插值方法运算速度快，可以很快的出结果。缺点是插值效果较差，由于直接采用最近的像素点的像素值作为插值数据，因此导致在图像边缘，过渡等颜色变化较为明显的地方会出现较为严重的锯齿。 <img src="https://s1.ax1x.com/2020/03/13/8u4Uwn.png" alt="最近邻插值" /></p>
+<p>实现代码如下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">        <span class="keyword">if</span> i&lt;=<span class="number">2044</span> <span class="keyword">and</span> j&lt;=<span class="number">2044</span>:</span><br><span class="line">            result[i][j]=img[round(i/<span class="number">4</span>)][round(j/<span class="number">4</span>)][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[i][j]=img[math.floor(i/<span class="number">4</span>)][math.floor(j/<span class="number">4</span>)][<span class="number">0</span>]</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,result)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="双线性插值">双线性插值</h2>
+<p>双线性插值采用线性的方法对图像进行插值,对于插值图像中的某个像素点，该点的像素值由距离其最近的四个像素值通过线性计算获得。插值得到的结果较好，计算量相比于最近邻要满，但远快于双三次插值，最终得到的插值图像结果除一些小细节之外和双三次插值得到的插值结果相当。可以用来快速，大量的插值图片。 <img src="https://s1.ax1x.com/2020/03/13/8u5o40.png" alt="双线性插值" /> 实现代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">        <span class="keyword">if</span> i&lt;<span class="number">2044</span> <span class="keyword">and</span> j&lt;<span class="number">2044</span>:</span><br><span class="line">            l=i//<span class="number">4</span></span><br><span class="line">            k=j//<span class="number">4</span></span><br><span class="line">            a=i/<span class="number">4</span>-i//<span class="number">4</span></span><br><span class="line">            b=j/<span class="number">4</span>-j//<span class="number">4</span></span><br><span class="line">            result[i][j]=img[l][k][<span class="number">0</span>]*(<span class="number">1</span>-a)*(<span class="number">1</span>-b)+img[l+<span class="number">1</span>][k][<span class="number">0</span>]*a*(<span class="number">1</span>-b)+img[l][k+<span class="number">1</span>][<span class="number">0</span>]*(<span class="number">1</span>-a)*b+img[l+<span class="number">1</span>][k+<span class="number">1</span>][<span class="number">0</span>]*a*b</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[i][j]=img[i//<span class="number">4</span>][j//<span class="number">4</span>][<span class="number">0</span>]</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,result)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>在图像边缘处采取最近邻插值</p>
+<h2 id="双三次插值">双三次插值</h2>
+<p>双三次插值采用非线性的计算方法，利用三次函数对于图像像素值进行计算。每个像素值由其周围的4*4即16个像素点的像素值计算获得。插值质量较高，运算速度较慢，Photoshop所用的插值方法就是双三次插值。 <span class="math display">\[
+f_3(x,y)=\sum_{i=0}^3\sum_{j=0}^3a_{ij}x_iy_i
+\]</span></p>
+<p>实现代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weight</span><span class="params">(x)</span>:</span></span><br><span class="line">    a=<span class="number">-0.5</span></span><br><span class="line">    x=abs(x)</span><br><span class="line">    <span class="keyword">if</span> x&lt;=<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span>  (a+<span class="number">2</span>)*x**<span class="number">3</span>-(a+<span class="number">3</span>)*x**<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> x&lt;<span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> a*x**<span class="number">3</span><span class="number">-5</span>*a*x**<span class="number">2</span>+<span class="number">8</span>*a*x<span class="number">-4</span>*a</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">        <span class="keyword">if</span> i&gt;<span class="number">4</span> <span class="keyword">and</span> i&lt;<span class="number">2040</span> <span class="keyword">and</span> j&gt;<span class="number">4</span> <span class="keyword">and</span> j&lt;<span class="number">2040</span>:</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">                <span class="keyword">for</span> w <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">                    result[i][j]+=img[i//<span class="number">4</span>+k<span class="number">-1</span>][j//<span class="number">4</span>+w<span class="number">-1</span>][<span class="number">0</span>]*weight(i/<span class="number">4</span>-(i//<span class="number">4</span>+k<span class="number">-1</span>))*weight(j/<span class="number">4</span>-(j//<span class="number">4</span>+w<span class="number">-1</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[i][j]=img[i//<span class="number">4</span>][j//<span class="number">4</span>][<span class="number">0</span>]</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,result)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="结束语">结束语</h2>
+<p>这三种插值方法是图像插值的传统方法，分辨率的提升是基于局部像素的综合运算得到空白像素的像素值。这样的插值方法可以满足当代社会的绝大部分需求，但如果要追求更好的插值效果，或是将图像分辨率成几十倍的扩充即超分辨率，这样的插值方法就不能满足需求。这时，就需要通过一些其他的方法例如机器学习来进行图片质量的提升。</p>
+]]></content>
+      <categories>
+        <category>理论学习</category>
+        <category>数字图像处理</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>数字图像</tag>
+        <tag>图像处理</tag>
+        <tag>插值</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>影片《字节跳动》创作阐述</title>
     <url>/%E5%BD%B1%E7%89%87%E3%80%8A%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E3%80%8B%E5%88%9B%E4%BD%9C%E9%98%90%E8%BF%B0/</url>
     <content><![CDATA[<h2 id="序">序</h2>
@@ -1597,137 +1634,6 @@ Seafile
       </tags>
   </entry>
   <entry>
-    <title>摘抄</title>
-    <url>/%E6%91%98%E6%8A%84/</url>
-    <content><![CDATA[<h2 id="section">2021.04</h2>
-<blockquote class="blockquote-center">
-            <p>矫揉做作地喜好各种规矩就是“有系统”，孜孜不倦且兴致勃勃地处理鸡毛蒜皮的公事就是“勤勉”；该做的事优柔寡断就是“谨慎”；不该做的事盲目地坚持到底就是“决心”。</p>
-<p><b>-- 《银河帝国2：基地与帝国》</b></p>
-
-          </blockquote>
-<a id="more"></a>
-<h2 id="section-1">2021.06</h2>
-<blockquote class="blockquote-center">
-            <p>哭泣可能会持续整个夜晚，但是快乐会随早晨而到来</p>
-<p><b>-- 诗篇 30：5</b></p>
-
-          </blockquote>
-]]></content>
-      <categories>
-        <category>我爱读书</category>
-      </categories>
-      <tags>
-        <tag>读书笔记</tag>
-        <tag>摘抄</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数字图像处理（一）图像插值(python)</title>
-    <url>/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%E5%9B%BE%E5%83%8F%E6%8F%92%E5%80%BC/</url>
-    <content><![CDATA[<p>数字图像在当代社会有着非常重要的作用，图像的插值作为一种基本的图像处理方法，在很多情况下可以很好的提高图像分辨率，提升图像观感。图像的插值方法主要有以下三种：</p>
-<ul>
-<li>最近邻插值</li>
-<li>双线性插值</li>
-<li>双三次插值 <a id="more"></a></li>
-</ul>
-<h2 id="最近邻插值">最近邻插值</h2>
-<p>最近邻插值，顾名思义，在插值时寻找距离图像像素点最近的像素点的值进行图像像素的填充。这种图像插值方法运算速度快，可以很快的出结果。缺点是插值效果较差，由于直接采用最近的像素点的像素值作为插值数据，因此导致在图像边缘，过渡等颜色变化较为明显的地方会出现较为严重的锯齿。 <img src="https://s1.ax1x.com/2020/03/13/8u4Uwn.png" alt="最近邻插值" /></p>
-<p>实现代码如下</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">        <span class="keyword">if</span> i&lt;=<span class="number">2044</span> <span class="keyword">and</span> j&lt;=<span class="number">2044</span>:</span><br><span class="line">            result[i][j]=img[round(i/<span class="number">4</span>)][round(j/<span class="number">4</span>)][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[i][j]=img[math.floor(i/<span class="number">4</span>)][math.floor(j/<span class="number">4</span>)][<span class="number">0</span>]</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,result)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="双线性插值">双线性插值</h2>
-<p>双线性插值采用线性的方法对图像进行插值,对于插值图像中的某个像素点，该点的像素值由距离其最近的四个像素值通过线性计算获得。插值得到的结果较好，计算量相比于最近邻要满，但远快于双三次插值，最终得到的插值图像结果除一些小细节之外和双三次插值得到的插值结果相当。可以用来快速，大量的插值图片。 <img src="https://s1.ax1x.com/2020/03/13/8u5o40.png" alt="双线性插值" /> 实现代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">        <span class="keyword">if</span> i&lt;<span class="number">2044</span> <span class="keyword">and</span> j&lt;<span class="number">2044</span>:</span><br><span class="line">            l=i//<span class="number">4</span></span><br><span class="line">            k=j//<span class="number">4</span></span><br><span class="line">            a=i/<span class="number">4</span>-i//<span class="number">4</span></span><br><span class="line">            b=j/<span class="number">4</span>-j//<span class="number">4</span></span><br><span class="line">            result[i][j]=img[l][k][<span class="number">0</span>]*(<span class="number">1</span>-a)*(<span class="number">1</span>-b)+img[l+<span class="number">1</span>][k][<span class="number">0</span>]*a*(<span class="number">1</span>-b)+img[l][k+<span class="number">1</span>][<span class="number">0</span>]*(<span class="number">1</span>-a)*b+img[l+<span class="number">1</span>][k+<span class="number">1</span>][<span class="number">0</span>]*a*b</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[i][j]=img[i//<span class="number">4</span>][j//<span class="number">4</span>][<span class="number">0</span>]</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,result)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>在图像边缘处采取最近邻插值</p>
-<h2 id="双三次插值">双三次插值</h2>
-<p>双三次插值采用非线性的计算方法，利用三次函数对于图像像素值进行计算。每个像素值由其周围的4*4即16个像素点的像素值计算获得。插值质量较高，运算速度较慢，Photoshop所用的插值方法就是双三次插值。 <span class="math display">\[
-f_3(x,y)=\sum_{i=0}^3\sum_{j=0}^3a_{ij}x_iy_i
-\]</span></p>
-<p>实现代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weight</span><span class="params">(x)</span>:</span></span><br><span class="line">    a=<span class="number">-0.5</span></span><br><span class="line">    x=abs(x)</span><br><span class="line">    <span class="keyword">if</span> x&lt;=<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span>  (a+<span class="number">2</span>)*x**<span class="number">3</span>-(a+<span class="number">3</span>)*x**<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> x&lt;<span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> a*x**<span class="number">3</span><span class="number">-5</span>*a*x**<span class="number">2</span>+<span class="number">8</span>*a*x<span class="number">-4</span>*a</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">2048</span>):</span><br><span class="line">        <span class="keyword">if</span> i&gt;<span class="number">4</span> <span class="keyword">and</span> i&lt;<span class="number">2040</span> <span class="keyword">and</span> j&gt;<span class="number">4</span> <span class="keyword">and</span> j&lt;<span class="number">2040</span>:</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">                <span class="keyword">for</span> w <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">                    result[i][j]+=img[i//<span class="number">4</span>+k<span class="number">-1</span>][j//<span class="number">4</span>+w<span class="number">-1</span>][<span class="number">0</span>]*weight(i/<span class="number">4</span>-(i//<span class="number">4</span>+k<span class="number">-1</span>))*weight(j/<span class="number">4</span>-(j//<span class="number">4</span>+w<span class="number">-1</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[i][j]=img[i//<span class="number">4</span>][j//<span class="number">4</span>][<span class="number">0</span>]</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,result)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="结束语">结束语</h2>
-<p>这三种插值方法是图像插值的传统方法，分辨率的提升是基于局部像素的综合运算得到空白像素的像素值。这样的插值方法可以满足当代社会的绝大部分需求，但如果要追求更好的插值效果，或是将图像分辨率成几十倍的扩充即超分辨率，这样的插值方法就不能满足需求。这时，就需要通过一些其他的方法例如机器学习来进行图片质量的提升。</p>
-]]></content>
-      <categories>
-        <category>理论学习</category>
-        <category>数字图像处理</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>数字图像</tag>
-        <tag>图像处理</tag>
-        <tag>插值</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数字图像处理（二）图像配准</title>
-    <url>/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%BE%E5%83%8F%E9%85%8D%E5%87%86/</url>
-    <content><![CDATA[<p>图像配准即对于内容大致相同，但在角度，大小或是其他几何位置上有所偏差的两张或几张图像进行坐标变换。使得这些图像矫正到同一规整的大小，角度，坐标上。</p>
-<p>图像配准对于图像拼接，制作全景图像，进行环境识别等方面有很大的用处。其原理简单，使用矩阵运算转换速度也很快，在选取映射点合适的情况下，配准效果很好。具体的转化方法如下：</p>
-<a id="more"></a>
-<h3 id="配准算法">配准算法</h3>
-<blockquote>
-<p>以图像A为标准配准图像B</p>
-</blockquote>
-<p>在图像A中选取n个像素点: <span class="math display">\[
-p_1(x_1,y_1,1),p_2(x_2,y_2,1),...,p_n(x_n,y_n,1)
-\]</span> 构成一个坐标矩阵 <span class="math display">\[
-P=\begin{bmatrix}x_1 &amp;x_2 &amp;...&amp;x_n\\y_1&amp;y_2&amp;...&amp;y_n\\1&amp;1&amp;...&amp;1\end{bmatrix}
-\]</span> 在图像B中选取与这n个点对应的n个像素点: <span class="math display">\[
-q_1(x_1,y_1),q_2(x_2,y_2),...,q_n(x_n,y_n)
-\]</span> 构成另一个坐标矩阵 <span class="math display">\[
-Q=\begin{bmatrix}x_1 &amp;x_2 &amp;...&amp;x_n\\y_1&amp;y_2&amp;...&amp;y_n\\1&amp;1&amp;...&amp;1\end{bmatrix}
-\]</span></p>
-<blockquote>
-<p>如果图像B可以通过图像A平移，旋转，缩放得到，那么存在一个转换矩阵H使得： <span class="math display">\[
-Q=HP
-\]</span> 那么如果可以计算出转换矩阵H，就可以利用上述公式的变形: <span class="math display">\[
-H^{-1}Q=P
-\]</span> 将每个图像B中的像素点映射到图像A相应位置处，从而获得以图像A为模板配准的图像B</p>
-</blockquote>
-<span class="label success">如何求出转换矩阵H?</span>
-<p>通过之前在图像A和图像B中已经选取出的点集P和Q，我们不难发现 <span class="math display">\[
-H=QP^{-1}
-\]</span></p>
-<blockquote>
-<p>由于P不是方阵，因而无法对其进行求逆，在这里为求伪逆</p>
-</blockquote>
-<p>至此，我们已经得到了图像配准的基本流程:</p>
-<ul>
-<li>在模板图像和待配准图像中选取相互对应的点集$ P <span class="math inline">\(和\)</span>Q$</li>
-<li>通过公式<span class="math inline">\(H=QP^{-1}\)</span>求出转换矩阵<span class="math inline">\(H\)</span></li>
-<li>通过转换矩阵将待配准图像映射到模板图像上</li>
-</ul>
-<h3 id="配准示例">配准示例</h3>
-<p>例如：以图像A为模板配准图像B <img src="https://download.kezhi.tech/img/20200429001311.jpg" alt="Image A" /> <img src="https://download.kezhi.tech/img/Image%20B.jpg/watermark" alt="图像B" /> 在其中选取七个点，分布为:</p>
-<blockquote>
-<p>这里采用画图进行选点，画图显示的坐标与(x,y)坐标是正好相反的，在进行坐标记录时需要注意。</p>
-</blockquote>
-<p><img src="https://download.kezhi.tech/img/Image%20A(选点).jpg/watermark" alt="选点（图像A）" /> <span class="math display">\[
-P=\begin{bmatrix}1448&amp;1694&amp;1756&amp;383&amp;2290&amp;2035&amp;2150\\1308&amp;1198&amp;2744&amp;2516&amp;933&amp;2693&amp;1968\\1&amp;1&amp;1&amp;1&amp;1&amp;1&amp;1\end{bmatrix}
-\]</span></p>
-<p><span class="math display">\[
-Q=\begin{bmatrix}1042&amp;1252&amp;1708&amp;323&amp;1761&amp;1966&amp;1890\\1077&amp;907&amp;2387&amp;2519&amp;498&amp;2265&amp;1535\\1&amp;1&amp;1&amp;1&amp;1&amp;1&amp;1\end{bmatrix}
-\]</span></p>
-<p>求出的转换矩阵： <span class="math display">\[
-H=QP^{-1}=\begin{bmatrix}0.9668&amp;0.2565&amp;693.0275\\-0.2570&amp;0.9671&amp;184.1373\\0.0000&amp;0.0000&amp;1.0000\end{bmatrix}
-\]</span> 通过转换矩阵对图像B进行转换，最终得到的结果如下: <img src="https://download.kezhi.tech/img/result.jpg/watermark" alt="配准后的图像B" /></p>
-<p>源码:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="comment">#np.set_printoptions(threshold=np.inf)</span></span><br><span class="line"></span><br><span class="line">imgA=cv.imread(<span class="string">"Image A.jpg"</span>)</span><br><span class="line">imgB=cv.imread(<span class="string">"Image B.jpg"</span>)</span><br><span class="line">point_A=np.array([[<span class="number">1448</span>,<span class="number">1694</span>,<span class="number">1756</span>,<span class="number">383</span>,<span class="number">2290</span>,<span class="number">2035</span>,<span class="number">2150</span>],[<span class="number">1308</span>,<span class="number">1198</span>,<span class="number">2744</span>,<span class="number">2516</span>,<span class="number">933</span>,<span class="number">2693</span>,<span class="number">1968</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]])</span><br><span class="line">point_B=np.array([[<span class="number">1042</span>,<span class="number">1252</span>,<span class="number">1708</span>,<span class="number">323</span>,<span class="number">1761</span>,<span class="number">1966</span>,<span class="number">1890</span>],[<span class="number">1077</span>,<span class="number">907</span>,<span class="number">2387</span>,<span class="number">2519</span>,<span class="number">498</span>,<span class="number">2265</span>,<span class="number">1535</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]])</span><br><span class="line">H=np.dot(point_B,np.linalg.pinv(point_A))</span><br><span class="line">print(H)</span><br><span class="line">shape_A=imgA.shape</span><br><span class="line">shape_B=imgB.shape</span><br><span class="line">result,mistake=np.zeros(shape_A),np.zeros(shape_A)</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">mistake=mistake.astype(np.uint8)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(shape_A[<span class="number">0</span>]):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(shape_A[<span class="number">1</span>]):</span><br><span class="line">        address=np.dot(H,np.array([i,j,<span class="number">1</span>]))</span><br><span class="line">        address=address.astype(np.int)</span><br><span class="line">        <span class="keyword">if</span> address[<span class="number">0</span>]&gt;<span class="number">0</span> <span class="keyword">and</span> address[<span class="number">0</span>]&lt;shape_B[<span class="number">0</span>] <span class="keyword">and</span> address[<span class="number">1</span>]&gt;<span class="number">0</span> <span class="keyword">and</span> address[<span class="number">1</span>]&lt;shape_B[<span class="number">1</span>]:</span><br><span class="line">            result[i][j]=imgB[address[<span class="number">0</span>]][address[<span class="number">1</span>]]</span><br><span class="line">            mistake[i][j]=imgA[i][j]-result[i][j]</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,mistake)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.imwrite(<span class="string">"result.jpg"</span>,result)</span><br><span class="line">cv.imwrite(<span class="string">"mistake.jpg"</span>,mistake)</span><br></pre></td></tr></table></figure>
-<h3 id="结束语">结束语</h3>
-<p>图像配准的算法比较简单，选取好坐标点之后通过配准的计算方法得到的结果很好。但此次图像配准在选点时为手动选点，如果要大批量进行图像配准或实时配准则需要进行自动选点，此时，如何让程序选取出合适并且相互对应的点集成为了图像配准的难点所在。</p>
-]]></content>
-      <categories>
-        <category>理论学习</category>
-        <category>数字图像处理</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>数字图像</tag>
-        <tag>图像处理</tag>
-        <tag>图像配准</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数字图像处理（三）直方图均衡</title>
     <url>/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1/</url>
     <content><![CDATA[<p>在数字图像处理中，直方图均衡是调整图像亮度，对比度，图像增晰等操作中常用的做法。对于图像中各个不同的颜色进行直方图统计，采取统计数据对于颜色进行重新映射，从而达到调整对比度，图像增晰的目的。</p>
@@ -1857,6 +1763,100 @@ s_4=6.23\rightarrow6~~~~~~~s_5=6.65\rightarrow7~~~~~~~s_6=6.86\rightarrow7~~~~s_
         <tag>数字图像</tag>
         <tag>图像处理</tag>
         <tag>直方图均衡</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>摘抄</title>
+    <url>/%E6%91%98%E6%8A%84/</url>
+    <content><![CDATA[<h2 id="section">2021.04</h2>
+<blockquote class="blockquote-center">
+            <p>矫揉做作地喜好各种规矩就是“有系统”，孜孜不倦且兴致勃勃地处理鸡毛蒜皮的公事就是“勤勉”；该做的事优柔寡断就是“谨慎”；不该做的事盲目地坚持到底就是“决心”。</p>
+<p><b>-- 《银河帝国2：基地与帝国》</b></p>
+
+          </blockquote>
+<a id="more"></a>
+<h2 id="section-1">2021.06</h2>
+<blockquote class="blockquote-center">
+            <p>哭泣可能会持续整个夜晚，但是快乐会随早晨而到来</p>
+<p><b>-- 诗篇 30：5</b></p>
+
+          </blockquote>
+]]></content>
+      <categories>
+        <category>我爱读书</category>
+      </categories>
+      <tags>
+        <tag>读书笔记</tag>
+        <tag>摘抄</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数字图像处理（二）图像配准</title>
+    <url>/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9B%BE%E5%83%8F%E9%85%8D%E5%87%86/</url>
+    <content><![CDATA[<p>图像配准即对于内容大致相同，但在角度，大小或是其他几何位置上有所偏差的两张或几张图像进行坐标变换。使得这些图像矫正到同一规整的大小，角度，坐标上。</p>
+<p>图像配准对于图像拼接，制作全景图像，进行环境识别等方面有很大的用处。其原理简单，使用矩阵运算转换速度也很快，在选取映射点合适的情况下，配准效果很好。具体的转化方法如下：</p>
+<a id="more"></a>
+<h3 id="配准算法">配准算法</h3>
+<blockquote>
+<p>以图像A为标准配准图像B</p>
+</blockquote>
+<p>在图像A中选取n个像素点: <span class="math display">\[
+p_1(x_1,y_1,1),p_2(x_2,y_2,1),...,p_n(x_n,y_n,1)
+\]</span> 构成一个坐标矩阵 <span class="math display">\[
+P=\begin{bmatrix}x_1 &amp;x_2 &amp;...&amp;x_n\\y_1&amp;y_2&amp;...&amp;y_n\\1&amp;1&amp;...&amp;1\end{bmatrix}
+\]</span> 在图像B中选取与这n个点对应的n个像素点: <span class="math display">\[
+q_1(x_1,y_1),q_2(x_2,y_2),...,q_n(x_n,y_n)
+\]</span> 构成另一个坐标矩阵 <span class="math display">\[
+Q=\begin{bmatrix}x_1 &amp;x_2 &amp;...&amp;x_n\\y_1&amp;y_2&amp;...&amp;y_n\\1&amp;1&amp;...&amp;1\end{bmatrix}
+\]</span></p>
+<blockquote>
+<p>如果图像B可以通过图像A平移，旋转，缩放得到，那么存在一个转换矩阵H使得： <span class="math display">\[
+Q=HP
+\]</span> 那么如果可以计算出转换矩阵H，就可以利用上述公式的变形: <span class="math display">\[
+H^{-1}Q=P
+\]</span> 将每个图像B中的像素点映射到图像A相应位置处，从而获得以图像A为模板配准的图像B</p>
+</blockquote>
+<span class="label success">如何求出转换矩阵H?</span>
+<p>通过之前在图像A和图像B中已经选取出的点集P和Q，我们不难发现 <span class="math display">\[
+H=QP^{-1}
+\]</span></p>
+<blockquote>
+<p>由于P不是方阵，因而无法对其进行求逆，在这里为求伪逆</p>
+</blockquote>
+<p>至此，我们已经得到了图像配准的基本流程:</p>
+<ul>
+<li>在模板图像和待配准图像中选取相互对应的点集$ P <span class="math inline">\(和\)</span>Q$</li>
+<li>通过公式<span class="math inline">\(H=QP^{-1}\)</span>求出转换矩阵<span class="math inline">\(H\)</span></li>
+<li>通过转换矩阵将待配准图像映射到模板图像上</li>
+</ul>
+<h3 id="配准示例">配准示例</h3>
+<p>例如：以图像A为模板配准图像B <img src="https://download.kezhi.tech/img/20200429001311.jpg" alt="Image A" /> <img src="https://download.kezhi.tech/img/Image%20B.jpg/watermark" alt="图像B" /> 在其中选取七个点，分布为:</p>
+<blockquote>
+<p>这里采用画图进行选点，画图显示的坐标与(x,y)坐标是正好相反的，在进行坐标记录时需要注意。</p>
+</blockquote>
+<p><img src="https://download.kezhi.tech/img/Image%20A(选点).jpg/watermark" alt="选点（图像A）" /> <span class="math display">\[
+P=\begin{bmatrix}1448&amp;1694&amp;1756&amp;383&amp;2290&amp;2035&amp;2150\\1308&amp;1198&amp;2744&amp;2516&amp;933&amp;2693&amp;1968\\1&amp;1&amp;1&amp;1&amp;1&amp;1&amp;1\end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+Q=\begin{bmatrix}1042&amp;1252&amp;1708&amp;323&amp;1761&amp;1966&amp;1890\\1077&amp;907&amp;2387&amp;2519&amp;498&amp;2265&amp;1535\\1&amp;1&amp;1&amp;1&amp;1&amp;1&amp;1\end{bmatrix}
+\]</span></p>
+<p>求出的转换矩阵： <span class="math display">\[
+H=QP^{-1}=\begin{bmatrix}0.9668&amp;0.2565&amp;693.0275\\-0.2570&amp;0.9671&amp;184.1373\\0.0000&amp;0.0000&amp;1.0000\end{bmatrix}
+\]</span> 通过转换矩阵对图像B进行转换，最终得到的结果如下: <img src="https://download.kezhi.tech/img/result.jpg/watermark" alt="配准后的图像B" /></p>
+<p>源码:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="comment">#np.set_printoptions(threshold=np.inf)</span></span><br><span class="line"></span><br><span class="line">imgA=cv.imread(<span class="string">"Image A.jpg"</span>)</span><br><span class="line">imgB=cv.imread(<span class="string">"Image B.jpg"</span>)</span><br><span class="line">point_A=np.array([[<span class="number">1448</span>,<span class="number">1694</span>,<span class="number">1756</span>,<span class="number">383</span>,<span class="number">2290</span>,<span class="number">2035</span>,<span class="number">2150</span>],[<span class="number">1308</span>,<span class="number">1198</span>,<span class="number">2744</span>,<span class="number">2516</span>,<span class="number">933</span>,<span class="number">2693</span>,<span class="number">1968</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]])</span><br><span class="line">point_B=np.array([[<span class="number">1042</span>,<span class="number">1252</span>,<span class="number">1708</span>,<span class="number">323</span>,<span class="number">1761</span>,<span class="number">1966</span>,<span class="number">1890</span>],[<span class="number">1077</span>,<span class="number">907</span>,<span class="number">2387</span>,<span class="number">2519</span>,<span class="number">498</span>,<span class="number">2265</span>,<span class="number">1535</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]])</span><br><span class="line">H=np.dot(point_B,np.linalg.pinv(point_A))</span><br><span class="line">print(H)</span><br><span class="line">shape_A=imgA.shape</span><br><span class="line">shape_B=imgB.shape</span><br><span class="line">result,mistake=np.zeros(shape_A),np.zeros(shape_A)</span><br><span class="line">result=result.astype(np.uint8)</span><br><span class="line">mistake=mistake.astype(np.uint8)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(shape_A[<span class="number">0</span>]):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(shape_A[<span class="number">1</span>]):</span><br><span class="line">        address=np.dot(H,np.array([i,j,<span class="number">1</span>]))</span><br><span class="line">        address=address.astype(np.int)</span><br><span class="line">        <span class="keyword">if</span> address[<span class="number">0</span>]&gt;<span class="number">0</span> <span class="keyword">and</span> address[<span class="number">0</span>]&lt;shape_B[<span class="number">0</span>] <span class="keyword">and</span> address[<span class="number">1</span>]&gt;<span class="number">0</span> <span class="keyword">and</span> address[<span class="number">1</span>]&lt;shape_B[<span class="number">1</span>]:</span><br><span class="line">            result[i][j]=imgB[address[<span class="number">0</span>]][address[<span class="number">1</span>]]</span><br><span class="line">            mistake[i][j]=imgA[i][j]-result[i][j]</span><br><span class="line">cv.namedWindow(<span class="string">"test"</span>,cv.WINDOW_NORMAL)</span><br><span class="line">cv.imshow(<span class="string">"test"</span>,mistake)</span><br><span class="line">cv.waitKey(<span class="number">0</span>)</span><br><span class="line">cv.imwrite(<span class="string">"result.jpg"</span>,result)</span><br><span class="line">cv.imwrite(<span class="string">"mistake.jpg"</span>,mistake)</span><br></pre></td></tr></table></figure>
+<h3 id="结束语">结束语</h3>
+<p>图像配准的算法比较简单，选取好坐标点之后通过配准的计算方法得到的结果很好。但此次图像配准在选点时为手动选点，如果要大批量进行图像配准或实时配准则需要进行自动选点，此时，如何让程序选取出合适并且相互对应的点集成为了图像配准的难点所在。</p>
+]]></content>
+      <categories>
+        <category>理论学习</category>
+        <category>数字图像处理</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>数字图像</tag>
+        <tag>图像处理</tag>
+        <tag>图像配准</tag>
       </tags>
   </entry>
   <entry>
@@ -2295,6 +2295,24 @@ H(u,v)=\frac 1{1+[D_0/D(u,v)]^{2n}}
       </tags>
   </entry>
   <entry>
+    <title>来选头像</title>
+    <url>/%E6%9D%A5%E9%80%89%E5%A4%B4%E5%83%8F/</url>
+    <content><![CDATA[<iframe src="//www.kezhi.tech/avatar/" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
+</iframe>
+<a id="more"></a>
+<h2 id="reference">Reference</h2>
+<ol type="1">
+<li><a href="https://www.pixiv.net/users/6657532" target="_blank" rel="noopener">#原神 原神头像 - QuAn_的插画 - pixiv</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>日常生活</category>
+      </categories>
+      <tags>
+        <tag>日常</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数字图像处理（四）空域低通滤波器</title>
     <url>/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E5%9B%9B%EF%BC%89%E7%A9%BA%E5%9F%9F%E4%BD%8E%E9%80%9A%E6%BB%A4%E6%B3%A2%E5%99%A8/</url>
     <content><![CDATA[<p>低通滤波器在我们的日常生活中很有用，图像模糊，图像去噪以及图像识别都需要低通滤波器的处理。低通滤波即滤除图像中的高频部分（变化很快的部分），留下低频部分（变化不明显得到部分）。滤波器的实现有空域和频域两种：空域滤波器是直接在空间图像上进行操作，图像矩阵和滤波器算子进行卷积得到滤波后的输出；频域滤波器是将图像经过傅里叶变换到频域上再与滤波器做乘法得到输出。</p>
@@ -2455,21 +2473,87 @@ H(u,v)=\frac 1{1+[D_0/D(u,v)]^{2n}}
       </tags>
   </entry>
   <entry>
-    <title>来选头像</title>
-    <url>/%E6%9D%A5%E9%80%89%E5%A4%B4%E5%83%8F/</url>
-    <content><![CDATA[<iframe src="//www.kezhi.tech/avatar/" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
-</iframe>
+    <title>网站收藏</title>
+    <url>/%E7%BD%91%E7%AB%99%E6%94%B6%E8%97%8F/</url>
+    <content><![CDATA[<p><img src="https://download.kezhi.tech/img/202205251650671.webp" /></p>
 <a id="more"></a>
-<h2 id="reference">Reference</h2>
+<h2 id="实用工具">实用工具</h2>
+<ul>
+<li><a href="https://geekuninstaller.com/" target="_blank" rel="noopener">Geek Uninstaller - the best FREE uninstaller</a></li>
+<li><a href="https://www.bandisoft.com/bandizip/" target="_blank" rel="noopener">Windows 版本的 Bandizip · 业内领先的压缩文件解决方案 (bandisoft.com)</a></li>
+<li><a href="https://www.7-zip.org/" target="_blank" rel="noopener">7-Zip</a></li>
+</ul>
+<h2 id="文本转语音">文本转语音</h2>
+<ul>
+<li><p>Free TTS https://freetts.com/</p></li>
+<li><p>Balabolka http://balabolka.site/balabolka.htm</p></li>
+</ul>
+<h2 id="data-source">Data Source</h2>
+<h3 id="defi">Defi</h3>
+<ul>
+<li><p><a href="https://www.cryptodatadownload.com/" target="_blank" rel="noopener">cryptodatadownload.com</a> 下载Defi交易所历史数据</p></li>
+<li><p><a href="https://www.coinario.com/" target="_blank" rel="noopener">Cryptocurrency - Coinario.com</a> 查询交易所基本信息</p></li>
+<li><p><a href="https://nomics.com/" target="_blank" rel="noopener">Nomics: Crypto Market Caps - Prices, All-Time Highs, Charts</a></p></li>
+</ul>
+<h3 id="transportation">Transportation</h3>
+<ul>
+<li><a href="https://www.transtats.bts.gov/" target="_blank" rel="noopener">OST_R | BTS | Transtats</a> 美国交通运输数据</li>
+</ul>
+<h3 id="weather">Weather</h3>
+<ul>
+<li><a href="https://openweathermap.org/" target="_blank" rel="noopener">Сurrent weather and forecast - OpenWeatherMap</a></li>
+</ul>
+<h2 id="api">API</h2>
+<ul>
+<li><a href="https://api.muxiaoguo.cn/" target="_blank" rel="noopener">木小果API - 提供免费接口调用平台 (muxiaoguo.cn)</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工程实践</category>
+        <category>码来用</category>
+      </categories>
+      <tags>
+        <tag>软件</tag>
+        <tag>网站</tag>
+        <tag>收藏</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>社会心理学（一）</title>
+    <url>/%E7%A4%BE%E4%BC%9A%E5%BF%83%E7%90%86%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="社会中的自我">社会中的自我</h2>
+<h3 id="自我概念我是谁">自我概念：我是谁</h3>
+<a id="more"></a>
 <ol type="1">
-<li><a href="https://www.pixiv.net/users/6657532" target="_blank" rel="noopener">#原神 原神头像 - QuAn_的插画 - pixiv</a></li>
+<li>人们往往会把自己看做是一切的中心，从而高估别人对我们的注意度。即<strong>焦点效应</strong></li>
+<li>我们能够敏锐的察觉自己情感的变化，并且认为这也是很清楚地被别人注意到的。而实际注意到我们的人比我们认为的要少。即<strong>透明度错觉</strong></li>
+<li>社会环境会影响自我认知，在不同的环境中对自我的认知更多来源于与环境的差异。如在国外时认为自己是中国人，而在国内则不会对这有很强的意识，更多的认为自己是某个地区的人（如陕西人，西安人）。</li>
+<li>在自我认知时带有很强的<strong>自利色彩</strong>。在出现问题时，人往往将责任归咎到他人身上。而当作出成绩时，人们往往觉得低估了自己的贡献。</li>
+<li>我们在社会关系中界定自我。往往我们在与不同的人相处时会有不同的表现，这些表现得差异和多样化有助于我们了解自己和界定自己的角色。</li>
+<li><strong>自我图式</strong>。我们对于自己的认识，会在很大程度上影响我们对于信息的加工。这也就决定了如何感知，回忆和评价他人和自己。（对于一名专业的运动员来说，会特别关注别人的身体和技巧）。</li>
+<li><strong>自我参照效应</strong>。我们对于与自己相关的事情总是记忆深刻，并且由于我们将自己看做是世界的核心位置，因此在对事件认知时会高估对自己的指向程度（我们总是认为自己是完成某件事的核心人物）。</li>
+</ol>
+<h3 id="自我认识">自我认识</h3>
+<ol type="1">
+<li>在解释自己行为的过程中，往往倾向于高估自己思维和意识的作用，而低估外部因素的影响。如人们往往认为自己不会受媒体的影响，并且认为媒体会对其他人产生影响。</li>
+<li>在预测自己的行为时，他人往往能够比自己更准确地预测结果。这是因为在进行自我预测时，我们自己往往关心当下比较突出的因素，而忽略那些其实很重要但没有被注意到的因素。这就造成对未来预期的错误。</li>
+<li>在消极事件中，我们尤其会表现出影响偏见，即高估事件的持久性影响，低估自身的自愈能力。并且重大的消极事件会激发我们的心理防御机制，可能会比轻微的情绪波动所引发的痛苦持续时间更短。</li>
+<li>一种观点认为，我们实际的思维过程和我们对于思维的解释是两码事。例如，在挑选一副喜欢的画时，要求被试者阐述喜欢的原因，他们在几周之后对画的满意程度要低于那些没有进行归因的。也就是说，当我们对自己的心理过程进行理性的归因时，对我们未来的预测将变得无效。这从某一方面说明了，我们实际的思考过程存在很多我们在分析自己思维时无法体现的东西。</li>
+</ol>
+<h3 id="自我控制">自我控制</h3>
+<ol type="1">
+<li><p>自我控制是一种会被消耗的能力，它类似于肌肉力量。在被使用后会变得虚弱，经过休息之后又会回复，随着不断训练会加强。自我控制能力是有限的，当我们花费了大量的精力在日常生活中进行自我控制时（如强迫自己不吃东西，压抑自己的思想），在面对难题时会变得无力。</p></li>
+<li><p><strong>自我效能</strong>，即对自己能力与效率的乐观信念可以获得更大的回报。自我效能高的人会更有韧性，生活的更加健康。</p></li>
+<li><p>控制点。认为自己的命运是自己来控制的（内部控制点）还是由外部的力量来掌控（外部控制点）。是否感觉命运受自己掌控取决于我们如何解释挫折。内部控制的人往往归因于意外或是需要尝试新的方法来解决。外部控制的人把失败归因于自己无法控制的因素（如学习成绩的糟糕归因于自己笨，不喜欢老师等）。</p></li>
+<li><p><strong>习得性无助</strong>，人无法对自己做的事和别人做的事进行控制，从而对事件失去掌控能力，产生习得性无助。与之相反的是自我决定，对自我和环境有一定的控制权。习得性无助常常会让人有更大的压力，变得虚弱，快速衰老。增加一定的自我控制可以增强个体的幸福和健康。但过度的自由和自我决定也会导致人们生活满意度下降，抑郁症增多。过于多的选择会让人们无所适从。</p></li>
 </ol>
 ]]></content>
       <categories>
-        <category>日常生活</category>
+        <category>我爱读书</category>
       </categories>
       <tags>
-        <tag>日常</tag>
+        <tag>读书笔记</tag>
+        <tag>心理学</tag>
       </tags>
   </entry>
   <entry>
@@ -2709,90 +2793,6 @@ DB=\frac1k\sum_{i=1}^k\mathop{max}\limits_{i\neq j}(\frac{\mu_i+\mu_j}{d(u_i,u_j
         <tag>大数据分析</tag>
         <tag>Aprior算法</tag>
         <tag>K-means</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>社会心理学（一）</title>
-    <url>/%E7%A4%BE%E4%BC%9A%E5%BF%83%E7%90%86%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="社会中的自我">社会中的自我</h2>
-<h3 id="自我概念我是谁">自我概念：我是谁</h3>
-<a id="more"></a>
-<ol type="1">
-<li>人们往往会把自己看做是一切的中心，从而高估别人对我们的注意度。即<strong>焦点效应</strong></li>
-<li>我们能够敏锐的察觉自己情感的变化，并且认为这也是很清楚地被别人注意到的。而实际注意到我们的人比我们认为的要少。即<strong>透明度错觉</strong></li>
-<li>社会环境会影响自我认知，在不同的环境中对自我的认知更多来源于与环境的差异。如在国外时认为自己是中国人，而在国内则不会对这有很强的意识，更多的认为自己是某个地区的人（如陕西人，西安人）。</li>
-<li>在自我认知时带有很强的<strong>自利色彩</strong>。在出现问题时，人往往将责任归咎到他人身上。而当作出成绩时，人们往往觉得低估了自己的贡献。</li>
-<li>我们在社会关系中界定自我。往往我们在与不同的人相处时会有不同的表现，这些表现得差异和多样化有助于我们了解自己和界定自己的角色。</li>
-<li><strong>自我图式</strong>。我们对于自己的认识，会在很大程度上影响我们对于信息的加工。这也就决定了如何感知，回忆和评价他人和自己。（对于一名专业的运动员来说，会特别关注别人的身体和技巧）。</li>
-<li><strong>自我参照效应</strong>。我们对于与自己相关的事情总是记忆深刻，并且由于我们将自己看做是世界的核心位置，因此在对事件认知时会高估对自己的指向程度（我们总是认为自己是完成某件事的核心人物）。</li>
-</ol>
-<h3 id="自我认识">自我认识</h3>
-<ol type="1">
-<li>在解释自己行为的过程中，往往倾向于高估自己思维和意识的作用，而低估外部因素的影响。如人们往往认为自己不会受媒体的影响，并且认为媒体会对其他人产生影响。</li>
-<li>在预测自己的行为时，他人往往能够比自己更准确地预测结果。这是因为在进行自我预测时，我们自己往往关心当下比较突出的因素，而忽略那些其实很重要但没有被注意到的因素。这就造成对未来预期的错误。</li>
-<li>在消极事件中，我们尤其会表现出影响偏见，即高估事件的持久性影响，低估自身的自愈能力。并且重大的消极事件会激发我们的心理防御机制，可能会比轻微的情绪波动所引发的痛苦持续时间更短。</li>
-<li>一种观点认为，我们实际的思维过程和我们对于思维的解释是两码事。例如，在挑选一副喜欢的画时，要求被试者阐述喜欢的原因，他们在几周之后对画的满意程度要低于那些没有进行归因的。也就是说，当我们对自己的心理过程进行理性的归因时，对我们未来的预测将变得无效。这从某一方面说明了，我们实际的思考过程存在很多我们在分析自己思维时无法体现的东西。</li>
-</ol>
-<h3 id="自我控制">自我控制</h3>
-<ol type="1">
-<li><p>自我控制是一种会被消耗的能力，它类似于肌肉力量。在被使用后会变得虚弱，经过休息之后又会回复，随着不断训练会加强。自我控制能力是有限的，当我们花费了大量的精力在日常生活中进行自我控制时（如强迫自己不吃东西，压抑自己的思想），在面对难题时会变得无力。</p></li>
-<li><p><strong>自我效能</strong>，即对自己能力与效率的乐观信念可以获得更大的回报。自我效能高的人会更有韧性，生活的更加健康。</p></li>
-<li><p>控制点。认为自己的命运是自己来控制的（内部控制点）还是由外部的力量来掌控（外部控制点）。是否感觉命运受自己掌控取决于我们如何解释挫折。内部控制的人往往归因于意外或是需要尝试新的方法来解决。外部控制的人把失败归因于自己无法控制的因素（如学习成绩的糟糕归因于自己笨，不喜欢老师等）。</p></li>
-<li><p><strong>习得性无助</strong>，人无法对自己做的事和别人做的事进行控制，从而对事件失去掌控能力，产生习得性无助。与之相反的是自我决定，对自我和环境有一定的控制权。习得性无助常常会让人有更大的压力，变得虚弱，快速衰老。增加一定的自我控制可以增强个体的幸福和健康。但过度的自由和自我决定也会导致人们生活满意度下降，抑郁症增多。过于多的选择会让人们无所适从。</p></li>
-</ol>
-]]></content>
-      <categories>
-        <category>我爱读书</category>
-      </categories>
-      <tags>
-        <tag>读书笔记</tag>
-        <tag>心理学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网站收藏</title>
-    <url>/%E7%BD%91%E7%AB%99%E6%94%B6%E8%97%8F/</url>
-    <content><![CDATA[<p><img src="https://download.kezhi.tech/img/202205251650671.webp" /></p>
-<a id="more"></a>
-<h2 id="实用工具">实用工具</h2>
-<ul>
-<li><a href="https://geekuninstaller.com/" target="_blank" rel="noopener">Geek Uninstaller - the best FREE uninstaller</a></li>
-<li><a href="https://www.bandisoft.com/bandizip/" target="_blank" rel="noopener">Windows 版本的 Bandizip · 业内领先的压缩文件解决方案 (bandisoft.com)</a></li>
-<li><a href="https://www.7-zip.org/" target="_blank" rel="noopener">7-Zip</a></li>
-</ul>
-<h2 id="文本转语音">文本转语音</h2>
-<ul>
-<li><p>Free TTS https://freetts.com/</p></li>
-<li><p>Balabolka http://balabolka.site/balabolka.htm</p></li>
-</ul>
-<h2 id="data-source">Data Source</h2>
-<h3 id="defi">Defi</h3>
-<ul>
-<li><p><a href="https://www.cryptodatadownload.com/" target="_blank" rel="noopener">cryptodatadownload.com</a> 下载Defi交易所历史数据</p></li>
-<li><p><a href="https://www.coinario.com/" target="_blank" rel="noopener">Cryptocurrency - Coinario.com</a> 查询交易所基本信息</p></li>
-<li><p><a href="https://nomics.com/" target="_blank" rel="noopener">Nomics: Crypto Market Caps - Prices, All-Time Highs, Charts</a></p></li>
-</ul>
-<h3 id="transportation">Transportation</h3>
-<ul>
-<li><a href="https://www.transtats.bts.gov/" target="_blank" rel="noopener">OST_R | BTS | Transtats</a> 美国交通运输数据</li>
-</ul>
-<h3 id="weather">Weather</h3>
-<ul>
-<li><a href="https://openweathermap.org/" target="_blank" rel="noopener">Сurrent weather and forecast - OpenWeatherMap</a></li>
-</ul>
-<h2 id="api">API</h2>
-<ul>
-<li><a href="https://api.muxiaoguo.cn/" target="_blank" rel="noopener">木小果API - 提供免费接口调用平台 (muxiaoguo.cn)</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>工程实践</category>
-        <category>码来用</category>
-      </categories>
-      <tags>
-        <tag>软件</tag>
-        <tag>网站</tag>
-        <tag>收藏</tag>
       </tags>
   </entry>
   <entry>
