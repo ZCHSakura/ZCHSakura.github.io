@@ -147,8 +147,8 @@ menu:
   #schedule: /schedule/ || calendar
   sitemap: /sitemap.xml || sitemap
   rss: /atom.xml || rss
-  steam: /steamgames/ || steam
-  anime: /bangumis/ || tv
+  #steam: /steamgames/ || steam
+  #anime: /bangumis/ || tv
   #commonweal: /404/ || heartbeat
   #notes: /notes/ || address-book
 

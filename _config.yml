@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Kezhi's Blog   #网站标题
+title: 周小天的Blog   #网站标题
 subtitle: ''        #网站副标题
 description: '知识因被记录而产生价值'     #网站描述
-keywords: 笔记，计算机，自动化
-author: Yu Zhao
+keywords: 笔记，计算机，
+author: 周小天
 language: zh-CN
 timezone: ''
 
@@ -15,8 +15,7 @@ timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url:  https://www.kezhi.tech
-root: /
+url:  http://example.com
 permalink: :title/
 permalink_defaults:
 pretty_urls:
@@ -103,7 +102,7 @@ deploy:
   type: 'git'
   #repo: https://github.com/KezhiAdore/kezhiadore.github.io.git
   # repo: git@39.98.144.225:/home/git/hexo.git
-  repo: git@home.kezhi.tech:/home/git/hexo.git
+  repo: git@github.com:ZCHSakura/ZCHSakura.github.io.git
   #repo: git@129.211.143.218:/home/git/hexoBlog
   branch: master
 
@@ -125,7 +124,7 @@ search:
     # Live2D
 # https://github.com/EYHN/hexo-helper-live2d
 live2d:
-  enable: true
+  enable: false
   pluginRootPath: live2dw/
   pluginJsPath: lib/
   pluginModelPath: assets/ Relative
@@ -161,14 +160,10 @@ feed:
   hub:
   content:
 
-urlforgoogle: https://www.kezhi.tech/
-sitemap:
-  path: sitemap.xml
-
 
 # steam page
 steam:
-  enable: true
+  enable: false
   steamId: '76561198322490171' #steam 64位Id
   path: steamgames/index.html 
   title: Steam游戏库
@@ -183,7 +178,7 @@ steam:
 
 # 追番设置
 bangumi:
-  enable: true
+  enable: false
   source: bili
   path: bangumis/index.html
   vmid: 78031804
