@@ -15,7 +15,7 @@ categories:
 
 问题来源：我在爬取医书的时候因为是书籍所以存在章节信息，在书籍的介绍页既有书籍简介，又有目录，我想要写两个函数来分别处理，当书籍简介获取完之后要进入获取目录信息函数的时候不能正确进入。
 
-![image-20200509152349586](http://blog.zchsakura.top/20200509152400.png)
+![image-20200509152349586](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509152400.png)
 
 经过在网上查找信息发现应该是我调用下面函数的时候，因为又请求了之前请求过的`response.url`导致scrapy自带的去重机制将本次请求全部拦截了。
 
@@ -23,7 +23,7 @@ categories:
 yield scrapy.Request(response.url, callback=self.chapterList, meta={'bookName': item['name']})
 ```
 
-![20181216232557785](http://blog.zchsakura.top/20200509153757.png)
+![20181216232557785](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509153757.png)
 
 解决方法：在函数参数中加入`dont_filter=True`，结果如下
 

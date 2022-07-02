@@ -31,7 +31,7 @@ sudo netstat -tap | grep mysql
 ```
 
 **出现如下信息则安装成功**
-![image_1b6gfob7m1u4f2i0av11afd92m9](http://blog.zchsakura.top/20200429135052.png)
+![image_1b6gfob7m1u4f2i0av11afd92m9](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429135052.png)
 
 **可以通过如下命令进入MySQL服务：**
 
@@ -43,7 +43,7 @@ mysql -uroot -p你的密码
 
 **注释掉bind-address = 127.0.0.1：**
 
-![image_1b6ggmf7h1d6b17o11iha1j1nhtem](http://blog.zchsakura.top/20200429134856.png)
+![image_1b6ggmf7h1d6b17o11iha1j1nhtem](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429134856.png)
 
 **保存退出，然后进入mysql服务，执行授权命令：**
 
@@ -75,7 +75,7 @@ utf8mb4的最低mysql版本支持版本为5.5.3+，若不是，请升级到较�
 SHOW VARIABLES WHERE Variable_name LIKE 'character_set_%' OR Variable_name LIKE 'collation%';
 ```
 
-![20180828153217974](http://blog.zchsakura.top/20200429134724.png)
+![20180828153217974](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429134724.png)
 
 ### 2.3修改MySQL配置文件
 
@@ -132,7 +132,7 @@ default-character-set = utf8mb4
 SHOW VARIABLES WHERE Variable_name LIKE 'character_set_%' OR Variable_name LIKE 'collation%';
 ```
 
-![image-20200429124011522](http://blog.zchsakura.top/20200429124058.png)
+![image-20200429124011522](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429124058.png)
 
 **大功告成 Peace**
 

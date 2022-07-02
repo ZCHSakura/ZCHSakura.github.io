@@ -1,7 +1,4 @@
 ---
-
-
-
 title: 基于redis使用scrapy下载中间件实现简单的增量爬虫
 tags:
   - python

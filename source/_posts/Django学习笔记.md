@@ -19,7 +19,7 @@ https://www.bilibili.com/video/BV1rx411X717
 django-admin startproject HelloDjango
 ```
 
-![image-20200513182805245](http://blog.zchsakura.top/20200513182816.png)
+![image-20200513182805245](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182816.png)
 
 ### 创建应用
 
@@ -27,7 +27,7 @@ django-admin startproject HelloDjango
 python manage.py startapp App
 ```
 
-![image-20200513182930988](http://blog.zchsakura.top/20200513182932.png)
+![image-20200513182930988](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182932.png)
 
 在setting.py中注册应用：
 
@@ -102,7 +102,7 @@ def hello(request):
 
 在HelloDjango中新建templates文件夹并设置为模板文件夹（方便代码提示），在其中新建html模板
 
-![image-20200518175638301](http://blog.zchsakura.top/20200518175701.png)
+![image-20200518175638301](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200518175701.png)
 
 然后再settings.py中加入templates路径
 
@@ -208,7 +208,7 @@ urlpatterns = [
 - control + p 
     - 参数提示
 
-![image-20200608171048103](http://blog.zchsakura.top/20200608171058.png)
+![image-20200608171048103](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200608171058.png)
 
 
 - shift + f6 重命名，重构

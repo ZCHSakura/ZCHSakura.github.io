@@ -232,7 +232,7 @@ def findLength(self, A, B) -> int:
 
 **滑动窗口**
 
-![bc7d3a75a57f9abd6d1f6d789e176af0ab65f5522f6c7119178b073c67ae6494-leetcode-718-lcs-window](http://blog.zchsakura.top/20200701222958.gif)
+![bc7d3a75a57f9abd6d1f6d789e176af0ab65f5522f6c7119178b073c67ae6494-leetcode-718-lcs-window](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200701222958.gif)
 
 这个图很形象的展示出了什么是滑动窗口，有一个问题就是窗口的获取，python中的zip函数可以很好的解决这个问题
 
@@ -322,7 +322,7 @@ class Solution:
 
 当我们看到下面这个有序矩阵时，我们知道左上角的数字是整个矩阵最小的，但弹出它后我们如何保证接下来每一次都还能找到全矩阵最小的值呢？
 
-![1e9354f41d0e82d81d6be6538cc7b285d31418c5f14ed7937cee5765e20b8d76-屏幕快照 2020-07-02 下午6.38.01](http://blog.zchsakura.top/20200702201325.png)
+![1e9354f41d0e82d81d6be6538cc7b285d31418c5f14ed7937cee5765e20b8d76-屏幕快照 2020-07-02 下午6.38.01](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201325.png)
 
 其实解决这个问题的关键，在于维护一组“最小值候选人”：
 
@@ -330,13 +330,13 @@ class Solution:
 
 我们来选择第一组候选人，在这里可以选择第一列，因为每一个数字都是其对应行的最小值，全局最小值也必然在其中。
 
-![299edf92ce9acad73613ff76037c8e2c1ec4a53737b5e7ac02fe536d0713dae6-屏幕快照 2020-07-02 下午6.38.13](http://blog.zchsakura.top/20200702201432.png)
+![299edf92ce9acad73613ff76037c8e2c1ec4a53737b5e7ac02fe536d0713dae6-屏幕快照 2020-07-02 下午6.38.13](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201432.png)
 
 第一次弹出很简单，将左上角的1弹出即可。
 
 1弹出之后，我们如何找到下一个候选人呢？
 
-![c9980b3010f6696231c7caa016303dc815b35b14347d20ee7980fff537c30750-屏幕快照 2020-07-02 下午6.38.50](http://blog.zchsakura.top/20200702201455.png)
+![c9980b3010f6696231c7caa016303dc815b35b14347d20ee7980fff537c30750-屏幕快照 2020-07-02 下午6.38.50](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201455.png)
 
 
 其实非常简单，刚才弹出的位置右移一格就行了，这样不是还是能保证候选人列表中每一个数字是每一行的最小值吗，那全局最小值必然在其中！
@@ -347,7 +347,7 @@ class Solution:
 
 （顺序是每一行都是从左向右看）(当某一行弹到没东西，候选人列表的长度就会少1)
 
-![d550255f65fd12fb57130240046c176165c19689add0e817ccca5f88dc9340df-屏幕快照 2020-07-02 下午6.41.52](http://blog.zchsakura.top/20200702201510.png)
+![d550255f65fd12fb57130240046c176165c19689add0e817ccca5f88dc9340df-屏幕快照 2020-07-02 下午6.41.52](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201510.png)
 
 
 
@@ -368,7 +368,7 @@ class Solution:
 
 在这里我们需要的是Min Heap，一般Heap是二元的，也就是说每个爸爸有两个儿子，一个二元Min Heap可以参考这个图：
 
-![2d2ea402d1a101c2186f00008fb77e98b4ecbd14f2daf633076cbb6abd20ec9b-屏幕快照 2020-07-02 下午2.29.11](http://blog.zchsakura.top/20200702201624.png)
+![2d2ea402d1a101c2186f00008fb77e98b4ecbd14f2daf633076cbb6abd20ec9b-屏幕快照 2020-07-02 下午2.29.11](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702201624.png)
 
 (图源：https://www.youtube.com/watch?v=wptevk0bshY)
 
@@ -438,7 +438,7 @@ class Solution:
 
 由题目给出的性质可知，这个矩阵内的元素是从左上到右下递增的（假设矩阵左上角为 `matrix[0][0]`）。以下图为例：
 
-![378_fig1](http://blog.zchsakura.top/20200702211621.png)
+![378_fig1](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211621.png)
 
 我们知道整个二维数组中` matrix[0][0]`为最小值，`matrix[n-1][n−1]`为最大值，现在我们将其分别记作 l和 r。
 
@@ -446,7 +446,7 @@ class Solution:
 
 例如下图，取 mid=8：
 
-![378_fig2](http://blog.zchsakura.top/20200702211753.png)
+![378_fig2](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211753.png)
 
 我们可以看到，矩阵中大于 mid的数就和不大于 mid 的数分别形成了两个板块，沿着一条锯齿线将这个矩形分开。其中左上角板块的大小即为矩阵中不大于 mid 的数的数量。
 
@@ -456,7 +456,7 @@ class Solution:
 
 走法演示如下，依然取 mid=8：
 
-![378_fig3](http://blog.zchsakura.top/20200702211846.png)
+![378_fig3](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200702211846.png)
 
 可以这样描述走法：
 

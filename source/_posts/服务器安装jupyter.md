@@ -27,7 +27,7 @@ pip3.7 install jupyter
 
 会自动生成一个**Verify password**复制保存下来
 
-![aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n](http://blog.zchsakura.top/20201015101310.png)
+![aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101310.png)
 
 ### 2.1生成配置文件
 
@@ -89,4 +89,4 @@ jupyter nbextensions_configurator enable --user
 
 **执行完成以后，重启jupyter，即可看到附加项**
 
-![aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n](http://blog.zchsakura.top/20201015101630.png)
+![aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n](http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101630.png)
