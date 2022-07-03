@@ -1,6 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python常用内置函数</title>
+    <url>/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>记录Python常用的内置函数</p>
+<a id="more"></a>
+<p>Python给我们内置了大量功能函数，官方文档上列出了69个，有些是我们是平时开发中经常遇到的，也有一些函数很少被用到，这里列举被开发者使用最频繁的8个函数以及他们的详细用法</p>
+<figure>
+<img src="https:////upload-images.jianshu.io/upload_images/15801507-d86739dc54bc18fa.jpg!web?imageMogr2/auto-orient/strip%7CimageView2/2/w/550/format/webp" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="print">print()</h3>
+<p>print函数是你学Python接触到的第一个函数，它将对象输出到标准输出流，可将任意多个对象打印出来，函数的具体定义：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(*objects, sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>objects 是可变参数，所以你可以同时将任意多个对象打印出来</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)  </span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>默认使用空格分隔每个对象，通过指定sep参数可以使用逗号分隔</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>)  </span><br><span class="line"><span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>对象默认输出的是标准输出流，你也可以将内容保存到文件中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>, file=open(<span class="string">"hello.txt"</span>, <span class="string">"w"</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="isinstance">isinstance()</h3>
+<p>可以用 isinstance 函数判断某个对象是否属于某个类的实例，函数的定义</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">isinstance(object, classinfo)</span><br></pre></td></tr></table></figure>
+<p>classinfo 既可以是单个类型对象，也可以是由多个类型对象组成的元组，只要object的类型是元组中任意一个就返回True，否则返回False</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="string">""</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], dict)  </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="range">range()</h3>
+<p>range函数是个工厂方法，用于构造一个从[start, stop) （不包含stop）之间的连续的不可变的整数序列对象，这个序列功能上和列表非常类似，函数定义：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">range([start,] stop [, step]) -&gt; range object</span><br></pre></td></tr></table></figure>
+<ul>
+<li>start 可选参数，序列的起点，默认是0</li>
+<li>stop 必选参数，序列的终点（不包含）</li>
+<li>step 可选参数，序列的步长，默认是1，生成的元素规律是 r[i] = start + step*i</li>
+</ul>
+<p>生成0~5的列表</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">5</span>)  </span><br><span class="line">range(<span class="number">0</span>, <span class="number">5</span>)     </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">5</span>))  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>默认从0开始，生成0到4之间的5个整数，不包含5，step 默认是1，每次都是在前一次加1</p>
+<p>如果你想将某个操作重复执行n遍，就可以使用for循环配置range函数实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):  </span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"hello python"</span>)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">hello python  </span><br><span class="line">hello python  </span><br><span class="line">hello python</span><br></pre></td></tr></table></figure>
+<p>步长为2</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line">range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>))  </span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<p>起点从1开始，终点10，步长为2，每次都在前一个元素的基础上加2，构成1到10之间的奇数。</p>
+<h3 id="enumerate">enumerate()</h3>
+<p>用于枚举可迭代对象，同时还可以得到每次元素的下表索引值，函数定义：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">enumerate(iterable, start=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
+<p>index 默认从0开始，如果显式指定参数start，下标索引就从start开始</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>, start=<span class="number">1</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">1</span> p  </span><br><span class="line"><span class="number">2</span> y  </span><br><span class="line"><span class="number">3</span> t  </span><br><span class="line"><span class="number">4</span> h  </span><br><span class="line"><span class="number">5</span> o  </span><br><span class="line"><span class="number">6</span> n</span><br></pre></td></tr></table></figure>
+<p>如果不使用enumerate函数，要获取元素的下标索引，则需要更多的代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_enumerate</span><span class="params">(sequence, start=<span class="number">0</span>)</span>:</span>  </span><br><span class="line">    n = start  </span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> sequence:  </span><br><span class="line">        <span class="keyword">yield</span> n, e  </span><br><span class="line">        n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> my_enumerate(<span class="string">"python"</span>):  </span><br><span class="line">    print(index, value)  </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
+<h3 id="len">len</h3>
+<p>len 用于获取容器对象中的元素个数，例如判断列表是否为空可以用 len 函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])  </span><br><span class="line"><span class="number">3</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="string">"python"</span>)  </span><br><span class="line"><span class="number">6</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> len([]) == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>并不是所有对象都支持len操作的，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="literal">True</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;  </span><br><span class="line">TypeError: object of type <span class="string">'bool'</span> has no len()</span><br></pre></td></tr></table></figure>
+<p>除了序列对象和集合对象，自定义类必须实现了 <strong>len</strong> 方法能作用在len函数上</p>
+<h3 id="reversed">reversed()</h3>
+<p>reversed() 反转序列对象，你可以将字符串进行反转，将列表进行反转，将元组反转</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(reversed([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="open">open()</h3>
+<p>open 函数用于构造文件对象，构建后可对其进行内容的读写操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">open(file, mode=<span class="string">'r'</span>, encoding=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>读操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从当前路径打开文件 test.txt， 默认以读的方式  </span></span><br><span class="line">&gt;&gt;&gt;f = open(<span class="string">"test.txt"</span>)  </span><br><span class="line">&gt;&gt;&gt;f.read()  </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>有时还需要指定编码格式，否则会遇到乱码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"test.txt"</span>, encoding=<span class="string">'utf8'</span>)</span><br></pre></td></tr></table></figure>
+<p>写操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;f = open(<span class="string">"hello.text"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">&gt;&gt;&gt;f.write(<span class="string">"hello python"</span>))</span><br></pre></td></tr></table></figure>
+<p>文件中存在内容时原来的内容将别覆盖，如果不想被覆盖，直接将新的内容追加到文件末尾，可以使用 a 模式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"hello.text"</span>, <span class="string">'a'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">f.write(<span class="string">"!!!"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="sorted">sorted()</h3>
+<p>sroted 是对列表进行重新排序，当然其他可迭代对象都支持重新排放，返回一个新对象，原对象保持不变</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">1</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>])  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Django学习笔记</title>
     <url>/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>记录Django学习笔记</p>
@@ -397,134 +478,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python常用内置函数</title>
-    <url>/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p>记录Python常用的内置函数</p>
-<a id="more"></a>
-<p>Python给我们内置了大量功能函数，官方文档上列出了69个，有些是我们是平时开发中经常遇到的，也有一些函数很少被用到，这里列举被开发者使用最频繁的8个函数以及他们的详细用法</p>
-<figure>
-<img src="https:////upload-images.jianshu.io/upload_images/15801507-d86739dc54bc18fa.jpg!web?imageMogr2/auto-orient/strip%7CimageView2/2/w/550/format/webp" alt="img" /><figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="print">print()</h3>
-<p>print函数是你学Python接触到的第一个函数，它将对象输出到标准输出流，可将任意多个对象打印出来，函数的具体定义：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(*objects, sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-<p>objects 是可变参数，所以你可以同时将任意多个对象打印出来</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)  </span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>默认使用空格分隔每个对象，通过指定sep参数可以使用逗号分隔</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>)  </span><br><span class="line"><span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>对象默认输出的是标准输出流，你也可以将内容保存到文件中</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>, file=open(<span class="string">"hello.txt"</span>, <span class="string">"w"</span>))</span><br></pre></td></tr></table></figure>
-<h3 id="isinstance">isinstance()</h3>
-<p>可以用 isinstance 函数判断某个对象是否属于某个类的实例，函数的定义</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">isinstance(object, classinfo)</span><br></pre></td></tr></table></figure>
-<p>classinfo 既可以是单个类型对象，也可以是由多个类型对象组成的元组，只要object的类型是元组中任意一个就返回True，否则返回False</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="string">""</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], dict)  </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<h3 id="range">range()</h3>
-<p>range函数是个工厂方法，用于构造一个从[start, stop) （不包含stop）之间的连续的不可变的整数序列对象，这个序列功能上和列表非常类似，函数定义：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">range([start,] stop [, step]) -&gt; range object</span><br></pre></td></tr></table></figure>
-<ul>
-<li>start 可选参数，序列的起点，默认是0</li>
-<li>stop 必选参数，序列的终点（不包含）</li>
-<li>step 可选参数，序列的步长，默认是1，生成的元素规律是 r[i] = start + step*i</li>
-</ul>
-<p>生成0~5的列表</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">5</span>)  </span><br><span class="line">range(<span class="number">0</span>, <span class="number">5</span>)     </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">5</span>))  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
-<p>默认从0开始，生成0到4之间的5个整数，不包含5，step 默认是1，每次都是在前一次加1</p>
-<p>如果你想将某个操作重复执行n遍，就可以使用for循环配置range函数实现</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):  </span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"hello python"</span>)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">hello python  </span><br><span class="line">hello python  </span><br><span class="line">hello python</span><br></pre></td></tr></table></figure>
-<p>步长为2</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line">range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>))  </span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
-<p>起点从1开始，终点10，步长为2，每次都在前一个元素的基础上加2，构成1到10之间的奇数。</p>
-<h3 id="enumerate">enumerate()</h3>
-<p>用于枚举可迭代对象，同时还可以得到每次元素的下表索引值，函数定义：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">enumerate(iterable, start=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
-<p>index 默认从0开始，如果显式指定参数start，下标索引就从start开始</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>, start=<span class="number">1</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">1</span> p  </span><br><span class="line"><span class="number">2</span> y  </span><br><span class="line"><span class="number">3</span> t  </span><br><span class="line"><span class="number">4</span> h  </span><br><span class="line"><span class="number">5</span> o  </span><br><span class="line"><span class="number">6</span> n</span><br></pre></td></tr></table></figure>
-<p>如果不使用enumerate函数，要获取元素的下标索引，则需要更多的代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_enumerate</span><span class="params">(sequence, start=<span class="number">0</span>)</span>:</span>  </span><br><span class="line">    n = start  </span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> sequence:  </span><br><span class="line">        <span class="keyword">yield</span> n, e  </span><br><span class="line">        n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> my_enumerate(<span class="string">"python"</span>):  </span><br><span class="line">    print(index, value)  </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
-<h3 id="len">len</h3>
-<p>len 用于获取容器对象中的元素个数，例如判断列表是否为空可以用 len 函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])  </span><br><span class="line"><span class="number">3</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="string">"python"</span>)  </span><br><span class="line"><span class="number">6</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> len([]) == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-<p>并不是所有对象都支持len操作的，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="literal">True</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;  </span><br><span class="line">TypeError: object of type <span class="string">'bool'</span> has no len()</span><br></pre></td></tr></table></figure>
-<p>除了序列对象和集合对象，自定义类必须实现了 <strong>len</strong> 方法能作用在len函数上</p>
-<h3 id="reversed">reversed()</h3>
-<p>reversed() 反转序列对象，你可以将字符串进行反转，将列表进行反转，将元组反转</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(reversed([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="open">open()</h3>
-<p>open 函数用于构造文件对象，构建后可对其进行内容的读写操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">open(file, mode=<span class="string">'r'</span>, encoding=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>读操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从当前路径打开文件 test.txt， 默认以读的方式  </span></span><br><span class="line">&gt;&gt;&gt;f = open(<span class="string">"test.txt"</span>)  </span><br><span class="line">&gt;&gt;&gt;f.read()  </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>有时还需要指定编码格式，否则会遇到乱码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"test.txt"</span>, encoding=<span class="string">'utf8'</span>)</span><br></pre></td></tr></table></figure>
-<p>写操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;f = open(<span class="string">"hello.text"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">&gt;&gt;&gt;f.write(<span class="string">"hello python"</span>))</span><br></pre></td></tr></table></figure>
-<p>文件中存在内容时原来的内容将别覆盖，如果不想被覆盖，直接将新的内容追加到文件末尾，可以使用 a 模式</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"hello.text"</span>, <span class="string">'a'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">f.write(<span class="string">"!!!"</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="sorted">sorted()</h3>
-<p>sroted 是对列表进行重新排序，当然其他可迭代对象都支持重新排放，返回一个新对象，原对象保持不变</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">1</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>])  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lxml相关操作</title>
-    <url>/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。</p>
-<a id="more"></a>
-<h2 id="如何构建对象">1.如何构建对象</h2>
-<p>首先我们要引入lxml（html也是lxml的一种）包，然后调用<code>etree.HTML()</code>函数解析html来构建Element</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">element = etree.HTML(response.text).xpath(<span class="string">'//div[@class="con_main"]'</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h2 id="去除特定节点">2.去除特定节点</h2>
-<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a href="https://lxml.de/api/lxml.etree._Element-class.html" target="_blank" rel="noopener">lxml官方文档</a>。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pp <span class="keyword">in</span> element.findall(<span class="string">'p[@style]'</span>):</span><br><span class="line">    element.remove(pp)</span><br></pre></td></tr></table></figure>
-<h2 id="完成信息提取">3.完成信息提取</h2>
-<p>之后就是正常的完成对所需信息的处理，去毛刺，格式化，列表化等操作：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"><span class="comment"># 这一句是去除列表中的空元素</span></span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong></p>
-<ul>
-<li>虽然<code>Element</code>和scrapy的<code>selector</code>都可以是调用<code>xpath</code>方法形式上也很类似但是<code>Element</code>对象<code>xpath('string(.)')</code>之后是不用<code>extract_first()</code>的</li>
-</ul>
-<h2 id="extract和extract_first">4.extract（）和extract_first（）</h2>
-<p>如果您是Scrapy的长期用户，则可能熟悉<code>.extract()</code>和<code>.extract_first()</code>选择器方法。许多博客文章和教程也正在使用它们。Scrapy仍支持这些方法，<strong>没有计划</strong>弃用它们。</p>
-<p>但是，Scrapy用法文档现在使用<code>.get()</code>和 <code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
-<p>以下示例显示了这些方法如何相互映射：</p>
-<ol type="1">
-<li><p><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>： <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure></p></li>
-<li><p><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</p></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).getall()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li><code>Selector.get()</code>与<code>Selector.extract()</code>：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].extract()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>为了保持一致性，还有<code>Selector.getall()</code>，它返回一个列表：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].getall()</span></span><br><span class="line">['image1.html']</span><br></pre></td></tr></table></figure>
-<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code> 始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>爬虫</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-        <tag>信息提取</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ubuntu安装MySQL</title>
     <url>/Ubuntu%E5%AE%89%E8%A3%85mysql/</url>
     <content><![CDATA[<p>服务器安装MySQL有些方法搞的十分麻烦，这里记录一个Ubuntu适用的简单的方法，同时修改字符集为utf8mb4（毕竟MySQL的utf8是个赝品）</p>
@@ -614,6 +567,53 @@
       </tags>
   </entry>
   <entry>
+    <title>lxml相关操作</title>
+    <url>/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。</p>
+<a id="more"></a>
+<h2 id="如何构建对象">1.如何构建对象</h2>
+<p>首先我们要引入lxml（html也是lxml的一种）包，然后调用<code>etree.HTML()</code>函数解析html来构建Element</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">element = etree.HTML(response.text).xpath(<span class="string">'//div[@class="con_main"]'</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="去除特定节点">2.去除特定节点</h2>
+<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a href="https://lxml.de/api/lxml.etree._Element-class.html" target="_blank" rel="noopener">lxml官方文档</a>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pp <span class="keyword">in</span> element.findall(<span class="string">'p[@style]'</span>):</span><br><span class="line">    element.remove(pp)</span><br></pre></td></tr></table></figure>
+<h2 id="完成信息提取">3.完成信息提取</h2>
+<p>之后就是正常的完成对所需信息的处理，去毛刺，格式化，列表化等操作：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"><span class="comment"># 这一句是去除列表中的空元素</span></span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<ul>
+<li>虽然<code>Element</code>和scrapy的<code>selector</code>都可以是调用<code>xpath</code>方法形式上也很类似但是<code>Element</code>对象<code>xpath('string(.)')</code>之后是不用<code>extract_first()</code>的</li>
+</ul>
+<h2 id="extract和extract_first">4.extract（）和extract_first（）</h2>
+<p>如果您是Scrapy的长期用户，则可能熟悉<code>.extract()</code>和<code>.extract_first()</code>选择器方法。许多博客文章和教程也正在使用它们。Scrapy仍支持这些方法，<strong>没有计划</strong>弃用它们。</p>
+<p>但是，Scrapy用法文档现在使用<code>.get()</code>和 <code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
+<p>以下示例显示了这些方法如何相互映射：</p>
+<ol type="1">
+<li><p><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>： <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure></p></li>
+<li><p><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</p></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).getall()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li><code>Selector.get()</code>与<code>Selector.extract()</code>：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].extract()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>为了保持一致性，还有<code>Selector.getall()</code>，它返回一个列表：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].getall()</span></span><br><span class="line">['image1.html']</span><br></pre></td></tr></table></figure>
+<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code> 始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
+        <tag>信息提取</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>pycharm远程调试项目</title>
     <url>/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/</url>
     <content><![CDATA[<p>服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。</p>
@@ -690,189 +690,6 @@
       <tags>
         <tag>python</tag>
         <tag>pycharm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python操作redis大全</title>
-    <url>/python%E6%93%8D%E4%BD%9Credis%E5%A4%A7%E5%85%A8/</url>
-    <content><![CDATA[<p>redis是一个很常见的键值对数据库，用途广泛，我现在主要是在实现增量爬虫的时候使用了redis中的hashes类型，这里记录一些redis的相关操作。</p>
-<a id="more"></a>
-<h3 id="一字符串-strings">一、字符串 strings</h3>
-<p>Python操作Redis的redis模块对字符串（string）的主要操作函数包括：SET、GET、GETSET、SETEX、SETNX、MSET、MSETNX、INCR(INCRBY,DECR,DECRBY在python中庸同一个函数incr实现)、APPEND、SETRANGE、STRLEN。函数说明如下：</p>
-<ol type="1">
-<li><strong>SET</strong>： 为指定的键（key）设置值（value）， set(self, name, value, **kwargs)。</li>
-<li><strong>GET</strong>：获取指定键（key）绑定的值（value），get(self, name)。</li>
-<li><strong>GETSET</strong>：为指定的键（key）设置新的值（value），并返回旧的值（old Value），getset(self, name, value)</li>
-<li><strong>SETEX</strong>：为指定的键（key）设置过期以秒（second）计的过期时间，setex(self, name, value, time)</li>
-<li><strong>SETNX</strong>：键（key）不存在时，为键（key）指定值（value），setnx(self, name, value)</li>
-<li><strong>MSET</strong>：一次性设置多个键-值(key-value)对,函数设置的键-值对（即mapping所指内容）数据要以Python字典数据类型传入，mset(self, mapping)</li>
-<li><strong>MSETNX</strong>：键-值(key-value)对不存在时，设置键-值（key-value）对,msetnx(self, mapping)，mapping值参考6</li>
-<li><strong>INCR</strong>：自增函数，默认步长为1，通过对步长（amount）大小以及字符的控制实现了INCRBY（amount&gt;=1）、DECR（amount=-1）、DECRBY（amount&lt;=-1）等函数功能，incr(self, name, amount=1)</li>
-<li><strong>APPEND</strong>：为指定的字符串追加值，若不存在则直接创建，append(self, key, value)</li>
-<li><strong>SETRANGE</strong>：用 value 参数覆写给定 key 所储存的字符串值，从偏移量 offset 开始，setrange(self, name, offset, value)</li>
-<li><strong>STRLEN</strong>：返回字符串的长度，当name不存在时返回0，strlen(self, name)</li>
-</ol>
-<p>示例代码如下： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r.setex(<span class="string">'name'</span>, value=<span class="string">'natasha'</span>, time=<span class="number">2</span>) <span class="comment"># 设置新值，过期时间为3s</span></span><br><span class="line">r.mset(k1 = <span class="string">'v1'</span>, k2 = <span class="string">'v2'</span>, k3 = <span class="string">'v3'</span>) <span class="comment"># 批量设置新值</span></span><br><span class="line">print(r.mget(<span class="string">'k1'</span>, <span class="string">'k2'</span>, <span class="string">'k3'</span>, <span class="string">'k4'</span>)) <span class="comment"># 批量获取新值</span></span><br><span class="line">print(r.getset(<span class="string">'name'</span>, <span class="string">'natasha'</span>)) <span class="comment"># 设置新值并获取原来的值</span></span><br><span class="line">print(r.getrange(<span class="string">'name'</span>, <span class="number">0</span>, <span class="number">1</span>)) <span class="comment"># 获取子序列 0 &lt;= x &lt;= 1</span></span><br><span class="line">r.setrange(<span class="string">'name'</span>, <span class="number">0</span>, <span class="string">'NATASHA'</span>) <span class="comment"># 修改字符串内容，从指定字符串索引开始向后替换（新值太长时，则向后添加），返回值的长度</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> i &lt; <span class="number">2</span>:</span><br><span class="line">    print(r.get(<span class="string">'name'</span>))</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    source = <span class="string">'foo'</span></span><br><span class="line">    r.set(<span class="string">'n1'</span>, source)</span><br><span class="line">    r.setbit(<span class="string">'n1'</span>, <span class="number">7</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">注：如果在Redis中有一个对应： n1 = "foo"，</span></span><br><span class="line"><span class="string">那么字符串foo的二进制表示为：01100110 01101111 01101111</span></span><br><span class="line"><span class="string">所以，如果执行 setbit('n1', 7, 1)，则就会将第7位设置为1，</span></span><br><span class="line"><span class="string">那么最终二进制则变成 01100111 01101111 01101111，即："goo"</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(r.get(<span class="string">'n1'</span>))</span><br><span class="line">print(r.getbit(<span class="string">'n1'</span>, <span class="number">7</span>)) <span class="comment"># 获取n1对应的值的二进制表示中的某位的值 （0或1）</span></span><br><span class="line">r.set(<span class="string">'n2'</span>, <span class="string">'娜塔莎'</span>)</span><br><span class="line">print(r.strlen(<span class="string">'n2'</span>)) <span class="comment"># 返回对应的字节长度（一个汉字3个字节）</span></span><br><span class="line">r.set(<span class="string">'num'</span>, <span class="number">1</span>)</span><br><span class="line">r.incr(<span class="string">'num'</span>, amount=<span class="number">10</span>)</span><br><span class="line">r.decr(<span class="string">'num'</span>, amount=<span class="number">1</span>)</span><br><span class="line">print(r.get(<span class="string">'num'</span>)) <span class="comment"># 自增num对应的值，当name不存在时，则创建name＝amount，否则，则自增。</span></span><br><span class="line">r.append(<span class="string">'num'</span>, <span class="number">111</span>)</span><br><span class="line">print(r.get(<span class="string">'num'</span>)) <span class="comment"># 在redis num对应的值后面追加内容</span></span><br></pre></td></tr></table></figure></p>
-<p>输出结果如下： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[<span class="string">b'v1'</span>, <span class="string">b'v2'</span>, <span class="string">b'v3'</span>, <span class="literal">None</span>]</span><br><span class="line"></span><br><span class="line"><span class="string">b'natasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'goo'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'goo'</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'10'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'10111'</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="二列表-lists">二、列表 lists</h3>
-<p>Python操作Redis主要利用了redis模块来实现，list表操作函数主要模拟了Redis操作命令LPUSH，LRANGE，LINDEX，BLPOP，BRPOP。函数说明如下：</p>
-<ol type="1">
-<li><strong>lpush</strong>函数实现了从向指定redis列表头部压入数据功能，lpush key value</li>
-<li><strong>lrange</strong>获取列表指定范围的函数，lrange key start end</li>
-<li><strong>lindex</strong>根据列表下标量获取列表元素值， lindex key index</li>
-<li><strong>blpop</strong>从列表头部取出第一个元素，返回该元素值并从列表删除（l代表left，左边）</li>
-<li><strong>brpop</strong>从列表尾部取出第一个元素，返回该元素值并从列表删除（r代表right，右边）</li>
-<li><strong>LPUSHX、RPUSHX</strong>以及其他一些Redis列表（List）函数目前版本无法实现，如有可实现方法博客代码事例将会得到更新。</li>
-</ol>
-<p>示例代码如下： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line">r.lpush(<span class="string">'oo'</span>, <span class="number">11</span>) <span class="comment"># 保存顺序为: 33,22,11</span></span><br><span class="line">r.lpushx(<span class="string">'oo'</span>, <span class="number">00</span>) <span class="comment"># 在name对应的list中添加元素，只有name已经存在时，值添加到列表的最左边</span></span><br><span class="line">print(r.llen(<span class="string">'oo'</span>)) <span class="comment"># name对应的list元素的个数</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.linsert(<span class="string">'oo'</span>, <span class="string">'before'</span>, <span class="number">11</span>, <span class="number">99</span>) <span class="comment"># 在11之前插入值99</span></span><br><span class="line">r.lset(<span class="string">'oo'</span>, <span class="number">1</span>, <span class="number">88</span>) <span class="comment"># 对name对应的list中的某一个索引位置重新赋值</span></span><br><span class="line">print(r.lrange(<span class="string">'oo'</span>, <span class="number">0</span>, <span class="number">-1</span>)) <span class="comment"># 在name对应的列表分片获取数据</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.lrem(<span class="string">'oo'</span>, <span class="number">88</span>, num=<span class="number">1</span>) <span class="comment"># 在name对应的list中删除指定的值.num=0，删除列表中所有的指定值；num=2,从前到后，删除2个；num=-2,从后向前，删除2个</span></span><br><span class="line">print(r.lrange(<span class="string">'oo'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.lpop(<span class="string">'oo'</span>)) <span class="comment"># 在name对应的列表的左侧获取第一个元素并在列表中移除，返回值则是第一个元素</span></span><br><span class="line">print(r.lindex(<span class="string">'oo'</span>, <span class="number">0</span>)) <span class="comment"># 在name对应的列表中根据索引获取列表元素</span></span><br><span class="line">r.lpush(<span class="string">'l1'</span>, <span class="number">11</span>) <span class="comment"># index为0</span></span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">22</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">33</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">44</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">55</span>) <span class="comment"># index为4</span></span><br><span class="line">r.ltrim(<span class="string">'l1'</span>, <span class="number">1</span>, <span class="number">3</span>) <span class="comment"># 在name对应的列表中移除没有在[start-end]索引之间的值</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.rpoplpush(<span class="string">'l1'</span>, <span class="string">'l1'</span>) <span class="comment"># 从一个列表取出最右边的元素，同时将其添加至另一个列表的最左边;src要取数据的列表的name, dst要添加数据的列表的name</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.brpoplpush(<span class="string">'l1'</span>, <span class="string">'l1'</span>, timeout=<span class="number">3</span>) <span class="comment"># # timeout，当src对应的列表中没有数据时，阻塞等待其有数据的超时时间（秒），0 表示永远阻塞</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.blpop(<span class="string">'l1'</span>, <span class="number">3</span>)) <span class="comment"># 从列表头部取出第一个元素，返回该元素值并从列表删除（l代表left，左边）</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"># 由于redis类库中没有提供对列表元素的增量迭代，如果想要循环name对应的列表的所有元素，那么就需要：</span></span><br><span class="line"><span class="string"># 1、获取name对应的所有列表</span></span><br><span class="line"><span class="string"># 2、循环列表</span></span><br><span class="line"><span class="string"># 但是，如果列表非常大，那么就有可能在第一步时就将程序的内容撑爆，所有有必要自定义一个增量迭代的功能：</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'自定义增量迭代：'</span>)</span><br><span class="line">r.flushall()</span><br><span class="line">r.lpush(<span class="string">'l1'</span>, <span class="number">11</span>) <span class="comment"># index为0</span></span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">22</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">33</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">44</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">55</span>) <span class="comment"># index为4</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">list_iter</span><span class="params">(name)</span>:</span></span><br><span class="line">list_count = r.llen(name)</span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(list_count):</span><br><span class="line">	<span class="keyword">yield</span> r.lindex(name, index)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> list_iter(<span class="string">'l1'</span>):</span><br><span class="line">	print(item)</span><br></pre></td></tr></table></figure> 输出结果如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'0'</span>, <span class="string">b'88'</span>, <span class="string">b'11'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'0'</span>, <span class="string">b'11'</span>]</span><br><span class="line"></span><br><span class="line"><span class="string">b'0'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'11'</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'22'</span>, <span class="string">b'33'</span>, <span class="string">b'44'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'44'</span>, <span class="string">b'22'</span>, <span class="string">b'33'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'33'</span>, <span class="string">b'44'</span>, <span class="string">b'22'</span>]</span><br><span class="line"></span><br><span class="line">(<span class="string">b'l1'</span>, <span class="string">b'33'</span>)</span><br><span class="line"></span><br><span class="line">[<span class="string">b'44'</span>, <span class="string">b'22'</span>]</span><br><span class="line"></span><br><span class="line">自定义增量迭代：</span><br><span class="line"></span><br><span class="line"><span class="string">b'11'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'22'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'33'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'44'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'55'</span></span><br></pre></td></tr></table></figure>
-<h3 id="三集合-sets">三、集合 sets</h3>
-<p>Redis 数据库集合对象(set object)是由string类型的无重复元素的无需集合，底层编码可以是intset或者hashtable。intset编码的集合对象用整数集合最为底层实现，所有对象元素保存在整数集合中。Python的redis模块实现了 SADD、SCARD 、SDIFF 、SDIFFSTORE、SINTER 、SINTERSTORE、SISMEMBER 、SMEMBERS 、SMOVE、SPOP、SRANDMEMBER、SREM、SUNION、SUNIONSTORE操作命令的基本用法。函数说明如下：</p>
-<ol type="1">
-<li><strong>SADD</strong>：向集合对象添加成员，sadd(self, name, value)</li>
-<li><strong>SCARD</strong>：获取集合元素个数，scard(self, name)</li>
-<li><strong>SDIFF</strong>：返回给定多个集合对象的差集(set key1-set key2..-set keyn)，从左到右计算集合差集，sdiff(self, keys, *args)</li>
-<li><strong>SDIFFSTORE</strong>：返回给定给定多个集合对象的差集并存储在目标（dest）集合中，sdiffstore(self, dest, keys, *args)</li>
-<li><strong>SINTER</strong>：返回给定所有集合（keys, <em>args）的交集, sinter(self, keys,</em> args)</li>
-<li><strong>SINTERSTORE</strong>：返回给定所有集合（keys, <em>args）的交集并存储在 集合(dest) 中, sinterstore(self, dest, keys,</em> args)</li>
-<li><strong>SISMEMBER</strong>：判断 value元素是否是集合 name 的成员,返回布尔逻辑值True或者False，sismember(self, name, value)</li>
-<li><strong>SMEMBERS</strong>：返回集合中所元素值的Python集合类型数据，smembers(self, name)</li>
-<li><strong>SMOVE</strong>：将元素value从集合src移动到 集合 dest。若元素value在集合src中不存在，则集合dest中不会添加元素value， smove(self, src, dest, value)</li>
-<li><strong>SPOP</strong>：移除并返回集合中的一个随机元素, spop(self, name)</li>
-<li><strong>SRANDMEMBER</strong>：返回集合中一个随机数，但是不做移除操作, srandmember(self, name)。从Redis 2.6 版本开始， 在命令行下Srandmember 命令接受可选返回元素数量的参数 redis&gt;SRANDMEMBER name count</li>
-<li><strong>SREM</strong>：移除集合中一个元素，srem(self, name, value)，redis模块任然沿用Redis 2.4 版本以前的只接受单个元素的用法。</li>
-<li><strong>SUNION</strong>：返回所有给定集合的并集中所有元素，sunion(self, keys, *args)</li>
-<li><strong>SUNIONSTORE</strong>：所有给定集合的并集存储在集合dest 中, sunionstore(self, dest, keys, *args)</li>
-<li><strong>SSCAN</strong>：迭代集合中的元素，sscan(self, name, cursor=0, match=None, count=None)</li>
-</ol>
-<p>示例代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.sadd(<span class="string">'s1'</span>, <span class="string">'v1'</span>, <span class="string">'v1'</span>, <span class="string">'v2'</span>, <span class="string">'v3'</span>) <span class="comment"># name对应的集合中添加元素</span></span><br><span class="line">r.sadd(<span class="string">'s2'</span>, <span class="string">'v2'</span>, <span class="string">'v4'</span>) <span class="comment"># name对应的集合中添加元素</span></span><br><span class="line">print(r.scard(<span class="string">'s1'</span>)) <span class="comment"># 获取name对应的集合中元素个数</span></span><br><span class="line">print(r.sdiff(<span class="string">'s1'</span>, <span class="string">'s2'</span>)) <span class="comment">#在第一个name对应的集合中且不在其他name对应的集合的元素集合</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.sdiffstore(<span class="string">'s3'</span>, <span class="string">'s1'</span>, <span class="string">'s2'</span>) <span class="comment"># 获取第一个name对应的集合中且不在其他name对应的集合，再将其新加入到dest对应的集合中</span></span><br><span class="line">print(r.smembers(<span class="string">'s3'</span>)) <span class="comment"># 获取s3对应的集合的所有成员</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.sinter(<span class="string">'s1'</span>, <span class="string">'s2'</span>)) <span class="comment"># 获取s1, s2对应集合的交集</span></span><br><span class="line">r.sinterstore(<span class="string">'s4'</span>, <span class="string">'s1'</span>, <span class="string">'s2'</span>) <span class="comment"># 获取s1, s2对应集合的交集，并将其存放到集合是s4中</span></span><br><span class="line">print(r.smembers(<span class="string">'s4'</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.sunion(<span class="string">'s1'</span>, <span class="string">'s2'</span>)) <span class="comment"># 获取s1, s2对应集合的并集</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.sunionstore(<span class="string">'s5'</span>, <span class="string">'s1'</span>, <span class="string">'s2'</span>) <span class="comment"># 获取s1, s2对应集合的交集，并将其存放到集合是s5中</span></span><br><span class="line">print(r.smembers(<span class="string">'s5'</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.sismember(<span class="string">'s4'</span>, <span class="string">'v4'</span>)) <span class="comment"># 检查value是否是name对应的集合的成员</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.smove(<span class="string">'s2'</span>, <span class="string">'s1'</span>, <span class="string">'v4'</span>) <span class="comment"># 将集合s2中成员v4移至集合s1中</span></span><br><span class="line">print(r.smembers(<span class="string">'s1'</span>))</span><br><span class="line">r.srem(<span class="string">'s1'</span>, <span class="string">'v1'</span>) <span class="comment"># 在name对应的集合中删除某些值</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.spop(<span class="string">'s1'</span>)) <span class="comment"># 从集合的右侧（尾部）移除一个成员，并将其返回 注意：集合是无序的，故结果随机！</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.srandmember(<span class="string">'s1'</span>)) <span class="comment"># 从name对应的集合中随机获取 numbers 个元素(Redis 2.6+)</span></span><br></pre></td></tr></table></figure>
-<p>输出结果如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v2'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v2'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v2'</span>, <span class="string">b'v4'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v2'</span>, <span class="string">b'v4'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v2'</span>, <span class="string">b'v4'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">b'v2'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'v3'</span></span><br></pre></td></tr></table></figure>
-<h3 id="四有序集合-sorted-sets">四、有序集合 sorted sets</h3>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">命令</th>
-<th style="text-align: left;">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Redis Zadd 命令</td>
-<td style="text-align: left;">向有序集合添加一个或多个成员，或者更新已存在成员的分数</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zcard 命令</td>
-<td style="text-align: left;">获取有序集合的成员数</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zcount 命令</td>
-<td style="text-align: left;">计算在有序集合中指定区间分数的成员数</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zincrby 命令</td>
-<td style="text-align: left;">有序集合中对指定成员的分数加上增量 increment</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zinterstore 命令</td>
-<td style="text-align: left;">计算给定的一个或多个有序集的交集并将结果集存储在新的有序集合 key 中</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zlexcount 命令</td>
-<td style="text-align: left;">在有序集合中计算指定字典区间内成员数量</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zrange 命令</td>
-<td style="text-align: left;">通过索引区间返回有序集合成指定区间内的成员</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zrangebylex 命令</td>
-<td style="text-align: left;">通过字典区间返回有序集合的成员</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zrangebyscore 命令</td>
-<td style="text-align: left;">通过分数返回有序集合指定区间内的成员</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zrank 命令</td>
-<td style="text-align: left;">返回有序集合中指定成员的索引</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zrem 命令</td>
-<td style="text-align: left;">移除有序集合中的一个或多个成员</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zremrangebylex 命令</td>
-<td style="text-align: left;">移除有序集合中给定的字典区间的所有成员</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zremrangebyrank 命令</td>
-<td style="text-align: left;">移除有序集合中给定的排名区间的所有成员</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zremrangebyscore 命令</td>
-<td style="text-align: left;">移除有序集合中给定的分数区间的所有成员</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zrevrange 命令</td>
-<td style="text-align: left;">返回有序集中指定区间内的成员，通过索引，分数从高到底</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zrevrangebyscore 命令</td>
-<td style="text-align: left;">返回有序集中指定分数区间内的成员，分数从高到低排序</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zrevrank 命令</td>
-<td style="text-align: left;">返回有序集合中指定成员的排名，有序集成员按分数值递减(从大到小)排序</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zscore 命令</td>
-<td style="text-align: left;">返回有序集中，成员的分数值</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Redis Zunionstore 命令</td>
-<td style="text-align: left;">计算给定的一个或多个有序集的并集，并存储在新的 key 中</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Redis Zscan 命令</td>
-<td style="text-align: left;">迭代有序集合中的元素（包括元素成员和元素分值）</td>
-</tr>
-</tbody>
-</table>
-<p>示例代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zadd(<span class="string">'z1'</span>, <span class="string">'11'</span>, <span class="number">1</span>, <span class="string">'22'</span>, <span class="number">2</span>, <span class="string">'33'</span>, <span class="number">3</span>, <span class="string">'44'</span>, <span class="number">4</span>, <span class="string">'55'</span>, <span class="number">5</span>, <span class="string">'66'</span>, <span class="number">6</span>, <span class="string">'66'</span>, <span class="number">7</span>) <span class="comment"># 在name对应的有序集合中添加元素</span></span><br><span class="line">print(r.zcard(<span class="string">'z1'</span>)) <span class="comment"># 获取name对应的有序集合元素的数量</span></span><br><span class="line">print(r.zcount(<span class="string">'z1'</span>, <span class="number">1</span>, <span class="number">2</span>)) <span class="comment"># 获取name对应的有序集合中分数 在 [min,max] 之间的个数</span></span><br><span class="line">r.zincrby(<span class="string">'z1'</span>, <span class="string">'11'</span>, amount=<span class="number">5</span>) <span class="comment"># 自增name对应的有序集合的 name 对应的分数</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>)) <span class="comment"># 值11被排序到最后;此处表示按元素的值升序排列</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.zrank(<span class="string">'z1'</span>, <span class="number">33</span>)) <span class="comment"># 获取某个值在 name对应的有序集合中的排行（从 0 开始）</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zrem(<span class="string">'z1'</span>, <span class="string">'66'</span>) <span class="comment"># 删除name对应的有序集合中值是values的成员</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zremrangebyrank(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">1</span>) <span class="comment"># 根据排行范围删除</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zremrangebyscore(<span class="string">'z1'</span>, <span class="number">4.5</span>, <span class="number">5.5</span>) <span class="comment"># 根据分数范围删除</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.zscore(<span class="string">'z1'</span>, <span class="number">11</span>)) <span class="comment"># 获取name对应有序集合中 value 对应的分数</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zadd(<span class="string">"zset_name"</span>, <span class="string">"a1"</span>, <span class="number">6</span>, <span class="string">"a2"</span>, <span class="number">2</span>, <span class="string">"a3"</span>, <span class="number">5</span>)</span><br><span class="line">r.zadd(<span class="string">'zset_name1'</span>, a1=<span class="number">7</span>, b1=<span class="number">10</span>, b2=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">获取两个有序集合的交集并放入dest集合，如果遇到相同值不同分数，则按照aggregate进行操作</span></span><br><span class="line"><span class="string">aggregate的值为: SUM MIN MAX</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">r.zinterstore(<span class="string">'zset_name2'</span>, (<span class="string">'zset_name'</span>, <span class="string">'zset_name1'</span>), aggregate=<span class="string">'Sum'</span>)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.zrange(<span class="string">'zset_name2'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br></pre></td></tr></table></figure>
-<p>输出结果如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span></span><br><span class="line"></span><br><span class="line">[(<span class="string">b'22'</span>, <span class="number">2.0</span>), (<span class="string">b'33'</span>, <span class="number">3.0</span>), (<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'55'</span>, <span class="number">5.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>), (<span class="string">b'66'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line">[(<span class="string">b'22'</span>, <span class="number">2.0</span>), (<span class="string">b'33'</span>, <span class="number">3.0</span>), (<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'55'</span>, <span class="number">5.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line">[(<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'55'</span>, <span class="number">5.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line">[(<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line"><span class="number">6.0</span></span><br><span class="line"></span><br><span class="line">[(<span class="string">b'a1'</span>, <span class="number">13.0</span>)]</span><br></pre></td></tr></table></figure>
-<h3 id="五哈希-hashes">五、哈希 hashes</h3>
-<p>Redis 数据库hash数据类型是一个string类型的key和value的映射表，适用于存储对象。redis 中每个hash可以存储键值对多达40亿。Python的redis模块实现了Redis哈希（Hash）命令行操作的几乎全部命令，包括HDEL、HEXISTS、HGET、HGETALL、HINCRBY、HKEYS、HLEN 、HMGET 、HMSET 、HSET 、HSETNX 、HVALS 、HINCRBYFLOAT等命令。函数说明如下：</p>
-<ol type="1">
-<li><strong>HDEL</strong>：删除对应哈希（Hash）表的指定键（key）的字段，hdel(self, name, key)</li>
-<li><strong>HEXISTS</strong>：检测哈希（Hash）表对应键（key）字段是否存在，返回布尔逻辑，hexists(self, name, key)</li>
-<li><strong>HGET</strong>：获取哈希（Hash）指定键（key）对应的值，hget(self, name, key)</li>
-<li><strong>HGETALL</strong>：获取哈希(Hash)表的键-值对（key-value pairs）,返回python字典类型数据，hgetall(self, name)</li>
-<li><strong>HINCRBY</strong>：为哈希表（Hash）指定键（key）对应的值（key）加上指定的整数数值（int，可为负值）hincrby(self&gt;, name, key, amount=1)，Redis 中本操作的值被限制在 64 位(bit)有符号数字。</li>
-<li><strong>HKEYS</strong>：返回哈希表（Hash）对应键（key）的数组（Python称之为列表List），hkeys(self, name)</li>
-<li><strong>HLEN</strong>： 获取哈希表（Hash）中键-值对（key-value pairs）个数，hlen(self, name)</li>
-<li><strong>HMGET</strong>：获取哈希表（Hash）中一个或多个给点字段的值，不存在返回nil(Redis命令行)/None(Python)，hmget(self, name, keys)，其中keys可以为列表（list）</li>
-<li><strong>HMSET</strong>：设置对个键-值对（key-value pairs）到哈希表（Hash）中，python输入值（mapping）为字典（dictionary）类型，hmset(self, name, mapping)</li>
-<li><strong>HSET</strong>：为哈希表（Hash）赋值，若键（key）存在值（value）则覆盖，不存在则创建，hset(self, name, key, value)</li>
-<li><strong>HSETNX</strong>：为哈希表（Hash）不存值（value）的键（key）赋值，存在操作无效，对应值（value）无变化，hsetnx(self, name, key, value)</li>
-<li><strong>HVALS</strong>：返回哈希表（Hash）对应值（value）的列表，hvals(self, name)</li>
-<li><strong>HINCRBYFLOAT</strong>：为哈希表 key 中的指定字段的浮点数值加上增量 increment ，hincrbyfloat(self, name, key, amount=1.0)</li>
-</ol>
-<p>示例代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line">r.hset(<span class="string">'n1'</span>, <span class="string">'k1'</span>, <span class="string">'v1'</span>) <span class="comment"># hset(name, key, value),name对应的hash中设置一个键值对（不存在，则创建；否则，修改）</span></span><br><span class="line">print(r.hget(<span class="string">'n1'</span>, <span class="string">'k1'</span>))</span><br><span class="line">r.hmset(<span class="string">'n2'</span>, &#123;<span class="string">'k1'</span>: <span class="string">'v1'</span>, <span class="string">'k2'</span>: <span class="string">'v2'</span>, <span class="string">'k3'</span>: <span class="string">'v3'</span>&#125;) <span class="comment"># hmset(name, mapping),在name对应的hash中批量设置键值对</span></span><br><span class="line">print(r.hmget(<span class="string">'n2'</span>, <span class="string">'k2'</span>))</span><br><span class="line">print(r.hgetall(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应hash的所有键值</span></span><br><span class="line">print(r.hlen(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应的hash中键值对的个数</span></span><br><span class="line">print(r.hkeys(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应的hash中所有的key的值</span></span><br><span class="line">print(r.hvals(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应的hash中所有的value的值</span></span><br><span class="line">print(r.hexists(<span class="string">'n2'</span>, <span class="string">'k4'</span>)) <span class="comment"># 检查name对应的hash是否存在当前传入的key</span></span><br><span class="line">r.hdel(<span class="string">'n2'</span>, <span class="string">'k3'</span>) <span class="comment"># 将name对应的hash中指定key的键值对删除</span></span><br><span class="line">r.hset(<span class="string">'n3'</span>, <span class="string">'k1'</span>, <span class="number">1</span>)</span><br><span class="line">r.hincrby(<span class="string">'n3'</span>, <span class="string">'k1'</span>, amount=<span class="number">1</span>) <span class="comment"># hincrby(name, key, amount=1),自增name对应的hash中的指定key的value的值，不存在则创建key=amount</span></span><br><span class="line">print(r.hgetall(<span class="string">'n3'</span>))</span><br></pre></td></tr></table></figure>
-<p>输出结果如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">b'v1'</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'v2'</span>]</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'k1'</span>: <span class="string">b'v1'</span>, <span class="string">b'k2'</span>: <span class="string">b'v2'</span>, <span class="string">b'k3'</span>: <span class="string">b'v3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'k1'</span>, <span class="string">b'k2'</span>, <span class="string">b'k3'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'v1'</span>, <span class="string">b'v2'</span>, <span class="string">b'v3'</span>]</span><br><span class="line"></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'k1'</span>: <span class="string">b'2'</span>&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -1121,6 +938,189 @@
       </tags>
   </entry>
   <entry>
+    <title>python操作redis大全</title>
+    <url>/python%E6%93%8D%E4%BD%9Credis%E5%A4%A7%E5%85%A8/</url>
+    <content><![CDATA[<p>redis是一个很常见的键值对数据库，用途广泛，我现在主要是在实现增量爬虫的时候使用了redis中的hashes类型，这里记录一些redis的相关操作。</p>
+<a id="more"></a>
+<h3 id="一字符串-strings">一、字符串 strings</h3>
+<p>Python操作Redis的redis模块对字符串（string）的主要操作函数包括：SET、GET、GETSET、SETEX、SETNX、MSET、MSETNX、INCR(INCRBY,DECR,DECRBY在python中庸同一个函数incr实现)、APPEND、SETRANGE、STRLEN。函数说明如下：</p>
+<ol type="1">
+<li><strong>SET</strong>： 为指定的键（key）设置值（value）， set(self, name, value, **kwargs)。</li>
+<li><strong>GET</strong>：获取指定键（key）绑定的值（value），get(self, name)。</li>
+<li><strong>GETSET</strong>：为指定的键（key）设置新的值（value），并返回旧的值（old Value），getset(self, name, value)</li>
+<li><strong>SETEX</strong>：为指定的键（key）设置过期以秒（second）计的过期时间，setex(self, name, value, time)</li>
+<li><strong>SETNX</strong>：键（key）不存在时，为键（key）指定值（value），setnx(self, name, value)</li>
+<li><strong>MSET</strong>：一次性设置多个键-值(key-value)对,函数设置的键-值对（即mapping所指内容）数据要以Python字典数据类型传入，mset(self, mapping)</li>
+<li><strong>MSETNX</strong>：键-值(key-value)对不存在时，设置键-值（key-value）对,msetnx(self, mapping)，mapping值参考6</li>
+<li><strong>INCR</strong>：自增函数，默认步长为1，通过对步长（amount）大小以及字符的控制实现了INCRBY（amount&gt;=1）、DECR（amount=-1）、DECRBY（amount&lt;=-1）等函数功能，incr(self, name, amount=1)</li>
+<li><strong>APPEND</strong>：为指定的字符串追加值，若不存在则直接创建，append(self, key, value)</li>
+<li><strong>SETRANGE</strong>：用 value 参数覆写给定 key 所储存的字符串值，从偏移量 offset 开始，setrange(self, name, offset, value)</li>
+<li><strong>STRLEN</strong>：返回字符串的长度，当name不存在时返回0，strlen(self, name)</li>
+</ol>
+<p>示例代码如下： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r.setex(<span class="string">'name'</span>, value=<span class="string">'natasha'</span>, time=<span class="number">2</span>) <span class="comment"># 设置新值，过期时间为3s</span></span><br><span class="line">r.mset(k1 = <span class="string">'v1'</span>, k2 = <span class="string">'v2'</span>, k3 = <span class="string">'v3'</span>) <span class="comment"># 批量设置新值</span></span><br><span class="line">print(r.mget(<span class="string">'k1'</span>, <span class="string">'k2'</span>, <span class="string">'k3'</span>, <span class="string">'k4'</span>)) <span class="comment"># 批量获取新值</span></span><br><span class="line">print(r.getset(<span class="string">'name'</span>, <span class="string">'natasha'</span>)) <span class="comment"># 设置新值并获取原来的值</span></span><br><span class="line">print(r.getrange(<span class="string">'name'</span>, <span class="number">0</span>, <span class="number">1</span>)) <span class="comment"># 获取子序列 0 &lt;= x &lt;= 1</span></span><br><span class="line">r.setrange(<span class="string">'name'</span>, <span class="number">0</span>, <span class="string">'NATASHA'</span>) <span class="comment"># 修改字符串内容，从指定字符串索引开始向后替换（新值太长时，则向后添加），返回值的长度</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> i &lt; <span class="number">2</span>:</span><br><span class="line">    print(r.get(<span class="string">'name'</span>))</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    source = <span class="string">'foo'</span></span><br><span class="line">    r.set(<span class="string">'n1'</span>, source)</span><br><span class="line">    r.setbit(<span class="string">'n1'</span>, <span class="number">7</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">注：如果在Redis中有一个对应： n1 = "foo"，</span></span><br><span class="line"><span class="string">那么字符串foo的二进制表示为：01100110 01101111 01101111</span></span><br><span class="line"><span class="string">所以，如果执行 setbit('n1', 7, 1)，则就会将第7位设置为1，</span></span><br><span class="line"><span class="string">那么最终二进制则变成 01100111 01101111 01101111，即："goo"</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(r.get(<span class="string">'n1'</span>))</span><br><span class="line">print(r.getbit(<span class="string">'n1'</span>, <span class="number">7</span>)) <span class="comment"># 获取n1对应的值的二进制表示中的某位的值 （0或1）</span></span><br><span class="line">r.set(<span class="string">'n2'</span>, <span class="string">'娜塔莎'</span>)</span><br><span class="line">print(r.strlen(<span class="string">'n2'</span>)) <span class="comment"># 返回对应的字节长度（一个汉字3个字节）</span></span><br><span class="line">r.set(<span class="string">'num'</span>, <span class="number">1</span>)</span><br><span class="line">r.incr(<span class="string">'num'</span>, amount=<span class="number">10</span>)</span><br><span class="line">r.decr(<span class="string">'num'</span>, amount=<span class="number">1</span>)</span><br><span class="line">print(r.get(<span class="string">'num'</span>)) <span class="comment"># 自增num对应的值，当name不存在时，则创建name＝amount，否则，则自增。</span></span><br><span class="line">r.append(<span class="string">'num'</span>, <span class="number">111</span>)</span><br><span class="line">print(r.get(<span class="string">'num'</span>)) <span class="comment"># 在redis num对应的值后面追加内容</span></span><br></pre></td></tr></table></figure></p>
+<p>输出结果如下： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[<span class="string">b'v1'</span>, <span class="string">b'v2'</span>, <span class="string">b'v3'</span>, <span class="literal">None</span>]</span><br><span class="line"></span><br><span class="line"><span class="string">b'natasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'goo'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'NAtasha'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'goo'</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'10'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'10111'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="二列表-lists">二、列表 lists</h3>
+<p>Python操作Redis主要利用了redis模块来实现，list表操作函数主要模拟了Redis操作命令LPUSH，LRANGE，LINDEX，BLPOP，BRPOP。函数说明如下：</p>
+<ol type="1">
+<li><strong>lpush</strong>函数实现了从向指定redis列表头部压入数据功能，lpush key value</li>
+<li><strong>lrange</strong>获取列表指定范围的函数，lrange key start end</li>
+<li><strong>lindex</strong>根据列表下标量获取列表元素值， lindex key index</li>
+<li><strong>blpop</strong>从列表头部取出第一个元素，返回该元素值并从列表删除（l代表left，左边）</li>
+<li><strong>brpop</strong>从列表尾部取出第一个元素，返回该元素值并从列表删除（r代表right，右边）</li>
+<li><strong>LPUSHX、RPUSHX</strong>以及其他一些Redis列表（List）函数目前版本无法实现，如有可实现方法博客代码事例将会得到更新。</li>
+</ol>
+<p>示例代码如下： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line">r.lpush(<span class="string">'oo'</span>, <span class="number">11</span>) <span class="comment"># 保存顺序为: 33,22,11</span></span><br><span class="line">r.lpushx(<span class="string">'oo'</span>, <span class="number">00</span>) <span class="comment"># 在name对应的list中添加元素，只有name已经存在时，值添加到列表的最左边</span></span><br><span class="line">print(r.llen(<span class="string">'oo'</span>)) <span class="comment"># name对应的list元素的个数</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.linsert(<span class="string">'oo'</span>, <span class="string">'before'</span>, <span class="number">11</span>, <span class="number">99</span>) <span class="comment"># 在11之前插入值99</span></span><br><span class="line">r.lset(<span class="string">'oo'</span>, <span class="number">1</span>, <span class="number">88</span>) <span class="comment"># 对name对应的list中的某一个索引位置重新赋值</span></span><br><span class="line">print(r.lrange(<span class="string">'oo'</span>, <span class="number">0</span>, <span class="number">-1</span>)) <span class="comment"># 在name对应的列表分片获取数据</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.lrem(<span class="string">'oo'</span>, <span class="number">88</span>, num=<span class="number">1</span>) <span class="comment"># 在name对应的list中删除指定的值.num=0，删除列表中所有的指定值；num=2,从前到后，删除2个；num=-2,从后向前，删除2个</span></span><br><span class="line">print(r.lrange(<span class="string">'oo'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.lpop(<span class="string">'oo'</span>)) <span class="comment"># 在name对应的列表的左侧获取第一个元素并在列表中移除，返回值则是第一个元素</span></span><br><span class="line">print(r.lindex(<span class="string">'oo'</span>, <span class="number">0</span>)) <span class="comment"># 在name对应的列表中根据索引获取列表元素</span></span><br><span class="line">r.lpush(<span class="string">'l1'</span>, <span class="number">11</span>) <span class="comment"># index为0</span></span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">22</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">33</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">44</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">55</span>) <span class="comment"># index为4</span></span><br><span class="line">r.ltrim(<span class="string">'l1'</span>, <span class="number">1</span>, <span class="number">3</span>) <span class="comment"># 在name对应的列表中移除没有在[start-end]索引之间的值</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.rpoplpush(<span class="string">'l1'</span>, <span class="string">'l1'</span>) <span class="comment"># 从一个列表取出最右边的元素，同时将其添加至另一个列表的最左边;src要取数据的列表的name, dst要添加数据的列表的name</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.brpoplpush(<span class="string">'l1'</span>, <span class="string">'l1'</span>, timeout=<span class="number">3</span>) <span class="comment"># # timeout，当src对应的列表中没有数据时，阻塞等待其有数据的超时时间（秒），0 表示永远阻塞</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.blpop(<span class="string">'l1'</span>, <span class="number">3</span>)) <span class="comment"># 从列表头部取出第一个元素，返回该元素值并从列表删除（l代表left，左边）</span></span><br><span class="line">print(r.lrange(<span class="string">'l1'</span>, <span class="number">0</span>, <span class="number">-1</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"># 由于redis类库中没有提供对列表元素的增量迭代，如果想要循环name对应的列表的所有元素，那么就需要：</span></span><br><span class="line"><span class="string"># 1、获取name对应的所有列表</span></span><br><span class="line"><span class="string"># 2、循环列表</span></span><br><span class="line"><span class="string"># 但是，如果列表非常大，那么就有可能在第一步时就将程序的内容撑爆，所有有必要自定义一个增量迭代的功能：</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'自定义增量迭代：'</span>)</span><br><span class="line">r.flushall()</span><br><span class="line">r.lpush(<span class="string">'l1'</span>, <span class="number">11</span>) <span class="comment"># index为0</span></span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">22</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">33</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">44</span>)</span><br><span class="line">r.rpush(<span class="string">'l1'</span>, <span class="number">55</span>) <span class="comment"># index为4</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">list_iter</span><span class="params">(name)</span>:</span></span><br><span class="line">list_count = r.llen(name)</span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(list_count):</span><br><span class="line">	<span class="keyword">yield</span> r.lindex(name, index)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> list_iter(<span class="string">'l1'</span>):</span><br><span class="line">	print(item)</span><br></pre></td></tr></table></figure> 输出结果如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'0'</span>, <span class="string">b'88'</span>, <span class="string">b'11'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'0'</span>, <span class="string">b'11'</span>]</span><br><span class="line"></span><br><span class="line"><span class="string">b'0'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'11'</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'22'</span>, <span class="string">b'33'</span>, <span class="string">b'44'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'44'</span>, <span class="string">b'22'</span>, <span class="string">b'33'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'33'</span>, <span class="string">b'44'</span>, <span class="string">b'22'</span>]</span><br><span class="line"></span><br><span class="line">(<span class="string">b'l1'</span>, <span class="string">b'33'</span>)</span><br><span class="line"></span><br><span class="line">[<span class="string">b'44'</span>, <span class="string">b'22'</span>]</span><br><span class="line"></span><br><span class="line">自定义增量迭代：</span><br><span class="line"></span><br><span class="line"><span class="string">b'11'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'22'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'33'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'44'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'55'</span></span><br></pre></td></tr></table></figure>
+<h3 id="三集合-sets">三、集合 sets</h3>
+<p>Redis 数据库集合对象(set object)是由string类型的无重复元素的无需集合，底层编码可以是intset或者hashtable。intset编码的集合对象用整数集合最为底层实现，所有对象元素保存在整数集合中。Python的redis模块实现了 SADD、SCARD 、SDIFF 、SDIFFSTORE、SINTER 、SINTERSTORE、SISMEMBER 、SMEMBERS 、SMOVE、SPOP、SRANDMEMBER、SREM、SUNION、SUNIONSTORE操作命令的基本用法。函数说明如下：</p>
+<ol type="1">
+<li><strong>SADD</strong>：向集合对象添加成员，sadd(self, name, value)</li>
+<li><strong>SCARD</strong>：获取集合元素个数，scard(self, name)</li>
+<li><strong>SDIFF</strong>：返回给定多个集合对象的差集(set key1-set key2..-set keyn)，从左到右计算集合差集，sdiff(self, keys, *args)</li>
+<li><strong>SDIFFSTORE</strong>：返回给定给定多个集合对象的差集并存储在目标（dest）集合中，sdiffstore(self, dest, keys, *args)</li>
+<li><strong>SINTER</strong>：返回给定所有集合（keys, <em>args）的交集, sinter(self, keys,</em> args)</li>
+<li><strong>SINTERSTORE</strong>：返回给定所有集合（keys, <em>args）的交集并存储在 集合(dest) 中, sinterstore(self, dest, keys,</em> args)</li>
+<li><strong>SISMEMBER</strong>：判断 value元素是否是集合 name 的成员,返回布尔逻辑值True或者False，sismember(self, name, value)</li>
+<li><strong>SMEMBERS</strong>：返回集合中所元素值的Python集合类型数据，smembers(self, name)</li>
+<li><strong>SMOVE</strong>：将元素value从集合src移动到 集合 dest。若元素value在集合src中不存在，则集合dest中不会添加元素value， smove(self, src, dest, value)</li>
+<li><strong>SPOP</strong>：移除并返回集合中的一个随机元素, spop(self, name)</li>
+<li><strong>SRANDMEMBER</strong>：返回集合中一个随机数，但是不做移除操作, srandmember(self, name)。从Redis 2.6 版本开始， 在命令行下Srandmember 命令接受可选返回元素数量的参数 redis&gt;SRANDMEMBER name count</li>
+<li><strong>SREM</strong>：移除集合中一个元素，srem(self, name, value)，redis模块任然沿用Redis 2.4 版本以前的只接受单个元素的用法。</li>
+<li><strong>SUNION</strong>：返回所有给定集合的并集中所有元素，sunion(self, keys, *args)</li>
+<li><strong>SUNIONSTORE</strong>：所有给定集合的并集存储在集合dest 中, sunionstore(self, dest, keys, *args)</li>
+<li><strong>SSCAN</strong>：迭代集合中的元素，sscan(self, name, cursor=0, match=None, count=None)</li>
+</ol>
+<p>示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.sadd(<span class="string">'s1'</span>, <span class="string">'v1'</span>, <span class="string">'v1'</span>, <span class="string">'v2'</span>, <span class="string">'v3'</span>) <span class="comment"># name对应的集合中添加元素</span></span><br><span class="line">r.sadd(<span class="string">'s2'</span>, <span class="string">'v2'</span>, <span class="string">'v4'</span>) <span class="comment"># name对应的集合中添加元素</span></span><br><span class="line">print(r.scard(<span class="string">'s1'</span>)) <span class="comment"># 获取name对应的集合中元素个数</span></span><br><span class="line">print(r.sdiff(<span class="string">'s1'</span>, <span class="string">'s2'</span>)) <span class="comment">#在第一个name对应的集合中且不在其他name对应的集合的元素集合</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.sdiffstore(<span class="string">'s3'</span>, <span class="string">'s1'</span>, <span class="string">'s2'</span>) <span class="comment"># 获取第一个name对应的集合中且不在其他name对应的集合，再将其新加入到dest对应的集合中</span></span><br><span class="line">print(r.smembers(<span class="string">'s3'</span>)) <span class="comment"># 获取s3对应的集合的所有成员</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.sinter(<span class="string">'s1'</span>, <span class="string">'s2'</span>)) <span class="comment"># 获取s1, s2对应集合的交集</span></span><br><span class="line">r.sinterstore(<span class="string">'s4'</span>, <span class="string">'s1'</span>, <span class="string">'s2'</span>) <span class="comment"># 获取s1, s2对应集合的交集，并将其存放到集合是s4中</span></span><br><span class="line">print(r.smembers(<span class="string">'s4'</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.sunion(<span class="string">'s1'</span>, <span class="string">'s2'</span>)) <span class="comment"># 获取s1, s2对应集合的并集</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.sunionstore(<span class="string">'s5'</span>, <span class="string">'s1'</span>, <span class="string">'s2'</span>) <span class="comment"># 获取s1, s2对应集合的交集，并将其存放到集合是s5中</span></span><br><span class="line">print(r.smembers(<span class="string">'s5'</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.sismember(<span class="string">'s4'</span>, <span class="string">'v4'</span>)) <span class="comment"># 检查value是否是name对应的集合的成员</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.smove(<span class="string">'s2'</span>, <span class="string">'s1'</span>, <span class="string">'v4'</span>) <span class="comment"># 将集合s2中成员v4移至集合s1中</span></span><br><span class="line">print(r.smembers(<span class="string">'s1'</span>))</span><br><span class="line">r.srem(<span class="string">'s1'</span>, <span class="string">'v1'</span>) <span class="comment"># 在name对应的集合中删除某些值</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.spop(<span class="string">'s1'</span>)) <span class="comment"># 从集合的右侧（尾部）移除一个成员，并将其返回 注意：集合是无序的，故结果随机！</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.srandmember(<span class="string">'s1'</span>)) <span class="comment"># 从name对应的集合中随机获取 numbers 个元素(Redis 2.6+)</span></span><br></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v2'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v2'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v2'</span>, <span class="string">b'v4'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v2'</span>, <span class="string">b'v4'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'v3'</span>, <span class="string">b'v2'</span>, <span class="string">b'v4'</span>, <span class="string">b'v1'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">b'v2'</span></span><br><span class="line"></span><br><span class="line"><span class="string">b'v3'</span></span><br></pre></td></tr></table></figure>
+<h3 id="四有序集合-sorted-sets">四、有序集合 sorted sets</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">命令</th>
+<th style="text-align: left;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Redis Zadd 命令</td>
+<td style="text-align: left;">向有序集合添加一个或多个成员，或者更新已存在成员的分数</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zcard 命令</td>
+<td style="text-align: left;">获取有序集合的成员数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zcount 命令</td>
+<td style="text-align: left;">计算在有序集合中指定区间分数的成员数</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zincrby 命令</td>
+<td style="text-align: left;">有序集合中对指定成员的分数加上增量 increment</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zinterstore 命令</td>
+<td style="text-align: left;">计算给定的一个或多个有序集的交集并将结果集存储在新的有序集合 key 中</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zlexcount 命令</td>
+<td style="text-align: left;">在有序集合中计算指定字典区间内成员数量</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zrange 命令</td>
+<td style="text-align: left;">通过索引区间返回有序集合成指定区间内的成员</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zrangebylex 命令</td>
+<td style="text-align: left;">通过字典区间返回有序集合的成员</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zrangebyscore 命令</td>
+<td style="text-align: left;">通过分数返回有序集合指定区间内的成员</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zrank 命令</td>
+<td style="text-align: left;">返回有序集合中指定成员的索引</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zrem 命令</td>
+<td style="text-align: left;">移除有序集合中的一个或多个成员</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zremrangebylex 命令</td>
+<td style="text-align: left;">移除有序集合中给定的字典区间的所有成员</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zremrangebyrank 命令</td>
+<td style="text-align: left;">移除有序集合中给定的排名区间的所有成员</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zremrangebyscore 命令</td>
+<td style="text-align: left;">移除有序集合中给定的分数区间的所有成员</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zrevrange 命令</td>
+<td style="text-align: left;">返回有序集中指定区间内的成员，通过索引，分数从高到底</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zrevrangebyscore 命令</td>
+<td style="text-align: left;">返回有序集中指定分数区间内的成员，分数从高到低排序</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zrevrank 命令</td>
+<td style="text-align: left;">返回有序集合中指定成员的排名，有序集成员按分数值递减(从大到小)排序</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zscore 命令</td>
+<td style="text-align: left;">返回有序集中，成员的分数值</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Redis Zunionstore 命令</td>
+<td style="text-align: left;">计算给定的一个或多个有序集的并集，并存储在新的 key 中</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redis Zscan 命令</td>
+<td style="text-align: left;">迭代有序集合中的元素（包括元素成员和元素分值）</td>
+</tr>
+</tbody>
+</table>
+<p>示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zadd(<span class="string">'z1'</span>, <span class="string">'11'</span>, <span class="number">1</span>, <span class="string">'22'</span>, <span class="number">2</span>, <span class="string">'33'</span>, <span class="number">3</span>, <span class="string">'44'</span>, <span class="number">4</span>, <span class="string">'55'</span>, <span class="number">5</span>, <span class="string">'66'</span>, <span class="number">6</span>, <span class="string">'66'</span>, <span class="number">7</span>) <span class="comment"># 在name对应的有序集合中添加元素</span></span><br><span class="line">print(r.zcard(<span class="string">'z1'</span>)) <span class="comment"># 获取name对应的有序集合元素的数量</span></span><br><span class="line">print(r.zcount(<span class="string">'z1'</span>, <span class="number">1</span>, <span class="number">2</span>)) <span class="comment"># 获取name对应的有序集合中分数 在 [min,max] 之间的个数</span></span><br><span class="line">r.zincrby(<span class="string">'z1'</span>, <span class="string">'11'</span>, amount=<span class="number">5</span>) <span class="comment"># 自增name对应的有序集合的 name 对应的分数</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>)) <span class="comment"># 值11被排序到最后;此处表示按元素的值升序排列</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.zrank(<span class="string">'z1'</span>, <span class="number">33</span>)) <span class="comment"># 获取某个值在 name对应的有序集合中的排行（从 0 开始）</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zrem(<span class="string">'z1'</span>, <span class="string">'66'</span>) <span class="comment"># 删除name对应的有序集合中值是values的成员</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zremrangebyrank(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">1</span>) <span class="comment"># 根据排行范围删除</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zremrangebyscore(<span class="string">'z1'</span>, <span class="number">4.5</span>, <span class="number">5.5</span>) <span class="comment"># 根据分数范围删除</span></span><br><span class="line">print(r.zrange(<span class="string">'z1'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.zscore(<span class="string">'z1'</span>, <span class="number">11</span>)) <span class="comment"># 获取name对应有序集合中 value 对应的分数</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">r.zadd(<span class="string">"zset_name"</span>, <span class="string">"a1"</span>, <span class="number">6</span>, <span class="string">"a2"</span>, <span class="number">2</span>, <span class="string">"a3"</span>, <span class="number">5</span>)</span><br><span class="line">r.zadd(<span class="string">'zset_name1'</span>, a1=<span class="number">7</span>, b1=<span class="number">10</span>, b2=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">获取两个有序集合的交集并放入dest集合，如果遇到相同值不同分数，则按照aggregate进行操作</span></span><br><span class="line"><span class="string">aggregate的值为: SUM MIN MAX</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">r.zinterstore(<span class="string">'zset_name2'</span>, (<span class="string">'zset_name'</span>, <span class="string">'zset_name1'</span>), aggregate=<span class="string">'Sum'</span>)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">print(r.zrange(<span class="string">'zset_name2'</span>, <span class="number">0</span>, <span class="number">-1</span>, desc=<span class="literal">False</span>, withscores=<span class="literal">True</span>))</span><br></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span></span><br><span class="line"></span><br><span class="line">[(<span class="string">b'22'</span>, <span class="number">2.0</span>), (<span class="string">b'33'</span>, <span class="number">3.0</span>), (<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'55'</span>, <span class="number">5.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>), (<span class="string">b'66'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line">[(<span class="string">b'22'</span>, <span class="number">2.0</span>), (<span class="string">b'33'</span>, <span class="number">3.0</span>), (<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'55'</span>, <span class="number">5.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line">[(<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'55'</span>, <span class="number">5.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line">[(<span class="string">b'44'</span>, <span class="number">4.0</span>), (<span class="string">b'11'</span>, <span class="number">6.0</span>)]</span><br><span class="line"></span><br><span class="line"><span class="number">6.0</span></span><br><span class="line"></span><br><span class="line">[(<span class="string">b'a1'</span>, <span class="number">13.0</span>)]</span><br></pre></td></tr></table></figure>
+<h3 id="五哈希-hashes">五、哈希 hashes</h3>
+<p>Redis 数据库hash数据类型是一个string类型的key和value的映射表，适用于存储对象。redis 中每个hash可以存储键值对多达40亿。Python的redis模块实现了Redis哈希（Hash）命令行操作的几乎全部命令，包括HDEL、HEXISTS、HGET、HGETALL、HINCRBY、HKEYS、HLEN 、HMGET 、HMSET 、HSET 、HSETNX 、HVALS 、HINCRBYFLOAT等命令。函数说明如下：</p>
+<ol type="1">
+<li><strong>HDEL</strong>：删除对应哈希（Hash）表的指定键（key）的字段，hdel(self, name, key)</li>
+<li><strong>HEXISTS</strong>：检测哈希（Hash）表对应键（key）字段是否存在，返回布尔逻辑，hexists(self, name, key)</li>
+<li><strong>HGET</strong>：获取哈希（Hash）指定键（key）对应的值，hget(self, name, key)</li>
+<li><strong>HGETALL</strong>：获取哈希(Hash)表的键-值对（key-value pairs）,返回python字典类型数据，hgetall(self, name)</li>
+<li><strong>HINCRBY</strong>：为哈希表（Hash）指定键（key）对应的值（key）加上指定的整数数值（int，可为负值）hincrby(self&gt;, name, key, amount=1)，Redis 中本操作的值被限制在 64 位(bit)有符号数字。</li>
+<li><strong>HKEYS</strong>：返回哈希表（Hash）对应键（key）的数组（Python称之为列表List），hkeys(self, name)</li>
+<li><strong>HLEN</strong>： 获取哈希表（Hash）中键-值对（key-value pairs）个数，hlen(self, name)</li>
+<li><strong>HMGET</strong>：获取哈希表（Hash）中一个或多个给点字段的值，不存在返回nil(Redis命令行)/None(Python)，hmget(self, name, keys)，其中keys可以为列表（list）</li>
+<li><strong>HMSET</strong>：设置对个键-值对（key-value pairs）到哈希表（Hash）中，python输入值（mapping）为字典（dictionary）类型，hmset(self, name, mapping)</li>
+<li><strong>HSET</strong>：为哈希表（Hash）赋值，若键（key）存在值（value）则覆盖，不存在则创建，hset(self, name, key, value)</li>
+<li><strong>HSETNX</strong>：为哈希表（Hash）不存值（value）的键（key）赋值，存在操作无效，对应值（value）无变化，hsetnx(self, name, key, value)</li>
+<li><strong>HVALS</strong>：返回哈希表（Hash）对应值（value）的列表，hvals(self, name)</li>
+<li><strong>HINCRBYFLOAT</strong>：为哈希表 key 中的指定字段的浮点数值加上增量 increment ，hincrbyfloat(self, name, key, amount=1.0)</li>
+</ol>
+<p>示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment"># __author__ = 'free'</span></span><br><span class="line"></span><br><span class="line">pool = redis.ConnectionPool(host=<span class="string">'127.0.0.1'</span>, port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">r = redis.Redis(connection_pool=pool)</span><br><span class="line"></span><br><span class="line">r.flushall() <span class="comment"># 清空Redis</span></span><br><span class="line"></span><br><span class="line">r.hset(<span class="string">'n1'</span>, <span class="string">'k1'</span>, <span class="string">'v1'</span>) <span class="comment"># hset(name, key, value),name对应的hash中设置一个键值对（不存在，则创建；否则，修改）</span></span><br><span class="line">print(r.hget(<span class="string">'n1'</span>, <span class="string">'k1'</span>))</span><br><span class="line">r.hmset(<span class="string">'n2'</span>, &#123;<span class="string">'k1'</span>: <span class="string">'v1'</span>, <span class="string">'k2'</span>: <span class="string">'v2'</span>, <span class="string">'k3'</span>: <span class="string">'v3'</span>&#125;) <span class="comment"># hmset(name, mapping),在name对应的hash中批量设置键值对</span></span><br><span class="line">print(r.hmget(<span class="string">'n2'</span>, <span class="string">'k2'</span>))</span><br><span class="line">print(r.hgetall(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应hash的所有键值</span></span><br><span class="line">print(r.hlen(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应的hash中键值对的个数</span></span><br><span class="line">print(r.hkeys(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应的hash中所有的key的值</span></span><br><span class="line">print(r.hvals(<span class="string">'n2'</span>)) <span class="comment"># 获取name对应的hash中所有的value的值</span></span><br><span class="line">print(r.hexists(<span class="string">'n2'</span>, <span class="string">'k4'</span>)) <span class="comment"># 检查name对应的hash是否存在当前传入的key</span></span><br><span class="line">r.hdel(<span class="string">'n2'</span>, <span class="string">'k3'</span>) <span class="comment"># 将name对应的hash中指定key的键值对删除</span></span><br><span class="line">r.hset(<span class="string">'n3'</span>, <span class="string">'k1'</span>, <span class="number">1</span>)</span><br><span class="line">r.hincrby(<span class="string">'n3'</span>, <span class="string">'k1'</span>, amount=<span class="number">1</span>) <span class="comment"># hincrby(name, key, amount=1),自增name对应的hash中的指定key的value的值，不存在则创建key=amount</span></span><br><span class="line">print(r.hgetall(<span class="string">'n3'</span>))</span><br></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">b'v1'</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'v2'</span>]</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'k1'</span>: <span class="string">b'v1'</span>, <span class="string">b'k2'</span>: <span class="string">b'v2'</span>, <span class="string">b'k3'</span>: <span class="string">b'v3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line">[<span class="string">b'k1'</span>, <span class="string">b'k2'</span>, <span class="string">b'k3'</span>]</span><br><span class="line"></span><br><span class="line">[<span class="string">b'v1'</span>, <span class="string">b'v2'</span>, <span class="string">b'v3'</span>]</span><br><span class="line"></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">b'k1'</span>: <span class="string">b'2'</span>&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>scrapy中的yield请求未被正常抛出</title>
     <url>/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/</url>
     <content><![CDATA[<p>有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个<code>scrapy.Request</code>执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。</p>
@@ -1144,6 +1144,69 @@
       </categories>
       <tags>
         <tag>scrapy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从考研到995</title>
+    <url>/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/</url>
+    <content><![CDATA[<p>这么久都没更博了，主要是之前在准备参加考研，9月底突然得知因为疫情扩保把本弟弟保上了，说实话运气很好，属实要好好感谢学校，只要学校够努力就能抬我一手。今天保研尘埃落定了虽然直接开始995，但是心理压力没那么大了，还要学习新的知识，肯定要多记录记录。</p>
+<a id="more"></a>
+<h3 id="碎碎念">碎碎念</h3>
+<p>今天是十推的第一天，保了本院，复试通知已经接受了，还在等待录取通知，昨晚填系统睡得也晚，今早起的也早这会儿困得很，也没办法学习，就来记录一下。</p>
+<p>本来我的成绩就在保研边缘，只要能拿到一个省奖就能保研了，寒假和大三也参加了几个比赛，说实话一言难尽，有些人确实不是那么靠谱，也怪我之前确实不懂，也没有去深入的了解，以为跟着老师就对了，谁能想到......</p>
+<p>今年因为疫情，国家为了不让毕业生在社会上乱晃，也对研究生进行了扩招，保研名额也就进行了扩招，说实话我本来都没想着能扩到我，没竞赛加分属实太弟弟了，都是意外惊喜。有时候你做好自己的事，幸福可能就那么来了。</p>
+<p>因为知道保研的时间比较晚，之前的夏令营也没有参加预推免很多学校也结束了，所以可选择的空间并不大，加上之前一直在学数学，专业课确实没看，代码也很久没写了，尤其是很多学校还要求用C，因为之前做项目都用的Python，所以C也忘光了，准备时间确实十分有限。最后还是选择了本院，索性找到了一个靠谱的导师，手里也有很好的项目，反正轻松是不可能轻松的，995的快乐生活我来了。</p>
+<p>保研了确实要轻松一些，可能995在时间上和考研学习差不多，但是毕竟没有那么大的压力，而且学这些新知识属实比学高数有意思多了，虽然数学肯定是要用，但是不用背啊，只要能应用就行了，我感觉研究生很大的一个阻碍还是英语，我英语属实太辣鸡了，不去冲外校英语也是很重要的原因之一。</p>
+<p>因为上一个免费领的服务器到期了，换了一个学生服务器，今早把博客又弄了一下，还好不用怎么大操作。</p>
+<p>都十点多了，我的待录取通知怎么还没来啊啊啊啊啊啊~~~~~~~~~~~</p>
+<h3 id="小经验">小经验</h3>
+<p>以下都是个人经验，不一定适用于每个学校每个人。</p>
+<p>保研除了平时的课程之外，竞赛真的很重要，如果真的有保研意向一定要早准备竞赛，大二怎么都要开始了吧，还是要早做了解，有一些竞赛确实是比较好拿奖的，找几个靠谱的队友，再找个靠谱的指导老师，还是比较有希望的。</p>
+<p>如果英语确实不好，像我一样保研了六级都没过估计也没几个人了，还好学校不卡这个。如果真的想要保研，还是最好过一下六级，能多高就刷多高，毕竟考试还是有应试技巧的。我之前是不知道能保研，大二也没太关注，大三发现成绩还可以，在边缘但是疫情了也没办法参加六级，所以参加了九月的那场，说实话突击了一下，现在也不知道咋样。</p>
+<p>保研面试的英语确实是可以准备一下的，尽早准备，怎么都要准备至少一个礼拜吧，主要就是英文自我介绍，还有一些常见面试问题，这些网上都能找到很多教程，我英语也就是个弟弟，就不教你们了。可以面试前找朋友开个视频会议试一试。我找的同学他英语是比较好的，虽然肯定比不上母语，但是是开口交流不用准备也能随便进行的下去的那种，比我是强的太多了。我们第一次试他直接给我问沉默了，他说的我都能听懂，但我属实开不了口，感觉直接像是被沉默，说不出话。还是要找人锻炼一下下，确实好一点。</p>
+<p>又是半个小时过去了，我的待录取通知还没来~~~~~~~~~~~</p>
+<p>希望能在中午吃饭前来，不想把电脑搬回去，电脑像个板砖，太沉了...</p>
+]]></content>
+      <categories>
+        <category>碎碎念</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>创建python虚拟环境</title>
+    <url>/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<p>如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。</p>
+<a id="more"></a>
+<h2 id="安装虚拟环境">1.安装虚拟环境</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
+<p>virtualenvwrapper类似于一个虚拟环境管理工具会比原生的virtualenv方便一些</p>
+<p>安装完虚拟环境如果找不到mkvirtualenv命令，须配置环境变量：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1、在~（家目录）下创建目录用来存放虚拟环境</span><br><span class="line">mkdir .virtualenvs</span><br><span class="line"></span><br><span class="line"># 2、打开~&#x2F;.bashrc文件，并添加如下：</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs</span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"># 3、运行</span><br><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+<h2 id="创建虚拟环境">2.创建虚拟环境</h2>
+<p>如果不指定Python版本，默认安装的是Python2的虚拟环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在python2中，创建虚拟环境</span><br><span class="line">mkvirtualenv 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv py_flask</span><br></pre></td></tr></table></figure>
+<p>如果想要指定python版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkvirtualenv -p python3 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv -p python3 py3_flask</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<p>所有的虚拟环境都位于/~/下的隐藏目录.virtualenvs下</p>
+<h2 id="使用虚拟环境">3.使用虚拟环境</h2>
+<h3 id="查看已有虚拟环境">3.1查看已有虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon</span><br></pre></td></tr></table></figure>
+<h3 id="进入虚拟环境">3.2进入虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon 虚拟环境名称</span><br></pre></td></tr></table></figure>
+<h3 id="退出虚拟环境">3.3退出虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deativate</span><br></pre></td></tr></table></figure>
+<h3 id="删除虚拟环境">3.4删除虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">先退出：deactivate</span><br><span class="line">再删除：rmvirtualenv py3_flask</span><br></pre></td></tr></table></figure>
+<h2 id="虚拟环境工具包位置">4.虚拟环境工具包位置</h2>
+<p>~/.virtualenvs/虚拟环境名称/lib/python3.5/site-packages</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>虚拟环境</tag>
       </tags>
   </entry>
   <entry>
@@ -1235,69 +1298,6 @@
       </tags>
   </entry>
   <entry>
-    <title>从考研到995</title>
-    <url>/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/</url>
-    <content><![CDATA[<p>这么久都没更博了，主要是之前在准备参加考研，9月底突然得知因为疫情扩保把本弟弟保上了，说实话运气很好，属实要好好感谢学校，只要学校够努力就能抬我一手。今天保研尘埃落定了虽然直接开始995，但是心理压力没那么大了，还要学习新的知识，肯定要多记录记录。</p>
-<a id="more"></a>
-<h3 id="碎碎念">碎碎念</h3>
-<p>今天是十推的第一天，保了本院，复试通知已经接受了，还在等待录取通知，昨晚填系统睡得也晚，今早起的也早这会儿困得很，也没办法学习，就来记录一下。</p>
-<p>本来我的成绩就在保研边缘，只要能拿到一个省奖就能保研了，寒假和大三也参加了几个比赛，说实话一言难尽，有些人确实不是那么靠谱，也怪我之前确实不懂，也没有去深入的了解，以为跟着老师就对了，谁能想到......</p>
-<p>今年因为疫情，国家为了不让毕业生在社会上乱晃，也对研究生进行了扩招，保研名额也就进行了扩招，说实话我本来都没想着能扩到我，没竞赛加分属实太弟弟了，都是意外惊喜。有时候你做好自己的事，幸福可能就那么来了。</p>
-<p>因为知道保研的时间比较晚，之前的夏令营也没有参加预推免很多学校也结束了，所以可选择的空间并不大，加上之前一直在学数学，专业课确实没看，代码也很久没写了，尤其是很多学校还要求用C，因为之前做项目都用的Python，所以C也忘光了，准备时间确实十分有限。最后还是选择了本院，索性找到了一个靠谱的导师，手里也有很好的项目，反正轻松是不可能轻松的，995的快乐生活我来了。</p>
-<p>保研了确实要轻松一些，可能995在时间上和考研学习差不多，但是毕竟没有那么大的压力，而且学这些新知识属实比学高数有意思多了，虽然数学肯定是要用，但是不用背啊，只要能应用就行了，我感觉研究生很大的一个阻碍还是英语，我英语属实太辣鸡了，不去冲外校英语也是很重要的原因之一。</p>
-<p>因为上一个免费领的服务器到期了，换了一个学生服务器，今早把博客又弄了一下，还好不用怎么大操作。</p>
-<p>都十点多了，我的待录取通知怎么还没来啊啊啊啊啊啊~~~~~~~~~~~</p>
-<h3 id="小经验">小经验</h3>
-<p>以下都是个人经验，不一定适用于每个学校每个人。</p>
-<p>保研除了平时的课程之外，竞赛真的很重要，如果真的有保研意向一定要早准备竞赛，大二怎么都要开始了吧，还是要早做了解，有一些竞赛确实是比较好拿奖的，找几个靠谱的队友，再找个靠谱的指导老师，还是比较有希望的。</p>
-<p>如果英语确实不好，像我一样保研了六级都没过估计也没几个人了，还好学校不卡这个。如果真的想要保研，还是最好过一下六级，能多高就刷多高，毕竟考试还是有应试技巧的。我之前是不知道能保研，大二也没太关注，大三发现成绩还可以，在边缘但是疫情了也没办法参加六级，所以参加了九月的那场，说实话突击了一下，现在也不知道咋样。</p>
-<p>保研面试的英语确实是可以准备一下的，尽早准备，怎么都要准备至少一个礼拜吧，主要就是英文自我介绍，还有一些常见面试问题，这些网上都能找到很多教程，我英语也就是个弟弟，就不教你们了。可以面试前找朋友开个视频会议试一试。我找的同学他英语是比较好的，虽然肯定比不上母语，但是是开口交流不用准备也能随便进行的下去的那种，比我是强的太多了。我们第一次试他直接给我问沉默了，他说的我都能听懂，但我属实开不了口，感觉直接像是被沉默，说不出话。还是要找人锻炼一下下，确实好一点。</p>
-<p>又是半个小时过去了，我的待录取通知还没来~~~~~~~~~~~</p>
-<p>希望能在中午吃饭前来，不想把电脑搬回去，电脑像个板砖，太沉了...</p>
-]]></content>
-      <categories>
-        <category>碎碎念</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>创建python虚拟环境</title>
-    <url>/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<p>如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。</p>
-<a id="more"></a>
-<h2 id="安装虚拟环境">1.安装虚拟环境</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
-<p>virtualenvwrapper类似于一个虚拟环境管理工具会比原生的virtualenv方便一些</p>
-<p>安装完虚拟环境如果找不到mkvirtualenv命令，须配置环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1、在~（家目录）下创建目录用来存放虚拟环境</span><br><span class="line">mkdir .virtualenvs</span><br><span class="line"></span><br><span class="line"># 2、打开~&#x2F;.bashrc文件，并添加如下：</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs</span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"># 3、运行</span><br><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
-<h2 id="创建虚拟环境">2.创建虚拟环境</h2>
-<p>如果不指定Python版本，默认安装的是Python2的虚拟环境</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在python2中，创建虚拟环境</span><br><span class="line">mkvirtualenv 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv py_flask</span><br></pre></td></tr></table></figure>
-<p>如果想要指定python版本</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkvirtualenv -p python3 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv -p python3 py3_flask</span><br></pre></td></tr></table></figure>
-<p>提示：</p>
-<p>所有的虚拟环境都位于/~/下的隐藏目录.virtualenvs下</p>
-<h2 id="使用虚拟环境">3.使用虚拟环境</h2>
-<h3 id="查看已有虚拟环境">3.1查看已有虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon</span><br></pre></td></tr></table></figure>
-<h3 id="进入虚拟环境">3.2进入虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon 虚拟环境名称</span><br></pre></td></tr></table></figure>
-<h3 id="退出虚拟环境">3.3退出虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deativate</span><br></pre></td></tr></table></figure>
-<h3 id="删除虚拟环境">3.4删除虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">先退出：deactivate</span><br><span class="line">再删除：rmvirtualenv py3_flask</span><br></pre></td></tr></table></figure>
-<h2 id="虚拟环境工具包位置">4.虚拟环境工具包位置</h2>
-<p>~/.virtualenvs/虚拟环境名称/lib/python3.5/site-packages</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>虚拟环境</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>基于redis使用scrapy下载中间件实现简单的增量爬虫</title>
     <url>/%E5%9F%BA%E4%BA%8Eredis%E4%BD%BF%E7%94%A8scrapy%E4%B8%8B%E8%BD%BD%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E5%A2%9E%E9%87%8F%E7%88%AC%E8%99%AB/</url>
     <content><![CDATA[<p>在爬虫中有一种很重要的操作就是增量爬取，scrapy自带的管道中的去重只能实现该次爬取链接的去重，并不能实现对过往爬取数据的去重，所以选择使用redis来实现增量爬取，这也是大家现在使用较多的方法</p>
@@ -1330,82 +1330,6 @@
         <tag>redis</tag>
         <tag>scrapy</tag>
         <tag>增量爬取</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>强制关闭端口</title>
-    <url>/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/</url>
-    <content><![CDATA[<p>很多情况下我们会遇到程序非正常退出那么它所占用的端口很有可能就没有被正常释放，导致我们下一次启动他的时候无法启动，这时候我们就需要手动释放端口。</p>
-<p>参考：https://blog.csdn.net/why444216978/article/details/84062977</p>
-<a id="more"></a>
-<p>1、强制杀死该端口进程</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo fuser -k -n tcp 80</span><br></pre></td></tr></table></figure>
-<p>2、根据PID关闭某个被占用的端口</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">netstat -tunlp | grep 80</span><br><span class="line"></span><br><span class="line">lsof -i:80</span><br><span class="line"></span><br><span class="line">sudo kill -9 PID</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>服务器配置</category>
-      </categories>
-      <tags>
-        <tag>服务器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>服务器安装jupyter</title>
-    <url>/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85jupyter/</url>
-    <content><![CDATA[<p>属实不想用xshell上的ipython，命令行也确实没有jupyter方便，毕竟jupyter还可以保存运行过程，还可以进行拓展。所以我在服务器上搭建了一个jupyter</p>
-<a id="more"></a>
-<h2 id="参考">参考</h2>
-<p>https://blog.csdn.net/qq_42137895/article/details/104283459?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param</p>
-<h2 id="安装jupyter服务">1. 安装jupyter服务</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip3.7 install jupyter</span><br></pre></td></tr></table></figure>
-<h2 id="配置远程访问jupyter">2. 配置远程访问jupyter</h2>
-<p>先输入ipython进入交互模式 ，见图输入以下内容，设置好密码过后</p>
-<p>会自动生成一个<strong>Verify password</strong>复制保存下来</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101310.png" alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n" /><figcaption aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n</figcaption>
-</figure>
-<h3 id="生成配置文件">2.1生成配置文件</h3>
-<p>在输入以下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
-<p>就会自动在根目录下生成文件（~/.jupyter/jupyter_notebook_config.py），如果看不到，选项中选择显示隐藏文件</p>
-<h3 id="修改配置文件">2.2修改配置文件</h3>
-<p>建议先把jupyter_notebook_config.py文件传输到本地修改完成再上传</p>
-<p>找到以下字符串进行修改</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'*'</span> <span class="comment"># 如果这里修过过后启动服务报错 则修改为c.NotebookApp.ip='0.0.0.0'</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1****'</span> <span class="comment">#就之前保存的验证密码</span></span><br><span class="line">c.NotebookApp.open_browser = <span class="literal">False</span> <span class="comment"># 设置是否自动打开浏览器</span></span><br><span class="line">c.NotebookApp.port = <span class="number">9999</span>  <span class="comment"># 设置端口</span></span><br><span class="line">c.NotebookApp.allow_remote_access = <span class="literal">True</span></span><br><span class="line">c.ContentsManager.root_dir = <span class="string">'/var/www/jupyter_python'</span>	<span class="comment"># 设置jupyter显示目录</span></span><br></pre></td></tr></table></figure>
-<h3 id="启动服务">3. 启动服务</h3>
-<p>这里推荐两种</p>
-<ol type="1">
-<li><p>入门：<code>jupyter notebook --allow-root</code></p>
-<blockquote>
-<p>但这种会一直占着窗口，无法执行其他命令</p>
-<p>Ctrl + C 即可结束</p>
-</blockquote></li>
-<li><p>进阶: <code>nohup jupyter notebook --allow-root &amp;</code></p>
-<blockquote>
-<p>nohup表示no hang up, 就是不挂起, 于是这个命令执行后即使终端退出, 也不会停止运行.</p>
-<p>但要手动结束</p>
-<p>lsof -i : {端口号}</p>
-<p>然后 kill -9 {对应pid} # 9的意思是发送KILL信号，立刻结束，可能会有数据丢失</p>
-</blockquote></li>
-</ol>
-<p>启动以后在本机 输入<code>http://{服务器ip}:9999</code>进行访问</p>
-<h2 id="安装增强功能自动补全之类">4. 安装增强功能（自动补全之类）</h2>
-<p>在终端中依次执行以下4行代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line">jupyter contrib nbextension install --user</span><br><span class="line">pip install jupyter_nbextensions_configurator</span><br><span class="line">jupyter nbextensions_configurator enable --user</span><br></pre></td></tr></table></figure>
-<p><strong>执行完成以后，重启jupyter，即可看到附加项</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101630.png" alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n" /><figcaption aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n</figcaption>
-</figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>服务器配置</category>
-      </categories>
-      <tags>
-        <tag>服务器</tag>
-        <tag>jupyter</tag>
       </tags>
   </entry>
   <entry>
@@ -1491,6 +1415,247 @@
         <tag>python</tag>
         <tag>Flask</tag>
         <tag>部署至服务器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>强制关闭端口</title>
+    <url>/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/</url>
+    <content><![CDATA[<p>很多情况下我们会遇到程序非正常退出那么它所占用的端口很有可能就没有被正常释放，导致我们下一次启动他的时候无法启动，这时候我们就需要手动释放端口。</p>
+<p>参考：https://blog.csdn.net/why444216978/article/details/84062977</p>
+<a id="more"></a>
+<p>1、强制杀死该端口进程</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo fuser -k -n tcp 80</span><br></pre></td></tr></table></figure>
+<p>2、根据PID关闭某个被占用的端口</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">netstat -tunlp | grep 80</span><br><span class="line"></span><br><span class="line">lsof -i:80</span><br><span class="line"></span><br><span class="line">sudo kill -9 PID</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>服务器配置</category>
+      </categories>
+      <tags>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>服务器安装jupyter</title>
+    <url>/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85jupyter/</url>
+    <content><![CDATA[<p>属实不想用xshell上的ipython，命令行也确实没有jupyter方便，毕竟jupyter还可以保存运行过程，还可以进行拓展。所以我在服务器上搭建了一个jupyter</p>
+<a id="more"></a>
+<h2 id="参考">参考</h2>
+<p>https://blog.csdn.net/qq_42137895/article/details/104283459?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param</p>
+<h2 id="安装jupyter服务">1. 安装jupyter服务</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip3.7 install jupyter</span><br></pre></td></tr></table></figure>
+<h2 id="配置远程访问jupyter">2. 配置远程访问jupyter</h2>
+<p>先输入ipython进入交互模式 ，见图输入以下内容，设置好密码过后</p>
+<p>会自动生成一个<strong>Verify password</strong>复制保存下来</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101310.png" alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n" /><figcaption aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n</figcaption>
+</figure>
+<h3 id="生成配置文件">2.1生成配置文件</h3>
+<p>在输入以下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
+<p>就会自动在根目录下生成文件（~/.jupyter/jupyter_notebook_config.py），如果看不到，选项中选择显示隐藏文件</p>
+<h3 id="修改配置文件">2.2修改配置文件</h3>
+<p>建议先把jupyter_notebook_config.py文件传输到本地修改完成再上传</p>
+<p>找到以下字符串进行修改</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'*'</span> <span class="comment"># 如果这里修过过后启动服务报错 则修改为c.NotebookApp.ip='0.0.0.0'</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1****'</span> <span class="comment">#就之前保存的验证密码</span></span><br><span class="line">c.NotebookApp.open_browser = <span class="literal">False</span> <span class="comment"># 设置是否自动打开浏览器</span></span><br><span class="line">c.NotebookApp.port = <span class="number">9999</span>  <span class="comment"># 设置端口</span></span><br><span class="line">c.NotebookApp.allow_remote_access = <span class="literal">True</span></span><br><span class="line">c.ContentsManager.root_dir = <span class="string">'/var/www/jupyter_python'</span>	<span class="comment"># 设置jupyter显示目录</span></span><br></pre></td></tr></table></figure>
+<h3 id="启动服务">3. 启动服务</h3>
+<p>这里推荐两种</p>
+<ol type="1">
+<li><p>入门：<code>jupyter notebook --allow-root</code></p>
+<blockquote>
+<p>但这种会一直占着窗口，无法执行其他命令</p>
+<p>Ctrl + C 即可结束</p>
+</blockquote></li>
+<li><p>进阶: <code>nohup jupyter notebook --allow-root &amp;</code></p>
+<blockquote>
+<p>nohup表示no hang up, 就是不挂起, 于是这个命令执行后即使终端退出, 也不会停止运行.</p>
+<p>但要手动结束</p>
+<p>lsof -i : {端口号}</p>
+<p>然后 kill -9 {对应pid} # 9的意思是发送KILL信号，立刻结束，可能会有数据丢失</p>
+</blockquote></li>
+</ol>
+<p>启动以后在本机 输入<code>http://{服务器ip}:9999</code>进行访问</p>
+<h2 id="安装增强功能自动补全之类">4. 安装增强功能（自动补全之类）</h2>
+<p>在终端中依次执行以下4行代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line">jupyter contrib nbextension install --user</span><br><span class="line">pip install jupyter_nbextensions_configurator</span><br><span class="line">jupyter nbextensions_configurator enable --user</span><br></pre></td></tr></table></figure>
+<p><strong>执行完成以后，重启jupyter，即可看到附加项</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101630.png" alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n" /><figcaption aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>服务器配置</category>
+      </categories>
+      <tags>
+        <tag>服务器</tag>
+        <tag>jupyter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习笔记(三)---基础理解</title>
+    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<p>稍微记录一下看吴恩达课程后对深度学习各种概念的理解</p>
+<a id="more"></a>
+<h2 id="深度学习的大致过程">深度学习的大致过程</h2>
+<p>在看了吴恩达的第一节课之后我对深度学习的理解是这样的：</p>
+<p>深度学习其实就是一个寻找拟合函数的过程，让数据通过这个函数之后能输出和人看法相似的结果。</p>
+<p>首先我们先需要选定一个/几个模型，确定需要的参数，超参数之类的</p>
+<p>然后我们要将已有的数据划分为训练集，验证集和测试集，以往的比例是60，20，20之类的，但是由于现在已经是大数据时代了，有些数据集已经足够大了，我们不需要那么大的验证集和测试集，可以适当减少Dev和Test的占比，比如1，0.5之类的。<strong>还有一点要注意</strong>，我们很有可能训练集和验证，测试集的来源不一样，难以保证同分布，吴恩达老师建议大家要确保验证集和测试集的数据来自同一分布</p>
+<p>之后我们要将参数初始化，注意初始化的时候参数是否能为0，是否需要进行归一化。当然训练集的输入输出也要进行预处理，但是预处理的方法目前还没有进行太多的讲解，只有一个将图像拉成一维向量</p>
+<p>之后就是让神经网络通过训练找到合适的参数使得训练集的成本函数不断降低。整个过程主要包括前向传播和后向传播。在我看来，前向传播就是为了计算出成本函数，后向传播就是让成本函数对各个参数求导，然后通过梯度下降的方法让成本函数进一步降低。</p>
+<p>前后向传播的迭代次数和梯度下降学习率都通过超参数来控制，最后将训练出来的各种参数保存下来，这样就完成了一个模型的简单训练。当然其中还有很多的正则化，归一化之类的操作，但是最简单的一个模型（比如逻辑回归）大致就是这些步骤了。</p>
+<p>然后在验证集上通过运行同一网络不同超参数和不同网络之间的模型来比较模型性能，然后再跑测试集。</p>
+<h2 id="为什么要向量化">为什么要向量化</h2>
+<p>因为输入数据肯定是一个庞大的数据集，如果用单纯的标量那么一定需要很多的循环，但是循环的效率是很低的，所以我们需要引入向量操作，向量操作一次性可以完成整个循环的所有运算，效率提升极大。</p>
+<h2 id="为什么要非线性的激活函数">为什么要非线性的激活函数</h2>
+<p>因为如果使用线性的激活函数那么正向传播的输出仅仅是输入的线性组合，根本没有改变，不管你使用多少隐层都和单隐层是一样的效果。</p>
+<h2 id="参数初始化">参数初始化</h2>
+<p>为什么w参数不能直接初始化为全0？</p>
+<p>当你这一层只有一个节点的时候，你是可以将这个节点的w参数初始化为0的。但是如果你这一层不止一个节点，而且采用了全连接的话，你还将W矩阵初始化成了0矩阵，那么你这一层每个节点的w参数之间是一个线性关系，和只有一个节点效果是一样的。</p>
+<h2 id="为什么要用深层表示">为什么要用深层表示</h2>
+<p>你可以直觉上把这种神经网络的前几层当作探测简单的函数，比如边缘，之后把它们跟后几层结合在一起，那么总体上就能学习更多复杂的函数。一般你会从比较小的细节入手，比如边缘，然后再一步步到更大更复杂的区域，比如一只眼睛或是一个鼻子，再把眼睛鼻子装一块组成更复杂的部分。</p>
+<h2 id="超参数">超参数</h2>
+<p>比如算法中的<strong>learning rate</strong> $ a $ （学习率）、<strong>iterations</strong>(梯度下降法循环的数量)、$ L $ （隐藏层数目）、$ n^{[l]} $ （隐藏层单元数目）、<strong>choice of activation function</strong>（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数$ W $ 和 $ b $的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
+<p>超参数的取值并没有明确的规定，这目前还是一个经验性的过程，新手上路最多的还是要不断的尝试，通过不断地修改超参数对比结果来不断修正最后找到一个相对合适的。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习笔记(一)---基础</title>
+    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>待录取已经下来了，应该没什么意外就尘埃落定了，这几天都没怎么睡好，下午困得很。今天下午和晚上就看看什么是深度学习，稍微了解一下，晚上跑个步回去早点睡。</p>
+<a id="more"></a>
+<h2 id="参考">参考</h2>
+<p>https://baike.baidu.com/item/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/3729729?fr=aladdin</p>
+<p>https://www.zhihu.com/question/24097648</p>
+<p>https://blog.csdn.net/testcs_dn/article/details/85009917</p>
+<h2 id="什么是深度学习">什么是深度学习</h2>
+<p>人工智能、机器学习、深度学习这几个名词都很火热，但是他们到底是什么意思呢。</p>
+<p>根据我的查找发现，机器学习是实现人工智能的一种方式，而深度学习又是实现机器学习的一种方式，所以他们应该是一种包含的关系。类似于下图</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012154552.png" alt="20181218165055573" /><figcaption aria-hidden="true">20181218165055573</figcaption>
+</figure>
+<h2 id="机器学习神经网络深度学习">机器学习、神经网络、深度学习</h2>
+<h3 id="机器学习">机器学习</h3>
+<p>简单的说机器学习就是让机器去分析数据找规律，并通过找到的规律对新的数据进行处理。</p>
+<p>机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。<strong>机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。</strong>因为学习算法中涉及了大量的统计学理论，机器学习与推断统计学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可以实现的，行之有效的学习算法。很多推论问题属于无程序可循难度，所以部分的机器学习研究是开发容易处理的近似算法。</p>
+<h3 id="神经网络">神经网络</h3>
+<p>神经网络简单点将就是由好多个神经元组成的系统。这是模拟人类的神经网络。</p>
+<p>神经元是一个简单的分类器。</p>
+<p>比如我们有一大堆猫、狗照片，把每一张照片送进一个机器里，机器需要判断这幅照片里的东西是猫还是狗。我们把猫狗图片处理一下，左边是狗的特征向量，右边是猫的。</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160259.png" alt="20181218165203514" /><figcaption aria-hidden="true">20181218165203514</figcaption>
+</figure>
+<p>神经元一个缺点是：它只能切一刀！你给我说说一刀怎么能把下面这两类分开吧。</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160321.png" alt="20181218165215861" /><figcaption aria-hidden="true">20181218165215861</figcaption>
+</figure>
+<p>解决办法是多层神经网络，底层神经元的输出是高层神经元的输入。我们可以在中间横着砍一刀，竖着砍一刀，然后把左上和右下的部分合在一起，与右上的左下部分分开；也可以围着左上角的边沿砍10刀把这一部分先挖出来，然后和右下角合并。</p>
+<p>每砍一刀，其实就是使用了一个神经元，把不同砍下的半平面做交、并等运算，就是把这些神经元的输出当作输入，后面再连接一个神经元。这个例子中特征的形状称为异或，这种情况一个神经元搞不定，但是两层神经元就能正确对其进行分类。</p>
+<p>只要你能砍足够多刀，把结果拼在一起，什么奇怪形状的边界神经网络都能够表示，所以说神经网络在理论上可以表示很复杂的函数/空间分布。但是真实的神经网络是否能摆动到正确的位置还要看网络初始值设置、样本容量和分布。</p>
+<h3 id="深度学习">深度学习</h3>
+<p>那什么是深度学习呢？深度学习简单点说就是一种为了让层数较多的多层神经网络可以训练，能够运行起来而演化出来的一系列的新的结构和新的方法。</p>
+<p><strong>深度学习（Deep Learning）</strong>是机器学习研究中的一个新的领域，其动机在于建立、模拟人脑进行分析学习的神经网络，<strong>它模仿人脑的机制来解释数据</strong>，例如图像，声音和文本。深度学习是无监督学习的一种。</p>
+<p>深度学习的概念源于人工神经网络的研究。含多隐层的多层感知器就是一种深度学习结构。深度学习通过组合低层特征形成更加抽象的高层表示属性类别或特征，以发现数据的分布式特征表示。</p>
+<p>就像下图</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160356.png" alt="20181218165227159" /><figcaption aria-hidden="true">20181218165227159</figcaption>
+</figure>
+<p>普通的神经网络可能只有几层，深度学习可以达到十几层。深度学习中的深度二字也代表了神经网络的层数。现在流行的深度学习网络结构有"CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的等。</p>
+<p>机器学习是人工智能的一个子集，深度学习又是机器学习的一个子集。机器学习与深度学习都是需要大量数据支撑的，是大数据技术上的一个应用，同时深度学习还需要更高的运算能力支撑，如GPU。</p>
+<h2 id="深度学习典型模型">深度学习典型模型</h2>
+<p>典型的深度学习模型有卷积神经网络( convolutional neural network)、DBN和堆栈自编码网络(stacked auto-encoder network)模型等，下面对这些模型进行描述。</p>
+<h3 id="卷积神经网络模型">卷积神经网络模型</h3>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012161738.jpg" alt="bd3eb13533fa828b269a8a0ff31f4134960a5aa4" /><figcaption aria-hidden="true">bd3eb13533fa828b269a8a0ff31f4134960a5aa4</figcaption>
+</figure>
+<p>在无监督预训练出现之前，训练深度神经网络通常非常困难，而其中一个特例是卷积神经网络。卷积神经网络受视觉系统的结构启发而产生。第一个卷积神经网络计算模型是在Fukushima(D的神经认知机中提出的，基于神经元之间的局部连接和分层组织图像转换，将有相同参数的神经元应用于前一层神经网络的不同位置，得到一种平移不变神经网络结构形式。后来，Le Cun等人在该思想的基础上，用误差梯度设计并训练卷积神经网络，在一些模式识别任务上得到优越的性能。至今，基于卷积神经网络的模式识别系统是最好的实现系统之一，尤其在手写体字符识别任务上表现出非凡的性能。</p>
+<h3 id="深度信任网络模型">深度信任网络模型</h3>
+<p>DBN可以解释为贝叶斯概率生成模型，由多层随机隐变量组成，上面的两层具有无向对称连接，下面的层得到来自上一层的自顶向下的有向连接，最底层单元的状态为可见输入数据向量。DBN由若2F结构单元堆栈组成，结构单元通常为RBM（RestIlcted Boltzmann Machine，受限玻尔兹曼机）。堆栈中每个RBM单元的可视层神经元数量等于前一RBM单元的隐层神经元数量。根据深度学习机制，采用输入样例训练第一层RBM单元，并利用其输出训练第二层RBM模型，将RBM模型进行堆栈通过增加层来改善模型性能。在无监督预训练过程中，DBN编码输入到顶层RBM后，解码顶层的状态到最底层的单元，实现输入的重构。RBM作为DBN的结构单元，与每一层DBN共享参数。</p>
+<h3 id="堆栈自编码网络模型">堆栈自编码网络模型</h3>
+<p>堆栈自编码网络的结构与DBN类似，由若干结构单元堆栈组成，不同之处在于其结构单元为自编码模型( auto-en-coder)而不是RBM。自编码模型是一个两层的神经网络，第一层称为编码层，第二层称为解码层。</p>
+<h2 id="cuadcompute-unified-device-architecture">CUAD（Compute Unified Device Architecture）</h2>
+<p>CUDA（Compute Unified Device Architecture），是显卡厂商<a href="https://baike.baidu.com/item/NVIDIA" target="_blank" rel="noopener">NVIDIA</a>推出的运算平台。 CUDA™是一种由NVIDIA推出的通用<a href="https://baike.baidu.com/item/并行计算/113443" target="_blank" rel="noopener">并行计算</a>架构，该架构使<a href="https://baike.baidu.com/item/GPU" target="_blank" rel="noopener">GPU</a>能够解决复杂的计算问题。 它包含了CUDA<a href="https://baike.baidu.com/item/指令集架构" target="_blank" rel="noopener">指令集架构</a>（<a href="https://baike.baidu.com/item/ISA" target="_blank" rel="noopener">ISA</a>）以及GPU内部的并行计算引擎。 开发人员可以使用<a href="https://baike.baidu.com/item/C语言" target="_blank" rel="noopener">C语言</a>来为CUDA™架构编写程序，C语言是应用最广泛的一种高级编程语言。所编写出的程序可以在支持CUDA™的处理器上以超高性能运行。CUDA3.0已经开始支持<a href="https://baike.baidu.com/item/C%2B%2B" target="_blank" rel="noopener">C++</a>和<a href="https://baike.baidu.com/item/FORTRAN" target="_blank" rel="noopener">FORTRAN</a>。</p>
+<p>在上文提到了，深度学习需要多的数据来进行学习，那么计算能力就是很重要的一环。</p>
+<p>随着GPU的不断发展，它在计算能力上已经超过了通用CPU，仅仅用来做显卡有点浪费了。于是开发人员就将目光瞄向了GPU。</p>
+<p>像许多的技术方向一样，深度学习也拥有着自己的框架，它可以让开发人员不需要手写CUDA就能跑GPU。</p>
+<h2 id="深度学习框架">深度学习框架</h2>
+<p><strong>为何要用深度学习框架？</strong></p>
+<ul>
+<li>不需要手写CUDA就能跑GPU</li>
+<li>自动帮你复杂复合函数的梯度</li>
+</ul>
+<p>深度学习从此变得傻瓜！</p>
+<h3 id="框架总览">框架总览</h3>
+<p>现如今开源生态非常完善，深度学习相关的开源框架众多，光是为人熟知的就有caffe，tensorflow，pytorch/caffe2，keras，mxnet，paddldpaddle，theano，cntk，deeplearning4j，matconvnet等。</p>
+<p>如何选择最适合你的开源框架是一个问题。有三AI在前段时间里，给大家整理了<strong>12个深度学习开源框架快速入门的教程和代码</strong>，供初学者进行挑选，一个合格的深度学习算法工程师怎么着得熟悉其中的3个以上吧。</p>
+<p>下面是各大开源框架的一个总览。</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012165318.jpg" alt="v2-d2af0dc0108888b3eea1140d20656883_720w" /><figcaption aria-hidden="true">v2-d2af0dc0108888b3eea1140d20656883_720w</figcaption>
+</figure>
+<p><strong>(1) 不管怎么说，tensorflow/pytorch你都必须会，这是目前开发者最喜欢，开源项目最丰富的两个框架。</strong></p>
+<p><strong>(2) 如果你要进行移动端算法的开发，那么Caffe是不能不会的。</strong></p>
+<p><strong>(3) 如果你非常熟悉Matlab，matconvnet你不应该错过。</strong></p>
+<p><strong>(4) 如果你追求高效轻量，那么darknet和mxnet你不能不熟悉。</strong></p>
+<p><strong>(5) 如果你很懒，想写最少的代码完成任务，那么用keras吧。</strong></p>
+<p><strong>(6) 如果你是java程序员，那么掌握deeplearning4j没错的。</strong></p>
+<p><strong>其他的框架，也自有它的特点，大家可以自己多去用用。</strong></p>
+<h2 id="监督学习与非监督学习">监督学习与非监督学习</h2>
+<h3 id="监督学习supervised-learning">监督学习（supervised learning）</h3>
+<p>从给定的训练数据集中学习出一个函数（模型参数），当新的数据到来时，可以根据这个函数预测结果。监督学习的训练集要求包括输入输出，也可以说是特征和目标。训练集中的目标是由人标注的。监督学习就是最常见的分类（注意和聚类区分）问题，通过已有的训练样本（即已知数据及其对应的输出）去训练得到一个最优模型（这个模型属于某个函数的集合，最优表示某个评价准则下是最佳的），再利用这个模型将所有的输入映射为相应的输出，对输出进行简单的判断从而实现分类的目的。也就具有了对未知数据分类的能力。监督学习的目标往往是让计算机去学习我们已经创建好的分类系统（模型）。</p>
+<p>监督学习是训练神经网络和决策树的常见技术。这两种技术高度依赖事先确定的分类系统给出的信息，对于神经网络，分类系统利用信息判断网络的错误，然后不断调整网络参数。对于决策树，分类系统用它来判断哪些属性提供了最多的信息。</p>
+<p>常见的有监督学习算法：回归分析和统计分类。最典型的算法是KNN和SVM。</p>
+<p>有监督学习最常见的就是：regression&amp;classification</p>
+<p>Regression：Y是实数vector。回归问题，就是拟合(x,y)的一条曲线，使得价值函数(costfunction) L最小</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165823.gif" alt="20150919203859752" /><figcaption aria-hidden="true">20150919203859752</figcaption>
+</figure>
+<p>Classification：Y是一个有穷数(finitenumber)，可以看做类标号，分类问题首先要给定有lable的数据训练分类器，故属于有监督学习过程。分类过程中cost function l(X,Y)是X属于类Y的概率的负对数。</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165841.gif" alt="20150919203917364" /><figcaption aria-hidden="true">20150919203917364</figcaption>
+</figure>
+<p>其中fi(X)=P(Y=i|X)。</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165858.gif" alt="20150919203935408" /><figcaption aria-hidden="true">20150919203935408</figcaption>
+</figure>
+<h3 id="无监督学习unsupervised-learning">无监督学习（unsupervised learning）</h3>
+<p>输入数据没有被标记，也没有确定的结果。样本数据类别未知，需要根据样本间的相似性对样本集进行分类（聚类，clustering）试图使类内差距最小化，类间差距最大化。通俗点将就是实际应用中，不少情况下无法预先知道样本的标签，也就是说没有训练样本对应的类别，因而只能从原先没有样本标签的样本集开始学习分类器设计。</p>
+<p>非监督学习目标不是告诉计算机怎么做，而是让它（计算机）自己去学习怎样做事情。非监督学习有两种思路。第一种思路是在指导Agent时不为其指定明确分类，而是在成功时，采用某种形式的激励制度。需要注意的是，这类训练通常会置于决策问题的框架里，因为它的目标不是为了产生一个分类系统，而是做出最大回报的决定，这种思路很好的概括了现实世界，agent可以对正确的行为做出激励，而对错误行为做出惩罚。</p>
+<p>无监督学习的方法分为两大类：</p>
+<ol type="1">
+<li><p>一类为基于概率密度函数估计的直接方法：指设法找到各类别在特征空间的分布参数，再进行分类。</p></li>
+<li><p>另一类是称为基于样本间相似性度量的简洁聚类方法：其原理是设法定出不同类别的核心或初始内核，然后依据样本与核心之间的相似性度量将样本聚集成不同的类别。</p></li>
+</ol>
+<p>利用聚类结果，可以提取数据集中隐藏信息，对未来数据进行分类和预测。应用于数据挖掘，模式识别，图像处理等。</p>
+<p>PCA和很多deep learning算法都属于无监督学习。</p>
+<h3 id="两者的不同点">两者的不同点</h3>
+<ol type="1">
+<li><p>有监督学习方法必须要有训练集与测试样本。在训练集中找规律，而对测试样本使用这种规律。而非监督学习没有训练集，只有一组数据，在该组数据集内寻找规律。</p></li>
+<li><p>有监督学习的方法就是识别事物，识别的结果表现在给待识别数据加上了标签。因此训练样本集必须由带标签的样本组成。而非监督学习方法只有要分析的数据集的本身，预先没有什么标签。如果发现数据集呈现某种聚集性，则可按自然的聚集性分类，但不予以某种预先分类标签对上号为目的。</p></li>
+<li><p>非监督学习方法在寻找数据集中的规律性，这种规律性并不一定要达到划分数据集的目的，也就是说不一定要“分类”。</p>
+<p>这一点是比有监督学习方法的用途要广。 譬如分析一堆数据的主分量，或分析数据集有什么特点都可以归于非监督学习方法的范畴。</p></li>
+<li><p>用非监督学习方法分析数据集的主分量与用K-L变换计算数据集的主分量又有区别。后者从方法上讲不是学习方法。因此用K-L变换找主分量不属于无监督学习方法，即方法上不是。而通过学习逐渐找到规律性这体现了学习方法这一点。在人工神经元网络中寻找主分量的方法属于无监督学习方法。</p></li>
+</ol>
+<h3 id="何时采用哪种方法">何时采用哪种方法</h3>
+<p>简单的方法就是从定义入手，有训练样本则考虑采用监督学习方法；无训练样本，则一定不能用监督学习方法。但是，现实问题中，即使没有训练样本，我们也能够凭借自己的双眼，从待分类的数据中，人工标注一些样本，并把它们作为训练样本，这样的话，可以把条件改善，用监督学习方法来做。对于不同的场景，正负样本的分布如果会存在偏移（可能大的偏移，可能比较小），这样的话，监督学习的效果可能就不如用非监督学习了。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>CUAD</tag>
+        <tag>神经网络</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1774,181 +1939,16 @@
       </tags>
   </entry>
   <entry>
-    <title>深度学习笔记(一)---基础</title>
-    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<p>待录取已经下来了，应该没什么意外就尘埃落定了，这几天都没怎么睡好，下午困得很。今天下午和晚上就看看什么是深度学习，稍微了解一下，晚上跑个步回去早点睡。</p>
-<a id="more"></a>
-<h2 id="参考">参考</h2>
-<p>https://baike.baidu.com/item/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/3729729?fr=aladdin</p>
-<p>https://www.zhihu.com/question/24097648</p>
-<p>https://blog.csdn.net/testcs_dn/article/details/85009917</p>
-<h2 id="什么是深度学习">什么是深度学习</h2>
-<p>人工智能、机器学习、深度学习这几个名词都很火热，但是他们到底是什么意思呢。</p>
-<p>根据我的查找发现，机器学习是实现人工智能的一种方式，而深度学习又是实现机器学习的一种方式，所以他们应该是一种包含的关系。类似于下图</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012154552.png" alt="20181218165055573" /><figcaption aria-hidden="true">20181218165055573</figcaption>
-</figure>
-<h2 id="机器学习神经网络深度学习">机器学习、神经网络、深度学习</h2>
-<h3 id="机器学习">机器学习</h3>
-<p>简单的说机器学习就是让机器去分析数据找规律，并通过找到的规律对新的数据进行处理。</p>
-<p>机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。<strong>机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。</strong>因为学习算法中涉及了大量的统计学理论，机器学习与推断统计学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可以实现的，行之有效的学习算法。很多推论问题属于无程序可循难度，所以部分的机器学习研究是开发容易处理的近似算法。</p>
-<h3 id="神经网络">神经网络</h3>
-<p>神经网络简单点将就是由好多个神经元组成的系统。这是模拟人类的神经网络。</p>
-<p>神经元是一个简单的分类器。</p>
-<p>比如我们有一大堆猫、狗照片，把每一张照片送进一个机器里，机器需要判断这幅照片里的东西是猫还是狗。我们把猫狗图片处理一下，左边是狗的特征向量，右边是猫的。</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160259.png" alt="20181218165203514" /><figcaption aria-hidden="true">20181218165203514</figcaption>
-</figure>
-<p>神经元一个缺点是：它只能切一刀！你给我说说一刀怎么能把下面这两类分开吧。</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160321.png" alt="20181218165215861" /><figcaption aria-hidden="true">20181218165215861</figcaption>
-</figure>
-<p>解决办法是多层神经网络，底层神经元的输出是高层神经元的输入。我们可以在中间横着砍一刀，竖着砍一刀，然后把左上和右下的部分合在一起，与右上的左下部分分开；也可以围着左上角的边沿砍10刀把这一部分先挖出来，然后和右下角合并。</p>
-<p>每砍一刀，其实就是使用了一个神经元，把不同砍下的半平面做交、并等运算，就是把这些神经元的输出当作输入，后面再连接一个神经元。这个例子中特征的形状称为异或，这种情况一个神经元搞不定，但是两层神经元就能正确对其进行分类。</p>
-<p>只要你能砍足够多刀，把结果拼在一起，什么奇怪形状的边界神经网络都能够表示，所以说神经网络在理论上可以表示很复杂的函数/空间分布。但是真实的神经网络是否能摆动到正确的位置还要看网络初始值设置、样本容量和分布。</p>
-<h3 id="深度学习">深度学习</h3>
-<p>那什么是深度学习呢？深度学习简单点说就是一种为了让层数较多的多层神经网络可以训练，能够运行起来而演化出来的一系列的新的结构和新的方法。</p>
-<p><strong>深度学习（Deep Learning）</strong>是机器学习研究中的一个新的领域，其动机在于建立、模拟人脑进行分析学习的神经网络，<strong>它模仿人脑的机制来解释数据</strong>，例如图像，声音和文本。深度学习是无监督学习的一种。</p>
-<p>深度学习的概念源于人工神经网络的研究。含多隐层的多层感知器就是一种深度学习结构。深度学习通过组合低层特征形成更加抽象的高层表示属性类别或特征，以发现数据的分布式特征表示。</p>
-<p>就像下图</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160356.png" alt="20181218165227159" /><figcaption aria-hidden="true">20181218165227159</figcaption>
-</figure>
-<p>普通的神经网络可能只有几层，深度学习可以达到十几层。深度学习中的深度二字也代表了神经网络的层数。现在流行的深度学习网络结构有"CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的等。</p>
-<p>机器学习是人工智能的一个子集，深度学习又是机器学习的一个子集。机器学习与深度学习都是需要大量数据支撑的，是大数据技术上的一个应用，同时深度学习还需要更高的运算能力支撑，如GPU。</p>
-<h2 id="深度学习典型模型">深度学习典型模型</h2>
-<p>典型的深度学习模型有卷积神经网络( convolutional neural network)、DBN和堆栈自编码网络(stacked auto-encoder network)模型等，下面对这些模型进行描述。</p>
-<h3 id="卷积神经网络模型">卷积神经网络模型</h3>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012161738.jpg" alt="bd3eb13533fa828b269a8a0ff31f4134960a5aa4" /><figcaption aria-hidden="true">bd3eb13533fa828b269a8a0ff31f4134960a5aa4</figcaption>
-</figure>
-<p>在无监督预训练出现之前，训练深度神经网络通常非常困难，而其中一个特例是卷积神经网络。卷积神经网络受视觉系统的结构启发而产生。第一个卷积神经网络计算模型是在Fukushima(D的神经认知机中提出的，基于神经元之间的局部连接和分层组织图像转换，将有相同参数的神经元应用于前一层神经网络的不同位置，得到一种平移不变神经网络结构形式。后来，Le Cun等人在该思想的基础上，用误差梯度设计并训练卷积神经网络，在一些模式识别任务上得到优越的性能。至今，基于卷积神经网络的模式识别系统是最好的实现系统之一，尤其在手写体字符识别任务上表现出非凡的性能。</p>
-<h3 id="深度信任网络模型">深度信任网络模型</h3>
-<p>DBN可以解释为贝叶斯概率生成模型，由多层随机隐变量组成，上面的两层具有无向对称连接，下面的层得到来自上一层的自顶向下的有向连接，最底层单元的状态为可见输入数据向量。DBN由若2F结构单元堆栈组成，结构单元通常为RBM（RestIlcted Boltzmann Machine，受限玻尔兹曼机）。堆栈中每个RBM单元的可视层神经元数量等于前一RBM单元的隐层神经元数量。根据深度学习机制，采用输入样例训练第一层RBM单元，并利用其输出训练第二层RBM模型，将RBM模型进行堆栈通过增加层来改善模型性能。在无监督预训练过程中，DBN编码输入到顶层RBM后，解码顶层的状态到最底层的单元，实现输入的重构。RBM作为DBN的结构单元，与每一层DBN共享参数。</p>
-<h3 id="堆栈自编码网络模型">堆栈自编码网络模型</h3>
-<p>堆栈自编码网络的结构与DBN类似，由若干结构单元堆栈组成，不同之处在于其结构单元为自编码模型( auto-en-coder)而不是RBM。自编码模型是一个两层的神经网络，第一层称为编码层，第二层称为解码层。</p>
-<h2 id="cuadcompute-unified-device-architecture">CUAD（Compute Unified Device Architecture）</h2>
-<p>CUDA（Compute Unified Device Architecture），是显卡厂商<a href="https://baike.baidu.com/item/NVIDIA" target="_blank" rel="noopener">NVIDIA</a>推出的运算平台。 CUDA™是一种由NVIDIA推出的通用<a href="https://baike.baidu.com/item/并行计算/113443" target="_blank" rel="noopener">并行计算</a>架构，该架构使<a href="https://baike.baidu.com/item/GPU" target="_blank" rel="noopener">GPU</a>能够解决复杂的计算问题。 它包含了CUDA<a href="https://baike.baidu.com/item/指令集架构" target="_blank" rel="noopener">指令集架构</a>（<a href="https://baike.baidu.com/item/ISA" target="_blank" rel="noopener">ISA</a>）以及GPU内部的并行计算引擎。 开发人员可以使用<a href="https://baike.baidu.com/item/C语言" target="_blank" rel="noopener">C语言</a>来为CUDA™架构编写程序，C语言是应用最广泛的一种高级编程语言。所编写出的程序可以在支持CUDA™的处理器上以超高性能运行。CUDA3.0已经开始支持<a href="https://baike.baidu.com/item/C%2B%2B" target="_blank" rel="noopener">C++</a>和<a href="https://baike.baidu.com/item/FORTRAN" target="_blank" rel="noopener">FORTRAN</a>。</p>
-<p>在上文提到了，深度学习需要多的数据来进行学习，那么计算能力就是很重要的一环。</p>
-<p>随着GPU的不断发展，它在计算能力上已经超过了通用CPU，仅仅用来做显卡有点浪费了。于是开发人员就将目光瞄向了GPU。</p>
-<p>像许多的技术方向一样，深度学习也拥有着自己的框架，它可以让开发人员不需要手写CUDA就能跑GPU。</p>
-<h2 id="深度学习框架">深度学习框架</h2>
-<p><strong>为何要用深度学习框架？</strong></p>
-<ul>
-<li>不需要手写CUDA就能跑GPU</li>
-<li>自动帮你复杂复合函数的梯度</li>
-</ul>
-<p>深度学习从此变得傻瓜！</p>
-<h3 id="框架总览">框架总览</h3>
-<p>现如今开源生态非常完善，深度学习相关的开源框架众多，光是为人熟知的就有caffe，tensorflow，pytorch/caffe2，keras，mxnet，paddldpaddle，theano，cntk，deeplearning4j，matconvnet等。</p>
-<p>如何选择最适合你的开源框架是一个问题。有三AI在前段时间里，给大家整理了<strong>12个深度学习开源框架快速入门的教程和代码</strong>，供初学者进行挑选，一个合格的深度学习算法工程师怎么着得熟悉其中的3个以上吧。</p>
-<p>下面是各大开源框架的一个总览。</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012165318.jpg" alt="v2-d2af0dc0108888b3eea1140d20656883_720w" /><figcaption aria-hidden="true">v2-d2af0dc0108888b3eea1140d20656883_720w</figcaption>
-</figure>
-<p><strong>(1) 不管怎么说，tensorflow/pytorch你都必须会，这是目前开发者最喜欢，开源项目最丰富的两个框架。</strong></p>
-<p><strong>(2) 如果你要进行移动端算法的开发，那么Caffe是不能不会的。</strong></p>
-<p><strong>(3) 如果你非常熟悉Matlab，matconvnet你不应该错过。</strong></p>
-<p><strong>(4) 如果你追求高效轻量，那么darknet和mxnet你不能不熟悉。</strong></p>
-<p><strong>(5) 如果你很懒，想写最少的代码完成任务，那么用keras吧。</strong></p>
-<p><strong>(6) 如果你是java程序员，那么掌握deeplearning4j没错的。</strong></p>
-<p><strong>其他的框架，也自有它的特点，大家可以自己多去用用。</strong></p>
-<h2 id="监督学习与非监督学习">监督学习与非监督学习</h2>
-<h3 id="监督学习supervised-learning">监督学习（supervised learning）</h3>
-<p>从给定的训练数据集中学习出一个函数（模型参数），当新的数据到来时，可以根据这个函数预测结果。监督学习的训练集要求包括输入输出，也可以说是特征和目标。训练集中的目标是由人标注的。监督学习就是最常见的分类（注意和聚类区分）问题，通过已有的训练样本（即已知数据及其对应的输出）去训练得到一个最优模型（这个模型属于某个函数的集合，最优表示某个评价准则下是最佳的），再利用这个模型将所有的输入映射为相应的输出，对输出进行简单的判断从而实现分类的目的。也就具有了对未知数据分类的能力。监督学习的目标往往是让计算机去学习我们已经创建好的分类系统（模型）。</p>
-<p>监督学习是训练神经网络和决策树的常见技术。这两种技术高度依赖事先确定的分类系统给出的信息，对于神经网络，分类系统利用信息判断网络的错误，然后不断调整网络参数。对于决策树，分类系统用它来判断哪些属性提供了最多的信息。</p>
-<p>常见的有监督学习算法：回归分析和统计分类。最典型的算法是KNN和SVM。</p>
-<p>有监督学习最常见的就是：regression&amp;classification</p>
-<p>Regression：Y是实数vector。回归问题，就是拟合(x,y)的一条曲线，使得价值函数(costfunction) L最小</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165823.gif" alt="20150919203859752" /><figcaption aria-hidden="true">20150919203859752</figcaption>
-</figure>
-<p>Classification：Y是一个有穷数(finitenumber)，可以看做类标号，分类问题首先要给定有lable的数据训练分类器，故属于有监督学习过程。分类过程中cost function l(X,Y)是X属于类Y的概率的负对数。</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165841.gif" alt="20150919203917364" /><figcaption aria-hidden="true">20150919203917364</figcaption>
-</figure>
-<p>其中fi(X)=P(Y=i|X)。</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165858.gif" alt="20150919203935408" /><figcaption aria-hidden="true">20150919203935408</figcaption>
-</figure>
-<h3 id="无监督学习unsupervised-learning">无监督学习（unsupervised learning）</h3>
-<p>输入数据没有被标记，也没有确定的结果。样本数据类别未知，需要根据样本间的相似性对样本集进行分类（聚类，clustering）试图使类内差距最小化，类间差距最大化。通俗点将就是实际应用中，不少情况下无法预先知道样本的标签，也就是说没有训练样本对应的类别，因而只能从原先没有样本标签的样本集开始学习分类器设计。</p>
-<p>非监督学习目标不是告诉计算机怎么做，而是让它（计算机）自己去学习怎样做事情。非监督学习有两种思路。第一种思路是在指导Agent时不为其指定明确分类，而是在成功时，采用某种形式的激励制度。需要注意的是，这类训练通常会置于决策问题的框架里，因为它的目标不是为了产生一个分类系统，而是做出最大回报的决定，这种思路很好的概括了现实世界，agent可以对正确的行为做出激励，而对错误行为做出惩罚。</p>
-<p>无监督学习的方法分为两大类：</p>
-<ol type="1">
-<li><p>一类为基于概率密度函数估计的直接方法：指设法找到各类别在特征空间的分布参数，再进行分类。</p></li>
-<li><p>另一类是称为基于样本间相似性度量的简洁聚类方法：其原理是设法定出不同类别的核心或初始内核，然后依据样本与核心之间的相似性度量将样本聚集成不同的类别。</p></li>
-</ol>
-<p>利用聚类结果，可以提取数据集中隐藏信息，对未来数据进行分类和预测。应用于数据挖掘，模式识别，图像处理等。</p>
-<p>PCA和很多deep learning算法都属于无监督学习。</p>
-<h3 id="两者的不同点">两者的不同点</h3>
-<ol type="1">
-<li><p>有监督学习方法必须要有训练集与测试样本。在训练集中找规律，而对测试样本使用这种规律。而非监督学习没有训练集，只有一组数据，在该组数据集内寻找规律。</p></li>
-<li><p>有监督学习的方法就是识别事物，识别的结果表现在给待识别数据加上了标签。因此训练样本集必须由带标签的样本组成。而非监督学习方法只有要分析的数据集的本身，预先没有什么标签。如果发现数据集呈现某种聚集性，则可按自然的聚集性分类，但不予以某种预先分类标签对上号为目的。</p></li>
-<li><p>非监督学习方法在寻找数据集中的规律性，这种规律性并不一定要达到划分数据集的目的，也就是说不一定要“分类”。</p>
-<p>这一点是比有监督学习方法的用途要广。 譬如分析一堆数据的主分量，或分析数据集有什么特点都可以归于非监督学习方法的范畴。</p></li>
-<li><p>用非监督学习方法分析数据集的主分量与用K-L变换计算数据集的主分量又有区别。后者从方法上讲不是学习方法。因此用K-L变换找主分量不属于无监督学习方法，即方法上不是。而通过学习逐渐找到规律性这体现了学习方法这一点。在人工神经元网络中寻找主分量的方法属于无监督学习方法。</p></li>
-</ol>
-<h3 id="何时采用哪种方法">何时采用哪种方法</h3>
-<p>简单的方法就是从定义入手，有训练样本则考虑采用监督学习方法；无训练样本，则一定不能用监督学习方法。但是，现实问题中，即使没有训练样本，我们也能够凭借自己的双眼，从待分类的数据中，人工标注一些样本，并把它们作为训练样本，这样的话，可以把条件改善，用监督学习方法来做。对于不同的场景，正负样本的分布如果会存在偏移（可能大的偏移，可能比较小），这样的话，监督学习的效果可能就不如用非监督学习了。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>CUAD</tag>
-        <tag>神经网络</tag>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>深度学习笔记(三)---基础理解</title>
-    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<p>稍微记录一下看吴恩达课程后对深度学习各种概念的理解</p>
-<a id="more"></a>
-<h2 id="深度学习的大致过程">深度学习的大致过程</h2>
-<p>在看了吴恩达的第一节课之后我对深度学习的理解是这样的：</p>
-<p>深度学习其实就是一个寻找拟合函数的过程，让数据通过这个函数之后能输出和人看法相似的结果。</p>
-<p>首先我们先需要选定一个/几个模型，确定需要的参数，超参数之类的</p>
-<p>然后我们要将已有的数据划分为训练集，验证集和测试集，以往的比例是60，20，20之类的，但是由于现在已经是大数据时代了，有些数据集已经足够大了，我们不需要那么大的验证集和测试集，可以适当减少Dev和Test的占比，比如1，0.5之类的。<strong>还有一点要注意</strong>，我们很有可能训练集和验证，测试集的来源不一样，难以保证同分布，吴恩达老师建议大家要确保验证集和测试集的数据来自同一分布</p>
-<p>之后我们要将参数初始化，注意初始化的时候参数是否能为0，是否需要进行归一化。当然训练集的输入输出也要进行预处理，但是预处理的方法目前还没有进行太多的讲解，只有一个将图像拉成一维向量</p>
-<p>之后就是让神经网络通过训练找到合适的参数使得训练集的成本函数不断降低。整个过程主要包括前向传播和后向传播。在我看来，前向传播就是为了计算出成本函数，后向传播就是让成本函数对各个参数求导，然后通过梯度下降的方法让成本函数进一步降低。</p>
-<p>前后向传播的迭代次数和梯度下降学习率都通过超参数来控制，最后将训练出来的各种参数保存下来，这样就完成了一个模型的简单训练。当然其中还有很多的正则化，归一化之类的操作，但是最简单的一个模型（比如逻辑回归）大致就是这些步骤了。</p>
-<p>然后在验证集上通过运行同一网络不同超参数和不同网络之间的模型来比较模型性能，然后再跑测试集。</p>
-<h2 id="为什么要向量化">为什么要向量化</h2>
-<p>因为输入数据肯定是一个庞大的数据集，如果用单纯的标量那么一定需要很多的循环，但是循环的效率是很低的，所以我们需要引入向量操作，向量操作一次性可以完成整个循环的所有运算，效率提升极大。</p>
-<h2 id="为什么要非线性的激活函数">为什么要非线性的激活函数</h2>
-<p>因为如果使用线性的激活函数那么正向传播的输出仅仅是输入的线性组合，根本没有改变，不管你使用多少隐层都和单隐层是一样的效果。</p>
-<h2 id="参数初始化">参数初始化</h2>
-<p>为什么w参数不能直接初始化为全0？</p>
-<p>当你这一层只有一个节点的时候，你是可以将这个节点的w参数初始化为0的。但是如果你这一层不止一个节点，而且采用了全连接的话，你还将W矩阵初始化成了0矩阵，那么你这一层每个节点的w参数之间是一个线性关系，和只有一个节点效果是一样的。</p>
-<h2 id="为什么要用深层表示">为什么要用深层表示</h2>
-<p>你可以直觉上把这种神经网络的前几层当作探测简单的函数，比如边缘，之后把它们跟后几层结合在一起，那么总体上就能学习更多复杂的函数。一般你会从比较小的细节入手，比如边缘，然后再一步步到更大更复杂的区域，比如一只眼睛或是一个鼻子，再把眼睛鼻子装一块组成更复杂的部分。</p>
-<h2 id="超参数">超参数</h2>
-<p>比如算法中的<strong>learning rate</strong> $ a <span class="math inline">\(（学习率）、**iterations**(梯度下降法循环的数量)、\)</span> L <span class="math inline">\(（隐藏层数目）、\)</span> n^{[l]} <span class="math inline">\(（隐藏层单元数目）、**choice of activation function**（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数\)</span> W <span class="math inline">\(和\)</span> b $的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
-<p>超参数的取值并没有明确的规定，这目前还是一个经验性的过程，新手上路最多的还是要不断的尝试，通过不断地修改超参数对比结果来不断修正最后找到一个相对合适的。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>深度学习笔记(四)---优化方法理解</title>
     <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E5%9B%9B)---%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<p>记录网络模型的各种优化</p>
 <a id="more"></a>
 <h2 id="超参数">超参数</h2>
-<p>比如算法中的<strong>learning rate</strong> $ a <span class="math inline">\(（学习率）、**iterations**(梯度下降法循环的数量)、\)</span> L <span class="math inline">\(（隐藏层数目）、\)</span> n^{[l]} <span class="math inline">\(（隐藏层单元数目）、**choice of activation function**（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数\)</span> W <span class="math inline">\(和\)</span> b $的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
+<p>比如算法中的<strong>learning rate</strong> $ a $ （学习率）、<strong>iterations</strong> (梯度下降法循环的数量) 、$ L $ （隐藏层数目）、$ n^{[l]} $ （隐藏层单元数目）、<strong>choice of activation function</strong>（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数$ W $ 和 $ b $ 的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
 <p>超参数的取值并没有明确的规定，这目前还是一个经验性的过程，新手上路最多的还是要不断的尝试，通过不断地修改超参数对比结果来不断修正最后找到一个相对合适的。</p>
 <h2 id="偏差和方差">偏差和方差</h2>
 <figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201021152647.png" alt="e0ec4205933b7c2a9eaed9fbaa8d4afc" /><figcaption aria-hidden="true">e0ec4205933b7c2a9eaed9fbaa8d4afc</figcaption>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201021152647.png" alt="111" /><figcaption aria-hidden="true">111</figcaption>
 </figure>
 <p>假设这就是数据集，如果给这个数据集拟合一条直线，可能得到一个逻辑回归拟合，但它并不能很好地拟合该数据，这是高偏差（<strong>high bias</strong>）的情况，我们称为“欠拟合”（<strong>underfitting</strong>）。</p>
 <p>相反的如果我们拟合一个非常复杂的分类器，比如深度神经网络或含有隐藏单元的神经网络，可能就非常适用于这个数据集，但是这看起来也不是一种很好的拟合方式分类器方差较高（<strong>high variance</strong>），数据过度拟合（<strong>overfitting</strong>）。</p>
@@ -2164,43 +2164,51 @@
       </tags>
   </entry>
   <entry>
-    <title>爬虫常用操作笔记</title>
-    <url>/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>记录一些常用的代码，免得老去翻代码</p>
+    <title>研究生组会</title>
+    <url>/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/</url>
+    <content><![CDATA[<p>记录组会内容</p>
 <a id="more"></a>
-<h3 id="配置">0.配置</h3>
-<p><strong>创建项目</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scrapy startproject adb</span><br></pre></td></tr></table></figure>
-<p><strong>创建爬虫</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd adb</span><br><span class="line">scrapy genspider 爬虫名字 ***.com</span><br></pre></td></tr></table></figure>
-<p><strong>解释器地址</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">D:\Anaconda3\Lib\site-packages\scrapy\cmdline.py</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crawl 爬虫名字</span><br></pre></td></tr></table></figure>
-<h3 id="翻页">1.翻页</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 翻页</span></span><br><span class="line">next_page = response.xpath(<span class="string">'//div[@class="page"]/a[contains(text(),"下一页")]/@href'</span>).extract_first()</span><br><span class="line"><span class="keyword">if</span> next_page:</span><br><span class="line">	next_url = <span class="string">'https://www.2345daohang.com'</span> + next_page</span><br><span class="line">	<span class="keyword">yield</span> scrapy.Request(next_url, callback=self.bookList, meta=&#123;<span class="string">'category'</span>: response.meta[<span class="string">'category'</span>]&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="content处理">2.content处理</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="批量入库">3.批量入库</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"******\\yangsheng_info.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">sql = <span class="string">"INSERT INTO main_data_tougaolanmu(theme,name,content) VALUES(%s,%s,%s)"</span></span><br><span class="line">cursor.executemany(sql, data)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"数据库导入操作"</span>)</span><br><span class="line"></span><br><span class="line">db.commit()</span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="逐条入库">4.逐条入库</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"***************\\minsu_info.csv"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> data:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    sql1 = <span class="string">"SELECT id from user_userInfo WHERE nickname = %s"</span></span><br><span class="line">    <span class="keyword">if</span> dd[<span class="number">1</span>] == <span class="string">'佚名'</span>:</span><br><span class="line">        dd[<span class="number">1</span>] = <span class="string">'官方2号'</span></span><br><span class="line">    cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">    results = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">    <span class="keyword">if</span> results:</span><br><span class="line">        sql2 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = results[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql2, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错1'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql3, dd[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错2'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">        result = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">        sql4 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql4, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'出错3'</span>)</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            db.rollback()</span><br><span class="line">    print(i, results)</span><br><span class="line"></span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="获取html">5.获取HTML</h3>
-<p>scrapy的原生的<code>response</code>可以直接调用<code>.text()</code>函数，但是当<code>response</code>调用过<code>xpath</code>之后虽然使用<code>dir()</code>显示还是有<code>text</code>属性但是并不能调用，此时可以使用<code>getall()</code>获取对应的html，之后再用正则表达式，<code>split()</code>之类的进行数据的处理。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = response.xpath(<span class="string">'//div[@class="ct tt zooms"]'</span>)[<span class="number">0</span>].getall()[<span class="number">0</span>]</span><br><span class="line">item[<span class="string">'content'</span>] = re.sub(<span class="string">r'href="([^"])*[^=k]"'</span>, <span class="string">""</span>, content)</span><br></pre></td></tr></table></figure>
-<h3 id="创建csv">6.创建CSV</h3>
-<figure class="highlight python"><figcaption><span>csv_init.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../../book_info.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [<span class="string">"category"</span>, <span class="string">"name"</span>, <span class="string">"cover"</span>, <span class="string">"author"</span>, <span class="string">"intro"</span>]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
-<h3 id="管道">7.管道</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'11_1900.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [item[<span class="string">"name"</span>], item[<span class="string">"othername"</span>], item[<span class="string">'author'</span>], item[<span class="string">'country'</span>], item[<span class="string">'time'</span>], item[<span class="string">'intro'</span>]]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+<h1 id="section">2020.10.21</h1>
+<h2 id="augfpn">augFPN</h2>
+<p>FPN中特征金字塔</p>
+<p>问题：</p>
+<ul>
+<li>层间语义差异</li>
+<li>最高层特征信息随时</li>
+<li>roi的启发式分配策略</li>
+</ul>
+<p>提出augFPN</p>
+<ul>
+<li>特征融合前使用相通的监督信号，缩小于一差距
+<ul>
+<li>共享权重</li>
+<li>只在训练时用</li>
+</ul></li>
+<li>残差特征增强
+<ul>
+<li>使用空间信息</li>
+</ul></li>
+<li>软roi选择</li>
+</ul>
+<h2 id="非局部u-net">非局部U-Net</h2>
+<p>医学图像分割</p>
+<p>U型网络</p>
+<p>U -net局限：</p>
+<ul>
+<li>局部运算，小内核</li>
+<li>更多的上、下采样丢失更多空间信息</li>
+</ul>
+<p>创新：</p>
+<ul>
+<li>低级特征和高级特征使用求和而不是连接</li>
+</ul>
 ]]></content>
       <categories>
-        <category>技术</category>
-        <category>爬虫</category>
+        <category>组会</category>
       </categories>
       <tags>
-        <tag>python</tag>
-        <tag>MySQL</tag>
-        <tag>scrapy</tag>
+        <tag>图像处理</tag>
+        <tag>组会</tag>
       </tags>
   </entry>
   <entry>
@@ -2253,6 +2261,46 @@
       <tags>
         <tag>深度学习</tag>
         <tag>英语</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爬虫常用操作笔记</title>
+    <url>/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>记录一些常用的代码，免得老去翻代码</p>
+<a id="more"></a>
+<h3 id="配置">0.配置</h3>
+<p><strong>创建项目</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scrapy startproject adb</span><br></pre></td></tr></table></figure>
+<p><strong>创建爬虫</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd adb</span><br><span class="line">scrapy genspider 爬虫名字 ***.com</span><br></pre></td></tr></table></figure>
+<p><strong>解释器地址</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">D:\Anaconda3\Lib\site-packages\scrapy\cmdline.py</span><br></pre></td></tr></table></figure>
+<p><strong>参数</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crawl 爬虫名字</span><br></pre></td></tr></table></figure>
+<h3 id="翻页">1.翻页</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 翻页</span></span><br><span class="line">next_page = response.xpath(<span class="string">'//div[@class="page"]/a[contains(text(),"下一页")]/@href'</span>).extract_first()</span><br><span class="line"><span class="keyword">if</span> next_page:</span><br><span class="line">	next_url = <span class="string">'https://www.2345daohang.com'</span> + next_page</span><br><span class="line">	<span class="keyword">yield</span> scrapy.Request(next_url, callback=self.bookList, meta=&#123;<span class="string">'category'</span>: response.meta[<span class="string">'category'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="content处理">2.content处理</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="批量入库">3.批量入库</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"******\\yangsheng_info.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">sql = <span class="string">"INSERT INTO main_data_tougaolanmu(theme,name,content) VALUES(%s,%s,%s)"</span></span><br><span class="line">cursor.executemany(sql, data)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"数据库导入操作"</span>)</span><br><span class="line"></span><br><span class="line">db.commit()</span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
+<h3 id="逐条入库">4.逐条入库</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"***************\\minsu_info.csv"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> data:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    sql1 = <span class="string">"SELECT id from user_userInfo WHERE nickname = %s"</span></span><br><span class="line">    <span class="keyword">if</span> dd[<span class="number">1</span>] == <span class="string">'佚名'</span>:</span><br><span class="line">        dd[<span class="number">1</span>] = <span class="string">'官方2号'</span></span><br><span class="line">    cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">    results = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">    <span class="keyword">if</span> results:</span><br><span class="line">        sql2 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = results[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql2, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错1'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql3, dd[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错2'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">        result = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">        sql4 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql4, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'出错3'</span>)</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            db.rollback()</span><br><span class="line">    print(i, results)</span><br><span class="line"></span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
+<h3 id="获取html">5.获取HTML</h3>
+<p>scrapy的原生的<code>response</code>可以直接调用<code>.text()</code>函数，但是当<code>response</code>调用过<code>xpath</code>之后虽然使用<code>dir()</code>显示还是有<code>text</code>属性但是并不能调用，此时可以使用<code>getall()</code>获取对应的html，之后再用正则表达式，<code>split()</code>之类的进行数据的处理。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = response.xpath(<span class="string">'//div[@class="ct tt zooms"]'</span>)[<span class="number">0</span>].getall()[<span class="number">0</span>]</span><br><span class="line">item[<span class="string">'content'</span>] = re.sub(<span class="string">r'href="([^"])*[^=k]"'</span>, <span class="string">""</span>, content)</span><br></pre></td></tr></table></figure>
+<h3 id="创建csv">6.创建CSV</h3>
+<figure class="highlight python"><figcaption><span>csv_init.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../../book_info.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [<span class="string">"category"</span>, <span class="string">"name"</span>, <span class="string">"cover"</span>, <span class="string">"author"</span>, <span class="string">"intro"</span>]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+<h3 id="管道">7.管道</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'11_1900.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [item[<span class="string">"name"</span>], item[<span class="string">"othername"</span>], item[<span class="string">'author'</span>], item[<span class="string">'country'</span>], item[<span class="string">'time'</span>], item[<span class="string">'intro'</span>]]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>MySQL</tag>
+        <tag>scrapy</tag>
       </tags>
   </entry>
   <entry>
@@ -2328,54 +2376,6 @@
       </categories>
       <tags>
         <tag>服务器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>研究生组会</title>
-    <url>/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/</url>
-    <content><![CDATA[<p>记录组会内容</p>
-<a id="more"></a>
-<h1 id="section">2020.10.21</h1>
-<h2 id="augfpn">augFPN</h2>
-<p>FPN中特征金字塔</p>
-<p>问题：</p>
-<ul>
-<li>层间语义差异</li>
-<li>最高层特征信息随时</li>
-<li>roi的启发式分配策略</li>
-</ul>
-<p>提出augFPN</p>
-<ul>
-<li>特征融合前使用相通的监督信号，缩小于一差距
-<ul>
-<li>共享权重</li>
-<li>只在训练时用</li>
-</ul></li>
-<li>残差特征增强
-<ul>
-<li>使用空间信息</li>
-</ul></li>
-<li>软roi选择</li>
-</ul>
-<h2 id="非局部u-net">非局部U-Net</h2>
-<p>医学图像分割</p>
-<p>U型网络</p>
-<p>U -net局限：</p>
-<ul>
-<li>局部运算，小内核</li>
-<li>更多的上、下采样丢失更多空间信息</li>
-</ul>
-<p>创新：</p>
-<ul>
-<li>低级特征和高级特征使用求和而不是连接</li>
-</ul>
-]]></content>
-      <categories>
-        <category>组会</category>
-      </categories>
-      <tags>
-        <tag>图像处理</tag>
-        <tag>组会</tag>
       </tags>
   </entry>
 </search>
