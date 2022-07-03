@@ -11,6 +11,7 @@
 {%- endif %}
 
 {%- if theme.mediumzoom %}
+  {%- set js_vendors = js_vendors | attr('jquery', '//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js') %}
   {%- set js_vendors = js_vendors | attr('mediumzoom', '//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js') %}
 {%- endif %}
 

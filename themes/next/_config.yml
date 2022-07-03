@@ -78,7 +78,7 @@ footer:
 
   # Beian ICP and gongan information for Chinese users. See: http://www.beian.miit.gov.cn, http://www.beian.gov.cn
   beian:
-    enable: true
+    enable: false
     icp: 陕ICP备20004764号
     # The digit in the num of gongan beian.
     gongan_id:
@@ -215,8 +215,8 @@ runtime:
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  GitHub: https://github.com/KezhiAdore || github
-  E-Mail: mailto:yuzhaokz@163.com || envelope
+  GitHub: https://github.com/ZCHSakura || github
+  E-Mail: mailto:724353935@qq.com || envelope
   #Weibo: https://weibo.com/yourname || weibo
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
@@ -240,9 +240,8 @@ links_settings:
   links_layout: inline
 
 links:
-  果果的博客: https://gwyxjtu.github.io/
-  于小鸡的收藏: /collection/
-  Linux命令查询: /linux-command/
+  于小鸡的博客: https://www.kezhi.tech/
+  Linux命令查询: https://www.kezhi.tech/linux-command/
   #Title: http://yoursite.com
 
 # Table of Contents in the Sidebar
@@ -315,8 +314,8 @@ reward_settings:
   #comment: Donate comment here.
 
 reward:
-  wechatpay: /images/WeChatpay.png
-  alipay: /images/Alipay.png
+  wechatpay: /images/WeChatpay.jpg
+  #alipay: /images/Alipay.png
   #paypal: /images/paypal.png
   #bitcoin: /images/bitcoin.png
 
@@ -578,12 +577,12 @@ pjax: false
 
 # FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.
 # For more information: https://fancyapps.com/fancybox
-fancybox: true
+fancybox: false
 
 # A JavaScript library for zooming images like Medium.
 # Do not enable both `fancybox` and `mediumzoom`.
 # For more information: https://github.com/francoischalifour/medium-zoom
-mediumzoom: false
+mediumzoom: true
 
 # Vanilla JavaScript plugin for lazyloading images.
 # For more information: https://github.com/ApoorvSaxena/lozad.js

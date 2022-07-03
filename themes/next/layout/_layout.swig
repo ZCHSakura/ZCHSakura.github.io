@@ -20,6 +20,11 @@
     {{ partial('_partials/widgets.swig', {}, {cache: theme.cache.enable}) }}
 
     <main class="main">
+	  {%- if theme.algolia_search.enable or theme.local_search.enable %}
+	    <div class="site-search">
+		  {{ partial('_partials/search/index.swig', {}, {cache: theme.cache.enable}) }}
+	    </div>
+	  {%- endif %}
       <div class="main-inner">
         <div class="content-wrap">
           {% include '_partials/header/sub-menu.swig' %}

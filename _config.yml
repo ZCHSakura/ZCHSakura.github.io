@@ -5,8 +5,8 @@
 # Site
 title: 周小天的Blog   #网站标题
 subtitle: ''        #网站副标题
-description: '知识因被记录而产生价值'     #网站描述
-keywords: 笔记，计算机，
+description: '周小天的记录本'     #网站描述
+keywords: 笔记，计算机
 author: 周小天
 language: zh-CN
 timezone: ''
@@ -15,7 +15,7 @@ timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url:  http://example.com
+url: zchsakura.github.io
 permalink: :title/
 permalink_defaults:
 pretty_urls:
@@ -124,7 +124,7 @@ search:
     # Live2D
 # https://github.com/EYHN/hexo-helper-live2d
 live2d:
-  enable: false
+  enable: true
   pluginRootPath: live2dw/
   pluginJsPath: lib/
   pluginModelPath: assets/ Relative
