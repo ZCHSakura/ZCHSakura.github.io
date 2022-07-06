@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2022-07-06T07:51:11.107Z</updated>
+  <updated>2022-07-06T09:25:54.601Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -21,11 +21,11 @@
     <link href="zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/"/>
     <id>zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/</id>
     <published>2022-07-06T02:54:45.000Z</published>
-    <updated>2022-07-06T07:51:11.107Z</updated>
+    <updated>2022-07-06T09:25:54.601Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题&lt;/p&gt;
+      &lt;p&gt;记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。&lt;/p&gt;
     
     </summary>
     
@@ -480,9 +480,9 @@
       <category term="爬虫" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
     
     
-      <category term="MySQL" scheme="zchsakura.github.io/tags/MySQL/"/>
-    
       <category term="python" scheme="zchsakura.github.io/tags/python/"/>
+    
+      <category term="MySQL" scheme="zchsakura.github.io/tags/MySQL/"/>
     
       <category term="scrapy" scheme="zchsakura.github.io/tags/scrapy/"/>
     
