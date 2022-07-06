@@ -24,6 +24,8 @@ top:
 
 ### 环境配置
 
+笔者使用是自己下载的软件包，所以要自己配置下环境
+
 - etc/profile
 
 - /home/user(用户名)/.bashrc
