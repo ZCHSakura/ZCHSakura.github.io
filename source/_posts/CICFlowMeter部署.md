@@ -127,7 +127,7 @@ Exception in thread "main" java.lang.UnsatisfiedLinkError: com.slytechs.library.
         at cic.cs.unb.ca.ifm.Cmd.main(Cmd.java:80)
 ```
 
-- 这个问题根据笔者自己的尝试和网上的[参考](https://blog.csdn.net/lizheng2017/article/details/121455590)基本可以确定是由于jnetpcap这个东西引起的，应该是jnetpcap这个东西在不同架构下不兼容的问题，在arm架构上使用CICgithub中提供的so是不行的，必须要自己重新编译，甚至我之后在部署一台X86的centos的时候这个os也不能用最后还是笔者自己重新编译之后才能使用，这个东西的兼容性确实很差，实在不行了需要编译安装的时候可以看下面的内容。
+- 这个问题根据笔者自己的尝试和网上的 [参考](https://blog.csdn.net/lizheng2017/article/details/121455590) 基本可以确定是由于jnetpcap这个东西引起的，应该是jnetpcap这个东西在不同架构下不兼容的问题，在arm架构上使用CICgithub中提供的so是不行的，必须要自己重新编译，甚至我之后在部署一台X86的centos的时候这个os也不能用最后还是笔者自己重新编译之后才能使用，这个东西的兼容性确实很差，实在不行了需要编译安装的时候可以看下面的内容。
 
 ## X86架构
 
