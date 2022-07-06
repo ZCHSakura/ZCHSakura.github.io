@@ -1,12 +1,14 @@
 ---
 title: CICFlowMeter部署
-tags: 
-- CICFlowMeter
+tags:
+  - CICFlowMeter
 categories:
-- 技术
-- CICFlowMeter
+  - 技术
+  - CICFlowMeter
+date: 2022-07-06 10:54:45
 top:
 ---
+
 
 记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题
 
@@ -66,7 +68,33 @@ sudo ln -s /***/Traffic_x86/jdk1.8.0_311/bin/java /usr/bin/java（which java 结
 
 ### 导入jnetpcap
 
+- Dfile路径改为/Traffic_arm/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425下的jnetpcap.jar
 
+```
+mvn install:install-file -Dfile=/***/jnetpcap.jar -DgroupId=org.jnetpcap -DartifactId=jnetpcap -Dversion=1.4.1 -Dpackaging=jar
+```
+
+- 在/Traffic_arm/CICFlowMeter-master下构建项目
+
+```
+./gradlew distZip
+```
+
+- 在/Traffic_arm/CICFlowMeter-master/build/distributions里解压缩CICFlowMeter-4.0.zip
+
+- 将/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425里的libjnetpcap.so和libjnetpcap-pcap100.so复制到/Traffic_arm/jdk1.8.0_333/jre/lib/aarch64（或amd64，和平台架构相关）目录下
+
+- 在/***/Traffic_arm/CICFlowMeter-master/build/distributions/CICFlowMeter-4.0/bin运行cfm文件即可
+
+```
+./cfm [pcap_file] [target_path]
+/***/Traffic/CICFlowMeter-master/build/distributions/CICFlowMeter-4.0/bin/cfm ***.pcap /***/
+```
+
+### 相关描述
+
+- 按照上述操作在有网的x86的Ubuntu中应该是不会出现问题的,笔者已经在多台Ubuntu中成功部署.
+- 
 
 ## X86架构
 
