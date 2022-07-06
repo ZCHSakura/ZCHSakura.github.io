@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2022-07-03T11:27:04.376Z</updated>
+  <updated>2022-07-06T07:51:11.107Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -15,6 +15,55 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CICFlowMeter部署</title>
+    <link href="zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/"/>
+    <id>zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/</id>
+    <published>2022-07-06T02:54:45.000Z</published>
+    <updated>2022-07-06T07:51:11.107Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="CICFlowMeter" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/CICFlowMeter/"/>
+    
+    
+      <category term="CICFlowMeter" scheme="zchsakura.github.io/tags/CICFlowMeter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>多台电脑同步博客</title>
+    <link href="zchsakura.github.io/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/"/>
+    <id>zchsakura.github.io/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/</id>
+    <published>2022-07-04T09:07:35.000Z</published>
+    <updated>2022-07-06T07:37:35.693Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录一下在多台电脑上同时写博客时候的同步问题&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.zhihu.com/question/23934523&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="博客" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E5%8D%9A%E5%AE%A2/"/>
+    
+    
+      <category term="hexo" scheme="zchsakura.github.io/tags/hexo/"/>
+    
+      <category term="git" scheme="zchsakura.github.io/tags/git/"/>
+    
+  </entry>
   
   <entry>
     <title>深度学习笔记(四)---优化方法理解</title>
@@ -431,9 +480,9 @@
       <category term="爬虫" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
     
     
-      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
-    
       <category term="MySQL" scheme="zchsakura.github.io/tags/MySQL/"/>
+    
+      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
     
       <category term="scrapy" scheme="zchsakura.github.io/tags/scrapy/"/>
     
@@ -459,60 +508,6 @@
     
     
       <category term="scrapy" scheme="zchsakura.github.io/tags/scrapy/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>lxml相关操作</title>
-    <link href="zchsakura.github.io/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/"/>
-    <id>zchsakura.github.io/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</id>
-    <published>2020-04-30T09:12:39.000Z</published>
-    <updated>2022-07-02T06:52:05.720Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="爬虫" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
-    
-      <category term="爬虫" scheme="zchsakura.github.io/tags/%E7%88%AC%E8%99%AB/"/>
-    
-      <category term="信息提取" scheme="zchsakura.github.io/tags/%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ubuntu安装MySQL</title>
-    <link href="zchsakura.github.io/Ubuntu%E5%AE%89%E8%A3%85mysql/"/>
-    <id>zchsakura.github.io/Ubuntu%E5%AE%89%E8%A3%85mysql/</id>
-    <published>2020-04-29T03:19:00.000Z</published>
-    <updated>2022-07-02T06:53:13.212Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;服务器安装MySQL有些方法搞的十分麻烦，这里记录一个Ubuntu适用的简单的方法，同时修改字符集为utf8mb4（毕竟MySQL的utf8是个赝品）&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="MySQL" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/MySQL/"/>
-    
-    
-      <category term="Ubuntu" scheme="zchsakura.github.io/tags/Ubuntu/"/>
-    
-      <category term="MySQL" scheme="zchsakura.github.io/tags/MySQL/"/>
-    
-      <category term="utf8mb4" scheme="zchsakura.github.io/tags/utf8mb4/"/>
     
   </entry>
   
