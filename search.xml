@@ -2716,4 +2716,30 @@
         <tag>达梦</tag>
       </tags>
   </entry>
+  <entry>
+    <title>处理dm字段大小写</title>
+    <url>/%E5%A4%84%E7%90%86dm%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F%E5%86%99/</url>
+    <content><![CDATA[<p>记录下使用达梦数据库遇到的大小写问题，达梦数据库在建库的时候可以选择不区分大小写，默认是选择区分的，我看网上的博客很多都建议取消区分大小写，但是我对接的用户这边建库的时候没有取消，然后dm好像有把字段名全部大写，就算他们建表时写的小写，没有仔细研究，我这里主要只是做了有无大写判断。</p>
+<a id="more"></a>
+<h4 id="cursor.fetchall">cursor.fetchall()</h4>
+<p>对从数据库中获得的列数较少的数据实际上都不用判断里面字段名是大写还是小写，可以直接用try、expect来处理</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>.lower()]</span><br></pre></td></tr></table></figure>
+<h4 id="df-pd.dataframe.from_recordsdb_data">df = pd.DataFrame.from_records(db_data)</h4>
+<p>为了对数据进行更好的处理，在Python中经常会使用到pandas来处理数据，当我们在<code>dmPython.connect</code>中设置了<code>cursorclass=dmPython.DictCursor</code>时，我们<code>cursor.fetchall()</code>回来的数据会是一个list包裹若干dict的形式，每一个dict是数据库中的一行，dict中的key就是数据表中的列名。此时我们可以采用<code>pd.DataFrame.from_records()</code>将这种list直接变为pandas的DataFrame格式来进行处理。</p>
+<p>这里我需要将数据库中取出来的数据先修改类型，使用<code>df.astype()</code>可以直接修改df的列数据类型，这里需要用到一个dict来完成数据类型修改，dict的key是df的列名，value是要修改成的数据类型，如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data_types_dict &#x3D; &#123;</span><br><span class="line">    &quot;time_start&quot;: float,</span><br><span class="line">    &quot;ip_client&quot;: str,</span><br><span class="line">    &quot;byte_up&quot;: float,</span><br><span class="line">    &quot;byte_dn&quot;: float</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就涉及到判断从数据库中取出来的数据字段名是大写还是小写，可以用以下代码完成数据修改，主要思路就是当我判断数据库字段名是大写的时候把我的dict的key也改为大写：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if &#39;time_start&#39; in df.columns.tolist():</span><br><span class="line">    df &#x3D; df.astype(data_types_dict)</span><br><span class="line">elif &#39;time_start&#39;.upper() in df.columns.tolist():</span><br><span class="line">    data_types_dict_upper &#x3D; &#123;&#125;</span><br><span class="line">    for i, j in data_types_dict.items():</span><br><span class="line">        data_types_dict_upper[i.upper()] &#x3D; j</span><br><span class="line">    # print(&#39;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#39;, data_types_dict_upper)</span><br><span class="line">    df &#x3D; df.astype(data_types_dict_upper)</span><br></pre></td></tr></table></figure>
+<p>如果需要进行列名修改也是类似的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rename_col &#x3D; &#123;</span><br><span class="line">    &#39;time_start&#39;: &#39;time&#39;,</span><br><span class="line">    &#39;ip_client&#39;: &#39;sIP&#39;,</span><br><span class="line">    &#39;byte_up&#39;: &#39;outlen&#39;,</span><br><span class="line">    &#39;byte_dn&#39;: &#39;inlen&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if &#39;time_start&#39; in df.columns.tolist():</span><br><span class="line">    df &#x3D; df.rename(columns&#x3D;rename_col)</span><br><span class="line">elif &#39;time_start&#39;.upper() in df.columns.tolist():</span><br><span class="line">    rename_col_upper &#x3D; &#123;&#125;</span><br><span class="line">    for i, j in rename_col.items():</span><br><span class="line">        rename_col_upper[i.upper()] &#x3D; j</span><br><span class="line">    # print(&#39;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#39;, rename_col_upper)</span><br><span class="line">    df &#x3D; df.rename(columns&#x3D;rename_col_upper)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>达梦</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>达梦</tag>
+      </tags>
+  </entry>
 </search>

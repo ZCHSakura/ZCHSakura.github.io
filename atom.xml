@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2022-07-17T13:13:54.795Z</updated>
+  <updated>2022-07-25T02:52:51.839Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>处理dm字段大小写</title>
+    <link href="zchsakura.github.io/%E5%A4%84%E7%90%86dm%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F%E5%86%99/"/>
+    <id>zchsakura.github.io/%E5%A4%84%E7%90%86dm%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F%E5%86%99/</id>
+    <published>2022-07-25T02:52:51.000Z</published>
+    <updated>2022-07-25T02:52:51.839Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下使用达梦数据库遇到的大小写问题，达梦数据库在建库的时候可以选择不区分大小写，默认是选择区分的，我看网上的博客很多都建议取消区分大小写，但是我对接的用户这边建库的时候没有取消，然后dm好像有把字段名全部大写，就算他们建表时写的小写，没有仔细研究，我这里主要只是做了有无大写判断。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="达梦" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E8%BE%BE%E6%A2%A6/"/>
+    
+    
+      <category term="Python" scheme="zchsakura.github.io/tags/Python/"/>
+    
+      <category term="达梦" scheme="zchsakura.github.io/tags/%E8%BE%BE%E6%A2%A6/"/>
+    
+  </entry>
   
   <entry>
     <title>达梦数据库插入或更新</title>
@@ -483,31 +508,6 @@
       <category term="python" scheme="zchsakura.github.io/tags/python/"/>
     
       <category term="Django" scheme="zchsakura.github.io/tags/Django/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python操作redis大全</title>
-    <link href="zchsakura.github.io/python%E6%93%8D%E4%BD%9Credis%E5%A4%A7%E5%85%A8/"/>
-    <id>zchsakura.github.io/python%E6%93%8D%E4%BD%9Credis%E5%A4%A7%E5%85%A8/</id>
-    <published>2020-05-09T13:31:53.000Z</published>
-    <updated>2020-06-28T08:31:53.573Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;redis是一个很常见的键值对数据库，用途广泛，我现在主要是在实现增量爬虫的时候使用了redis中的hashes类型，这里记录一些redis的相关操作。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
-    
-    
-      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
-    
-      <category term="redis" scheme="zchsakura.github.io/tags/redis/"/>
     
   </entry>
   
