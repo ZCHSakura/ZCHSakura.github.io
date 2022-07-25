@@ -1,354 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CICFlowMeter部署</title>
-    <url>/CICFlowMeter%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。</p>
-<a id="more"></a>
-<h2 id="部署整体流程">部署整体流程</h2>
-<p>下面我把CICFlowMeter简写为CIC。这里先说一下联网部署的整体流程，在联网情况下部署一般只有一个问题，就是jnetpcap依赖的安装。</p>
-<blockquote>
-<p>在这里特别提醒一下，尽量不要使用open jdk，笔者使用openjdk就会有问题，建议最好使用Oracle的JDK！！！！！！</p>
-<p>还有就是笔者尝试过在相同操作系统，相同架构的电脑上完成打包的CIC是可以直接复制到别的电脑上的，这就意味着在另一台电脑上不用配置mvn和gradle这些内容，只需要配置JDK然后把打出来的压缩包复制过去，然后配置好libpcap-dev和jnetpcap依赖就可以使用了，不同系统和架构的笔者没有尝试过。</p>
-</blockquote>
-<h3 id="环境配置">环境配置</h3>
-<p>笔者使用是自己下载的软件包，所以要自己配置下环境</p>
-<ul>
-<li><p>/etc/profile</p></li>
-<li><p>/home/user(用户名)/.bashrc</p></li>
-</ul>
-<p>在上述两个文件末尾中添加下列环境变量，添加完成后使用source etc/profile和source /home/user/.bashrc</p>
-<ul>
-<li>配置jdk 1.8.0_311</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;jdk1.8.0_333</span><br><span class="line">export JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">export CLASSPATH&#x3D;$JAVA_HOME&#x2F;lib:$JRE_HOME&#x2F;lib</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
-<ul>
-<li>配置maven 3.8.4</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export MAVEN_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;apache-maven-3.8.4</span><br><span class="line">export PATH&#x3D;$PATH:$MAVEN_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
-<ul>
-<li>配置gradle 3.3</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export GRADLE_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;gradle-3.3</span><br><span class="line">export PATH&#x3D;$GRADLE_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
-<h3 id="验证环境是否配置成功">验证环境是否配置成功</h3>
-<ul>
-<li><p>使用java -version查看java版本是否与环境变量中一致</p></li>
-<li><p>使用which java查看路径是否与环境变量一致</p></li>
-<li><p>如果which java显示与环境变量不一致，而是/usr/bin/java之类的路径则使用以下命令（这种情况主要是机子上本身存在jdk，理论上将如果在配置环境变量时如果把新的路径放在$PATH前的话是不会出现这个问题的）</p></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo rm &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br><span class="line">sudo ln -s &#x2F;***&#x2F;Traffic_x86&#x2F;jdk1.8.0_311&#x2F;bin&#x2F;java &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>再使用java -version和which java验证环境配置结果</p></li>
-<li><p>如果还没有生效尝试关闭shell重开一个shell或切换用户看有无生效</p></li>
-<li><p>如果出现权限不够的情况，使用sudo chmod 777 path 修改权限</p></li>
-</ul>
-<h3 id="导入jnetpcap">导入jnetpcap</h3>
-<ul>
-<li>Dfile路径改为/Traffic_arm/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425下的jnetpcap.jar</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn install:install-file -Dfile&#x3D;&#x2F;***&#x2F;jnetpcap.jar -DgroupId&#x3D;org.jnetpcap -DartifactId&#x3D;jnetpcap -Dversion&#x3D;1.4.1 -Dpackaging&#x3D;jar</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在/Traffic_arm/CICFlowMeter-master下构建项目</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;gradlew distZip</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在/Traffic_arm/CICFlowMeter-master/build/distributions里解压缩CICFlowMeter-4.0.zip</li>
-<li>安装libpcap-dev依赖（centos里面好像是libpcap-devel）</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libpcap-dev</span><br><span class="line">yum install libpcap-devel</span><br></pre></td></tr></table></figure>
-<ul>
-<li>将/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425里的libjnetpcap.so和libjnetpcap-pcap100.so复制到/Traffic_arm/jdk1.8.0_333/jre/lib/aarch64（或amd64，和平台架构相关）目录下</li>
-<li>在/***/Traffic_arm/CICFlowMeter-master/build/distributions/CICFlowMeter-4.0/bin运行cfm文件即可</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;cfm [pcap_file] [target_path]</span><br><span class="line">&#x2F;***&#x2F;Traffic&#x2F;CICFlowMeter-master&#x2F;build&#x2F;distributions&#x2F;CICFlowMeter-4.0&#x2F;bin&#x2F;cfm ***.pcap &#x2F;***&#x2F;</span><br></pre></td></tr></table></figure>
-<h3 id="相关描述">相关描述</h3>
-<ul>
-<li>按照上述操作在有网的x86的Ubuntu中应该是不会出现问题的，笔者已经在多台X86的Ubuntu中成功部署。</li>
-<li>在一个全新的机子上部署是要走完以上全部流程的，但是笔者本身不会JAVA所以不是很清楚mvn和gradle这样使用的原理，<a href="https://github.com/ahlashkari/CICFlowMeter" target="_blank" rel="noopener">CICgithub</a>上作者就是这么用的，github上的流程是在为了在IDE上能使用，但是我们希望把他变成一个工具在任何地方都可以通过命令行使用，所以要把两个so动态库放到jre里面去，这个大概就是要我们在命令行全局使用的时候能找到jnetpcap的动态链接库，这就涉及到了JAVA本身的依赖管理，<del>笔者确实不懂JAVA，都是师兄教的😀。</del></li>
-<li>在X86的Ubuntu上使用上述步骤理论上讲不存在问题了，但是在别的操作系统或者非X86架构上还是存在问题，一般主要是遇到下面这个问题</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cic.cs.unb.ca.ifm.Cmd You select: &#x2F;Integ&#x2F;pcapsource&#x2F;d1&#x2F;1_00001_20210104112753.pcap</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd Out folder: .&#x2F;</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd CICFlowMeter received 1 pcap file</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava&#x2F;lang&#x2F;String;)J</span><br><span class="line">        at com.slytechs.library.NativeLibrary.dlopen(Native Method)</span><br><span class="line">        at com.slytechs.library.NativeLibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.loadLibrary(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at org.jnetpcap.Pcap.&lt;clinit&gt;(Unknown Source)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.config(PacketReader.java:58)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.&lt;init&gt;(PacketReader.java:52)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.readPcapFile(Cmd.java:128)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.main(Cmd.java:80)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>这个问题根据笔者自己的尝试和网上的 <a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">参考</a> 基本可以确定是由于jnetpcap这个东西引起的，应该是jnetpcap这个东西在不同架构下不兼容的问题，在arm架构上使用CICgithub中提供的so是不行的，必须要自己重新编译，甚至我之后在部署一台X86的centos的时候这个os也不能用最后还是笔者自己重新编译之后才能使用，这个东西的兼容性确实很差，实在不行了需要编译安装的时候可以看下面的内容。</li>
-</ul>
-<h2 id="x86架构">X86架构</h2>
-<blockquote>
-<p>对X86架构下的Ubuntu系统来讲，按照上述流程应该不会存在问题，github上提供的jnetpcap的so本身是适配ubuntu的。</p>
-<p>对X86架构下的Centos和其他系统来讲，可能会遇到上面jnetpcap报错的问题，那应该就是github上提供的so依赖和系统不兼容，需要重新编译，或者看网上有没有好心人提供编译好的，或者看下面的jnetpcap编译安装部分。</p>
-</blockquote>
-<h2 id="arm架构">ARM架构</h2>
-<blockquote>
-<p>ARM架构下的部署，最主要的问题还是在jnetpcap上，github上提供的so肯定是用不了的，笔者也亲身体验过，确实不行。但是笔者这里在CSDN上搜到了一个好心老哥自己在银河麒麟V10， aarch64架构上编译出来的结果，这里贴出来供大家参考。</p>
-</blockquote>
-<p><a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">ARM架构依赖</a></p>
-<h2 id="jnetpcap编译安装">jnetpcap编译安装</h2>
-<p>以下内容全部来源于上面ARM架构中提到的好心老哥，而且他还提供了他编译好的so，真的是大善人，我怕他的博客哪天没了所以我这里复制一遍<a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">ARM架构依赖</a></p>
-<hr />
-<p><strong>编译环境</strong>：银河麒麟V10， aarch64架构 网上很容易下载到jnetpcap的包，但是却没有arm64架构的编译好的so，于是下载源码包自己编译。下面是遇到的问题解决，整个流程耗时6个多小时：</p>
-<ol type="1">
-<li>下载jnetpcap-src-1.4.r1425-1.zip并解压：</li>
-</ol>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639724.png" alt="解压的文件" /><figcaption aria-hidden="true">解压的文件</figcaption>
-</figure>
-<ol start="2" type="1">
-<li>安装ant， 命令大概是：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt install ant</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>编译，问题1，xml:119: taskdef class org . vafer.jdeb . ant DebAntTask cannot be found using the classloader AntclassL oader[ ]</li>
-</ol>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639887.png" alt="问题1" /><figcaption aria-hidden="true">问题1</figcaption>
-</figure>
-<p>​ 方法：直接将build.xml第119行删除，不是debian系统。</p>
-<ol start="4" type="1">
-<li>编译，问题2，use aresiurce collection to copy directories.</li>
-</ol>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640674.png" alt="问题2" /><figcaption aria-hidden="true">问题2</figcaption>
-</figure>
-<p>​ 根据提示，xml的611行有问题，直接找到你系统的libpcap.so的路径，填入xml：</p>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640724.png" alt="问题行" /><figcaption aria-hidden="true">问题行</figcaption>
-</figure>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640701.png" alt="解决方法" /><figcaption aria-hidden="true">解决方法</figcaption>
-</figure>
-<ol start="5" type="1">
-<li>编译，问题3，网上的答案都说是xml的问题，但在这里其实是少了cpptask.jar的原因。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Problem: failed to create task or type cc</span><br><span class="line">Cause: The name is undefined.</span><br><span class="line">Action: Check the spelling.</span><br><span class="line">Action: Check that any custom tasks&#x2F;types have been declared.</span><br><span class="line">Action: Check that any &lt;presetdef&gt;&#x2F;&lt;macrodef&gt; declarations have taken place.</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061641290.png" alt="问题3" /><figcaption aria-hidden="true">问题3</figcaption>
-</figure>
-<p>​ 解决办法：下载cpptasks-1.0b4.jar，放到jnetpcap的lib文件夹下。</p>
-<p>​ 这里的具体cpptasks.jar的版本需要你查看xml文件，放的路径也是要看xml，直接在xml中搜索cpptask相信你能找到线索的。</p>
-<p>​ ps：我这里是放的路径是[项目路径]/cpptasks-1.0b4/cpptasks.jar，然后在xml里面路径直接写死</p>
-<ol start="6" type="1">
-<li>编译，问题四：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;C ommand- line&gt;:0: 19: error: token “”is not valid in preprocessor expressions&#x2F;home&#x2F;ka&#x2F; jnetpcap-src-1.4.1425-1&#x2F;src&#x2F;c&#x2F;jnetpcap_pcap100.cpp:87:6: note: in expansion of macro &#39; L IBPCAP_ VERSION &#39;</span><br><span class="line">#if (L IBPCAP VERSION &lt; L IBPCAP PCAP CREATE )</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061643419.png" alt="问题四" /><figcaption aria-hidden="true">问题四</figcaption>
-</figure>
-<p>​ 解决，明显是找不到LIBPCAP_VERSION，即libpcap的版本号没有，我们编辑Linux.properties文件，添加如下行</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">complier.LIBPCAP_VERSION &#x3D; 174</span><br><span class="line">(具体版本可用apt list|grep libpcap获取，填个很大的数就行)，这里一定是一个数字，不能像1.7.4这样。</span><br></pre></td></tr></table></figure>
-<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061644038.png" /></p>
-<ol start="7" type="1">
-<li>问题五</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">	[javac] 注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。</span><br><span class="line">    [javac] 注: 某些输入文件使用了未经检查或不安全的操作。</span><br><span class="line">    [javac] 注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。</span><br><span class="line">    [javac] 78 个错误</span><br><span class="line"></span><br><span class="line">BUILD FAILED</span><br><span class="line">&#x2F;home&#x2F;ka&#x2F;jnetpcap-src-1.4.r1425-1&#x2F;build.xml:1090: Compile failed; see the compiler error output for details.</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.compile(Javac.java:1181)</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.execute(Javac.java:936)</span><br><span class="line">        at org.apache.tools.ant.UnknownElement.execute(UnknownElement.java:293)</span><br><span class="line">        at sun.reflect.GeneratedMethodAccessor4.invoke(Unknown Source)</span><br><span class="line">        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">        at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line">        at org.apache.tools.ant.dispatch.DispatchUtils.execute(DispatchUtils.java:106)</span><br><span class="line">        at org.apache.tools.ant.Task.perform(Task.java:348)</span><br><span class="line">        at org.apache.tools.ant.Target.execute(Target.java:435)</span><br><span class="line">        at org.apache.tools.ant.Target.performTasks(Target.java:456)</span><br><span class="line">        at org.apache.tools.ant.Project.executeSortedTargets(Project.java:1405)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTarget(Project.java:1376)</span><br><span class="line">        at org.apache.tools.ant.helper.DefaultExecutor.executeTargets(DefaultExecutor.java:41)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTargets(Project.java:1260)</span><br><span class="line">        at org.apache.tools.ant.Main.runBuild(Main.java:853)</span><br><span class="line">        at org.apache.tools.ant.Main.startAnt(Main.java:235)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.run(Launcher.java:285)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.main(Launcher.java:112)</span><br></pre></td></tr></table></figure>
-<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645003.png" /></p>
-<p>​ 这个问题可能是我没有下载正确版本的cpptask的原因，要根据build.xml里的要求来下载。 但是检查./build/obj/我已经得到了我们想要的so文件</p>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645493.png" alt="大功告成" /><figcaption aria-hidden="true">大功告成</figcaption>
-</figure>
-<p>程序终于跑起来了！！！！！！！</p>
-<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061646710.png" /></p>
-<h3 id="附编译好的文件链接">附编译好的文件链接</h3>
-<p>https://download.csdn.net/download/lizheng2017/46217421</p>
-<h2 id="离线部署">离线部署</h2>
-<p>离线部署其实挺麻烦的，如果平时没有经常使用Linux服务器的话还是比较恼火的，最好的方法还是让机子联网，但是确实有很多情况下没法联网，笔者这里也只能提供我在尝试离线部署过程中的一些经验</p>
-<ul>
-<li>尽量找到一台相同系统相同架构的能联网的机器，这会让离线部署简单得多，apt和yum都提供了下载安装包的功能，我们可以在能联网的机子上先下载好适配的离线包然后复制到不能联网的机子上进行编译安装，这样的成功率就会很高，也比较方便，这里贴两个参考<a href="https://blog.csdn.net/qq_17576885/article/details/122070612" target="_blank" rel="noopener">apt离线包下载</a>，<a href="https://www.codeleading.com/article/78986008408/" target="_blank" rel="noopener">yum离线包下载</a></li>
-<li>相同系统相同架构的机器不用每个都使用mvn和gradle，只要有一台成功打出了压缩包后面就可以直接复制，只要配置新机器的JDK和各种依赖就行了</li>
-</ul>
-<h2 id="其他问题">其他问题</h2>
-<h3 id="问题1">问题1</h3>
-<blockquote>
-<p>问题描述：经过上面的一通操作，CIC已经成功跑了起来，我把CIC用python封装成了一个接口供后端调用，但是出现了一个非常奇怪的问题，那就我直接跑我的接口CIC稳定能用，但是后端调我的接口就时而能用时而不行，一旦不行之后就稳定不行。</p>
-</blockquote>
-<blockquote>
-<p>这个问题的产生是因为后端使用Linux的/etc/crontab做了后端服务的定时重启，但是crontab里面有一个自己的$PATH，并且它不会去读取/etc/profile里面的路径，所以会导致读不到我们的JDK和各种依赖，解决方法也很简单，只要把我们在profile里面写的JDK路径加到crontab里面就行了</p>
-</blockquote>
-<h3 id="问题2">问题2</h3>
-<blockquote>
-<p>问题描述：在实际使用中我们发现提取出来的协议号基本只有0，6，17。6代表TCP，17代表UDP，剩下其他所有协议全部被识别为0，例如ARP，ICMP，SEP之类的全部识别为0，而且组流的情况看起来也不是很好，绝大部分列都是全为0，简单看了下代码发现CIC本事就只对有限的几种protocol做了处理，泛用性不是很广。</p>
-</blockquote>
-<figure>
-<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061724179.png" alt="protocol" /><figcaption aria-hidden="true">protocol</figcaption>
-</figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>CICFlowMeter</category>
-      </categories>
-      <tags>
-        <tag>CICFlowMeter</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python常用内置函数</title>
-    <url>/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p>记录Python常用的内置函数</p>
-<a id="more"></a>
-<p>Python给我们内置了大量功能函数，官方文档上列出了69个，有些是我们是平时开发中经常遇到的，也有一些函数很少被用到，这里列举被开发者使用最频繁的8个函数以及他们的详细用法</p>
-<figure>
-<img src="https:////upload-images.jianshu.io/upload_images/15801507-d86739dc54bc18fa.jpg!web?imageMogr2/auto-orient/strip%7CimageView2/2/w/550/format/webp" alt="img" /><figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="print">print()</h3>
-<p>print函数是你学Python接触到的第一个函数，它将对象输出到标准输出流，可将任意多个对象打印出来，函数的具体定义：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(*objects, sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-<p>objects 是可变参数，所以你可以同时将任意多个对象打印出来</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)  </span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>默认使用空格分隔每个对象，通过指定sep参数可以使用逗号分隔</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>)  </span><br><span class="line"><span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>对象默认输出的是标准输出流，你也可以将内容保存到文件中</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>, file=open(<span class="string">"hello.txt"</span>, <span class="string">"w"</span>))</span><br></pre></td></tr></table></figure>
-<h3 id="isinstance">isinstance()</h3>
-<p>可以用 isinstance 函数判断某个对象是否属于某个类的实例，函数的定义</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">isinstance(object, classinfo)</span><br></pre></td></tr></table></figure>
-<p>classinfo 既可以是单个类型对象，也可以是由多个类型对象组成的元组，只要object的类型是元组中任意一个就返回True，否则返回False</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="string">""</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], dict)  </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<h3 id="range">range()</h3>
-<p>range函数是个工厂方法，用于构造一个从[start, stop) （不包含stop）之间的连续的不可变的整数序列对象，这个序列功能上和列表非常类似，函数定义：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">range([start,] stop [, step]) -&gt; range object</span><br></pre></td></tr></table></figure>
-<ul>
-<li>start 可选参数，序列的起点，默认是0</li>
-<li>stop 必选参数，序列的终点（不包含）</li>
-<li>step 可选参数，序列的步长，默认是1，生成的元素规律是 r[i] = start + step*i</li>
-</ul>
-<p>生成0~5的列表</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">5</span>)  </span><br><span class="line">range(<span class="number">0</span>, <span class="number">5</span>)     </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">5</span>))  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
-<p>默认从0开始，生成0到4之间的5个整数，不包含5，step 默认是1，每次都是在前一次加1</p>
-<p>如果你想将某个操作重复执行n遍，就可以使用for循环配置range函数实现</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):  </span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"hello python"</span>)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">hello python  </span><br><span class="line">hello python  </span><br><span class="line">hello python</span><br></pre></td></tr></table></figure>
-<p>步长为2</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line">range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>))  </span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
-<p>起点从1开始，终点10，步长为2，每次都在前一个元素的基础上加2，构成1到10之间的奇数。</p>
-<h3 id="enumerate">enumerate()</h3>
-<p>用于枚举可迭代对象，同时还可以得到每次元素的下表索引值，函数定义：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">enumerate(iterable, start=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
-<p>index 默认从0开始，如果显式指定参数start，下标索引就从start开始</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>, start=<span class="number">1</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">1</span> p  </span><br><span class="line"><span class="number">2</span> y  </span><br><span class="line"><span class="number">3</span> t  </span><br><span class="line"><span class="number">4</span> h  </span><br><span class="line"><span class="number">5</span> o  </span><br><span class="line"><span class="number">6</span> n</span><br></pre></td></tr></table></figure>
-<p>如果不使用enumerate函数，要获取元素的下标索引，则需要更多的代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_enumerate</span><span class="params">(sequence, start=<span class="number">0</span>)</span>:</span>  </span><br><span class="line">    n = start  </span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> sequence:  </span><br><span class="line">        <span class="keyword">yield</span> n, e  </span><br><span class="line">        n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> my_enumerate(<span class="string">"python"</span>):  </span><br><span class="line">    print(index, value)  </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
-<h3 id="len">len</h3>
-<p>len 用于获取容器对象中的元素个数，例如判断列表是否为空可以用 len 函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])  </span><br><span class="line"><span class="number">3</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="string">"python"</span>)  </span><br><span class="line"><span class="number">6</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> len([]) == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-<p>并不是所有对象都支持len操作的，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="literal">True</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;  </span><br><span class="line">TypeError: object of type <span class="string">'bool'</span> has no len()</span><br></pre></td></tr></table></figure>
-<p>除了序列对象和集合对象，自定义类必须实现了 <strong>len</strong> 方法能作用在len函数上</p>
-<h3 id="reversed">reversed()</h3>
-<p>reversed() 反转序列对象，你可以将字符串进行反转，将列表进行反转，将元组反转</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(reversed([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="open">open()</h3>
-<p>open 函数用于构造文件对象，构建后可对其进行内容的读写操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">open(file, mode=<span class="string">'r'</span>, encoding=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>读操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从当前路径打开文件 test.txt， 默认以读的方式  </span></span><br><span class="line">&gt;&gt;&gt;f = open(<span class="string">"test.txt"</span>)  </span><br><span class="line">&gt;&gt;&gt;f.read()  </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>有时还需要指定编码格式，否则会遇到乱码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"test.txt"</span>, encoding=<span class="string">'utf8'</span>)</span><br></pre></td></tr></table></figure>
-<p>写操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;f = open(<span class="string">"hello.text"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">&gt;&gt;&gt;f.write(<span class="string">"hello python"</span>))</span><br></pre></td></tr></table></figure>
-<p>文件中存在内容时原来的内容将别覆盖，如果不想被覆盖，直接将新的内容追加到文件末尾，可以使用 a 模式</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"hello.text"</span>, <span class="string">'a'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">f.write(<span class="string">"!!!"</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="sorted">sorted()</h3>
-<p>sroted 是对列表进行重新排序，当然其他可迭代对象都支持重新排放，返回一个新对象，原对象保持不变</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">1</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>])  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu安装MySQL</title>
-    <url>/Ubuntu%E5%AE%89%E8%A3%85mysql/</url>
-    <content><![CDATA[<p>服务器安装MySQL有些方法搞的十分麻烦，这里记录一个Ubuntu适用的简单的方法，同时修改字符集为utf8mb4（毕竟MySQL的utf8是个赝品）</p>
-<a id="more"></a>
-<p>参考 <a href="https://blog.csdn.net/mr_hui_/article/details/88878836" target="_blank" rel="noopener">Ubuntu安装mysql</a> <a href="https://www.cnblogs.com/silentmuh/p/11082622.html" target="_blank" rel="noopener">更改数据库的编码为utf8mb4</a> <a href="https://www.jb51.net/article/165260.htm" target="_blank" rel="noopener">MySQL字符集utf8修改为utf8mb4的方法步骤</a></p>
-<h2 id="ubuntu安装mysql">1.Ubuntu安装MySQL</h2>
-<p><strong>首先执行下面三条命令：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get install mysql-server</span><br><span class="line">sudo apt install mysql-client</span><br><span class="line">sudo apt install libmysqlclient-dev</span><br></pre></td></tr></table></figure>
-<p><strong>安装成功后可以通过下面的命令测试是否安装成功：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo netstat -tap | grep mysql</span><br></pre></td></tr></table></figure>
-<p><strong>出现如下信息则安装成功</strong> <img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429135052.png" alt="image_1b6gfob7m1u4f2i0av11afd92m9" /></p>
-<p><strong>可以通过如下命令进入MySQL服务：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p你的密码</span><br></pre></td></tr></table></figure>
-<p>现在设置MySQL允许远程访问，首先编辑文件/etc/mysql/mysql.conf.d/mysqld.cnf：</p>
-<p><strong>注释掉bind-address = 127.0.0.1：</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429134856.png" alt="image_1b6ggmf7h1d6b17o11iha1j1nhtem" /><figcaption aria-hidden="true">image_1b6ggmf7h1d6b17o11iha1j1nhtem</figcaption>
-</figure>
-<p><strong>保存退出，然后进入mysql服务，执行授权命令：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grant all on *.* to root@&#39;%&#39; identified by &#39;你的密码&#39; with grant option;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<p><strong>然后执行quit命令退出mysql服务，执行如下命令重启mysql：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
-<p>现在在windows下可以使用navicat远程连接ubuntu下的mysql服务。</p>
-<h2 id="更换字符集为utf8mb4">2.更换字符集为utf8mb4</h2>
-<p>utf8mb4编码是utf8编码的超集，兼容utf8，并且能存储4字节的表情字符。 采用utf8mb4编码的好处是：存储与获取数据的时候，不用再考虑表情字符的编码与解码问题。</p>
-<h3 id="mysql的版本">2.1MySQL的版本</h3>
-<p>utf8mb4的最低mysql版本支持版本为5.5.3+，若不是，请升级到较新版本。</p>
-<h3 id="mysql驱动">2.2MySQL驱动</h3>
-<p>5.1.34可用,最低不能低于5.1.13</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW VARIABLES WHERE Variable_name LIKE &#39;character_set_%&#39; OR Variable_name LIKE &#39;collation%&#39;;</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429134724.png" alt="20180828153217974" /><figcaption aria-hidden="true">20180828153217974</figcaption>
-</figure>
-<h3 id="修改mysql配置文件">2.3修改MySQL配置文件</h3>
-<p>修改mysql配置文件my.cnf my.cnf一般在etc/mysql/my.cnf位置。找到后请在以下三部分里添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[client] </span><br><span class="line">default-character-set &#x3D; utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql] </span><br><span class="line">default-character-set &#x3D; utf8mb4 </span><br><span class="line"></span><br><span class="line">[mysqld] </span><br><span class="line">character-set-client-handshake &#x3D; FALSE </span><br><span class="line">character-set-server &#x3D; utf8mb4 </span><br><span class="line">collation-server &#x3D; utf8mb4_unicode_ci </span><br><span class="line">init_connect&#x3D;&#39;SET NAMES utf8mb4&#39;</span><br></pre></td></tr></table></figure>
-<p>在这里我遇到了问题，首先用上面的方法安装的mysql的my.cnf里面并没有实际的东西而是进行引入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">!includedir &#x2F;etc&#x2F;mysql&#x2F;conf.d&#x2F;</span><br><span class="line">!includedir &#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d&#x2F;</span><br></pre></td></tr></table></figure>
-<p>所以我去这两个文件夹找到了相应的内容进行了修改还有一个是在my.cnf的同级文件<code>debian.cnf</code>中</p>
-<p><strong>但是！！！</strong></p>
-<p>我修改完之后使用<code>service mysqld restart</code>说没有mysqld，然后我查了一下我这种安装方式应该使用<code>service mysql restart</code>,但是我使用了之后报错，第一是因为权限问题，这个可以看错误日志发现，第二就是上面添加的内容有问题，问题出在[mysqld]里，具体原因是什么我也不是很清楚，我又换了一个版本发现可以</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[client] </span><br><span class="line">default-character-set&#x3D;utf8mb4 </span><br><span class="line">  </span><br><span class="line">[mysqld] </span><br><span class="line">character-set-server &#x3D; utf8mb4 </span><br><span class="line">collation-server &#x3D; utf8mb4_unicode_ci </span><br><span class="line">init_connect&#x3D;&#39;SET NAMES utf8mb4&#39;</span><br><span class="line">skip-character-set-client-handshake &#x3D; true </span><br><span class="line"># 一个是自己为false一个是skip自己为true，感觉上一样的，不知道啥意思</span><br><span class="line">  </span><br><span class="line">[mysql] </span><br><span class="line">default-character-set &#x3D; utf8mb4</span><br></pre></td></tr></table></figure>
-<p><strong>最后</strong></p>
-<p>进去mysql之后使用</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW VARIABLES WHERE Variable_name LIKE &#39;character_set_%&#39; OR Variable_name LIKE &#39;collation%&#39;;</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429124058.png" alt="image-20200429124011522" /><figcaption aria-hidden="true">image-20200429124011522</figcaption>
-</figure>
-<p><strong>大功告成 Peace</strong></p>
-<h2 id="补充">3.补充</h2>
-<h3 id="修改database默认的字符集">3.1修改database默认的字符集</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER DATABASE database_name CHARACTER SET &#x3D; utf8mb4 COLLATE &#x3D; utf8mb4_unicode_ci</span><br></pre></td></tr></table></figure>
-<p>虽然修改了database的字符集为utf8mb4，但是实际只是修改了database新创建的表，默认使用utf8mb4，原来已经存在的表，字符集并没有跟着改变，需要手动为每张表设置字符集</p>
-<h3 id="修改table的字符集">3.2修改table的字符集</h3>
-<ul>
-<li>只修改表默认的字符集 <code>ALTER TABLE table_name DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code></li>
-<li>修改表默认的字符集和所有字符列的字符集 <code>ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code></li>
-</ul>
-<h3 id="单独修改column默认的字符集">3.3单独修改column默认的字符集</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-<p><em>注：VARCHAR(191) 根据字段实例的类型填写</em></p>
-<h3 id="关于utf8mb4外键的坑">3.4关于utf8mb4外键的坑</h3>
-<p>上个学期做课程设计的时候有一些外键创建不了，根据我层层抽丝剥茧最后发现问题在于utf8mb4上，但具体是为什么我也不是很清楚。今天在该字符集的时候在一篇文章里找到了原因。</p>
-<p>外键的前提是索引，当索引无法创建的时候外键自然无法创建，之前在utf8的时候<code>VARCHAR(255)</code>是可以创建外键的，但是变成了utf8mb4后255个字符超出了索引的长度的限制，必须改为<code>VARCHAR(191)</code></p>
-<ul>
-<li>字段长度</li>
-</ul>
-<p>由于从utf8升级到了utf8mb4，一个字符所占用的空间也由3个字节增长到4个字节，但是我们当初创建表时，设置的字段类型以及最大的长度没有改变。例如，你在utf8下设置某一字段的类型为<code>TINYTEXT</code>, 这中字段类型最大可以容纳255字节，三个字节一个字符的情况下可以容纳85个字符，四个字节一个字符的情况下只能容纳63个字符，如果原表中的这个字段的值有一个或多个超过了63个字符，那么转换成utf8mb4字符编码时将转换失败，你必须先将<code>TINYTEXT</code>更改为<code>TEXT</code>等更高容量的类型之后才能继续转换字符编码</p>
-<ul>
-<li>索引</li>
-</ul>
-<p>在InnoDB引擎中，最大的索引长度为767字节，三个字节一个字符的情况下，索引列的字符长度最大可以达到255，四个字节一个字符的情况下，索引的字符长度最大只能到191。如果你已经存在的表中的索引列的类型为<code>VARCHAR(255)</code>那么转换utf8mb4时同样会转换失败。你需要先将<code>VARCHAR(255)</code>更改为<code>VARCHAR(191)</code>才能继续转换字符编码</p>
-<h3 id="使用python操作mysql之1064错误">3.5使用Python操作mysql之1064错误</h3>
-<p>我今天使用python操作mysql的时候又出现了1064错误，之前有一次也出现了这个问题，上次发现应该是与sql语句的插入数据方式有问题，上个学期是使用的format向sql语句中插入参数的，由于上个学期的参数内容比较简单也没出什么问题，这次插入一长段带符号的文字时就出了问题，今天经过对比我才知道问题在哪。</p>
-<figure class="highlight python"><figcaption><span>错误方法</span></figcaption><table><tr><td class="code"><pre><span class="line">sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES('&#123;&#125;')"</span>.format(dd[<span class="number">3</span>])</span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 执行SQL语句</span></span><br><span class="line">        cursor.execute(sql3)</span><br><span class="line">        <span class="comment"># 提交修改</span></span><br><span class="line">        db.commit()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="comment"># 发生错误时回滚</span></span><br><span class="line">        db.rollback()</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><figcaption><span>正确方法</span></figcaption><table><tr><td class="code"><pre><span class="line">sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 执行SQL语句</span></span><br><span class="line">        cursor.execute(sql3, dd[<span class="number">3</span>])</span><br><span class="line">        <span class="comment"># 提交修改</span></span><br><span class="line">        db.commit()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="comment"># 发生错误时回滚</span></span><br><span class="line">        db.rollback()</span><br></pre></td></tr></table></figure>
-<p>大家可以看到这两者的区别就在于插入参数的方式，第一种方式大多数时间是没错的，但是一旦遇到dd[3]里面本来就带有一些特殊符号比如<code>/</code>,<code>'</code>之类的就会报错。而是用第二种方式则不会存在这个问题，要注意第二种方式不要在<code>%s</code>周围加<code>''</code>。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-        <tag>MySQL</tag>
-        <tag>utf8mb4</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Django学习笔记</title>
     <url>/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>记录Django学习笔记</p>
@@ -745,6 +397,433 @@
       </tags>
   </entry>
   <entry>
+    <title>Python常用内置函数</title>
+    <url>/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>记录Python常用的内置函数</p>
+<a id="more"></a>
+<p>Python给我们内置了大量功能函数，官方文档上列出了69个，有些是我们是平时开发中经常遇到的，也有一些函数很少被用到，这里列举被开发者使用最频繁的8个函数以及他们的详细用法</p>
+<figure>
+<img src="https:////upload-images.jianshu.io/upload_images/15801507-d86739dc54bc18fa.jpg!web?imageMogr2/auto-orient/strip%7CimageView2/2/w/550/format/webp" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="print">print()</h3>
+<p>print函数是你学Python接触到的第一个函数，它将对象输出到标准输出流，可将任意多个对象打印出来，函数的具体定义：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(*objects, sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>objects 是可变参数，所以你可以同时将任意多个对象打印出来</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)  </span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>默认使用空格分隔每个对象，通过指定sep参数可以使用逗号分隔</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>)  </span><br><span class="line"><span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>对象默认输出的是标准输出流，你也可以将内容保存到文件中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>, file=open(<span class="string">"hello.txt"</span>, <span class="string">"w"</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="isinstance">isinstance()</h3>
+<p>可以用 isinstance 函数判断某个对象是否属于某个类的实例，函数的定义</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">isinstance(object, classinfo)</span><br></pre></td></tr></table></figure>
+<p>classinfo 既可以是单个类型对象，也可以是由多个类型对象组成的元组，只要object的类型是元组中任意一个就返回True，否则返回False</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="string">""</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], dict)  </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="range">range()</h3>
+<p>range函数是个工厂方法，用于构造一个从[start, stop) （不包含stop）之间的连续的不可变的整数序列对象，这个序列功能上和列表非常类似，函数定义：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">range([start,] stop [, step]) -&gt; range object</span><br></pre></td></tr></table></figure>
+<ul>
+<li>start 可选参数，序列的起点，默认是0</li>
+<li>stop 必选参数，序列的终点（不包含）</li>
+<li>step 可选参数，序列的步长，默认是1，生成的元素规律是 r[i] = start + step*i</li>
+</ul>
+<p>生成0~5的列表</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">5</span>)  </span><br><span class="line">range(<span class="number">0</span>, <span class="number">5</span>)     </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">5</span>))  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>默认从0开始，生成0到4之间的5个整数，不包含5，step 默认是1，每次都是在前一次加1</p>
+<p>如果你想将某个操作重复执行n遍，就可以使用for循环配置range函数实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):  </span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"hello python"</span>)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">hello python  </span><br><span class="line">hello python  </span><br><span class="line">hello python</span><br></pre></td></tr></table></figure>
+<p>步长为2</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line">range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>))  </span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<p>起点从1开始，终点10，步长为2，每次都在前一个元素的基础上加2，构成1到10之间的奇数。</p>
+<h3 id="enumerate">enumerate()</h3>
+<p>用于枚举可迭代对象，同时还可以得到每次元素的下表索引值，函数定义：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">enumerate(iterable, start=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
+<p>index 默认从0开始，如果显式指定参数start，下标索引就从start开始</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>, start=<span class="number">1</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">1</span> p  </span><br><span class="line"><span class="number">2</span> y  </span><br><span class="line"><span class="number">3</span> t  </span><br><span class="line"><span class="number">4</span> h  </span><br><span class="line"><span class="number">5</span> o  </span><br><span class="line"><span class="number">6</span> n</span><br></pre></td></tr></table></figure>
+<p>如果不使用enumerate函数，要获取元素的下标索引，则需要更多的代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_enumerate</span><span class="params">(sequence, start=<span class="number">0</span>)</span>:</span>  </span><br><span class="line">    n = start  </span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> sequence:  </span><br><span class="line">        <span class="keyword">yield</span> n, e  </span><br><span class="line">        n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> my_enumerate(<span class="string">"python"</span>):  </span><br><span class="line">    print(index, value)  </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
+<h3 id="len">len</h3>
+<p>len 用于获取容器对象中的元素个数，例如判断列表是否为空可以用 len 函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])  </span><br><span class="line"><span class="number">3</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="string">"python"</span>)  </span><br><span class="line"><span class="number">6</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> len([]) == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>并不是所有对象都支持len操作的，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="literal">True</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;  </span><br><span class="line">TypeError: object of type <span class="string">'bool'</span> has no len()</span><br></pre></td></tr></table></figure>
+<p>除了序列对象和集合对象，自定义类必须实现了 <strong>len</strong> 方法能作用在len函数上</p>
+<h3 id="reversed">reversed()</h3>
+<p>reversed() 反转序列对象，你可以将字符串进行反转，将列表进行反转，将元组反转</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(reversed([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="open">open()</h3>
+<p>open 函数用于构造文件对象，构建后可对其进行内容的读写操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">open(file, mode=<span class="string">'r'</span>, encoding=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>读操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从当前路径打开文件 test.txt， 默认以读的方式  </span></span><br><span class="line">&gt;&gt;&gt;f = open(<span class="string">"test.txt"</span>)  </span><br><span class="line">&gt;&gt;&gt;f.read()  </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>有时还需要指定编码格式，否则会遇到乱码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"test.txt"</span>, encoding=<span class="string">'utf8'</span>)</span><br></pre></td></tr></table></figure>
+<p>写操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;f = open(<span class="string">"hello.text"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">&gt;&gt;&gt;f.write(<span class="string">"hello python"</span>))</span><br></pre></td></tr></table></figure>
+<p>文件中存在内容时原来的内容将别覆盖，如果不想被覆盖，直接将新的内容追加到文件末尾，可以使用 a 模式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"hello.text"</span>, <span class="string">'a'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">f.write(<span class="string">"!!!"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="sorted">sorted()</h3>
+<p>sroted 是对列表进行重新排序，当然其他可迭代对象都支持重新排放，返回一个新对象，原对象保持不变</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">1</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>])  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu安装MySQL</title>
+    <url>/Ubuntu%E5%AE%89%E8%A3%85mysql/</url>
+    <content><![CDATA[<p>服务器安装MySQL有些方法搞的十分麻烦，这里记录一个Ubuntu适用的简单的方法，同时修改字符集为utf8mb4（毕竟MySQL的utf8是个赝品）</p>
+<a id="more"></a>
+<p>参考 <a href="https://blog.csdn.net/mr_hui_/article/details/88878836" target="_blank" rel="noopener">Ubuntu安装mysql</a> <a href="https://www.cnblogs.com/silentmuh/p/11082622.html" target="_blank" rel="noopener">更改数据库的编码为utf8mb4</a> <a href="https://www.jb51.net/article/165260.htm" target="_blank" rel="noopener">MySQL字符集utf8修改为utf8mb4的方法步骤</a></p>
+<h2 id="ubuntu安装mysql">1.Ubuntu安装MySQL</h2>
+<p><strong>首先执行下面三条命令：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get install mysql-server</span><br><span class="line">sudo apt install mysql-client</span><br><span class="line">sudo apt install libmysqlclient-dev</span><br></pre></td></tr></table></figure>
+<p><strong>安装成功后可以通过下面的命令测试是否安装成功：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo netstat -tap | grep mysql</span><br></pre></td></tr></table></figure>
+<p><strong>出现如下信息则安装成功</strong> <img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429135052.png" alt="image_1b6gfob7m1u4f2i0av11afd92m9" /></p>
+<p><strong>可以通过如下命令进入MySQL服务：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p你的密码</span><br></pre></td></tr></table></figure>
+<p>现在设置MySQL允许远程访问，首先编辑文件/etc/mysql/mysql.conf.d/mysqld.cnf：</p>
+<p><strong>注释掉bind-address = 127.0.0.1：</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429134856.png" alt="image_1b6ggmf7h1d6b17o11iha1j1nhtem" /><figcaption aria-hidden="true">image_1b6ggmf7h1d6b17o11iha1j1nhtem</figcaption>
+</figure>
+<p><strong>保存退出，然后进入mysql服务，执行授权命令：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grant all on *.* to root@&#39;%&#39; identified by &#39;你的密码&#39; with grant option;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<p><strong>然后执行quit命令退出mysql服务，执行如下命令重启mysql：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
+<p>现在在windows下可以使用navicat远程连接ubuntu下的mysql服务。</p>
+<h2 id="更换字符集为utf8mb4">2.更换字符集为utf8mb4</h2>
+<p>utf8mb4编码是utf8编码的超集，兼容utf8，并且能存储4字节的表情字符。 采用utf8mb4编码的好处是：存储与获取数据的时候，不用再考虑表情字符的编码与解码问题。</p>
+<h3 id="mysql的版本">2.1MySQL的版本</h3>
+<p>utf8mb4的最低mysql版本支持版本为5.5.3+，若不是，请升级到较新版本。</p>
+<h3 id="mysql驱动">2.2MySQL驱动</h3>
+<p>5.1.34可用,最低不能低于5.1.13</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW VARIABLES WHERE Variable_name LIKE &#39;character_set_%&#39; OR Variable_name LIKE &#39;collation%&#39;;</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429134724.png" alt="20180828153217974" /><figcaption aria-hidden="true">20180828153217974</figcaption>
+</figure>
+<h3 id="修改mysql配置文件">2.3修改MySQL配置文件</h3>
+<p>修改mysql配置文件my.cnf my.cnf一般在etc/mysql/my.cnf位置。找到后请在以下三部分里添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[client] </span><br><span class="line">default-character-set &#x3D; utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql] </span><br><span class="line">default-character-set &#x3D; utf8mb4 </span><br><span class="line"></span><br><span class="line">[mysqld] </span><br><span class="line">character-set-client-handshake &#x3D; FALSE </span><br><span class="line">character-set-server &#x3D; utf8mb4 </span><br><span class="line">collation-server &#x3D; utf8mb4_unicode_ci </span><br><span class="line">init_connect&#x3D;&#39;SET NAMES utf8mb4&#39;</span><br></pre></td></tr></table></figure>
+<p>在这里我遇到了问题，首先用上面的方法安装的mysql的my.cnf里面并没有实际的东西而是进行引入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">!includedir &#x2F;etc&#x2F;mysql&#x2F;conf.d&#x2F;</span><br><span class="line">!includedir &#x2F;etc&#x2F;mysql&#x2F;mysql.conf.d&#x2F;</span><br></pre></td></tr></table></figure>
+<p>所以我去这两个文件夹找到了相应的内容进行了修改还有一个是在my.cnf的同级文件<code>debian.cnf</code>中</p>
+<p><strong>但是！！！</strong></p>
+<p>我修改完之后使用<code>service mysqld restart</code>说没有mysqld，然后我查了一下我这种安装方式应该使用<code>service mysql restart</code>,但是我使用了之后报错，第一是因为权限问题，这个可以看错误日志发现，第二就是上面添加的内容有问题，问题出在[mysqld]里，具体原因是什么我也不是很清楚，我又换了一个版本发现可以</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[client] </span><br><span class="line">default-character-set&#x3D;utf8mb4 </span><br><span class="line">  </span><br><span class="line">[mysqld] </span><br><span class="line">character-set-server &#x3D; utf8mb4 </span><br><span class="line">collation-server &#x3D; utf8mb4_unicode_ci </span><br><span class="line">init_connect&#x3D;&#39;SET NAMES utf8mb4&#39;</span><br><span class="line">skip-character-set-client-handshake &#x3D; true </span><br><span class="line"># 一个是自己为false一个是skip自己为true，感觉上一样的，不知道啥意思</span><br><span class="line">  </span><br><span class="line">[mysql] </span><br><span class="line">default-character-set &#x3D; utf8mb4</span><br></pre></td></tr></table></figure>
+<p><strong>最后</strong></p>
+<p>进去mysql之后使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW VARIABLES WHERE Variable_name LIKE &#39;character_set_%&#39; OR Variable_name LIKE &#39;collation%&#39;;</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200429124058.png" alt="image-20200429124011522" /><figcaption aria-hidden="true">image-20200429124011522</figcaption>
+</figure>
+<p><strong>大功告成 Peace</strong></p>
+<h2 id="补充">3.补充</h2>
+<h3 id="修改database默认的字符集">3.1修改database默认的字符集</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER DATABASE database_name CHARACTER SET &#x3D; utf8mb4 COLLATE &#x3D; utf8mb4_unicode_ci</span><br></pre></td></tr></table></figure>
+<p>虽然修改了database的字符集为utf8mb4，但是实际只是修改了database新创建的表，默认使用utf8mb4，原来已经存在的表，字符集并没有跟着改变，需要手动为每张表设置字符集</p>
+<h3 id="修改table的字符集">3.2修改table的字符集</h3>
+<ul>
+<li>只修改表默认的字符集 <code>ALTER TABLE table_name DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code></li>
+<li>修改表默认的字符集和所有字符列的字符集 <code>ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code></li>
+</ul>
+<h3 id="单独修改column默认的字符集">3.3单独修改column默认的字符集</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+<p><em>注：VARCHAR(191) 根据字段实例的类型填写</em></p>
+<h3 id="关于utf8mb4外键的坑">3.4关于utf8mb4外键的坑</h3>
+<p>上个学期做课程设计的时候有一些外键创建不了，根据我层层抽丝剥茧最后发现问题在于utf8mb4上，但具体是为什么我也不是很清楚。今天在该字符集的时候在一篇文章里找到了原因。</p>
+<p>外键的前提是索引，当索引无法创建的时候外键自然无法创建，之前在utf8的时候<code>VARCHAR(255)</code>是可以创建外键的，但是变成了utf8mb4后255个字符超出了索引的长度的限制，必须改为<code>VARCHAR(191)</code></p>
+<ul>
+<li>字段长度</li>
+</ul>
+<p>由于从utf8升级到了utf8mb4，一个字符所占用的空间也由3个字节增长到4个字节，但是我们当初创建表时，设置的字段类型以及最大的长度没有改变。例如，你在utf8下设置某一字段的类型为<code>TINYTEXT</code>, 这中字段类型最大可以容纳255字节，三个字节一个字符的情况下可以容纳85个字符，四个字节一个字符的情况下只能容纳63个字符，如果原表中的这个字段的值有一个或多个超过了63个字符，那么转换成utf8mb4字符编码时将转换失败，你必须先将<code>TINYTEXT</code>更改为<code>TEXT</code>等更高容量的类型之后才能继续转换字符编码</p>
+<ul>
+<li>索引</li>
+</ul>
+<p>在InnoDB引擎中，最大的索引长度为767字节，三个字节一个字符的情况下，索引列的字符长度最大可以达到255，四个字节一个字符的情况下，索引的字符长度最大只能到191。如果你已经存在的表中的索引列的类型为<code>VARCHAR(255)</code>那么转换utf8mb4时同样会转换失败。你需要先将<code>VARCHAR(255)</code>更改为<code>VARCHAR(191)</code>才能继续转换字符编码</p>
+<h3 id="使用python操作mysql之1064错误">3.5使用Python操作mysql之1064错误</h3>
+<p>我今天使用python操作mysql的时候又出现了1064错误，之前有一次也出现了这个问题，上次发现应该是与sql语句的插入数据方式有问题，上个学期是使用的format向sql语句中插入参数的，由于上个学期的参数内容比较简单也没出什么问题，这次插入一长段带符号的文字时就出了问题，今天经过对比我才知道问题在哪。</p>
+<figure class="highlight python"><figcaption><span>错误方法</span></figcaption><table><tr><td class="code"><pre><span class="line">sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES('&#123;&#125;')"</span>.format(dd[<span class="number">3</span>])</span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 执行SQL语句</span></span><br><span class="line">        cursor.execute(sql3)</span><br><span class="line">        <span class="comment"># 提交修改</span></span><br><span class="line">        db.commit()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="comment"># 发生错误时回滚</span></span><br><span class="line">        db.rollback()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>正确方法</span></figcaption><table><tr><td class="code"><pre><span class="line">sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 执行SQL语句</span></span><br><span class="line">        cursor.execute(sql3, dd[<span class="number">3</span>])</span><br><span class="line">        <span class="comment"># 提交修改</span></span><br><span class="line">        db.commit()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="comment"># 发生错误时回滚</span></span><br><span class="line">        db.rollback()</span><br></pre></td></tr></table></figure>
+<p>大家可以看到这两者的区别就在于插入参数的方式，第一种方式大多数时间是没错的，但是一旦遇到dd[3]里面本来就带有一些特殊符号比如<code>/</code>,<code>'</code>之类的就会报错。而是用第二种方式则不会存在这个问题，要注意第二种方式不要在<code>%s</code>周围加<code>''</code>。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>MySQL</tag>
+        <tag>utf8mb4</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CICFlowMeter部署</title>
+    <url>/CICFlowMeter%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。</p>
+<a id="more"></a>
+<h2 id="部署整体流程">部署整体流程</h2>
+<p>下面我把CICFlowMeter简写为CIC。这里先说一下联网部署的整体流程，在联网情况下部署一般只有一个问题，就是jnetpcap依赖的安装。</p>
+<blockquote>
+<p>在这里特别提醒一下，尽量不要使用open jdk，笔者使用openjdk就会有问题，建议最好使用Oracle的JDK！！！！！！</p>
+<p>还有就是笔者尝试过在相同操作系统，相同架构的电脑上完成打包的CIC是可以直接复制到别的电脑上的，这就意味着在另一台电脑上不用配置mvn和gradle这些内容，只需要配置JDK然后把打出来的压缩包复制过去，然后配置好libpcap-dev和jnetpcap依赖就可以使用了，不同系统和架构的笔者没有尝试过。</p>
+</blockquote>
+<h3 id="环境配置">环境配置</h3>
+<p>笔者使用是自己下载的软件包，所以要自己配置下环境</p>
+<ul>
+<li><p>/etc/profile</p></li>
+<li><p>/home/user(用户名)/.bashrc</p></li>
+</ul>
+<p>在上述两个文件末尾中添加下列环境变量，添加完成后使用source etc/profile和source /home/user/.bashrc</p>
+<ul>
+<li>配置jdk 1.8.0_311</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;jdk1.8.0_333</span><br><span class="line">export JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">export CLASSPATH&#x3D;$JAVA_HOME&#x2F;lib:$JRE_HOME&#x2F;lib</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置maven 3.8.4</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export MAVEN_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;apache-maven-3.8.4</span><br><span class="line">export PATH&#x3D;$PATH:$MAVEN_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置gradle 3.3</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export GRADLE_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;gradle-3.3</span><br><span class="line">export PATH&#x3D;$GRADLE_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+<h3 id="验证环境是否配置成功">验证环境是否配置成功</h3>
+<ul>
+<li><p>使用java -version查看java版本是否与环境变量中一致</p></li>
+<li><p>使用which java查看路径是否与环境变量一致</p></li>
+<li><p>如果which java显示与环境变量不一致，而是/usr/bin/java之类的路径则使用以下命令（这种情况主要是机子上本身存在jdk，理论上将如果在配置环境变量时如果把新的路径放在$PATH前的话是不会出现这个问题的）</p></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo rm &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br><span class="line">sudo ln -s &#x2F;***&#x2F;Traffic_x86&#x2F;jdk1.8.0_311&#x2F;bin&#x2F;java &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>再使用java -version和which java验证环境配置结果</p></li>
+<li><p>如果还没有生效尝试关闭shell重开一个shell或切换用户看有无生效</p></li>
+<li><p>如果出现权限不够的情况，使用sudo chmod 777 path 修改权限</p></li>
+</ul>
+<h3 id="导入jnetpcap">导入jnetpcap</h3>
+<ul>
+<li>Dfile路径改为/Traffic_arm/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425下的jnetpcap.jar</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mvn install:install-file -Dfile&#x3D;&#x2F;***&#x2F;jnetpcap.jar -DgroupId&#x3D;org.jnetpcap -DartifactId&#x3D;jnetpcap -Dversion&#x3D;1.4.1 -Dpackaging&#x3D;jar</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在/Traffic_arm/CICFlowMeter-master下构建项目</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;gradlew distZip</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在/Traffic_arm/CICFlowMeter-master/build/distributions里解压缩CICFlowMeter-4.0.zip</li>
+<li>安装libpcap-dev依赖（centos里面好像是libpcap-devel）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libpcap-dev</span><br><span class="line">yum install libpcap-devel</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425里的libjnetpcap.so和libjnetpcap-pcap100.so复制到/Traffic_arm/jdk1.8.0_333/jre/lib/aarch64（或amd64，和平台架构相关）目录下</li>
+<li>在/***/Traffic_arm/CICFlowMeter-master/build/distributions/CICFlowMeter-4.0/bin运行cfm文件即可</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;cfm [pcap_file] [target_path]</span><br><span class="line">&#x2F;***&#x2F;Traffic&#x2F;CICFlowMeter-master&#x2F;build&#x2F;distributions&#x2F;CICFlowMeter-4.0&#x2F;bin&#x2F;cfm ***.pcap &#x2F;***&#x2F;</span><br></pre></td></tr></table></figure>
+<h3 id="相关描述">相关描述</h3>
+<ul>
+<li>按照上述操作在有网的x86的Ubuntu中应该是不会出现问题的，笔者已经在多台X86的Ubuntu中成功部署。</li>
+<li>在一个全新的机子上部署是要走完以上全部流程的，但是笔者本身不会JAVA所以不是很清楚mvn和gradle这样使用的原理，<a href="https://github.com/ahlashkari/CICFlowMeter" target="_blank" rel="noopener">CICgithub</a>上作者就是这么用的，github上的流程是在为了在IDE上能使用，但是我们希望把他变成一个工具在任何地方都可以通过命令行使用，所以要把两个so动态库放到jre里面去，这个大概就是要我们在命令行全局使用的时候能找到jnetpcap的动态链接库，这就涉及到了JAVA本身的依赖管理，<del>笔者确实不懂JAVA，都是师兄教的😀。</del></li>
+<li>在X86的Ubuntu上使用上述步骤理论上讲不存在问题了，但是在别的操作系统或者非X86架构上还是存在问题，一般主要是遇到下面这个问题</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cic.cs.unb.ca.ifm.Cmd You select: &#x2F;Integ&#x2F;pcapsource&#x2F;d1&#x2F;1_00001_20210104112753.pcap</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd Out folder: .&#x2F;</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd CICFlowMeter received 1 pcap file</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava&#x2F;lang&#x2F;String;)J</span><br><span class="line">        at com.slytechs.library.NativeLibrary.dlopen(Native Method)</span><br><span class="line">        at com.slytechs.library.NativeLibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.loadLibrary(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at org.jnetpcap.Pcap.&lt;clinit&gt;(Unknown Source)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.config(PacketReader.java:58)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.&lt;init&gt;(PacketReader.java:52)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.readPcapFile(Cmd.java:128)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.main(Cmd.java:80)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这个问题根据笔者自己的尝试和网上的 <a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">参考</a> 基本可以确定是由于jnetpcap这个东西引起的，应该是jnetpcap这个东西在不同架构下不兼容的问题，在arm架构上使用CICgithub中提供的so是不行的，必须要自己重新编译，甚至我之后在部署一台X86的centos的时候这个os也不能用最后还是笔者自己重新编译之后才能使用，这个东西的兼容性确实很差，实在不行了需要编译安装的时候可以看下面的内容。</li>
+</ul>
+<h2 id="x86架构">X86架构</h2>
+<blockquote>
+<p>对X86架构下的Ubuntu系统来讲，按照上述流程应该不会存在问题，github上提供的jnetpcap的so本身是适配ubuntu的。</p>
+<p>对X86架构下的Centos和其他系统来讲，可能会遇到上面jnetpcap报错的问题，那应该就是github上提供的so依赖和系统不兼容，需要重新编译，或者看网上有没有好心人提供编译好的，或者看下面的jnetpcap编译安装部分。</p>
+</blockquote>
+<h2 id="arm架构">ARM架构</h2>
+<blockquote>
+<p>ARM架构下的部署，最主要的问题还是在jnetpcap上，github上提供的so肯定是用不了的，笔者也亲身体验过，确实不行。但是笔者这里在CSDN上搜到了一个好心老哥自己在银河麒麟V10， aarch64架构上编译出来的结果，这里贴出来供大家参考。</p>
+</blockquote>
+<p><a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">ARM架构依赖</a></p>
+<h2 id="jnetpcap编译安装">jnetpcap编译安装</h2>
+<p>以下内容全部来源于上面ARM架构中提到的好心老哥，而且他还提供了他编译好的so，真的是大善人，我怕他的博客哪天没了所以我这里复制一遍<a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">ARM架构依赖</a></p>
+<hr />
+<p><strong>编译环境</strong>：银河麒麟V10， aarch64架构 网上很容易下载到jnetpcap的包，但是却没有arm64架构的编译好的so，于是下载源码包自己编译。下面是遇到的问题解决，整个流程耗时6个多小时：</p>
+<ol type="1">
+<li>下载jnetpcap-src-1.4.r1425-1.zip并解压：</li>
+</ol>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639724.png" alt="解压的文件" /><figcaption aria-hidden="true">解压的文件</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>安装ant， 命令大概是：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt install ant</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>编译，问题1，xml:119: taskdef class org . vafer.jdeb . ant DebAntTask cannot be found using the classloader AntclassL oader[ ]</li>
+</ol>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639887.png" alt="问题1" /><figcaption aria-hidden="true">问题1</figcaption>
+</figure>
+<p>​ 方法：直接将build.xml第119行删除，不是debian系统。</p>
+<ol start="4" type="1">
+<li>编译，问题2，use aresiurce collection to copy directories.</li>
+</ol>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640674.png" alt="问题2" /><figcaption aria-hidden="true">问题2</figcaption>
+</figure>
+<p>​ 根据提示，xml的611行有问题，直接找到你系统的libpcap.so的路径，填入xml：</p>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640724.png" alt="问题行" /><figcaption aria-hidden="true">问题行</figcaption>
+</figure>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640701.png" alt="解决方法" /><figcaption aria-hidden="true">解决方法</figcaption>
+</figure>
+<ol start="5" type="1">
+<li>编译，问题3，网上的答案都说是xml的问题，但在这里其实是少了cpptask.jar的原因。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Problem: failed to create task or type cc</span><br><span class="line">Cause: The name is undefined.</span><br><span class="line">Action: Check the spelling.</span><br><span class="line">Action: Check that any custom tasks&#x2F;types have been declared.</span><br><span class="line">Action: Check that any &lt;presetdef&gt;&#x2F;&lt;macrodef&gt; declarations have taken place.</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061641290.png" alt="问题3" /><figcaption aria-hidden="true">问题3</figcaption>
+</figure>
+<p>​ 解决办法：下载cpptasks-1.0b4.jar，放到jnetpcap的lib文件夹下。</p>
+<p>​ 这里的具体cpptasks.jar的版本需要你查看xml文件，放的路径也是要看xml，直接在xml中搜索cpptask相信你能找到线索的。</p>
+<p>​ ps：我这里是放的路径是[项目路径]/cpptasks-1.0b4/cpptasks.jar，然后在xml里面路径直接写死</p>
+<ol start="6" type="1">
+<li>编译，问题四：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;C ommand- line&gt;:0: 19: error: token “”is not valid in preprocessor expressions&#x2F;home&#x2F;ka&#x2F; jnetpcap-src-1.4.1425-1&#x2F;src&#x2F;c&#x2F;jnetpcap_pcap100.cpp:87:6: note: in expansion of macro &#39; L IBPCAP_ VERSION &#39;</span><br><span class="line">#if (L IBPCAP VERSION &lt; L IBPCAP PCAP CREATE )</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061643419.png" alt="问题四" /><figcaption aria-hidden="true">问题四</figcaption>
+</figure>
+<p>​ 解决，明显是找不到LIBPCAP_VERSION，即libpcap的版本号没有，我们编辑Linux.properties文件，添加如下行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">complier.LIBPCAP_VERSION &#x3D; 174</span><br><span class="line">(具体版本可用apt list|grep libpcap获取，填个很大的数就行)，这里一定是一个数字，不能像1.7.4这样。</span><br></pre></td></tr></table></figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061644038.png" /></p>
+<ol start="7" type="1">
+<li>问题五</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">	[javac] 注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。</span><br><span class="line">    [javac] 注: 某些输入文件使用了未经检查或不安全的操作。</span><br><span class="line">    [javac] 注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。</span><br><span class="line">    [javac] 78 个错误</span><br><span class="line"></span><br><span class="line">BUILD FAILED</span><br><span class="line">&#x2F;home&#x2F;ka&#x2F;jnetpcap-src-1.4.r1425-1&#x2F;build.xml:1090: Compile failed; see the compiler error output for details.</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.compile(Javac.java:1181)</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.execute(Javac.java:936)</span><br><span class="line">        at org.apache.tools.ant.UnknownElement.execute(UnknownElement.java:293)</span><br><span class="line">        at sun.reflect.GeneratedMethodAccessor4.invoke(Unknown Source)</span><br><span class="line">        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">        at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line">        at org.apache.tools.ant.dispatch.DispatchUtils.execute(DispatchUtils.java:106)</span><br><span class="line">        at org.apache.tools.ant.Task.perform(Task.java:348)</span><br><span class="line">        at org.apache.tools.ant.Target.execute(Target.java:435)</span><br><span class="line">        at org.apache.tools.ant.Target.performTasks(Target.java:456)</span><br><span class="line">        at org.apache.tools.ant.Project.executeSortedTargets(Project.java:1405)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTarget(Project.java:1376)</span><br><span class="line">        at org.apache.tools.ant.helper.DefaultExecutor.executeTargets(DefaultExecutor.java:41)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTargets(Project.java:1260)</span><br><span class="line">        at org.apache.tools.ant.Main.runBuild(Main.java:853)</span><br><span class="line">        at org.apache.tools.ant.Main.startAnt(Main.java:235)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.run(Launcher.java:285)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.main(Launcher.java:112)</span><br></pre></td></tr></table></figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645003.png" /></p>
+<p>​ 这个问题可能是我没有下载正确版本的cpptask的原因，要根据build.xml里的要求来下载。 但是检查./build/obj/我已经得到了我们想要的so文件</p>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645493.png" alt="大功告成" /><figcaption aria-hidden="true">大功告成</figcaption>
+</figure>
+<p>程序终于跑起来了！！！！！！！</p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061646710.png" /></p>
+<h3 id="附编译好的文件链接">附编译好的文件链接</h3>
+<p>https://download.csdn.net/download/lizheng2017/46217421</p>
+<h2 id="离线部署">离线部署</h2>
+<p>离线部署其实挺麻烦的，如果平时没有经常使用Linux服务器的话还是比较恼火的，最好的方法还是让机子联网，但是确实有很多情况下没法联网，笔者这里也只能提供我在尝试离线部署过程中的一些经验</p>
+<ul>
+<li>尽量找到一台相同系统相同架构的能联网的机器，这会让离线部署简单得多，apt和yum都提供了下载安装包的功能，我们可以在能联网的机子上先下载好适配的离线包然后复制到不能联网的机子上进行编译安装，这样的成功率就会很高，也比较方便，这里贴两个参考<a href="https://blog.csdn.net/qq_17576885/article/details/122070612" target="_blank" rel="noopener">apt离线包下载</a>，<a href="https://www.codeleading.com/article/78986008408/" target="_blank" rel="noopener">yum离线包下载</a></li>
+<li>相同系统相同架构的机器不用每个都使用mvn和gradle，只要有一台成功打出了压缩包后面就可以直接复制，只要配置新机器的JDK和各种依赖就行了</li>
+</ul>
+<h2 id="其他问题">其他问题</h2>
+<h3 id="问题1">问题1</h3>
+<blockquote>
+<p>问题描述：经过上面的一通操作，CIC已经成功跑了起来，我把CIC用python封装成了一个接口供后端调用，但是出现了一个非常奇怪的问题，那就我直接跑我的接口CIC稳定能用，但是后端调我的接口就时而能用时而不行，一旦不行之后就稳定不行。</p>
+</blockquote>
+<blockquote>
+<p>这个问题的产生是因为后端使用Linux的/etc/crontab做了后端服务的定时重启，但是crontab里面有一个自己的$PATH，并且它不会去读取/etc/profile里面的路径，所以会导致读不到我们的JDK和各种依赖，解决方法也很简单，只要把我们在profile里面写的JDK路径加到crontab里面就行了</p>
+</blockquote>
+<h3 id="问题2">问题2</h3>
+<blockquote>
+<p>问题描述：在实际使用中我们发现提取出来的协议号基本只有0，6，17。6代表TCP，17代表UDP，剩下其他所有协议全部被识别为0，例如ARP，ICMP，SEP之类的全部识别为0，而且组流的情况看起来也不是很好，绝大部分列都是全为0，简单看了下代码发现CIC本事就只对有限的几种protocol做了处理，泛用性不是很广。</p>
+</blockquote>
+<figure>
+<img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061724179.png" alt="protocol" /><figcaption aria-hidden="true">protocol</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>CICFlowMeter</category>
+      </categories>
+      <tags>
+        <tag>CICFlowMeter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pycharm远程调试项目</title>
+    <url>/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<p>服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。</p>
+<p>参考：https://www.cnblogs.com/weihengblog/p/9656257.html</p>
+<a id="more"></a>
+<p>pycharm是一个非常强大的python开发工具，现在很多代码最终在线上跑的环境都是linux，而开发环境可能还是windows下开发，这就需要经常在linux上进行调试，或者在linux对代码进行编写，而pycharm提供了非常便捷的方式。具体实现在windows上远程linux开发和调试的代码步骤如下：</p>
+<ol type="1">
+<li><p>本地和远程同步</p></li>
+<li><p>配置Project Interpreter（使用远程的Python解释器）</p></li>
+<li><p>设置Terminal运行的Python版本</p></li>
+<li><p>使用Terminal登陆到Linux服务器</p></li>
+</ol>
+<h3 id="一本地和远程代码同步">一、本地和远程代码同步</h3>
+<p>首先，在本地和远程拥有相同的项目代码：</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105507.png" alt="1321568-20180916144244833-1490970117" /><figcaption aria-hidden="true">1321568-20180916144244833-1490970117</figcaption>
+</figure>
+<p><strong>在windows平台使用Pycharm打开项目,然后：Tools -&gt; Deployment -&gt; configuration，然后新建远程服务器</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105650.png" alt="1321568-20180916144731393-549531962" /><figcaption aria-hidden="true">1321568-20180916144731393-549531962</figcaption>
+</figure>
+<p><strong>然后进行服务器配置</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105658.png" alt="1321568-20180916145358775-782073356" /><figcaption aria-hidden="true">1321568-20180916145358775-782073356</figcaption>
+</figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105705.png" alt="1321568-20180916145549234-784619187" /><figcaption aria-hidden="true">1321568-20180916145549234-784619187</figcaption>
+</figure>
+<p><strong>点击Ok</strong>，<strong>经过上面步骤的配置后，我们可以在PyCharm 界面的右边查看远端代码，如下图：</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105836.png" alt="1321568-20180916145725516-1886186686" /><figcaption aria-hidden="true">1321568-20180916145725516-1886186686</figcaption>
+</figure>
+<p><strong>切记！勾选 Automatic Upload 实现本地自动同步到远端</strong></p>
+<h3 id="二配置project-interpreter使用远程的python解释器">二、配置Project Interpreter（使用远程的Python解释器）</h3>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105842.png" alt="1321568-20180916145905889-619698935" /><figcaption aria-hidden="true">1321568-20180916145905889-619698935</figcaption>
+</figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105846.png" alt="1321568-20180916150051936-1448125681" /><figcaption aria-hidden="true">1321568-20180916150051936-1448125681</figcaption>
+</figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105852.png" alt="1321568-20180916150149777-1149968755" /><figcaption aria-hidden="true">1321568-20180916150149777-1149968755</figcaption>
+</figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105900.png" alt="1321568-20180916150602788-417269814" /><figcaption aria-hidden="true">1321568-20180916150602788-417269814</figcaption>
+</figure>
+<p><strong>点击 OK 保存，点击Finish完成。然后在编辑新添加的Python Interpreter，如下图所示：</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110011.png" alt="1321568-20180916151536382-1761728586" /><figcaption aria-hidden="true">1321568-20180916151536382-1761728586</figcaption>
+</figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110017.png" alt="1321568-20180916151652947-1922094213" /><figcaption aria-hidden="true">1321568-20180916151652947-1922094213</figcaption>
+</figure>
+<p><strong>这样，本地和远程的项目 以来的pip都是相同的，解释器也是相同的。</strong></p>
+<h3 id="三设置terminal运行的python版本">三、设置Terminal运行的Python版本</h3>
+<p><strong>File -&gt; Settings -&gt; Tools -&gt; SSH Terminal，在 Deployment server 选择Linux服务器的Python版本路径。（配置已经存在，只要选择即可）</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110030.png" alt="1321568-20180916151811986-1349908586" /><figcaption aria-hidden="true">1321568-20180916151811986-1349908586</figcaption>
+</figure>
+<h3 id="四使用terminal登陆到linux服务器">四、使用Terminal登陆到Linux服务器</h3>
+<p><strong>选择 Tools -&gt; Start SSH session，默认会开启Linux ssh会话窗口，如下图：</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110034.png" alt="1321568-20180916151852453-923493946" /><figcaption aria-hidden="true">1321568-20180916151852453-923493946</figcaption>
+</figure>
+<p><strong>就可以执行Linux命令了，在远程Linux主机上，如下图：</strong></p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110042.png" alt="1321568-20180916152101674-143914985" /><figcaption aria-hidden="true">1321568-20180916152101674-143914985</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>pycharm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>leetcode_1</title>
     <url>/leetcode-1/</url>
     <content><![CDATA[<p>这里记录在leetcode上做题的经过，包含自己的解法和优秀解法</p>
@@ -990,82 +1069,76 @@
       </tags>
   </entry>
   <entry>
-    <title>pycharm远程调试项目</title>
-    <url>/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<p>服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。</p>
-<p>参考：https://www.cnblogs.com/weihengblog/p/9656257.html</p>
+    <title>lxml相关操作</title>
+    <url>/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。</p>
 <a id="more"></a>
-<p>pycharm是一个非常强大的python开发工具，现在很多代码最终在线上跑的环境都是linux，而开发环境可能还是windows下开发，这就需要经常在linux上进行调试，或者在linux对代码进行编写，而pycharm提供了非常便捷的方式。具体实现在windows上远程linux开发和调试的代码步骤如下：</p>
+<h2 id="如何构建对象">1.如何构建对象</h2>
+<p>首先我们要引入lxml（html也是lxml的一种）包，然后调用<code>etree.HTML()</code>函数解析html来构建Element</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">element = etree.HTML(response.text).xpath(<span class="string">'//div[@class="con_main"]'</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="去除特定节点">2.去除特定节点</h2>
+<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a href="https://lxml.de/api/lxml.etree._Element-class.html" target="_blank" rel="noopener">lxml官方文档</a>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pp <span class="keyword">in</span> element.findall(<span class="string">'p[@style]'</span>):</span><br><span class="line">    element.remove(pp)</span><br></pre></td></tr></table></figure>
+<h2 id="完成信息提取">3.完成信息提取</h2>
+<p>之后就是正常的完成对所需信息的处理，去毛刺，格式化，列表化等操作：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"><span class="comment"># 这一句是去除列表中的空元素</span></span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<ul>
+<li>虽然<code>Element</code>和scrapy的<code>selector</code>都可以是调用<code>xpath</code>方法形式上也很类似但是<code>Element</code>对象<code>xpath('string(.)')</code>之后是不用<code>extract_first()</code>的</li>
+</ul>
+<h2 id="extract和extract_first">4.extract（）和extract_first（）</h2>
+<p>如果您是Scrapy的长期用户，则可能熟悉<code>.extract()</code>和<code>.extract_first()</code>选择器方法。许多博客文章和教程也正在使用它们。Scrapy仍支持这些方法，<strong>没有计划</strong>弃用它们。</p>
+<p>但是，Scrapy用法文档现在使用<code>.get()</code>和 <code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
+<p>以下示例显示了这些方法如何相互映射：</p>
 <ol type="1">
-<li><p>本地和远程同步</p></li>
-<li><p>配置Project Interpreter（使用远程的Python解释器）</p></li>
-<li><p>设置Terminal运行的Python版本</p></li>
-<li><p>使用Terminal登陆到Linux服务器</p></li>
+<li><p><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>： <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure></p></li>
+<li><p><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</p></li>
 </ol>
-<h3 id="一本地和远程代码同步">一、本地和远程代码同步</h3>
-<p>首先，在本地和远程拥有相同的项目代码：</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105507.png" alt="1321568-20180916144244833-1490970117" /><figcaption aria-hidden="true">1321568-20180916144244833-1490970117</figcaption>
-</figure>
-<p><strong>在windows平台使用Pycharm打开项目,然后：Tools -&gt; Deployment -&gt; configuration，然后新建远程服务器</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105650.png" alt="1321568-20180916144731393-549531962" /><figcaption aria-hidden="true">1321568-20180916144731393-549531962</figcaption>
-</figure>
-<p><strong>然后进行服务器配置</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105658.png" alt="1321568-20180916145358775-782073356" /><figcaption aria-hidden="true">1321568-20180916145358775-782073356</figcaption>
-</figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105705.png" alt="1321568-20180916145549234-784619187" /><figcaption aria-hidden="true">1321568-20180916145549234-784619187</figcaption>
-</figure>
-<p><strong>点击Ok</strong>，<strong>经过上面步骤的配置后，我们可以在PyCharm 界面的右边查看远端代码，如下图：</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105836.png" alt="1321568-20180916145725516-1886186686" /><figcaption aria-hidden="true">1321568-20180916145725516-1886186686</figcaption>
-</figure>
-<p><strong>切记！勾选 Automatic Upload 实现本地自动同步到远端</strong></p>
-<h3 id="二配置project-interpreter使用远程的python解释器">二、配置Project Interpreter（使用远程的Python解释器）</h3>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105842.png" alt="1321568-20180916145905889-619698935" /><figcaption aria-hidden="true">1321568-20180916145905889-619698935</figcaption>
-</figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105846.png" alt="1321568-20180916150051936-1448125681" /><figcaption aria-hidden="true">1321568-20180916150051936-1448125681</figcaption>
-</figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105852.png" alt="1321568-20180916150149777-1149968755" /><figcaption aria-hidden="true">1321568-20180916150149777-1149968755</figcaption>
-</figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105900.png" alt="1321568-20180916150602788-417269814" /><figcaption aria-hidden="true">1321568-20180916150602788-417269814</figcaption>
-</figure>
-<p><strong>点击 OK 保存，点击Finish完成。然后在编辑新添加的Python Interpreter，如下图所示：</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110011.png" alt="1321568-20180916151536382-1761728586" /><figcaption aria-hidden="true">1321568-20180916151536382-1761728586</figcaption>
-</figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110017.png" alt="1321568-20180916151652947-1922094213" /><figcaption aria-hidden="true">1321568-20180916151652947-1922094213</figcaption>
-</figure>
-<p><strong>这样，本地和远程的项目 以来的pip都是相同的，解释器也是相同的。</strong></p>
-<h3 id="三设置terminal运行的python版本">三、设置Terminal运行的Python版本</h3>
-<p><strong>File -&gt; Settings -&gt; Tools -&gt; SSH Terminal，在 Deployment server 选择Linux服务器的Python版本路径。（配置已经存在，只要选择即可）</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110030.png" alt="1321568-20180916151811986-1349908586" /><figcaption aria-hidden="true">1321568-20180916151811986-1349908586</figcaption>
-</figure>
-<h3 id="四使用terminal登陆到linux服务器">四、使用Terminal登陆到Linux服务器</h3>
-<p><strong>选择 Tools -&gt; Start SSH session，默认会开启Linux ssh会话窗口，如下图：</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110034.png" alt="1321568-20180916151852453-923493946" /><figcaption aria-hidden="true">1321568-20180916151852453-923493946</figcaption>
-</figure>
-<p><strong>就可以执行Linux命令了，在远程Linux主机上，如下图：</strong></p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110042.png" alt="1321568-20180916152101674-143914985" /><figcaption aria-hidden="true">1321568-20180916152101674-143914985</figcaption>
-</figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).getall()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li><code>Selector.get()</code>与<code>Selector.extract()</code>：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].extract()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>为了保持一致性，还有<code>Selector.getall()</code>，它返回一个列表：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].getall()</span></span><br><span class="line">['image1.html']</span><br></pre></td></tr></table></figure>
+<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code> 始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>Python</category>
+        <category>爬虫</category>
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>pycharm</tag>
+        <tag>爬虫</tag>
+        <tag>信息提取</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>scrapy中的yield请求未被正常抛出</title>
+    <url>/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/</url>
+    <content><![CDATA[<p>有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个<code>scrapy.Request</code>执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。</p>
+<a id="more"></a>
+<p>参考：https://blog.csdn.net/qq_32670879/article/details/85042464</p>
+<p>问题来源：我在爬取医书的时候因为是书籍所以存在章节信息，在书籍的介绍页既有书籍简介，又有目录，我想要写两个函数来分别处理，当书籍简介获取完之后要进入获取目录信息函数的时候不能正确进入。</p>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509152400.png" alt="image-20200509152349586" /><figcaption aria-hidden="true">image-20200509152349586</figcaption>
+</figure>
+<p>经过在网上查找信息发现应该是我调用下面函数的时候，因为又请求了之前请求过的<code>response.url</code>导致scrapy自带的去重机制将本次请求全部拦截了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509153757.png" alt="20181216232557785" /><figcaption aria-hidden="true">20181216232557785</figcaption>
+</figure>
+<p>解决方法：在函数参数中加入<code>dont_filter=True</code>，结果如下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;, dont_filter=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>scrapy</tag>
       </tags>
   </entry>
   <entry>
@@ -1091,8 +1164,96 @@
         <category>CICFlowMeter</category>
       </categories>
       <tags>
-        <tag>CICFlowMeter</tag>
         <tag>python</tag>
+        <tag>CICFlowMeter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>xpath常用相关</title>
+    <url>/xpath%E5%B8%B8%E7%94%A8%E7%9B%B8%E5%85%B3/</url>
+    <content><![CDATA[<p>xpath常用语法</p>
+<a id="more"></a>
+<h3 id="匹配文本">1.匹配文本</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a[contains(text(),<span class="string">"百度搜索"</span>)]</span><br></pre></td></tr></table></figure>
+<h3 id="匹配属性">2.匹配属性</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">input[contains(@name,<span class="string">'na'</span>)]</span><br></pre></td></tr></table></figure>
+<h3 id="节点关系">3.节点关系</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">轴名称</th>
+<th style="text-align: left;">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ancestor</td>
+<td style="text-align: left;">选取当前节点的所有先辈（父、祖父等）。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ancestor-or-self</td>
+<td style="text-align: left;">选取当前节点的所有先辈（父、祖父等）以及当前节点本身。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">attribute</td>
+<td style="text-align: left;">选取当前节点的所有属性。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">child</td>
+<td style="text-align: left;">选取当前节点的所有子元素。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">descendant</td>
+<td style="text-align: left;">选取当前节点的所有后代元素（子、孙等）。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">descendant-or-self</td>
+<td style="text-align: left;">选取当前节点的所有后代元素（子、孙等）以及当前节点本身。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">following</td>
+<td style="text-align: left;">选取文档中当前节点的结束标签之后的所有节点。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">following-sibling</td>
+<td style="text-align: left;">选取当前节点之后的所有兄弟节点</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">namespace</td>
+<td style="text-align: left;">选取当前节点的所有命名空间节点。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">parent</td>
+<td style="text-align: left;">选取当前节点的父节点。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">preceding</td>
+<td style="text-align: left;">选取文档中当前节点的开始标签之前的所有节点。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">preceding-sibling</td>
+<td style="text-align: left;">选取当前节点之前的所有同级节点。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">self</td>
+<td style="text-align: left;">选取当前节点。</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"1"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第1个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>我是p标签<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"2"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第2个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"3"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第3个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"4"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第4个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>我是p标签<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"5"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第5个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>获取第三个a标签的下一个a标签："//a<span class="citation" data-cites="id">[@id='3']</span>/following-sibling::a[1]"</p>
+<p>获取第三个a标签后面的第N个标签："//a<span class="citation" data-cites="id">[@id='3']</span>/following-sibling::*[N]"</p>
+<p>获取第三个a标签的上一个a标签："//a<span class="citation" data-cites="id">[@id='3']</span>/preceding-sibling::a[1]"</p>
+<p>获取第三个a标签的前面的第N个标签："//a<span class="citation" data-cites="id">[@id='3']</span>/preceding-sibling::*[N]"</p>
+<p>获取第三个a标签的父标签："//a<span class="citation" data-cites="id">[@id=='3']</span>/.."</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>scrapy</tag>
       </tags>
   </entry>
   <entry>
@@ -1279,192 +1440,6 @@
       </tags>
   </entry>
   <entry>
-    <title>scrapy中的yield请求未被正常抛出</title>
-    <url>/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/</url>
-    <content><![CDATA[<p>有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个<code>scrapy.Request</code>执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。</p>
-<a id="more"></a>
-<p>参考：https://blog.csdn.net/qq_32670879/article/details/85042464</p>
-<p>问题来源：我在爬取医书的时候因为是书籍所以存在章节信息，在书籍的介绍页既有书籍简介，又有目录，我想要写两个函数来分别处理，当书籍简介获取完之后要进入获取目录信息函数的时候不能正确进入。</p>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509152400.png" alt="image-20200509152349586" /><figcaption aria-hidden="true">image-20200509152349586</figcaption>
-</figure>
-<p>经过在网上查找信息发现应该是我调用下面函数的时候，因为又请求了之前请求过的<code>response.url</code>导致scrapy自带的去重机制将本次请求全部拦截了。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;)</span><br></pre></td></tr></table></figure>
-<figure>
-<img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509153757.png" alt="20181216232557785" /><figcaption aria-hidden="true">20181216232557785</figcaption>
-</figure>
-<p>解决方法：在函数参数中加入<code>dont_filter=True</code>，结果如下</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;, dont_filter=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>爬虫</category>
-      </categories>
-      <tags>
-        <tag>scrapy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lxml相关操作</title>
-    <url>/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。</p>
-<a id="more"></a>
-<h2 id="如何构建对象">1.如何构建对象</h2>
-<p>首先我们要引入lxml（html也是lxml的一种）包，然后调用<code>etree.HTML()</code>函数解析html来构建Element</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">element = etree.HTML(response.text).xpath(<span class="string">'//div[@class="con_main"]'</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h2 id="去除特定节点">2.去除特定节点</h2>
-<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a href="https://lxml.de/api/lxml.etree._Element-class.html" target="_blank" rel="noopener">lxml官方文档</a>。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pp <span class="keyword">in</span> element.findall(<span class="string">'p[@style]'</span>):</span><br><span class="line">    element.remove(pp)</span><br></pre></td></tr></table></figure>
-<h2 id="完成信息提取">3.完成信息提取</h2>
-<p>之后就是正常的完成对所需信息的处理，去毛刺，格式化，列表化等操作：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"><span class="comment"># 这一句是去除列表中的空元素</span></span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong></p>
-<ul>
-<li>虽然<code>Element</code>和scrapy的<code>selector</code>都可以是调用<code>xpath</code>方法形式上也很类似但是<code>Element</code>对象<code>xpath('string(.)')</code>之后是不用<code>extract_first()</code>的</li>
-</ul>
-<h2 id="extract和extract_first">4.extract（）和extract_first（）</h2>
-<p>如果您是Scrapy的长期用户，则可能熟悉<code>.extract()</code>和<code>.extract_first()</code>选择器方法。许多博客文章和教程也正在使用它们。Scrapy仍支持这些方法，<strong>没有计划</strong>弃用它们。</p>
-<p>但是，Scrapy用法文档现在使用<code>.get()</code>和 <code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
-<p>以下示例显示了这些方法如何相互映射：</p>
-<ol type="1">
-<li><p><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>： <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure></p></li>
-<li><p><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</p></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).getall()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li><code>Selector.get()</code>与<code>Selector.extract()</code>：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].extract()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>为了保持一致性，还有<code>Selector.getall()</code>，它返回一个列表：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].getall()</span></span><br><span class="line">['image1.html']</span><br></pre></td></tr></table></figure>
-<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code> 始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>爬虫</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-        <tag>信息提取</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>从考研到995</title>
-    <url>/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/</url>
-    <content><![CDATA[<p>这么久都没更博了，主要是之前在准备参加考研，9月底突然得知因为疫情扩保把本弟弟保上了，说实话运气很好，属实要好好感谢学校，只要学校够努力就能抬我一手。今天保研尘埃落定了虽然直接开始995，但是心理压力没那么大了，还要学习新的知识，肯定要多记录记录。</p>
-<a id="more"></a>
-<h3 id="碎碎念">碎碎念</h3>
-<p>今天是十推的第一天，保了本院，复试通知已经接受了，还在等待录取通知，昨晚填系统睡得也晚，今早起的也早这会儿困得很，也没办法学习，就来记录一下。</p>
-<p>本来我的成绩就在保研边缘，只要能拿到一个省奖就能保研了，寒假和大三也参加了几个比赛，说实话一言难尽，有些人确实不是那么靠谱，也怪我之前确实不懂，也没有去深入的了解，以为跟着老师就对了，谁能想到......</p>
-<p>今年因为疫情，国家为了不让毕业生在社会上乱晃，也对研究生进行了扩招，保研名额也就进行了扩招，说实话我本来都没想着能扩到我，没竞赛加分属实太弟弟了，都是意外惊喜。有时候你做好自己的事，幸福可能就那么来了。</p>
-<p>因为知道保研的时间比较晚，之前的夏令营也没有参加预推免很多学校也结束了，所以可选择的空间并不大，加上之前一直在学数学，专业课确实没看，代码也很久没写了，尤其是很多学校还要求用C，因为之前做项目都用的Python，所以C也忘光了，准备时间确实十分有限。最后还是选择了本院，索性找到了一个靠谱的导师，手里也有很好的项目，反正轻松是不可能轻松的，995的快乐生活我来了。</p>
-<p>保研了确实要轻松一些，可能995在时间上和考研学习差不多，但是毕竟没有那么大的压力，而且学这些新知识属实比学高数有意思多了，虽然数学肯定是要用，但是不用背啊，只要能应用就行了，我感觉研究生很大的一个阻碍还是英语，我英语属实太辣鸡了，不去冲外校英语也是很重要的原因之一。</p>
-<p>因为上一个免费领的服务器到期了，换了一个学生服务器，今早把博客又弄了一下，还好不用怎么大操作。</p>
-<p>都十点多了，我的待录取通知怎么还没来啊啊啊啊啊啊~~~~~~~~~~~</p>
-<h3 id="小经验">小经验</h3>
-<p>以下都是个人经验，不一定适用于每个学校每个人。</p>
-<p>保研除了平时的课程之外，竞赛真的很重要，如果真的有保研意向一定要早准备竞赛，大二怎么都要开始了吧，还是要早做了解，有一些竞赛确实是比较好拿奖的，找几个靠谱的队友，再找个靠谱的指导老师，还是比较有希望的。</p>
-<p>如果英语确实不好，像我一样保研了六级都没过估计也没几个人了，还好学校不卡这个。如果真的想要保研，还是最好过一下六级，能多高就刷多高，毕竟考试还是有应试技巧的。我之前是不知道能保研，大二也没太关注，大三发现成绩还可以，在边缘但是疫情了也没办法参加六级，所以参加了九月的那场，说实话突击了一下，现在也不知道咋样。</p>
-<p>保研面试的英语确实是可以准备一下的，尽早准备，怎么都要准备至少一个礼拜吧，主要就是英文自我介绍，还有一些常见面试问题，这些网上都能找到很多教程，我英语也就是个弟弟，就不教你们了。可以面试前找朋友开个视频会议试一试。我找的同学他英语是比较好的，虽然肯定比不上母语，但是是开口交流不用准备也能随便进行的下去的那种，比我是强的太多了。我们第一次试他直接给我问沉默了，他说的我都能听懂，但我属实开不了口，感觉直接像是被沉默，说不出话。还是要找人锻炼一下下，确实好一点。</p>
-<p>又是半个小时过去了，我的待录取通知还没来~~~~~~~~~~~</p>
-<p>希望能在中午吃饭前来，不想把电脑搬回去，电脑像个板砖，太沉了...</p>
-]]></content>
-      <categories>
-        <category>碎碎念</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>xpath常用相关</title>
-    <url>/xpath%E5%B8%B8%E7%94%A8%E7%9B%B8%E5%85%B3/</url>
-    <content><![CDATA[<p>xpath常用语法</p>
-<a id="more"></a>
-<h3 id="匹配文本">1.匹配文本</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a[contains(text(),<span class="string">"百度搜索"</span>)]</span><br></pre></td></tr></table></figure>
-<h3 id="匹配属性">2.匹配属性</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">input[contains(@name,<span class="string">'na'</span>)]</span><br></pre></td></tr></table></figure>
-<h3 id="节点关系">3.节点关系</h3>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">轴名称</th>
-<th style="text-align: left;">结果</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">ancestor</td>
-<td style="text-align: left;">选取当前节点的所有先辈（父、祖父等）。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ancestor-or-self</td>
-<td style="text-align: left;">选取当前节点的所有先辈（父、祖父等）以及当前节点本身。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">attribute</td>
-<td style="text-align: left;">选取当前节点的所有属性。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">child</td>
-<td style="text-align: left;">选取当前节点的所有子元素。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">descendant</td>
-<td style="text-align: left;">选取当前节点的所有后代元素（子、孙等）。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">descendant-or-self</td>
-<td style="text-align: left;">选取当前节点的所有后代元素（子、孙等）以及当前节点本身。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">following</td>
-<td style="text-align: left;">选取文档中当前节点的结束标签之后的所有节点。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">following-sibling</td>
-<td style="text-align: left;">选取当前节点之后的所有兄弟节点</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">namespace</td>
-<td style="text-align: left;">选取当前节点的所有命名空间节点。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">parent</td>
-<td style="text-align: left;">选取当前节点的父节点。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">preceding</td>
-<td style="text-align: left;">选取文档中当前节点的开始标签之前的所有节点。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">preceding-sibling</td>
-<td style="text-align: left;">选取当前节点之前的所有同级节点。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">self</td>
-<td style="text-align: left;">选取当前节点。</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"1"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第1个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>我是p标签<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"2"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第2个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"3"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第3个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"4"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第4个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>我是p标签<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"5"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第5个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>获取第三个a标签的下一个a标签："//a<span class="citation" data-cites="id">[@id='3']</span>/following-sibling::a[1]"</p>
-<p>获取第三个a标签后面的第N个标签："//a<span class="citation" data-cites="id">[@id='3']</span>/following-sibling::*[N]"</p>
-<p>获取第三个a标签的上一个a标签："//a<span class="citation" data-cites="id">[@id='3']</span>/preceding-sibling::a[1]"</p>
-<p>获取第三个a标签的前面的第N个标签："//a<span class="citation" data-cites="id">[@id='3']</span>/preceding-sibling::*[N]"</p>
-<p>获取第三个a标签的父标签："//a<span class="citation" data-cites="id">[@id=='3']</span>/.."</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>爬虫</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>scrapy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>创建python虚拟环境</title>
     <url>/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<p>如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。</p>
@@ -1531,39 +1506,55 @@
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>redis</tag>
-        <tag>scrapy</tag>
         <tag>爬虫</tag>
+        <tag>scrapy</tag>
+        <tag>redis</tag>
         <tag>增量爬取</tag>
       </tags>
   </entry>
   <entry>
-    <title>多台电脑同步博客</title>
-    <url>/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>记录一下在多台电脑上同时写博客时候的同步问题</p>
-<p><a href="https://www.zhihu.com/question/23934523" target="_blank" rel="noopener">参考</a></p>
+    <title>强制关闭端口</title>
+    <url>/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/</url>
+    <content><![CDATA[<p>很多情况下我们会遇到程序非正常退出那么它所占用的端口很有可能就没有被正常释放，导致我们下一次启动他的时候无法启动，这时候我们就需要手动释放端口。</p>
+<p>参考：https://blog.csdn.net/why444216978/article/details/84062977</p>
 <a id="more"></a>
-<h3 id="环境安装">环境安装</h3>
-<h4 id="nodejs">nodejs</h4>
-<p>首先在自己的电脑上安装 Node.js，下载地址：<a href="https://nodejs.org/zh-cn/download/" target="_blank" rel="noopener">node.js</a></p>
-<p>建议下载nodejs 14以下的版本，14以上的版本和一些老版的hexo不兼容，会报错</p>
-<h4 id="hexo">hexo</h4>
-<p>使用如下命令安装hexo，-g可以全局安装，在所有文件夹都能使用</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<h3 id="git同步">git同步</h3>
-<p>我这里默认已经至少在一个电脑上配置好博客站点信息了，就不写怎么配置站点信息了，直接写如何在git上新建分支存放hexo源码</p>
-<p>在博客根目录下在git bash中使用以下命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b source</span><br><span class="line">git add -A</span><br><span class="line">git commit -m &quot;init blog&quot;</span><br><span class="line">git remote add origin git@github.com:&#123;username&#125;&#x2F;&#123;username&#125;.github.io.git</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
-<p>如果是在第二台电脑上要拉取的话就新建一个博客文件夹使用init之后将clone下来的文件放到博客文件夹里再执行后续操作就好了</p>
+<p>1、强制杀死该端口进程</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo fuser -k -n tcp 80</span><br></pre></td></tr></table></figure>
+<p>2、根据PID关闭某个被占用的端口</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">netstat -tunlp | grep 80</span><br><span class="line"></span><br><span class="line">lsof -i:80</span><br><span class="line"></span><br><span class="line">sudo kill -9 PID</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>博客</category>
+        <category>服务器配置</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
-        <tag>git</tag>
+        <tag>服务器</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>从考研到995</title>
+    <url>/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/</url>
+    <content><![CDATA[<p>这么久都没更博了，主要是之前在准备参加考研，9月底突然得知因为疫情扩保把本弟弟保上了，说实话运气很好，属实要好好感谢学校，只要学校够努力就能抬我一手。今天保研尘埃落定了虽然直接开始995，但是心理压力没那么大了，还要学习新的知识，肯定要多记录记录。</p>
+<a id="more"></a>
+<h3 id="碎碎念">碎碎念</h3>
+<p>今天是十推的第一天，保了本院，复试通知已经接受了，还在等待录取通知，昨晚填系统睡得也晚，今早起的也早这会儿困得很，也没办法学习，就来记录一下。</p>
+<p>本来我的成绩就在保研边缘，只要能拿到一个省奖就能保研了，寒假和大三也参加了几个比赛，说实话一言难尽，有些人确实不是那么靠谱，也怪我之前确实不懂，也没有去深入的了解，以为跟着老师就对了，谁能想到......</p>
+<p>今年因为疫情，国家为了不让毕业生在社会上乱晃，也对研究生进行了扩招，保研名额也就进行了扩招，说实话我本来都没想着能扩到我，没竞赛加分属实太弟弟了，都是意外惊喜。有时候你做好自己的事，幸福可能就那么来了。</p>
+<p>因为知道保研的时间比较晚，之前的夏令营也没有参加预推免很多学校也结束了，所以可选择的空间并不大，加上之前一直在学数学，专业课确实没看，代码也很久没写了，尤其是很多学校还要求用C，因为之前做项目都用的Python，所以C也忘光了，准备时间确实十分有限。最后还是选择了本院，索性找到了一个靠谱的导师，手里也有很好的项目，反正轻松是不可能轻松的，995的快乐生活我来了。</p>
+<p>保研了确实要轻松一些，可能995在时间上和考研学习差不多，但是毕竟没有那么大的压力，而且学这些新知识属实比学高数有意思多了，虽然数学肯定是要用，但是不用背啊，只要能应用就行了，我感觉研究生很大的一个阻碍还是英语，我英语属实太辣鸡了，不去冲外校英语也是很重要的原因之一。</p>
+<p>因为上一个免费领的服务器到期了，换了一个学生服务器，今早把博客又弄了一下，还好不用怎么大操作。</p>
+<p>都十点多了，我的待录取通知怎么还没来啊啊啊啊啊啊~~~~~~~~~~~</p>
+<h3 id="小经验">小经验</h3>
+<p>以下都是个人经验，不一定适用于每个学校每个人。</p>
+<p>保研除了平时的课程之外，竞赛真的很重要，如果真的有保研意向一定要早准备竞赛，大二怎么都要开始了吧，还是要早做了解，有一些竞赛确实是比较好拿奖的，找几个靠谱的队友，再找个靠谱的指导老师，还是比较有希望的。</p>
+<p>如果英语确实不好，像我一样保研了六级都没过估计也没几个人了，还好学校不卡这个。如果真的想要保研，还是最好过一下六级，能多高就刷多高，毕竟考试还是有应试技巧的。我之前是不知道能保研，大二也没太关注，大三发现成绩还可以，在边缘但是疫情了也没办法参加六级，所以参加了九月的那场，说实话突击了一下，现在也不知道咋样。</p>
+<p>保研面试的英语确实是可以准备一下的，尽早准备，怎么都要准备至少一个礼拜吧，主要就是英文自我介绍，还有一些常见面试问题，这些网上都能找到很多教程，我英语也就是个弟弟，就不教你们了。可以面试前找朋友开个视频会议试一试。我找的同学他英语是比较好的，虽然肯定比不上母语，但是是开口交流不用准备也能随便进行的下去的那种，比我是强的太多了。我们第一次试他直接给我问沉默了，他说的我都能听懂，但我属实开不了口，感觉直接像是被沉默，说不出话。还是要找人锻炼一下下，确实好一点。</p>
+<p>又是半个小时过去了，我的待录取通知还没来~~~~~~~~~~~</p>
+<p>希望能在中午吃饭前来，不想把电脑搬回去，电脑像个板砖，太沉了...</p>
+]]></content>
+      <categories>
+        <category>碎碎念</category>
+      </categories>
   </entry>
   <entry>
     <title>将flask部署到Ubuntu服务器上</title>
@@ -1648,25 +1639,6 @@
         <tag>python</tag>
         <tag>Flask</tag>
         <tag>部署至服务器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>强制关闭端口</title>
-    <url>/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/</url>
-    <content><![CDATA[<p>很多情况下我们会遇到程序非正常退出那么它所占用的端口很有可能就没有被正常释放，导致我们下一次启动他的时候无法启动，这时候我们就需要手动释放端口。</p>
-<p>参考：https://blog.csdn.net/why444216978/article/details/84062977</p>
-<a id="more"></a>
-<p>1、强制杀死该端口进程</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo fuser -k -n tcp 80</span><br></pre></td></tr></table></figure>
-<p>2、根据PID关闭某个被占用的端口</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">netstat -tunlp | grep 80</span><br><span class="line"></span><br><span class="line">lsof -i:80</span><br><span class="line"></span><br><span class="line">sudo kill -9 PID</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>服务器配置</category>
-      </categories>
-      <tags>
-        <tag>服务器</tag>
       </tags>
   </entry>
   <entry>
@@ -1775,6 +1747,34 @@
       <tags>
         <tag>服务器</tag>
         <tag>jupyter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多台电脑同步博客</title>
+    <url>/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>记录一下在多台电脑上同时写博客时候的同步问题</p>
+<p><a href="https://www.zhihu.com/question/23934523" target="_blank" rel="noopener">参考</a></p>
+<a id="more"></a>
+<h3 id="环境安装">环境安装</h3>
+<h4 id="nodejs">nodejs</h4>
+<p>首先在自己的电脑上安装 Node.js，下载地址：<a href="https://nodejs.org/zh-cn/download/" target="_blank" rel="noopener">node.js</a></p>
+<p>建议下载nodejs 14以下的版本，14以上的版本和一些老版的hexo不兼容，会报错</p>
+<h4 id="hexo">hexo</h4>
+<p>使用如下命令安装hexo，-g可以全局安装，在所有文件夹都能使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h3 id="git同步">git同步</h3>
+<p>我这里默认已经至少在一个电脑上配置好博客站点信息了，就不写怎么配置站点信息了，直接写如何在git上新建分支存放hexo源码</p>
+<p>在博客根目录下在git bash中使用以下命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b source</span><br><span class="line">git add -A</span><br><span class="line">git commit -m &quot;init blog&quot;</span><br><span class="line">git remote add origin git@github.com:&#123;username&#125;&#x2F;&#123;username&#125;.github.io.git</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
+<p>如果是在第二台电脑上要拉取的话就新建一个博客文件夹使用init之后将clone下来的文件放到博客文件夹里再执行后续操作就好了</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -1905,6 +1905,41 @@
         <tag>深度学习</tag>
         <tag>CUAD</tag>
         <tag>神经网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习笔记(三)---基础理解</title>
+    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<p>稍微记录一下看吴恩达课程后对深度学习各种概念的理解</p>
+<a id="more"></a>
+<h2 id="深度学习的大致过程">深度学习的大致过程</h2>
+<p>在看了吴恩达的第一节课之后我对深度学习的理解是这样的：</p>
+<p>深度学习其实就是一个寻找拟合函数的过程，让数据通过这个函数之后能输出和人看法相似的结果。</p>
+<p>首先我们先需要选定一个/几个模型，确定需要的参数，超参数之类的</p>
+<p>然后我们要将已有的数据划分为训练集，验证集和测试集，以往的比例是60，20，20之类的，但是由于现在已经是大数据时代了，有些数据集已经足够大了，我们不需要那么大的验证集和测试集，可以适当减少Dev和Test的占比，比如1，0.5之类的。<strong>还有一点要注意</strong>，我们很有可能训练集和验证，测试集的来源不一样，难以保证同分布，吴恩达老师建议大家要确保验证集和测试集的数据来自同一分布</p>
+<p>之后我们要将参数初始化，注意初始化的时候参数是否能为0，是否需要进行归一化。当然训练集的输入输出也要进行预处理，但是预处理的方法目前还没有进行太多的讲解，只有一个将图像拉成一维向量</p>
+<p>之后就是让神经网络通过训练找到合适的参数使得训练集的成本函数不断降低。整个过程主要包括前向传播和后向传播。在我看来，前向传播就是为了计算出成本函数，后向传播就是让成本函数对各个参数求导，然后通过梯度下降的方法让成本函数进一步降低。</p>
+<p>前后向传播的迭代次数和梯度下降学习率都通过超参数来控制，最后将训练出来的各种参数保存下来，这样就完成了一个模型的简单训练。当然其中还有很多的正则化，归一化之类的操作，但是最简单的一个模型（比如逻辑回归）大致就是这些步骤了。</p>
+<p>然后在验证集上通过运行同一网络不同超参数和不同网络之间的模型来比较模型性能，然后再跑测试集。</p>
+<h2 id="为什么要向量化">为什么要向量化</h2>
+<p>因为输入数据肯定是一个庞大的数据集，如果用单纯的标量那么一定需要很多的循环，但是循环的效率是很低的，所以我们需要引入向量操作，向量操作一次性可以完成整个循环的所有运算，效率提升极大。</p>
+<h2 id="为什么要非线性的激活函数">为什么要非线性的激活函数</h2>
+<p>因为如果使用线性的激活函数那么正向传播的输出仅仅是输入的线性组合，根本没有改变，不管你使用多少隐层都和单隐层是一样的效果。</p>
+<h2 id="参数初始化">参数初始化</h2>
+<p>为什么w参数不能直接初始化为全0？</p>
+<p>当你这一层只有一个节点的时候，你是可以将这个节点的w参数初始化为0的。但是如果你这一层不止一个节点，而且采用了全连接的话，你还将W矩阵初始化成了0矩阵，那么你这一层每个节点的w参数之间是一个线性关系，和只有一个节点效果是一样的。</p>
+<h2 id="为什么要用深层表示">为什么要用深层表示</h2>
+<p>你可以直觉上把这种神经网络的前几层当作探测简单的函数，比如边缘，之后把它们跟后几层结合在一起，那么总体上就能学习更多复杂的函数。一般你会从比较小的细节入手，比如边缘，然后再一步步到更大更复杂的区域，比如一只眼睛或是一个鼻子，再把眼睛鼻子装一块组成更复杂的部分。</p>
+<h2 id="超参数">超参数</h2>
+<p>比如算法中的<strong>learning rate</strong> $ a $ （学习率）、<strong>iterations</strong>(梯度下降法循环的数量)、$ L $ （隐藏层数目）、$ n^{[l]} $ （隐藏层单元数目）、<strong>choice of activation function</strong>（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数$ W $ 和 $ b $的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
+<p>超参数的取值并没有明确的规定，这目前还是一个经验性的过程，新手上路最多的还是要不断的尝试，通过不断地修改超参数对比结果来不断修正最后找到一个相对合适的。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2130,195 +2165,6 @@
         <tag>深度学习</tag>
         <tag>正则化</tag>
         <tag>归一化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>研究生组会</title>
-    <url>/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/</url>
-    <content><![CDATA[<p>记录组会内容</p>
-<a id="more"></a>
-<h1 id="section">2020.10.21</h1>
-<h2 id="augfpn">augFPN</h2>
-<p>FPN中特征金字塔</p>
-<p>问题：</p>
-<ul>
-<li>层间语义差异</li>
-<li>最高层特征信息随时</li>
-<li>roi的启发式分配策略</li>
-</ul>
-<p>提出augFPN</p>
-<ul>
-<li>特征融合前使用相通的监督信号，缩小于一差距
-<ul>
-<li>共享权重</li>
-<li>只在训练时用</li>
-</ul></li>
-<li>残差特征增强
-<ul>
-<li>使用空间信息</li>
-</ul></li>
-<li>软roi选择</li>
-</ul>
-<h2 id="非局部u-net">非局部U-Net</h2>
-<p>医学图像分割</p>
-<p>U型网络</p>
-<p>U -net局限：</p>
-<ul>
-<li>局部运算，小内核</li>
-<li>更多的上、下采样丢失更多空间信息</li>
-</ul>
-<p>创新：</p>
-<ul>
-<li>低级特征和高级特征使用求和而不是连接</li>
-</ul>
-]]></content>
-      <categories>
-        <category>组会</category>
-      </categories>
-      <tags>
-        <tag>图像处理</tag>
-        <tag>组会</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>深度学习笔记(三)---基础理解</title>
-    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<p>稍微记录一下看吴恩达课程后对深度学习各种概念的理解</p>
-<a id="more"></a>
-<h2 id="深度学习的大致过程">深度学习的大致过程</h2>
-<p>在看了吴恩达的第一节课之后我对深度学习的理解是这样的：</p>
-<p>深度学习其实就是一个寻找拟合函数的过程，让数据通过这个函数之后能输出和人看法相似的结果。</p>
-<p>首先我们先需要选定一个/几个模型，确定需要的参数，超参数之类的</p>
-<p>然后我们要将已有的数据划分为训练集，验证集和测试集，以往的比例是60，20，20之类的，但是由于现在已经是大数据时代了，有些数据集已经足够大了，我们不需要那么大的验证集和测试集，可以适当减少Dev和Test的占比，比如1，0.5之类的。<strong>还有一点要注意</strong>，我们很有可能训练集和验证，测试集的来源不一样，难以保证同分布，吴恩达老师建议大家要确保验证集和测试集的数据来自同一分布</p>
-<p>之后我们要将参数初始化，注意初始化的时候参数是否能为0，是否需要进行归一化。当然训练集的输入输出也要进行预处理，但是预处理的方法目前还没有进行太多的讲解，只有一个将图像拉成一维向量</p>
-<p>之后就是让神经网络通过训练找到合适的参数使得训练集的成本函数不断降低。整个过程主要包括前向传播和后向传播。在我看来，前向传播就是为了计算出成本函数，后向传播就是让成本函数对各个参数求导，然后通过梯度下降的方法让成本函数进一步降低。</p>
-<p>前后向传播的迭代次数和梯度下降学习率都通过超参数来控制，最后将训练出来的各种参数保存下来，这样就完成了一个模型的简单训练。当然其中还有很多的正则化，归一化之类的操作，但是最简单的一个模型（比如逻辑回归）大致就是这些步骤了。</p>
-<p>然后在验证集上通过运行同一网络不同超参数和不同网络之间的模型来比较模型性能，然后再跑测试集。</p>
-<h2 id="为什么要向量化">为什么要向量化</h2>
-<p>因为输入数据肯定是一个庞大的数据集，如果用单纯的标量那么一定需要很多的循环，但是循环的效率是很低的，所以我们需要引入向量操作，向量操作一次性可以完成整个循环的所有运算，效率提升极大。</p>
-<h2 id="为什么要非线性的激活函数">为什么要非线性的激活函数</h2>
-<p>因为如果使用线性的激活函数那么正向传播的输出仅仅是输入的线性组合，根本没有改变，不管你使用多少隐层都和单隐层是一样的效果。</p>
-<h2 id="参数初始化">参数初始化</h2>
-<p>为什么w参数不能直接初始化为全0？</p>
-<p>当你这一层只有一个节点的时候，你是可以将这个节点的w参数初始化为0的。但是如果你这一层不止一个节点，而且采用了全连接的话，你还将W矩阵初始化成了0矩阵，那么你这一层每个节点的w参数之间是一个线性关系，和只有一个节点效果是一样的。</p>
-<h2 id="为什么要用深层表示">为什么要用深层表示</h2>
-<p>你可以直觉上把这种神经网络的前几层当作探测简单的函数，比如边缘，之后把它们跟后几层结合在一起，那么总体上就能学习更多复杂的函数。一般你会从比较小的细节入手，比如边缘，然后再一步步到更大更复杂的区域，比如一只眼睛或是一个鼻子，再把眼睛鼻子装一块组成更复杂的部分。</p>
-<h2 id="超参数">超参数</h2>
-<p>比如算法中的<strong>learning rate</strong> $ a $ （学习率）、<strong>iterations</strong>(梯度下降法循环的数量)、$ L $ （隐藏层数目）、$ n^{[l]} $ （隐藏层单元数目）、<strong>choice of activation function</strong>（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数$ W $ 和 $ b $的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
-<p>超参数的取值并没有明确的规定，这目前还是一个经验性的过程，新手上路最多的还是要不断的尝试，通过不断地修改超参数对比结果来不断修正最后找到一个相对合适的。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>达梦数据库插入或更新</title>
-    <url>/%E8%BE%BE%E6%A2%A6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E6%88%96%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>记录下在国产达梦数据库中使用merge into来进行数据的更新或新增</p>
-<a id="more"></a>
-<blockquote>
-<p>使用达梦是因为有国产化需求，因为我这里还不是那种性能敏感的开发，所以对我来说除了在安装上稍微麻烦一点外，使用起来和mysql没有太大的区别，这里使用达梦自己的dmPython库来进行数据库操作</p>
-</blockquote>
-<h3 id="replace-into">replace into</h3>
-<blockquote>
-<p>这部分主要参考以下该篇<a href="https://blog.csdn.net/liu379702831/article/details/105819304/" target="_blank" rel="noopener">博客</a></p>
-</blockquote>
-<p>首先说一下比较常见的replace into操作，在mysql中经常会用到replace into操作。</p>
-<p>replace into 首先尝试插入数据到表中：</p>
-<ol type="1">
-<li>如果发现表中已经有此行数据（根据主键或者唯一索引判断）则先删除此行数据，然后插入新的数据。</li>
-<li>否则，直接插入新数据</li>
-</ol>
-<p>用法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">replace into tbl_name(col_name, …) values(…)</span><br></pre></td></tr></table></figure>
-<p>注意事项：</p>
-<ul>
-<li>插入数据的表必须有主键或者是唯一索引！否则的话，replace into 会直接插入数据，这将导致表中出现重复的数据。</li>
-<li>如果数据库里边有这条记录，则直接修改这条记录；如果没有则，则直接插入，在有外键的情况下，对主表进行这样操作时，因为如果主表存在一条记录，被从表所用时，直接使用replace into是会报错的，这和replace into的内部原理是相关（先删除然后再插入）。</li>
-<li>表中有一个自增的主键,会带来的问题：
-<ul>
-<li>replace操作在自增主键的情况下，遇到唯一键冲突时执行的是delete+insert，但是在记录binlog时，却记录成了update操作，update操作不会涉及到auto_increment的修改。备库应用了binlog之后，备库的表的auto_increment属性不变。如果主备库发生主从切换，备库变为原来的主库，写新的主库则有风险发生主键冲突。</li>
-<li>频繁的REPLACE INTO 会造成新纪录的主键的值迅速增大。总有一天。达到最大值后就会因为数据太大溢出了。就没法再插入新纪录了。数据表满了，不是因为空间不够了，而是因为主键的值没法再增加了。</li>
-</ul></li>
-</ul>
-<h3 id="merge-into">merge into</h3>
-<blockquote>
-<p>达梦数据库不是每个版本都支持replace into命令的，而且replace into命令功能比较固定，而且在存在自增主键时还会有一些限制，所以这里我们采用merge into命令来完成达梦数据库的插入或更新</p>
-</blockquote>
-<p>merge into是Oracle的指令，达梦对Oracle的兼容性还比较好，而且开发文档里说明了支持merge into指令。</p>
-<p>用法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新增或更新基线</span><br><span class="line">db &#x3D; dmPython.connect(user&#x3D;dm_user, password&#x3D;dm_pwds, server&#x3D;dm_host, port&#x3D;dm_port,</span><br><span class="line">                      cursorclass&#x3D;dmPython.DictCursor)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"></span><br><span class="line">sql &#x3D; &quot;merge into %s.%s &quot; \</span><br><span class="line">      &quot;using (select ? sIP,? updatetime from dual) t &quot; \</span><br><span class="line">      &quot;on(%s.%s.sIP &#x3D; t.sIP) &quot; \</span><br><span class="line">      &quot;when matched then &quot; \</span><br><span class="line">      &quot;update set updatetime&#x3D;t.updatetime &quot; \</span><br><span class="line">      &quot;when not matched then &quot; \</span><br><span class="line">      &quot;insert (sIP, updatetime) values (t.sIP,t.updatetime)&quot; \</span><br><span class="line">      % (dm_db, baseline_table, dm_db, baseline_table)</span><br><span class="line">try:</span><br><span class="line">    cursor.executemany(sql, baseline_list_tuple)</span><br><span class="line">    db.commit()</span><br><span class="line">    print(&quot;更新成功&quot;)</span><br><span class="line">except Exception as e:</span><br><span class="line">    print(e)</span><br><span class="line">    db.rollback()</span><br><span class="line">finally:</span><br><span class="line">    cursor.close()</span><br><span class="line">    db.close()</span><br></pre></td></tr></table></figure>
-<p>注意事项：</p>
-<ul>
-<li>我看到的资料上面说on后面要跟主键信息，但是我这里使用的不是主键，但是能正常使用</li>
-<li>merge into是通过执⾏using后括号内的sql语句结果逐条与on括号内条件进⾏匹配，若匹配则执⾏更新，若不匹配则执⾏插⼊</li>
-<li>when matched then语句需在when not matched then 之前，否则达梦数据库会报错</li>
-<li>关于dual表，我个⼈理解为类似于“缓存器”的表，你可以向它⾥⾯插⼊多条数据，删除多条数据，但你查询时，表中均只显⽰⼀个字段，⼀⾏数据。</li>
-<li>在使用merge into语句的时候我遇到了一个关于字符型数据的问题，在达梦数据库管理软件中只能使用<strong>单引号</strong>来框住字符串，用<strong>双引号</strong>则会报错，这其实不是merge into语句的问题，而是达梦sql语句的问题，很久没用其他数据库了，不知道这是数据库的通用规则，还是达梦的特殊规则。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>达梦</category>
-      </categories>
-      <tags>
-        <tag>达梦</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>深度学习笔记(零)---英语</title>
-    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/</url>
-    <content><![CDATA[<p>记录一下常用英语词汇</p>
-<a id="more"></a>
-<p>监督学习 supervised learning</p>
-<p>无监督学习 unsupervised learning</p>
-<p>统一计算设备架构 CUAD（Compute Unified Device Architecture）</p>
-<p>微分 Differentiate</p>
-<p>卷积神经网络 convolutional neural network</p>
-<p>循环神经网络 Circulating neural network</p>
-<p>链式法则 chain rule</p>
-<p>正向传播 forward propagation</p>
-<p>反向传播 backward propagation</p>
-<p>广播 broadcasting</p>
-<p>变平 flatten</p>
-<p>标量 scalar</p>
-<p>偏移量，偏差 bias</p>
-<p>方差 variance</p>
-<p>拟合 fit</p>
-<p>正则化 regularization</p>
-<p>归一化 Normalization</p>
-<p>范数 norm</p>
-<p>验证集 validation/development</p>
-<p>弗罗贝尼乌斯范数 Frobenius norm</p>
-<p>正交化 orthogonalization</p>
-<p>滤波器 filter</p>
-<p>核 kernal</p>
-<p>填充 padding</p>
-<p>批处理 batch</p>
-<p>优化 optimization</p>
-<p>算法 algorithm</p>
-<p>动量 momentum</p>
-<p>衰减 decay</p>
-<p>离散 discrete</p>
-<p>鞍点 saddle point</p>
-<p>鱼子酱 caviar</p>
-<p>隐藏 hidden</p>
-<p>层 layer</p>
-<p>线性 linear</p>
-<p>非线性 nonlinear</p>
-<p>边界 boundaries</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>英语</tag>
       </tags>
   </entry>
   <entry>
@@ -2602,6 +2448,146 @@
       </tags>
   </entry>
   <entry>
+    <title>深度学习笔记(零)---英语</title>
+    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/</url>
+    <content><![CDATA[<p>记录一下常用英语词汇</p>
+<a id="more"></a>
+<p>监督学习 supervised learning</p>
+<p>无监督学习 unsupervised learning</p>
+<p>统一计算设备架构 CUAD（Compute Unified Device Architecture）</p>
+<p>微分 Differentiate</p>
+<p>卷积神经网络 convolutional neural network</p>
+<p>循环神经网络 Circulating neural network</p>
+<p>链式法则 chain rule</p>
+<p>正向传播 forward propagation</p>
+<p>反向传播 backward propagation</p>
+<p>广播 broadcasting</p>
+<p>变平 flatten</p>
+<p>标量 scalar</p>
+<p>偏移量，偏差 bias</p>
+<p>方差 variance</p>
+<p>拟合 fit</p>
+<p>正则化 regularization</p>
+<p>归一化 Normalization</p>
+<p>范数 norm</p>
+<p>验证集 validation/development</p>
+<p>弗罗贝尼乌斯范数 Frobenius norm</p>
+<p>正交化 orthogonalization</p>
+<p>滤波器 filter</p>
+<p>核 kernal</p>
+<p>填充 padding</p>
+<p>批处理 batch</p>
+<p>优化 optimization</p>
+<p>算法 algorithm</p>
+<p>动量 momentum</p>
+<p>衰减 decay</p>
+<p>离散 discrete</p>
+<p>鞍点 saddle point</p>
+<p>鱼子酱 caviar</p>
+<p>隐藏 hidden</p>
+<p>层 layer</p>
+<p>线性 linear</p>
+<p>非线性 nonlinear</p>
+<p>边界 boundaries</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>英语</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爬虫常用操作笔记</title>
+    <url>/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>记录一些常用的代码，免得老去翻代码</p>
+<a id="more"></a>
+<h3 id="配置">0.配置</h3>
+<p><strong>创建项目</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scrapy startproject adb</span><br></pre></td></tr></table></figure>
+<p><strong>创建爬虫</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd adb</span><br><span class="line">scrapy genspider 爬虫名字 ***.com</span><br></pre></td></tr></table></figure>
+<p><strong>解释器地址</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">D:\Anaconda3\Lib\site-packages\scrapy\cmdline.py</span><br></pre></td></tr></table></figure>
+<p><strong>参数</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crawl 爬虫名字</span><br></pre></td></tr></table></figure>
+<h3 id="翻页">1.翻页</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 翻页</span></span><br><span class="line">next_page = response.xpath(<span class="string">'//div[@class="page"]/a[contains(text(),"下一页")]/@href'</span>).extract_first()</span><br><span class="line"><span class="keyword">if</span> next_page:</span><br><span class="line">	next_url = <span class="string">'https://www.2345daohang.com'</span> + next_page</span><br><span class="line">	<span class="keyword">yield</span> scrapy.Request(next_url, callback=self.bookList, meta=&#123;<span class="string">'category'</span>: response.meta[<span class="string">'category'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="content处理">2.content处理</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="批量入库">3.批量入库</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"******\\yangsheng_info.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">sql = <span class="string">"INSERT INTO main_data_tougaolanmu(theme,name,content) VALUES(%s,%s,%s)"</span></span><br><span class="line">cursor.executemany(sql, data)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"数据库导入操作"</span>)</span><br><span class="line"></span><br><span class="line">db.commit()</span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
+<h3 id="逐条入库">4.逐条入库</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"***************\\minsu_info.csv"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> data:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    sql1 = <span class="string">"SELECT id from user_userInfo WHERE nickname = %s"</span></span><br><span class="line">    <span class="keyword">if</span> dd[<span class="number">1</span>] == <span class="string">'佚名'</span>:</span><br><span class="line">        dd[<span class="number">1</span>] = <span class="string">'官方2号'</span></span><br><span class="line">    cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">    results = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">    <span class="keyword">if</span> results:</span><br><span class="line">        sql2 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = results[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql2, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错1'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql3, dd[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错2'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">        result = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">        sql4 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql4, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'出错3'</span>)</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            db.rollback()</span><br><span class="line">    print(i, results)</span><br><span class="line"></span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
+<h3 id="获取html">5.获取HTML</h3>
+<p>scrapy的原生的<code>response</code>可以直接调用<code>.text()</code>函数，但是当<code>response</code>调用过<code>xpath</code>之后虽然使用<code>dir()</code>显示还是有<code>text</code>属性但是并不能调用，此时可以使用<code>getall()</code>获取对应的html，之后再用正则表达式，<code>split()</code>之类的进行数据的处理。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = response.xpath(<span class="string">'//div[@class="ct tt zooms"]'</span>)[<span class="number">0</span>].getall()[<span class="number">0</span>]</span><br><span class="line">item[<span class="string">'content'</span>] = re.sub(<span class="string">r'href="([^"])*[^=k]"'</span>, <span class="string">""</span>, content)</span><br></pre></td></tr></table></figure>
+<h3 id="创建csv">6.创建CSV</h3>
+<figure class="highlight python"><figcaption><span>csv_init.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../../book_info.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [<span class="string">"category"</span>, <span class="string">"name"</span>, <span class="string">"cover"</span>, <span class="string">"author"</span>, <span class="string">"intro"</span>]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+<h3 id="管道">7.管道</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'11_1900.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [item[<span class="string">"name"</span>], item[<span class="string">"othername"</span>], item[<span class="string">'author'</span>], item[<span class="string">'country'</span>], item[<span class="string">'time'</span>], item[<span class="string">'intro'</span>]]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>MySQL</tag>
+        <tag>scrapy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>研究生组会</title>
+    <url>/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/</url>
+    <content><![CDATA[<p>记录组会内容</p>
+<a id="more"></a>
+<h1 id="section">2020.10.21</h1>
+<h2 id="augfpn">augFPN</h2>
+<p>FPN中特征金字塔</p>
+<p>问题：</p>
+<ul>
+<li>层间语义差异</li>
+<li>最高层特征信息随时</li>
+<li>roi的启发式分配策略</li>
+</ul>
+<p>提出augFPN</p>
+<ul>
+<li>特征融合前使用相通的监督信号，缩小于一差距
+<ul>
+<li>共享权重</li>
+<li>只在训练时用</li>
+</ul></li>
+<li>残差特征增强
+<ul>
+<li>使用空间信息</li>
+</ul></li>
+<li>软roi选择</li>
+</ul>
+<h2 id="非局部u-net">非局部U-Net</h2>
+<p>医学图像分割</p>
+<p>U型网络</p>
+<p>U -net局限：</p>
+<ul>
+<li>局部运算，小内核</li>
+<li>更多的上、下采样丢失更多空间信息</li>
+</ul>
+<p>创新：</p>
+<ul>
+<li>低级特征和高级特征使用求和而不是连接</li>
+</ul>
+]]></content>
+      <categories>
+        <category>组会</category>
+      </categories>
+      <tags>
+        <tag>图像处理</tag>
+        <tag>组会</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>阿里云安全组开放端口不生效</title>
     <url>/%E9%98%BF%E9%87%8C%E4%BA%91%E5%AE%89%E5%85%A8%E7%BB%84%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%94%9F%E6%95%88/</url>
     <content><![CDATA[<p>有一天开始练习Django，然后发现怎么都在7997端口上跑不起来，一开始我还以为是新版本和老版本方式不一样，因为我7997已经在阿里云控制台放行了，但是在之前开放的8000端口却能够正常运行，这时我感觉应该是端口的问题，后来发现是不知道为什么阿里云里面已经开放了但是ufw却没有允许7997端口，原因我不知道是为什么，只找到了解决方法。这里记录一些ufw用法。</p>
@@ -2677,43 +2663,57 @@
       </tags>
   </entry>
   <entry>
-    <title>爬虫常用操作笔记</title>
-    <url>/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>记录一些常用的代码，免得老去翻代码</p>
+    <title>达梦数据库插入或更新</title>
+    <url>/%E8%BE%BE%E6%A2%A6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E6%88%96%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>记录下在国产达梦数据库中使用merge into来进行数据的更新或新增</p>
 <a id="more"></a>
-<h3 id="配置">0.配置</h3>
-<p><strong>创建项目</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scrapy startproject adb</span><br></pre></td></tr></table></figure>
-<p><strong>创建爬虫</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd adb</span><br><span class="line">scrapy genspider 爬虫名字 ***.com</span><br></pre></td></tr></table></figure>
-<p><strong>解释器地址</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">D:\Anaconda3\Lib\site-packages\scrapy\cmdline.py</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crawl 爬虫名字</span><br></pre></td></tr></table></figure>
-<h3 id="翻页">1.翻页</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 翻页</span></span><br><span class="line">next_page = response.xpath(<span class="string">'//div[@class="page"]/a[contains(text(),"下一页")]/@href'</span>).extract_first()</span><br><span class="line"><span class="keyword">if</span> next_page:</span><br><span class="line">	next_url = <span class="string">'https://www.2345daohang.com'</span> + next_page</span><br><span class="line">	<span class="keyword">yield</span> scrapy.Request(next_url, callback=self.bookList, meta=&#123;<span class="string">'category'</span>: response.meta[<span class="string">'category'</span>]&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="content处理">2.content处理</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="批量入库">3.批量入库</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"******\\yangsheng_info.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">sql = <span class="string">"INSERT INTO main_data_tougaolanmu(theme,name,content) VALUES(%s,%s,%s)"</span></span><br><span class="line">cursor.executemany(sql, data)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"数据库导入操作"</span>)</span><br><span class="line"></span><br><span class="line">db.commit()</span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="逐条入库">4.逐条入库</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"***************\\minsu_info.csv"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> data:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    sql1 = <span class="string">"SELECT id from user_userInfo WHERE nickname = %s"</span></span><br><span class="line">    <span class="keyword">if</span> dd[<span class="number">1</span>] == <span class="string">'佚名'</span>:</span><br><span class="line">        dd[<span class="number">1</span>] = <span class="string">'官方2号'</span></span><br><span class="line">    cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">    results = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">    <span class="keyword">if</span> results:</span><br><span class="line">        sql2 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = results[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql2, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错1'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql3, dd[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错2'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">        result = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">        sql4 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql4, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'出错3'</span>)</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            db.rollback()</span><br><span class="line">    print(i, results)</span><br><span class="line"></span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="获取html">5.获取HTML</h3>
-<p>scrapy的原生的<code>response</code>可以直接调用<code>.text()</code>函数，但是当<code>response</code>调用过<code>xpath</code>之后虽然使用<code>dir()</code>显示还是有<code>text</code>属性但是并不能调用，此时可以使用<code>getall()</code>获取对应的html，之后再用正则表达式，<code>split()</code>之类的进行数据的处理。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = response.xpath(<span class="string">'//div[@class="ct tt zooms"]'</span>)[<span class="number">0</span>].getall()[<span class="number">0</span>]</span><br><span class="line">item[<span class="string">'content'</span>] = re.sub(<span class="string">r'href="([^"])*[^=k]"'</span>, <span class="string">""</span>, content)</span><br></pre></td></tr></table></figure>
-<h3 id="创建csv">6.创建CSV</h3>
-<figure class="highlight python"><figcaption><span>csv_init.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../../book_info.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [<span class="string">"category"</span>, <span class="string">"name"</span>, <span class="string">"cover"</span>, <span class="string">"author"</span>, <span class="string">"intro"</span>]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
-<h3 id="管道">7.管道</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'11_1900.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [item[<span class="string">"name"</span>], item[<span class="string">"othername"</span>], item[<span class="string">'author'</span>], item[<span class="string">'country'</span>], item[<span class="string">'time'</span>], item[<span class="string">'intro'</span>]]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用达梦是因为有国产化需求，因为我这里还不是那种性能敏感的开发，所以对我来说除了在安装上稍微麻烦一点外，使用起来和mysql没有太大的区别，这里使用达梦自己的dmPython库来进行数据库操作</p>
+</blockquote>
+<h3 id="replace-into">replace into</h3>
+<blockquote>
+<p>这部分主要参考以下该篇<a href="https://blog.csdn.net/liu379702831/article/details/105819304/" target="_blank" rel="noopener">博客</a></p>
+</blockquote>
+<p>首先说一下比较常见的replace into操作，在mysql中经常会用到replace into操作。</p>
+<p>replace into 首先尝试插入数据到表中：</p>
+<ol type="1">
+<li>如果发现表中已经有此行数据（根据主键或者唯一索引判断）则先删除此行数据，然后插入新的数据。</li>
+<li>否则，直接插入新数据</li>
+</ol>
+<p>用法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">replace into tbl_name(col_name, …) values(…)</span><br></pre></td></tr></table></figure>
+<p>注意事项：</p>
+<ul>
+<li>插入数据的表必须有主键或者是唯一索引！否则的话，replace into 会直接插入数据，这将导致表中出现重复的数据。</li>
+<li>如果数据库里边有这条记录，则直接修改这条记录；如果没有则，则直接插入，在有外键的情况下，对主表进行这样操作时，因为如果主表存在一条记录，被从表所用时，直接使用replace into是会报错的，这和replace into的内部原理是相关（先删除然后再插入）。</li>
+<li>表中有一个自增的主键,会带来的问题：
+<ul>
+<li>replace操作在自增主键的情况下，遇到唯一键冲突时执行的是delete+insert，但是在记录binlog时，却记录成了update操作，update操作不会涉及到auto_increment的修改。备库应用了binlog之后，备库的表的auto_increment属性不变。如果主备库发生主从切换，备库变为原来的主库，写新的主库则有风险发生主键冲突。</li>
+<li>频繁的REPLACE INTO 会造成新纪录的主键的值迅速增大。总有一天。达到最大值后就会因为数据太大溢出了。就没法再插入新纪录了。数据表满了，不是因为空间不够了，而是因为主键的值没法再增加了。</li>
+</ul></li>
+</ul>
+<h3 id="merge-into">merge into</h3>
+<blockquote>
+<p>达梦数据库不是每个版本都支持replace into命令的，而且replace into命令功能比较固定，而且在存在自增主键时还会有一些限制，所以这里我们采用merge into命令来完成达梦数据库的插入或更新</p>
+</blockquote>
+<p>merge into是Oracle的指令，达梦对Oracle的兼容性还比较好，而且开发文档里说明了支持merge into指令。</p>
+<p>用法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新增或更新基线</span><br><span class="line">db &#x3D; dmPython.connect(user&#x3D;dm_user, password&#x3D;dm_pwds, server&#x3D;dm_host, port&#x3D;dm_port,</span><br><span class="line">                      cursorclass&#x3D;dmPython.DictCursor)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"></span><br><span class="line">sql &#x3D; &quot;merge into %s.%s &quot; \</span><br><span class="line">      &quot;using (select ? sIP,? updatetime from dual) t &quot; \</span><br><span class="line">      &quot;on(%s.%s.sIP &#x3D; t.sIP) &quot; \</span><br><span class="line">      &quot;when matched then &quot; \</span><br><span class="line">      &quot;update set updatetime&#x3D;t.updatetime &quot; \</span><br><span class="line">      &quot;when not matched then &quot; \</span><br><span class="line">      &quot;insert (sIP, updatetime) values (t.sIP,t.updatetime)&quot; \</span><br><span class="line">      % (dm_db, baseline_table, dm_db, baseline_table)</span><br><span class="line">try:</span><br><span class="line">    cursor.executemany(sql, baseline_list_tuple)</span><br><span class="line">    db.commit()</span><br><span class="line">    print(&quot;更新成功&quot;)</span><br><span class="line">except Exception as e:</span><br><span class="line">    print(e)</span><br><span class="line">    db.rollback()</span><br><span class="line">finally:</span><br><span class="line">    cursor.close()</span><br><span class="line">    db.close()</span><br></pre></td></tr></table></figure>
+<p>注意事项：</p>
+<ul>
+<li>我看到的资料上面说on后面要跟主键信息，但是我这里使用的不是主键，但是能正常使用</li>
+<li>merge into是通过执⾏using后括号内的sql语句结果逐条与on括号内条件进⾏匹配，若匹配则执⾏更新，若不匹配则执⾏插⼊</li>
+<li>when matched then语句需在when not matched then 之前，否则达梦数据库会报错</li>
+<li>关于dual表，我个⼈理解为类似于“缓存器”的表，你可以向它⾥⾯插⼊多条数据，删除多条数据，但你查询时，表中均只显⽰⼀个字段，⼀⾏数据。</li>
+<li>在使用merge into语句的时候我遇到了一个关于字符型数据的问题，在达梦数据库管理软件中只能使用<strong>单引号</strong>来框住字符串，用<strong>双引号</strong>则会报错，这其实不是merge into语句的问题，而是达梦sql语句的问题，很久没用其他数据库了，不知道这是数据库的通用规则，还是达梦的特殊规则。</li>
+</ul>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>爬虫</category>
+        <category>达梦</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
-        <tag>python</tag>
-        <tag>scrapy</tag>
+        <tag>达梦</tag>
       </tags>
   </entry>
 </search>
