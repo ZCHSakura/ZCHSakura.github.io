@@ -53,8 +53,11 @@
 <meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208301233530.png">
 <meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208301233578.png">
 <meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208301233358.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028117.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028925.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028213.png">
 <meta property="article:published_time" content="2020-06-30T12:13:05.000Z">
-<meta property="article:modified_time" content="2022-08-30T04:49:17.673Z">
+<meta property="article:modified_time" content="2022-08-30T12:38:56.404Z">
 <meta property="article:author" content="周小天">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="算法">
@@ -270,7 +273,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-30 12:49:17" itemprop="dateModified" datetime="2022-08-30T12:49:17+08:00">2022-08-30</time>
+                <time title="修改时间：2022-08-30 20:38:56" itemprop="dateModified" datetime="2022-08-30T20:38:56+08:00">2022-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,14 +305,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -611,6 +614,22 @@
 <ul>
 <li>这个题主要就是要理解题意，分清楚情况，搞清楚这个插入节点的插入规则，之后不管是正常还是递归都思路清晰</li>
 </ul>
+<h2 id="p2_两数相加">p2_两数相加</h2>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028117.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028925.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028213.png" /></p>
+<h3 id="mine-6">mine</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, next=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.next = next</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addTwoNumbers</span><span class="params">(self, l1: Optional[ListNode], l2: Optional[ListNode])</span> -&gt; Optional[ListNode]:</span></span><br><span class="line">        cur1 = l1</span><br><span class="line">        cur2 = l2</span><br><span class="line">        ans = ListNode()</span><br><span class="line">        temp = ans</span><br><span class="line">        add_flag = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> cur1 <span class="keyword">or</span> cur2:</span><br><span class="line">            cur1_val = <span class="number">0</span> <span class="keyword">if</span> cur1 == <span class="literal">None</span> <span class="keyword">else</span> cur1.val</span><br><span class="line">            cur2_val = <span class="number">0</span> <span class="keyword">if</span> cur2 == <span class="literal">None</span> <span class="keyword">else</span> cur2.val</span><br><span class="line"></span><br><span class="line">            summ = cur1_val + cur2_val + add_flag</span><br><span class="line">            <span class="keyword">if</span> summ &gt; <span class="number">9</span>:</span><br><span class="line">                summ = summ - <span class="number">10</span></span><br><span class="line">                add_flag = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                add_flag = <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> cur1:</span><br><span class="line">                cur1 = cur1.next</span><br><span class="line">            <span class="keyword">if</span> cur2:</span><br><span class="line">                cur2 = cur2.next</span><br><span class="line">            temp.next = ListNode(summ)</span><br><span class="line">            temp = temp.next</span><br><span class="line">        <span class="keyword">if</span> add_flag == <span class="number">1</span>:</span><br><span class="line">            temp.next = ListNode(add_flag)</span><br><span class="line">        <span class="keyword">return</span> ans.next</span><br></pre></td></tr></table></figure>
+<h3 id="others-6">others</h3>
+<p>流程都差不多，但是可以优化相加后的值和进位内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">summ = (cur1_val + cur2_val + add_flag)%<span class="number">10</span></span><br><span class="line">add_flag = <span class="number">1</span> <span class="keyword">if</span> cur1_val + cur2_val + add_flag &gt;= <span class="number">10</span> <span class="keyword">else</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="summary-6">summary</h3>
+<p>整体不是太难，主要注意三点：</p>
+<ul>
+<li>python赋值直接是引用，所以直接temp=ans，之后只用不断在temp上加后续节点就行了。而像C这种赋值是传副本的需要直接malloc同一片地址<code>head = tail = malloc(sizeof(struct ListNode));</code></li>
+<li>判断两个链表是不是都结束了，没结束的才不断next，先结束的后面val直接赋值0</li>
+<li>用一个变量专门记录进位，如果最后两个值又有进位后面还要再接一个节点</li>
+</ul>
 
     </div>
 
@@ -780,7 +799,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#p1_两数之和"><span class="nav-text">p1_两数之和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p1521_两个栈实现队列"><span class="nav-text">p1521_两个栈实现队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-1"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-1"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-1"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p718_最长重复子数组"><span class="nav-text">p718_最长重复子数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-2"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-2"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-2"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p378_有序矩阵中第k小的元素"><span class="nav-text">p378_有序矩阵中第k小的元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-3"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-3"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-3"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p1470_重新排列数组"><span class="nav-text">p1470_重新排列数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-4"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-4"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-4"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p998_最大二叉树2"><span class="nav-text">p998_最大二叉树2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-5"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-5"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-5"><span class="nav-text">summary</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#p1_两数之和"><span class="nav-text">p1_两数之和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p1521_两个栈实现队列"><span class="nav-text">p1521_两个栈实现队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-1"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-1"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-1"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p718_最长重复子数组"><span class="nav-text">p718_最长重复子数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-2"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-2"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-2"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p378_有序矩阵中第k小的元素"><span class="nav-text">p378_有序矩阵中第k小的元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-3"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-3"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-3"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p1470_重新排列数组"><span class="nav-text">p1470_重新排列数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-4"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-4"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-4"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p998_最大二叉树2"><span class="nav-text">p998_最大二叉树2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-5"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-5"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-5"><span class="nav-text">summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#p2_两数相加"><span class="nav-text">p2_两数相加</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mine-6"><span class="nav-text">mine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#others-6"><span class="nav-text">others</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary-6"><span class="nav-text">summary</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1155,13 +1174,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">120k</span>
+    <span title="站点总字数">121k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:49</span>
+    <span title="站点阅读时长">1:50</span>
 </div>
 
 

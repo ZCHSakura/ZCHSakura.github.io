@@ -956,6 +956,22 @@
 <ul>
 <li>这个题主要就是要理解题意，分清楚情况，搞清楚这个插入节点的插入规则，之后不管是正常还是递归都思路清晰</li>
 </ul>
+<h2 id="p2_两数相加">p2_两数相加</h2>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028117.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028925.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028213.png" /></p>
+<h3 id="mine-6">mine</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, next=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.next = next</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addTwoNumbers</span><span class="params">(self, l1: Optional[ListNode], l2: Optional[ListNode])</span> -&gt; Optional[ListNode]:</span></span><br><span class="line">        cur1 = l1</span><br><span class="line">        cur2 = l2</span><br><span class="line">        ans = ListNode()</span><br><span class="line">        temp = ans</span><br><span class="line">        add_flag = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> cur1 <span class="keyword">or</span> cur2:</span><br><span class="line">            cur1_val = <span class="number">0</span> <span class="keyword">if</span> cur1 == <span class="literal">None</span> <span class="keyword">else</span> cur1.val</span><br><span class="line">            cur2_val = <span class="number">0</span> <span class="keyword">if</span> cur2 == <span class="literal">None</span> <span class="keyword">else</span> cur2.val</span><br><span class="line"></span><br><span class="line">            summ = cur1_val + cur2_val + add_flag</span><br><span class="line">            <span class="keyword">if</span> summ &gt; <span class="number">9</span>:</span><br><span class="line">                summ = summ - <span class="number">10</span></span><br><span class="line">                add_flag = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                add_flag = <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> cur1:</span><br><span class="line">                cur1 = cur1.next</span><br><span class="line">            <span class="keyword">if</span> cur2:</span><br><span class="line">                cur2 = cur2.next</span><br><span class="line">            temp.next = ListNode(summ)</span><br><span class="line">            temp = temp.next</span><br><span class="line">        <span class="keyword">if</span> add_flag == <span class="number">1</span>:</span><br><span class="line">            temp.next = ListNode(add_flag)</span><br><span class="line">        <span class="keyword">return</span> ans.next</span><br></pre></td></tr></table></figure>
+<h3 id="others-6">others</h3>
+<p>流程都差不多，但是可以优化相加后的值和进位内容</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">summ = (cur1_val + cur2_val + add_flag)%<span class="number">10</span></span><br><span class="line">add_flag = <span class="number">1</span> <span class="keyword">if</span> cur1_val + cur2_val + add_flag &gt;= <span class="number">10</span> <span class="keyword">else</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="summary-6">summary</h3>
+<p>整体不是太难，主要注意三点：</p>
+<ul>
+<li>python赋值直接是引用，所以直接temp=ans，之后只用不断在temp上加后续节点就行了。而像C这种赋值是传副本的需要直接malloc同一片地址<code>head = tail = malloc(sizeof(struct ListNode));</code></li>
+<li>判断两个链表是不是都结束了，没结束的才不断next，先结束的后面val直接赋值0</li>
+<li>用一个变量专门记录进位，如果最后两个值又有进位后面还要再接一个节点</li>
+</ul>
 ]]></content>
       <categories>
         <category>算法</category>
