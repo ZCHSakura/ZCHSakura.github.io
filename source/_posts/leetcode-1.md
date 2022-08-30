@@ -639,7 +639,70 @@ public:
 ### summary
 
 - python可以使用最普通的方法，或者使用切片
-
 - 还有空间复杂度为O(1)的方法。
 
-  
+## p998_最大二叉树2
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208301232481.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208301233530.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208301233578.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208301233358.png)
+
+### mine
+
+根据题目内容和示例可以看到基本就是三种情况。一种是插在root上面，让root做val的左子树（其中还有root为None的情况）；第二种是插入到原本树的中间；第三种是做原本树的叶子节点。
+
+同时又根据题目给的构造树的方法和b中val放到最后的情况可以知道，val一定是作为右子节点存在的（除非val做根），原本那个位置的子树作为val的左子树。
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def insertIntoMaxTree(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        if root == None:
+            return TreeNode(val, root, None)
+        if root.val < val:
+                return TreeNode(val, root, None)
+        last_cur = None
+        cur = root
+        while cur:
+            if cur.val > val:
+                last_cur = cur
+                cur = cur.right
+            elif cur.val < val:
+                last_cur.right = TreeNode(val, cur, None)
+                return root
+        
+        last_cur.right = TreeNode(val, None, None)
+        return root
+```
+
+### others
+
+递归的方法：
+
+1. 当前节点值<插入值（或者当前节点为空）：插入节点作为当前节点的根，当前节点作为插入节点的左子节点
+2. 当前节点值>插入值：插入节点递归插入当前节点的右子树
+
+```python
+class Solution:
+    def insertIntoMaxTree(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        if not root or val > root.val:
+            ans = TreeNode(val)
+            ans.left = root
+            return ans
+        
+        root.right = self.insertIntoMaxTree(root.right, val)
+        return root
+```
+
+### summary
+
+- 这个题主要就是要理解题意，分清楚情况，搞清楚这个插入节点的插入规则，之后不管是正常还是递归都思路清晰
