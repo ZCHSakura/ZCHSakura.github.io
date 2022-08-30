@@ -706,3 +706,64 @@ class Solution:
 ### summary
 
 - 这个题主要就是要理解题意，分清楚情况，搞清楚这个插入节点的插入规则，之后不管是正常还是递归都思路清晰
+
+## p2_两数相加
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028117.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028925.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208302028213.png)
+
+### mine
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        cur1 = l1
+        cur2 = l2
+        ans = ListNode()
+        temp = ans
+        add_flag = 0
+        while cur1 or cur2:
+            cur1_val = 0 if cur1 == None else cur1.val
+            cur2_val = 0 if cur2 == None else cur2.val
+
+            summ = cur1_val + cur2_val + add_flag
+            if summ > 9:
+                summ = summ - 10
+                add_flag = 1
+            else:
+                add_flag = 0
+            if cur1:
+                cur1 = cur1.next
+            if cur2:
+                cur2 = cur2.next
+            temp.next = ListNode(summ)
+            temp = temp.next
+        if add_flag == 1:
+            temp.next = ListNode(add_flag)
+        return ans.next
+```
+
+### others
+
+流程都差不多，但是可以优化相加后的值和进位内容
+
+```python
+summ = (cur1_val + cur2_val + add_flag)%10
+add_flag = 1 if cur1_val + cur2_val + add_flag >= 10 else 0
+```
+
+### summary
+
+整体不是太难，主要注意三点：
+
+- python赋值直接是引用，所以直接temp=ans，之后只用不断在temp上加后续节点就行了。而像C这种赋值是传副本的需要直接malloc同一片地址`head = tail = malloc(sizeof(struct ListNode));`
+- 判断两个链表是不是都结束了，没结束的才不断next，先结束的后面val直接赋值0
+- 用一个变量专门记录进位，如果最后两个值又有进位后面还要再接一个节点
