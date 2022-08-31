@@ -820,3 +820,122 @@ return len(stack) == 0
 ### summary
 
 难度不大，只要明白栈的工作方式，用一个列表来模拟下就可以了。注意下列表的`pop()`函数的使用。
+
+## p3_无重复字符的最长子串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208312020996.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208312022288.png)
+
+### mine
+
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        s_list = list(s)
+        max_num = 0
+        for i in range(len(s_list)):
+            used_list = []
+            j = i
+            num = 0
+            while j < len(s_list) and s_list[j] not in used_list:
+                used_list.append(s_list[j])
+                num += 1
+                j += 1
+            max_num = num if num > max_num else max_num
+        
+        return max_num
+```
+
+我这个方法做是完全能做出来，但是开销有点大，看了题解主要有以下几点还可以优化
+
+- 使用set来代替list，每次set不清空，从set左边开始一个个弹出，直到没有重复元素
+- 右指针（也就是j）不用每次重复后从左指针处开始，只需要在弹出set中元素的时候不断移动移动左指针就行了
+- 不用专门使用一个num来记录长度，可以直接通过两指针之间的距离来计算长度
+- 左指针可以不用一位位右移（进阶）
+
+### others
+
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # 哈希集合，记录每个字符是否出现过
+        occ = set()
+        n = len(s)
+        # 右指针，初始值为 -1，相当于我们在字符串的左边界的左侧，还没有开始移动
+        rk, ans = -1, 0
+        for i in range(n):
+            if i != 0:
+                # 左指针向右移动一格，移除一个字符
+                occ.remove(s[i - 1])
+            while rk + 1 < n and s[rk + 1] not in occ:
+                # 不断地移动右指针
+                occ.add(s[rk + 1])
+                rk += 1
+            # 第 i 到 rk 个字符是一个极长的无重复字符子串
+            ans = max(ans, rk - i + 1)
+        return ans
+```
+
+官方这个方法也算是中规中矩，优化了我的前三点
+
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if not s:return 0
+        left = 0
+        lookup = set()
+        n = len(s)
+        max_len = 0
+        cur_len = 0
+        for i in range(n):
+            cur_len += 1
+            while s[i] in lookup:
+                lookup.remove(s[left])
+                left += 1
+                cur_len -= 1
+            if cur_len > max_len:max_len = cur_len
+            lookup.add(s[i])
+        return max_len
+```
+
+这个方法也挺有意思的，我和官方的方法都是i作为左指针，在for循环里面通过while来增加字符串长度。而这个方法把i作为右指针，在for循环里面通过while来弹出set中的内容。
+
+```python
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        lst = []
+        n = len(s)
+        ans = 0
+        for i in range(n):
+            while s[i] in lst:
+                del lst[0]  # 队首元素出队
+            lst.append(s[i]) # 排除重复元素后 新元素入队
+            ans = max(ans, len(lst))
+        return ans
+```
+
+这和上个方法一样，极简版。
+
+以上三个方法都没有优化到我说的第四点
+
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        k, res, c_dict = -1, 0, {}
+        for i, c in enumerate(s):
+            if c in c_dict and c_dict[c] > k:  # 字符c在字典中 且 上次出现的下标大于当前长度的起始下标
+                k = c_dict[c]
+                c_dict[c] = i
+            else:
+                c_dict[c] = i
+                res = max(res, i-k)
+        return res
+```
+
+这里相当于用dict模拟了一个哈希Map，i是右指针，k是左指针，当遇到重复的时候可以直接定位到重复元素，不用像set或list那样一个个移动左指针。
+
+### summary
+
+- 移动窗口思想
+- 可以使用哈希Map等数据结构来优化左指针的移动，让其不要一位位的移动。
