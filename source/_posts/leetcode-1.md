@@ -666,20 +666,24 @@ public:
 #         self.right = right
 class Solution:
     def insertIntoMaxTree(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        # 树原本为空
         if root == None:
             return TreeNode(val, root, None)
+        # 树根小于val
         if root.val < val:
-                return TreeNode(val, root, None)
+            return TreeNode(val, root, None)
         last_cur = None
         cur = root
         while cur:
+            # val值小于当前节点则不断往右子树方向寻找
             if cur.val > val:
                 last_cur = cur
                 cur = cur.right
+            # val值大于当前节点则放在当前节点的右子节点处，当前节点作为val节点的左子节点
             elif cur.val < val:
                 last_cur.right = TreeNode(val, cur, None)
                 return root
-        
+        # 遍历到了原本树的叶子节点
         last_cur.right = TreeNode(val, None, None)
         return root
 ```
@@ -727,25 +731,31 @@ class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         cur1 = l1
         cur2 = l2
+        # ans是头，将引用传给temp，之后不断操作temp，最后返回ans
         ans = ListNode()
         temp = ans
         add_flag = 0
         while cur1 or cur2:
+            # 如果某个链表先走完了，val取值0
             cur1_val = 0 if cur1 == None else cur1.val
             cur2_val = 0 if cur2 == None else cur2.val
 
             summ = cur1_val + cur2_val + add_flag
+            # 计算val值和是否有进位
             if summ > 9:
                 summ = summ - 10
                 add_flag = 1
             else:
                 add_flag = 0
+            # 链表往后取值
             if cur1:
                 cur1 = cur1.next
             if cur2:
                 cur2 = cur2.next
+            # 构建返回的答案链表
             temp.next = ListNode(summ)
             temp = temp.next
+        # 最后一个进位
         if add_flag == 1:
             temp.next = ListNode(add_flag)
         return ans.next
@@ -767,3 +777,46 @@ add_flag = 1 if cur1_val + cur2_val + add_flag >= 10 else 0
 - python赋值直接是引用，所以直接temp=ans，之后只用不断在temp上加后续节点就行了。而像C这种赋值是传副本的需要直接malloc同一片地址`head = tail = malloc(sizeof(struct ListNode));`
 - 判断两个链表是不是都结束了，没结束的才不断next，先结束的后面val直接赋值0
 - 用一个变量专门记录进位，如果最后两个值又有进位后面还要再接一个节点
+
+## p946_验证栈序列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208311124041.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202208311124889.png)
+
+### mine
+
+```python
+class Solution:
+    def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+        # 模拟一个空栈
+        stack = []
+        # poped列表index
+        j = 0
+        for i in pushed:
+            # pushed列表内容顺序进栈
+            stack.append(i)
+            # 当遇到栈顶元素与poped列表指针指向元素相同时将该元素出栈，并把poped指针后移
+            while stack and stack[-1] == popped[j]:
+                stack.pop()
+                j += 1
+        # 如果模拟的栈最后能弹空则说明这个栈序列是对的
+        if len(stack) == 0:
+            return True
+        else:
+            return False
+```
+
+整体难度不是很高，就是要用一个列表来模拟栈的操作。
+
+### others
+
+```python
+return len(stack) == 0
+```
+
+返回方式可以再优化下
+
+### summary
+
+难度不大，只要明白栈的工作方式，用一个列表来模拟下就可以了。注意下列表的`pop()`函数的使用。
