@@ -939,3 +939,73 @@ class Solution:
 
 - 移动窗口思想
 - 可以使用哈希Map等数据结构来优化左指针的移动，让其不要一位位的移动。
+
+## p1475_商品折扣后的最终价格
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209011031667.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209011031567.png)
+
+### mine
+
+```python
+class Solution:
+    def finalPrices(self, prices: List[int]) -> List[int]:
+        for i in range(len(prices)):
+            j = i + 1
+            while j < len(prices):
+                if prices[j] <= prices[i]:
+                    prices[i] = prices[i] - prices[j]
+                    break
+                j += 1
+        
+        return prices
+```
+
+暴力思路其实很简单，就按照题目要求实现就行了。
+
+时间复杂度：O(n^2^)
+
+空间复杂度：O(1)，返回值不算
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209011050857.png)
+
+```python
+class Solution:
+    def finalPrices(self, prices: List[int]) -> List[int]:
+        n = len(prices)
+        ans = [0] * n
+        st = [0]
+        for i in range(n - 1, -1, -1):
+            p = prices[i]
+            while len(st) > 1 and st[-1] > p:
+                st.pop()
+            ans[i] = p - st[-1]
+            st.append(p)
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209011134881.png)
+
+### summary
+
+普通方法比较简单，就是时间复杂度大一点。这里记录一下这个题里对单调栈的理解。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209011206613.png)
+
+结合我这里的草稿可以看到，我们是从price的逆序开始遍历的，st是单调栈，从栈底向栈顶单调递增。单调栈实际存储了一个可能的折扣序列。
+
+一开始单调栈里是空的，我们先判断3，发现栈是空的，不可能有折扣所以把3入栈。
+
+之后看到2，我们发现栈顶是3，大于2，将栈顶弹出，栈空了，所以2也不能有折扣，之后把2入栈。这里解释一下为什么要弹出3，我的理解是题目要找是当前位置之后位置上第一个比自己小的元素作为折扣，如果3能作为某一个商品的折扣，而2在3之前且2比3小，所以2相较于3一定能先有机会成为这个商品的折扣，所以要把3弹出换成2。
+
+之后我们看到6，发现栈顶是2，所以折扣就是2，然后把6入栈。
+
+之后看4，发现栈顶是6，把6弹出，现在栈顶是2，2可以作为折扣，然后把4入栈。
+
+最后看到8，栈顶是4，直接折扣，然后把8入栈。
+
+结束。
+
