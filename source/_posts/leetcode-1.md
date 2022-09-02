@@ -1009,3 +1009,44 @@ class Solution:
 
 结束。
 
+## p687_最长同值路径
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020955340.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020955057.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020955356.png)
+
+### mine
+
+我能够想到要用一个递归的深度优先搜索算法来完成这个题目，但是没有具体的思路，之前没有写过dfs。
+
+### others
+
+```python
+class Solution:
+    def longestUnivaluePath(self, root: Optional[TreeNode]) -> int:
+        ans = 0
+        def dfs(node: Optional[TreeNode]) -> int:
+            if node is None:
+                return 0
+            left = dfs(node.left)
+            right = dfs(node.right)
+            left1 = left + 1 if node.left and node.left.val == node.val else 0
+            right1 = right + 1 if node.right and node.right.val == node.val else 0
+            nonlocal ans
+            ans = max(ans, left1 + right1)
+            return max(left1, right1)
+        dfs(root)
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020958384.png)
+
+### summary
+
+这道题实际上就是一个递归的深度优先搜索，之前没做过dfs确实一下子写不出来，看过一个例子就好理解多了。同时注意这个题里最长同值路径等于左最长同值路径与右最长同值路径之和。dfs返回的是有向路径长度。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209021032503.png)
+
+这里解释下为什么dfs只返回有向路径长度，这是因为在这个题中虽然我们图上有四根线，但是我们找的是一个路径，这个路径是不能回头的，所以最多只能走完三条线，所以dfs在返回的时候只能返回left1和right1中的一个更大的值。
