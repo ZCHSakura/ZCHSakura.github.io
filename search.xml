@@ -1032,6 +1032,19 @@
 <p>之后看4，发现栈顶是6，把6弹出，现在栈顶是2，2可以作为折扣，然后把4入栈。</p>
 <p>最后看到8，栈顶是4，直接折扣，然后把8入栈。</p>
 <p>结束。</p>
+<h2 id="p687_最长同值路径">p687_最长同值路径</h2>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020955340.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020955057.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020955356.png" /></p>
+<h3 id="mine-10">mine</h3>
+<p>我能够想到要用一个递归的深度优先搜索算法来完成这个题目，但是没有具体的思路，之前没有写过dfs。</p>
+<h3 id="others-10">others</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestUnivaluePath</span><span class="params">(self, root: Optional[TreeNode])</span> -&gt; int:</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(node: Optional[TreeNode])</span> -&gt; int:</span></span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            left = dfs(node.left)</span><br><span class="line">            right = dfs(node.right)</span><br><span class="line">            left1 = left + <span class="number">1</span> <span class="keyword">if</span> node.left <span class="keyword">and</span> node.left.val == node.val <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            right1 = right + <span class="number">1</span> <span class="keyword">if</span> node.right <span class="keyword">and</span> node.right.val == node.val <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">nonlocal</span> ans</span><br><span class="line">            ans = max(ans, left1 + right1)</span><br><span class="line">            <span class="keyword">return</span> max(left1, right1)</span><br><span class="line">        dfs(root)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209020958384.png" /></p>
+<h3 id="summary-10">summary</h3>
+<p>这道题实际上就是一个递归的深度优先搜索，之前没做过dfs确实一下子写不出来，看过一个例子就好理解多了。同时注意这个题里最长同值路径等于左最长同值路径与右最长同值路径之和。dfs返回的是有向路径长度。</p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209021032503.png" /></p>
+<p>这里解释下为什么dfs只返回有向路径长度，这是因为在这个题中虽然我们图上有四根线，但是我们找的是一个路径，这个路径是不能回头的，所以最多只能走完三条线，所以dfs在返回的时候只能返回left1和right1中的一个更大的值。</p>
 ]]></content>
       <categories>
         <category>算法</category>
