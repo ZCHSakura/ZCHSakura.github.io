@@ -1050,3 +1050,73 @@ class Solution:
 ![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209021032503.png)
 
 这里解释下为什么dfs只返回有向路径长度，这是因为在这个题中虽然我们图上有四根线，但是我们找的是一个路径，这个路径是不能回头的，所以最多只能走完三条线，所以dfs在返回的时候只能返回left1和right1中的一个更大的值。
+
+## p646_最长数对链
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209031412769.png)
+
+### mine
+
+```python
+class Solution:
+    def findLongestChain(self, pairs: List[List[int]]) -> int:
+        cur, res = -inf, 0
+        for x, y in sorted(pairs, key=lambda p: p[1]):
+            if cur < x:
+                cur = y
+                res += 1
+        return res
+```
+
+贪心。要挑选最长数对链的第一个数对时，最优的选择是挑选第二个数字最小的，这样能给挑选后续的数对留下更多的空间。挑完第一个数对后，要挑第二个数对时，也是按照相同的思路，是在剩下的数对中，第一个数字满足题意的条件下，挑选第二个数字最小的。按照这样的思路，可以先将输入按照第二个数字排序，然后不停地判断第一个数字是否能满足大于前一个数对的第二个数字即可。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209031418411.png)
+
+```python
+class Solution:
+    def findLongestChain(self, pairs: List[List[int]]) -> int:
+        pairs.sort()
+        dp = [1] * len(pairs)
+        for i in range(len(pairs)):
+            for j in range(i):
+                if pairs[i][0] > pairs[j][1]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+        return dp[-1]
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209031418546.png)
+
+直接sort()是先按第一个位置排，再按第二个位置排，这样排序后所有的可能前链一定在前面。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209031423980.png)
+
+```python
+class Solution:
+    def findLongestChain(self, pairs: List[List[int]]) -> int:
+        pairs.sort()
+        arr = []
+        for x, y in pairs:
+            # 如果x能插入arr，那说明y也有可能插入arr，也就是可能有更优情况
+            i = bisect_left(arr, x)
+            if i < len(arr):
+                arr[i] = min(arr[i], y)
+            else:
+                arr.append(y)
+        return len(arr)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209031423546.png)
+
+如果列表中没有元素x，那么bisect_left(ls, x)和bisec_right(ls, x)返回相同的值，该值是x在ls中“**合适的插入点索引，使得数组有序**”。
+
+如果列表中只有一个元素等于x，那么bisect_left(ls, x)的值是x在ls中的**索引**。而bisec_right(ls, x)的值是x在ls中的**索引加1**
+
+如果列表中存在多个元素等于x，那么bisect_left(ls, x)返回**最左边的那个索引**。bisect_right(ls, x)返回**最右边的那个索引加1**
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209031503853.png)
+
+### summary
+
+贪心最简单，只要看出来第二个数字越小越在前就可以了。
