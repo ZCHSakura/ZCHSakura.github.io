@@ -1120,3 +1120,87 @@ class Solution:
 ### summary
 
 贪心最简单，只要看出来第二个数字越小越在前就可以了。
+
+## p1582_二进制矩阵中的特殊位置
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209041026914.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209041026321.png)
+
+### mine
+
+```python
+class Solution:
+    def numSpecial(self, mat: List[List[int]]) -> int:
+        # 统计每行的和
+        sum_row = [sum(row) for row in mat]
+        # 统计每列的和
+        sum_col = [sum(col) for col in zip(*mat)]
+        res = 0
+        for i in range(len(mat)):
+            for j in range(len(mat[i])):
+                # 当前位置为1，且行和列和均为1
+                if mat[i][j] == 1 and sum_row[i] == 1 and sum_col[j] == 1:
+                    res += 1
+        
+        return res
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209041042359.png)
+
+这个题是简单题，没什么好说的，特殊点就是**当前位置为1，且行和列和均为1**的位置。更应该注意的是获取行和，列和的过程。
+
+获取行和十分简单，只要每行sum()即可。获取列和则要先把矩阵转置，然后获取行和，这里可以使用zip()函数完成矩阵的转置。
+
+- zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的对象，这样做的好处是节约了不少的内存。
+- 可以使用 list() 转换来输出列表。【zip 方法在 Python 2 和 Python 3 中的不同：在 Python 3.x 中为了减少内存，zip() 返回的是一个对象。如需展示列表，需手动 list() 转换。】
+- 如果各个迭代器的元素个数不一致，则返回列表长度与最短的对象相同，利用*号操作符，可以将元组解压为列表。
+
+`zip(A)`相当于打包，打包为**元组的列表**：
+
+```
+>>> a = [1,2,3]
+>>> b = [4,5,6]
+>>> c = [4,5,6,7,8]
+>>> A = zip(a,b)     # 打包为元组的列表
+[(1, 4), (2, 5), (3, 6)]
+>>> zip(a,c)              # 元素个数与最短的列表一致
+[(1, 4), (2, 5), (3, 6)]
+>>> zip(*A)          # 与 zip 相反，*A 可理解为解压，返回二维矩阵式
+[(1, 2, 3), (4, 5, 6)]
+```
+
+```python
+A = [[1,2,3],[4,5,6],[7,8,9]]
+print(*A) #[1, 2, 3] [4, 5, 6] [7, 8, 9]
+#zip()返回的是一个对象。如需展示列表，需手动 list() 转换。
+#print(zip(*A)) #<zip object at 0x000001CD7733A2C8>
+print(list(zip(*A)))
+# 输出
+# [(1, 4, 7), (2, 5, 8), (3, 6, 9)]
+```
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209041120606.png)
+
+```python
+class Solution:
+    def numSpecial(self, mat: List[List[int]]) -> int:
+        for i, row in enumerate(mat):
+            # 该行中1的数量
+            cnt1 = sum(row) - (i == 0)
+            # cnt1不为0
+            if cnt1:
+                for j, x in enumerate(row):
+                    if x == 1:
+                        # 该列所有1所在行中的1的数量之和
+                        mat[0][j] += cnt1
+        return sum(x == 1 for x in mat[0])
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209041120660.png)
+
+### summary
+
+直接模拟的方法很简单，主要就是计算行和，列和。计算列和时可以先使用`zip()`把矩阵转置再计算。
