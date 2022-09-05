@@ -1204,3 +1204,90 @@ class Solution:
 ### summary
 
 直接模拟的方法很简单，主要就是计算行和，列和。计算列和时可以先使用`zip()`把矩阵转置再计算。
+
+## p652_寻找重复的子树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209051653911.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209051653872.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209051654550.png)
+
+### mine
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+# serial = node(node.left)(node.left)
+class Solution:
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        res = []
+        hash = dict()
+        def dfs(node: Optional[TreeNode]) -> str:
+            if not node:
+                return ""
+
+            serial = str(node.val) + '(' + dfs(node.left) + ')(' + dfs(node.right) + ')'
+            if (hash.get(serial, None)):
+                res.append(hash[serial])
+            else:
+                hash[serial] = node
+            return serial
+
+        dfs(root)
+        return(set(res))
+```
+
+我目前遇到的几个需要遍历数的都可以使用深度优先搜索来递归的完成搜索。
+
+这个题目是要寻找重复的子树，所以我们要把寻找过程中所有遇到的子树记录下来，每次遇到一个子树时要看之前遇到过的子树有没有一样的，寻找过的子树可以使用哈希结构来进行存储。
+
+这里因为树结构是一个自定义的结构，没有办法直接使用树结构进行索引，所以需要将树先进行序列化，同时这个序列化要保证：
+
+- 相同子树序列化啊结果一致
+- 不同子树序列化结果不同
+
+我们使用dfs来递归的将子树序列化，将一棵以 x 为根节点值的子树序列化为：x(左子树的序列化结果)(右子树的序列化结果)。如果子树为空，那么序列化结果为空串。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209051705489.png)
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209051706364.png)
+
+```python
+class Solution:
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        def dfs(node: Optional[TreeNode]) -> int:
+            if not node:
+                return 0
+            
+            tri = (node.val, dfs(node.left), dfs(node.right))
+            if tri in seen:
+                (tree, index) = seen[tri]
+                repeat.add(tree)
+                return index
+            else:
+                nonlocal idx
+                idx += 1
+                seen[tri] = (node, idx)
+                return idx
+        
+        idx = 0
+        seen = dict()
+        repeat = set()
+
+        dfs(root)
+        return list(repeat)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209051706329.png)
+
+### summary
+
+主要思路就是在dfs的过程中使用哈希结构保存见过的子树，然后在搜索过程中不断查询当前子树是否在哈希表中出现过。
