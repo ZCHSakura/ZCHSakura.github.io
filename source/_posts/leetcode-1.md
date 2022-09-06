@@ -1291,3 +1291,70 @@ class Solution:
 ### summary
 
 主要思路就是在dfs的过程中使用哈希结构保存见过的子树，然后在搜索过程中不断查询当前子树是否在哈希表中出现过。
+
+## p828_统计子串中的唯一字符
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209061140467.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209061141066.png)
+
+### mine
+
+```python
+class Solution:
+    def uniqueLetterString(self, s: str) -> int:
+        def getSubString(s: str) -> list:
+            sub_string = []
+            # length为每次取子串长度
+            for length in range(len(s)):
+                # 按取的长度从字符串开头向后滑动
+                sub_string += [s[idx: idx + length +1] for idx in range(len(s)-length)]
+            return sub_string
+
+        def get_only_num(sub_string: str) -> int:
+            # 哈希表存是否见过
+            seen = dict()
+            for i in sub_string:
+                if i in seen:
+                    seen[i] = False
+                else:
+                    seen[i] = True
+            return sum(seen.values())
+
+        res = 0
+        for i in getSubString(s):
+            res += get_only_num(i)
+
+        return res
+```
+
+我这种就是暴力方法，先获得所有子串，然后再对每个子串计算唯一字符数。这种长度一长就要爆掉，没法ac，还是需要找到合适的算法。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209061143919.png)
+
+```python
+class Solution:
+    def uniqueLetterString(self, s: str) -> int:
+        index = collections.defaultdict(list)
+        # 先统计每种字符在原始字符串中的下标
+        for i, c in enumerate(s):
+            index[c].append(i)
+
+        res = 0
+        for arr in index.values():
+            # 为了解决左边没有或右边没有的情况
+            arr = [-1] + arr + [len(s)]
+            for i in range(1, len(arr) - 1):
+                res += (arr[i] - arr[i - 1]) * (arr[i + 1] - arr[i])
+        return res
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209061143242.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209061155332.png)
+
+### summary
+
+暴力的方法难度不高，但是时间和空间复杂度太高了，字符串一长就受不了了。
