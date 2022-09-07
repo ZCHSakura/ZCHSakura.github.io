@@ -1358,3 +1358,59 @@ class Solution:
 ### summary
 
 暴力的方法难度不高，但是时间和空间复杂度太高了，字符串一长就受不了了。
+
+## p1592_重新排列单词间的空格
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209071135776.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209071135614.png)
+
+### mine
+
+```python
+class Solution:
+    def reorderSpaces(self, text: str) -> str:
+        word_list = [i for i in text.split(' ') if i != '']
+        word_num = len(word_list)
+        space_num = len([i for i in text if i == ' '])
+
+        if word_num == 1:
+            return word_list[0] + ' ' * space_num
+
+        avg_space = int(space_num / (word_num - 1))
+        end_space = space_num % (word_num - 1)
+
+        res = ''
+        for i in range(len(word_list)):
+            res += word_list[i]
+            if i != len(word_list) - 1:
+                res += ' ' * avg_space
+        res += ' ' * end_space
+
+        return res
+```
+
+直接计算单词数和空格数，然后构造答案。
+
+### others
+
+```python
+class Solution:
+    def reorderSpaces(self, text: str) -> str:
+        words = text.split()
+        space = text.count(' ')
+        if len(words) == 1:
+            return words[0] + ' ' * space
+        per_space, rest_space = divmod(space, len(words) - 1)
+        return (' ' * per_space).join(words) + ' ' * rest_space
+```
+
+思路一致，优化代码。
+
+**divmod() **函数把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)。
+
+**join()** 方法用于将序列中的元素以指定的字符连接生成一个新的字符串。
+
+### summary
+
+题解思路很简单，代码写法可以优化。
