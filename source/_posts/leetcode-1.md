@@ -1414,3 +1414,55 @@ class Solution:
 ### summary
 
 题解思路很简单，代码写法可以优化。
+
+## p667_优美的排列2
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209081110294.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209081110869.png)
+
+### mine
+
+```python
+class Solution:
+    def constructArray(self, n: int, k: int) -> List[int]:
+        sort_n = list(range(1, n+1))
+        res = []
+        for i in range(k // 2):
+            res.extend([sort_n[i], sort_n[n - i - 1]])
+        if k % 2 == 0:
+            res.extend(list(range(n - k // 2, k // 2, -1)))
+        if k % 2 != 0:
+            res.extend(list(range(k // 2 + 1, n - k // 2 + 1)))
+        
+        return res
+```
+
+我的方法很简单，就是按照k的奇偶不同分别进行排列，按照一小一大的顺序先排出来k-1个不同的整数，之后顺序排列，最后一个整数就是1。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209081113377.png)
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209081116685.png)
+
+```python
+class Solution:
+    def constructArray(self, n: int, k: int) -> List[int]:
+        answer = list(range(1, n - k))
+        i, j = n - k, n
+        while i <= j:
+            answer.append(i)
+            if i != j:
+                answer.append(j)
+            i, j = i + 1, j - 1
+        return answer
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209081116031.png)
+
+他这个算法和我的思路其实差不多，只不过他前面先顺序，后面开始一大一小，而且他这种不用区分奇偶。
+
+### summary
+
+这题和数据结构没啥关系，完全就是考验构造排列的思维。
