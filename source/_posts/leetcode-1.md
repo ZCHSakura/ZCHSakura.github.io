@@ -1466,3 +1466,33 @@ class Solution:
 ### summary
 
 这题和数据结构没啥关系，完全就是考验构造排列的思维。
+
+## p1598_文件夹操作日志搜集器
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209090909955.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209090909001.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209090910348.png)
+
+### mine
+
+```python
+class Solution:
+    def minOperations(self, logs: List[str]) -> int:
+        depth = 0
+        for i in logs:
+            if i == '../':
+                depth -= 1 if depth != 0 else 0
+            elif i == './':
+                continue
+            else:
+                depth +=1 
+        return depth
+```
+
+直接模拟
+
+### summary
+
+没啥说的，模拟就完了。
