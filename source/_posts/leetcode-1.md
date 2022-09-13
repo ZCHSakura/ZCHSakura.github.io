@@ -1496,3 +1496,213 @@ class Solution:
 ### summary
 
 没啥说的，模拟就完了。
+
+## p4_寻找两个正序数组的中位数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092023968.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092023694.png)
+
+### mine
+
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        sorted_nums = sorted(nums1 + nums2)
+        length = len(nums1) + len(nums2)
+        if length % 2 == 0:
+            return (sorted_nums[length // 2] + sorted_nums[length // 2 - 1]) / 2.0
+        else:
+            return float(sorted_nums[length // 2])
+```
+
+我这方法只配做简单题，题本身要求的时间复杂度我这肯定达不到。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092048644.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092048103.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092048630.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092049110.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092049934.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092049980.png)
+
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        def getKthElement(k):
+            """
+            - 主要思路：要找到第 k (k>1) 小的元素，那么就取 pivot1 = nums1[k/2-1] 和 pivot2 = nums2[k/2-1] 进行比较
+            - 这里的 "/" 表示整除
+            - nums1 中小于等于 pivot1 的元素有 nums1[0 .. k/2-2] 共计 k/2-1 个
+            - nums2 中小于等于 pivot2 的元素有 nums2[0 .. k/2-2] 共计 k/2-1 个
+            - 取 pivot = min(pivot1, pivot2)，两个数组中小于等于 pivot 的元素共计不会超过 (k/2-1) + (k/2-1) <= k-2 个
+            - 这样 pivot 本身最大也只能是第 k-1 小的元素
+            - 如果 pivot = pivot1，那么 nums1[0 .. k/2-1] 都不可能是第 k 小的元素。把这些元素全部 "删除"，剩下的作为新的 nums1 数组
+            - 如果 pivot = pivot2，那么 nums2[0 .. k/2-1] 都不可能是第 k 小的元素。把这些元素全部 "删除"，剩下的作为新的 nums2 数组
+            - 由于我们 "删除" 了一些元素（这些元素都比第 k 小的元素要小），因此需要修改 k 的值，减去删除的数的个数
+            """
+            
+            index1, index2 = 0, 0
+            while True:
+                # 特殊情况
+                if index1 == m:
+                    return nums2[index2 + k - 1]
+                if index2 == n:
+                    return nums1[index1 + k - 1]
+                if k == 1:
+                    return min(nums1[index1], nums2[index2])
+
+                # 正常情况
+                newIndex1 = min(index1 + k // 2 - 1, m - 1)
+                newIndex2 = min(index2 + k // 2 - 1, n - 1)
+                pivot1, pivot2 = nums1[newIndex1], nums2[newIndex2]
+                if pivot1 <= pivot2:
+                    k -= newIndex1 - index1 + 1
+                    index1 = newIndex1 + 1
+                else:
+                    k -= newIndex2 - index2 + 1
+                    index2 = newIndex2 + 1
+        
+        m, n = len(nums1), len(nums2)
+        totalLength = m + n
+        if totalLength % 2 == 1:
+            return getKthElement((totalLength + 1) // 2)
+        else:
+            return (getKthElement(totalLength // 2) + getKthElement(totalLength // 2 + 1)) / 2
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092050954.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092050104.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092051836.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092051535.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092051676.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092052110.png)
+
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        if len(nums1) > len(nums2):
+            return self.findMedianSortedArrays(nums2, nums1)
+
+        infinty = 2**40
+        m, n = len(nums1), len(nums2)
+        left, right = 0, m
+        # median1：前一部分的最大值
+        # median2：后一部分的最小值
+        median1, median2 = 0, 0
+
+        while left <= right:
+            # 前一部分包含 nums1[0 .. i-1] 和 nums2[0 .. j-1]
+            # // 后一部分包含 nums1[i .. m-1] 和 nums2[j .. n-1]
+            i = (left + right) // 2
+            j = (m + n + 1) // 2 - i
+
+            # nums_im1, nums_i, nums_jm1, nums_j 分别表示 nums1[i-1], nums1[i], nums2[j-1], nums2[j]
+            nums_im1 = (-infinty if i == 0 else nums1[i - 1])
+            nums_i = (infinty if i == m else nums1[i])
+            nums_jm1 = (-infinty if j == 0 else nums2[j - 1])
+            nums_j = (infinty if j == n else nums2[j])
+
+            if nums_im1 <= nums_j:
+                median1, median2 = max(nums_im1, nums_jm1), min(nums_i, nums_j)
+                left = i + 1
+            else:
+                right = i - 1
+
+        return (median1 + median2) / 2 if (m + n) % 2 == 0 else median1
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209092052523.png)
+
+### summary
+
+这个题确实挺难的，看到O(log(m+n))这种复杂度就应该想到二分法，同时这个题的特殊情况也很多，需要对边界进行仔细地处理。
+
+## p670_最大交换
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209132035026.png)
+
+### mine
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        res = list(str(num))
+        sorted_num = sorted(res)
+        print(res)
+        i = 0
+        # 开始从头开始遍历输入，看是不是当前可以使用的最大值
+        while res[i] and res[i] == sorted_num[-1]:
+            i += 1
+            sorted_num.pop()
+            if i == len(res): return num
+        temp = res[i]
+        # 找到最右的当前最大值进行交换
+        res[str(num).rfind(sorted_num[-1])] = temp
+        res[i] = sorted_num[-1]
+        return int(''.join((str(i) for i in res)))
+```
+
+这道题其实不难，只要想清楚如何才能构造出来最大的数就可以了，只要注意两点：
+
+- 当前最大值应该尽可能放到前面
+- 当前最大值有多个时，替换最右的那个
+
+我这里选择先对输入进行了一个排序来方便查找当前最大值，整体思路就是从头遍历输入，一位位判断是不是当前最大值，如果是当前最大值则将辅助数组中的当前最大值弹出，接下来判断下一位。直到遇见第一个不是当前最大值的数字，此时就要将当前最大值换到这个位置，如果存在多个相同的当前最大值则要换最右边的那个。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209132044723.png)
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        ans = num
+        s = list(str(num))
+        for i in range(len(s)):
+            for j in range(i):
+                s[i], s[j] = s[j], s[i]
+                ans = max(ans, int(''.join(s)))
+                s[i], s[j] = s[j], s[i]
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209132045842.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209132045758.png)
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        s = list(str(num))
+        n = len(s)
+        maxIdx = n - 1
+        idx1 = idx2 = -1
+        for i in range(n - 1, -1, -1):
+            if s[i] > s[maxIdx]:
+                maxIdx = i
+            elif s[i] < s[maxIdx]:
+                idx1, idx2 = i, maxIdx
+        if idx1 < 0:
+            return num
+        s[idx1], s[idx2] = s[idx2], s[idx1]
+        return int(''.join(s))
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209132045745.png)
+
+### summary
+
+- 暴力方法没什么说的
+- 官方第二个方法思路与我基本一致，只是实现细节上有所不同。官方采用两个指针来进行操作，感觉不如构造一个辅助数组然后顺序遍历输入的方法好理解。
