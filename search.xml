@@ -1202,6 +1202,16 @@
 <li>暴力方法没什么说的</li>
 <li>官方第二个方法思路与我基本一致，只是实现细节上有所不同。官方采用两个指针来进行操作，感觉不如构造一个辅助数组然后顺序遍历输入的方法好理解。</li>
 </ul>
+<h2 id="p1619_删除某些元素后的数组均值">p1619_删除某些元素后的数组均值</h2>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209140942424.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209140942248.png" /></p>
+<h3 id="mine-20">mine</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trimMean</span><span class="params">(self, arr: List[int])</span> -&gt; float:</span></span><br><span class="line">        sorted_arr = sorted(arr)</span><br><span class="line">        res_arr = sorted_arr[len(sorted_arr)//<span class="number">20</span>:-len(sorted_arr)//<span class="number">20</span>]</span><br><span class="line">        <span class="keyword">return</span> sum(res_arr)/len(res_arr)</span><br></pre></td></tr></table></figure>
+<p>先排序，然后切片，最后求均值。</p>
+<h3 id="others-19">others</h3>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209140945505.png" /></p>
+<h3 id="summary-20">summary</h3>
+<p>可以先计算一次len()</p>
 ]]></content>
       <categories>
         <category>算法</category>
