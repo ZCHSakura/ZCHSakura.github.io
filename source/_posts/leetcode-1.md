@@ -1706,3 +1706,29 @@ class Solution:
 
 - 暴力方法没什么说的
 - 官方第二个方法思路与我基本一致，只是实现细节上有所不同。官方采用两个指针来进行操作，感觉不如构造一个辅助数组然后顺序遍历输入的方法好理解。
+
+## p1619_删除某些元素后的数组均值
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209140942424.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209140942248.png)
+
+### mine
+
+```python
+class Solution:
+    def trimMean(self, arr: List[int]) -> float:
+        sorted_arr = sorted(arr)
+        res_arr = sorted_arr[len(sorted_arr)//20:-len(sorted_arr)//20]
+        return sum(res_arr)/len(res_arr)
+```
+
+先排序，然后切片，最后求均值。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209140945505.png)
+
+### summary
+
+可以先计算一次len()
