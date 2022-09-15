@@ -1732,3 +1732,72 @@ class Solution:
 ### summary
 
 可以先计算一次len()
+
+## p672_灯泡开关2
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209151011934.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209151011779.png)
+
+### mine
+
+```python
+class Solution:
+    def flipLights(self, n: int, presses: int) -> int:
+        """
+        因为开关的状态决定了最后灯泡的状态，而且开关只有0，1两种状态，同一开关按2下和按4下没有任何区别，所以我们只需要分析四个开关一共有多少种可能，2^4=16，但开关3可由1，2线性表示，所以最多有八种开关状态。
+        """
+        # 不按开关
+        if presses == 0:
+            return 1
+
+        if n == 1:
+            return 2
+        elif n == 2:
+            if presses == 1:
+                # 没法都开
+                return 3
+            else:
+                return 4
+        else:
+            if presses == 1:
+                # 四个开关四种结果
+                return 4
+            elif presses == 2:
+                # 看示意图红下划线，7种
+                return 7
+            else:
+                return 8
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209151012216.png)
+
+黑色连线表示开关3可由1，2线性表示。红色下划线表示代码中7的由来。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209151013148.png)
+
+```python
+class Solution:
+    def flipLights(self, n: int, presses: int) -> int:
+        seen = set()
+        for i in range(2**4):
+            pressArr = [(i >> j) & 1 for j in range(4)]
+            if sum(pressArr) % 2 == presses % 2 and sum(pressArr) <= presses:
+                status = pressArr[0] ^ pressArr[1] ^ pressArr[3]
+                if n >= 2:
+                    status |= (pressArr[0] ^ pressArr[1]) << 1
+                if n >= 3:
+                    status |= (pressArr[0] ^ pressArr[2]) << 2
+                if n >= 4:
+                    status |= (pressArr[0] ^ pressArr[1] ^ pressArr[3]) << 3
+                seen.add(status)
+        return len(seen)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209151014034.png)
+
+### summary
+
+这个题如果分析出来最大情况只有八种就比较简单了，可以直接列出特殊情况得出结果。
