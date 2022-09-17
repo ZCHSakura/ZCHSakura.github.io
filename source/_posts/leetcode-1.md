@@ -1801,3 +1801,116 @@ class Solution:
 ### summary
 
 这个题如果分析出来最大情况只有八种就比较简单了，可以直接列出特殊情况得出结果。
+
+## p850_矩形面积2
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209160949748.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209160949717.png)
+
+### mine
+
+```python
+class Solution:
+    def rectangleArea(self, rectangles: List[List[int]]) -> int:
+        rect_set = set()
+        for rect in rectangles:
+            for x in range(rect[0], rect[2]):
+                for y in range(rect[1], rect[3]):
+                    rect_set.add((x, y))
+        
+        return len(rect_set) % (10^9 + 7)
+```
+
+简单的思路，但是显然不太符合困难题的难度……
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209160956052.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209160957245.png)
+
+```python
+class Solution:
+    def rectangleArea(self, rectangles: List[List[int]]) -> int:
+        hbound = set()
+        for rect in rectangles:
+            # 下边界
+            hbound.add(rect[1])
+            # 上边界
+            hbound.add(rect[3])
+        
+        hbound = sorted(hbound)
+        m = len(hbound)
+        # 「思路与算法部分」的 length 数组并不需要显式地存储下来
+        # length[i] 可以通过 hbound[i+1] - hbound[i] 得到
+        seg = [0] * (m - 1)
+
+        sweep = list()
+        for i, rect in enumerate(rectangles):
+            # 左边界
+            sweep.append((rect[0], i, 1))
+            # 右边界
+            sweep.append((rect[2], i, -1))
+        sweep.sort()
+
+        ans = i = 0
+        while i < len(sweep):
+            j = i
+            while j + 1 < len(sweep) and sweep[i][0] == sweep[j + 1][0]:
+                j += 1
+            if j + 1 == len(sweep):
+                break
+            
+            # 一次性地处理掉一批横坐标相同的左右边界
+            for k in range(i, j + 1):
+                _, idx, diff = sweep[k]
+                left, right = rectangles[idx][1], rectangles[idx][3]
+                for x in range(m - 1):
+                    if left <= hbound[x] and hbound[x + 1] <= right:
+                        seg[x] += diff
+            
+            cover = 0
+            for k in range(m - 1):
+                if seg[k] > 0:
+                    cover += (hbound[k + 1] - hbound[k])
+            ans += cover * (sweep[j + 1][0] - sweep[j][0])
+            i = j + 1
+        
+        return ans % (10**9 + 7)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209160957635.png)
+
+### summary
+
+学习到了很多新概念，离散化，扫描线，确实没了解过根本做不来。
+
+## p1624_两个相同字符之间的最长字符串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209170943035.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209170943925.png)
+
+### mine
+
+```python
+class Solution:
+    def maxLengthBetweenEqualCharacters(self, s: str) -> int:
+        """
+        使用一个哈希表存储第一次见到的字母的下标，之后遇到的时候比较
+        """
+        ans = -1
+        index_dict = dict()
+        for index, item in enumerate(s):
+            if item not in index_dict:
+                index_dict[item] = index
+            else:
+                ans = max(ans, index - index_dict[item] - 1)
+        
+        return ans
+```
+
+### summary
+
+没什么好说的，就是使用哈希来存储第一次见到的下标，之后相减比大小就行了。
