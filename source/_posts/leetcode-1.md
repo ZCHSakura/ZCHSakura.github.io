@@ -1914,3 +1914,71 @@ class Solution:
 ### summary
 
 没什么好说的，就是使用哈希来存储第一次见到的下标，之后相减比大小就行了。
+
+## p827_最大人工岛
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209181154580.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209181154636.png)
+
+### mine
+
+```python
+class Solution:
+    def largestIsland(self, grid: List[List[int]]) -> int:
+        """
+        1. 使用唯一标记值标记每个岛屿t=i*n+j+1,第一个搜索到的(i,j)决定了它所在岛屿的t（t为该点的位置编号，一定独一无二）
+        2. 使用哈希area保存每个岛屿大小,t做索引
+        3. 遍历所有为0的点，判断周围能连接的岛屿，计算连接后岛屿大小
+        """
+        n = len(grid)
+        tag = [[0] * n for row in range(n)]
+        area = dict()
+
+        def dfs(i, j, t):
+            tag[i][j] = t
+            if t not in area:
+                area[t] = 1
+            else:
+                area[t] += 1
+            for x, y in (i+1, j), (i-1, j), (i, j+1), (i, j-1):
+                if 0<=x<n and 0<=y<n and grid[x][y] and tag[x][y] == 0:
+                    dfs(x, y, t)
+        
+        # 使用dfs开始遍历整个grid，获取tag和area
+        for i, row in enumerate(grid):
+            for j, item in enumerate(row):
+                if item and tag[i][j] == 0:
+                    # 每个岛屿第一个遍历到的点作为tag
+                    t = i*n + j + 1
+                    dfs(i, j, t)
+
+        ans = max(area.values(), default=0)
+        
+        # 开始遍历grid中所有为0的地方，看四周有没有岛屿，计算连接后结果
+        for i, row in enumerate(grid):
+            for j, item in enumerate(row):
+                if item == 0:
+                    # 增加一个点，最少是1
+                    add_area = 1
+                    # 记录已经连接过的岛屿tag，可能四周出现同一个岛屿
+                    connect = [0]
+                    for x, y in (i+1, j), (i-1, j), (i, j+1), (i, j-1):
+                        if 0<=x<n and 0<=y<n and grid[x][y] and tag[x][y] not in connect:
+                            add_area += area[tag[x][y]]
+                            connect.append(tag[x][y])
+                    ans = max(ans, add_area)
+
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209181158470.png)
+
+参考官解写出来的，整体思路在开头的注释。
+
+### summarys
+
+1. 使用唯一标记值标记每个岛屿**t=i * n + j + 1**,第一个搜索到的(i, j)决定了它所在岛屿的t（t为该点的位置编号，一定独一无二）
+2. 使用哈希area保存每个岛屿大小,t做索引
+3. 遍历所有为0的点，判断周围能连接的岛屿，计算连接后岛屿大小
+
