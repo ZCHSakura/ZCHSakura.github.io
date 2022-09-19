@@ -1982,3 +1982,62 @@ class Solution:
 2. 使用哈希area保存每个岛屿大小,t做索引
 3. 遍历所有为0的点，判断周围能连接的岛屿，计算连接后岛屿大小
 
+## p1636_按照频率将数组升序排列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209191116699.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209191116861.png)
+
+### mine
+
+```python
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        frequency_dict = dict()
+        # 哈希统计词频
+        for i in nums:
+            if i not in frequency_dict:
+                frequency_dict[i] = 1
+            else:
+                frequency_dict[i] += 1
+
+        # 将词频转化为可排序的键值对
+        frequency_list = []       
+        for key, value in frequency_dict.items():
+            frequency_list.append((key, value))
+
+        # 对词频排序
+        frequency_list.sort(key=lambda x: (x[1], -x[0]))
+
+        ans = []
+        for i in frequency_list:
+            ans.extend([i[0]]*i[1])
+
+        return ans
+```
+
+三个步骤代码里都注释了，整体思路就是统计词频然后排序最后构造答案。
+
+### others
+
+```python
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        cnt = Counter(nums)
+        nums.sort(key=lambda x: (cnt[x], -x))
+        return nums
+```
+
+和我的思路一样的，但是通过调用Python的库两行就可以把功能实现。
+
+**Counter()**专门用来统计词频，返回一个字典。
+
+这里主要记录下sort中key的用法：
+
+key接受的是一个只有一个形参的函数
+
+key接受的函数返回值，表示此元素的权值，sort将按照权值大小进行排序
+
+### summary
+
+合理调用库函数可以极大减少代码量。
