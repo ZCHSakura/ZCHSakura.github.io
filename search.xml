@@ -1258,6 +1258,21 @@
 <li>使用哈希area保存每个岛屿大小,t做索引</li>
 <li>遍历所有为0的点，判断周围能连接的岛屿，计算连接后岛屿大小</li>
 </ol>
+<h2 id="p1636_按照频率将数组升序排列">p1636_按照频率将数组升序排列</h2>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209191116699.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209191116861.png" /></p>
+<h3 id="mine-25">mine</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">frequencySort</span><span class="params">(self, nums: List[int])</span> -&gt; List[int]:</span></span><br><span class="line">        frequency_dict = dict()</span><br><span class="line">        <span class="comment"># 哈希统计词频</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> frequency_dict:</span><br><span class="line">                frequency_dict[i] = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                frequency_dict[i] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 将词频转化为可排序的键值对</span></span><br><span class="line">        frequency_list = []       </span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> frequency_dict.items():</span><br><span class="line">            frequency_list.append((key, value))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 对词频排序</span></span><br><span class="line">        frequency_list.sort(key=<span class="keyword">lambda</span> x: (x[<span class="number">1</span>], -x[<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> frequency_list:</span><br><span class="line">            ans.extend([i[<span class="number">0</span>]]*i[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p>三个步骤代码里都注释了，整体思路就是统计词频然后排序最后构造答案。</p>
+<h3 id="others-22">others</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">frequencySort</span><span class="params">(self, nums: List[int])</span> -&gt; List[int]:</span></span><br><span class="line">        cnt = Counter(nums)</span><br><span class="line">        nums.sort(key=<span class="keyword">lambda</span> x: (cnt[x], -x))</span><br><span class="line">        <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
+<p>和我的思路一样的，但是通过调用Python的库两行就可以把功能实现。</p>
+<p><strong>Counter()</strong>专门用来统计词频，返回一个字典。</p>
+<p>这里主要记录下sort中key的用法：</p>
+<p>key接受的是一个只有一个形参的函数</p>
+<p>key接受的函数返回值，表示此元素的权值，sort将按照权值大小进行排序</p>
+<h3 id="summary-24">summary</h3>
+<p>合理调用库函数可以极大减少代码量。</p>
 ]]></content>
       <categories>
         <category>算法</category>
