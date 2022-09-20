@@ -2041,3 +2041,107 @@ key接受的函数返回值，表示此元素的权值，sort将按照权值大�
 ### summary
 
 合理调用库函数可以极大减少代码量。
+
+## p698_划分为k个相等的子集
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209201132894.png)
+
+### mine
+
+```python
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        if sum(nums) % k != 0:
+            return False
+        average = sum(nums) // k
+        nums_flag = [0] * len(nums)
+        nums.sort()
+        if nums[-1] > average:
+            return False
+        
+        def divideGroups(nums: List[int], start: int, average: int, current:int, k: int):
+            # print(nums_flag, start, average, current, k)
+            if k == 1:
+                # 前k-1个箱子填满了，第k个必能填满
+                # print(333)
+                return True
+            if current == average:
+                # 一个箱子装满了，开始装剩下的箱子
+                # print(111)
+                return divideGroups(nums, len(nums)-1, average, 0, k-1)
+            for i in range(start, -1, -1):
+                if nums_flag[i] == 1 or current + nums[i] > average:
+                    # 当前元素被使用过，或放入箱子之后超出则开始判断下一个
+                    continue
+                # 表示该元素被占用
+                nums_flag[i] = 1
+                # 看使用该元素情况下能否占满一个箱子
+                if divideGroups(nums, i-1, average, current + nums[i], k):
+                    return True
+                # 不行的话就释放该元素
+                nums_flag[i] = 0
+                # 例如“12333333...”，假如最右侧的“3”这个值没有匹配上，那么它左侧的剩余五个“3”都不需要再匹配了。
+                while i > 0 and nums[i] == nums[i - 1]:
+                    i -= 1
+            return False
+
+        return divideGroups(nums, len(nums)-1, average, 0, k)
+```
+
+参考java写的回溯，算法内容应该是对的，但是超时了，应该是剪枝没有做的很好，但是java是能通过的……
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209201502815.png)
+
+```python
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        all = sum(nums)
+        if all % k:
+            return False
+        per = all // k
+        nums.sort()  # 方便下面剪枝
+        if nums[-1] > per:
+            return False
+        n = len(nums)
+
+        @cache
+        def dfs(s, p):
+            if s == 0:
+                return True
+            for i in range(n):
+                # 因为是升序排列，所以i处的不满足后面一定也不满足
+                if nums[i] + p > per:
+                    break
+                if s >> i & 1 and dfs(s ^ (1 << i), (p + nums[i]) % per):  # p + nums[i] 等于 per 时置为 0
+                    return True
+            return False
+        return dfs((1 << n) - 1, 0)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209201507945.png)
+
+我一开始还有些迷惑为什么不需要判断放入桶中的总量和桶容量是否相等，但是后来明白是因为，总空间就这么大，如果能把所有球都用上（即s全0），那说明所有桶都没超，也就是所有桶都满了。
+
+创建一个查找函数参数的字典的简单包装器。 因为它不需要移出旧值，缓存大小没有限制，所以比带有大小限制的 `lru_cache()` 更小更快。这个 `@cache` 装饰器是 Python 3.9 版中的新功能，在此之前，您可以通过 `@lru_cache(maxsize=None)` 获得相同的效果。
+
+```python
+from functools import cache
+
+# 在一个递归函数上应用 cache 装饰器
+@cache
+def factorial(n):
+    return n * factorial(n-1) if n else 1Q
+
+>>> factorial(10)      # 没有以前缓存的结果，进行11次递归调用
+3628800
+>>> factorial(5)       # 只是查找缓存值结果
+120
+>>> factorial(12)      # 进行两个新的递归调用，其他10个被缓存
+479001600
+```
+
+### summary
+
+这个题本身写出回溯就不是很好写，而且还非常容易超时，需要按照官解的方法先进行压缩，再使用`@cache`进行记忆化搜索。
