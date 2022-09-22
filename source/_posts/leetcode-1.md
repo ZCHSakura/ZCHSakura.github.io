@@ -2145,3 +2145,156 @@ def factorial(n):
 ### summary
 
 这个题本身写出回溯就不是很好写，而且还非常容易超时，需要按照官解的方法先进行压缩，再使用`@cache`进行记忆化搜索。
+
+## p854_相似度为K的字符串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209211921399.png)
+
+### mine
+
+```python
+class Solution:
+    def kSimilarity(self, s1: str, s2: str) -> int:
+        s, t = [], []
+        for x, y in zip(s1, s2):
+            if x != y:
+                s.append(x)
+                t.append(y)
+        n = len(s)
+        if n == 0:
+            return 0
+
+        ans = n - 1
+        def dfs(i: int, cost: int) -> None:
+            nonlocal ans
+            if cost > ans:
+                return
+            while i < n and s[i] == t[i]:
+                i += 1
+            if i == n:
+                ans = min(ans, cost)
+                return
+            for j in range(i + 1, n):
+                if s[j] == t[i]:
+                    s[i], s[j] = s[j], s[i]
+                    dfs(i + 1, cost + 1)
+                    s[i], s[j] = s[j], s[i]
+        dfs(0, 0)
+        return ans
+```
+
+暴力dfs递归能勉强通过，但一定要先对两个字符串做处理，将符合条件的字符先去掉，这样也是一种剪枝，不这样做的话会超时。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209211934523.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209211935374.png)
+
+```python
+class Solution:
+    def kSimilarity(self, s1: str, s2: str) -> int:
+        s, t = [], []
+        for x, y in zip(s1, s2):
+            if x != y:
+                s.append(x)
+                t.append(y)
+        n = len(s)
+        if n == 0:
+            return 0
+
+        ans = n - 1
+        def dfs(i: int, cost: int) -> None:
+            nonlocal ans
+            if cost > ans:
+                return
+            while i < n and s[i] == t[i]:
+                i += 1
+            if i == n:
+                ans = min(ans, cost)
+                return
+            diff = sum(s[j] != t[j] for j in range(i, len(s)))
+            min_swap = (diff + 1) // 2
+            if cost + min_swap >= ans:  # 当前状态的交换次数下限大于等于当前的最小交换次数
+                return
+            for j in range(i + 1, n):
+                if s[j] == t[i]:
+                    s[i], s[j] = s[j], s[i]
+                    dfs(i + 1, cost + 1)
+                    s[i], s[j] = s[j], s[i]
+        dfs(0, 0)
+        return ans
+```
+
+我的DFS就是参考官解写的，但是官解有个非常重要的剪枝是我想不到的，就是根据后面还没有换到的数量计算一个交换次数的下限，如果当前cost加当前下限已经大于了ans，那这种情况实际上不需要再走下去了，就可以return掉，这个剪枝可以极大的改善算法的耗时。
+
+### summary
+
+dfs递归确实好用，但是递归就意味着时间开销不会小，一定要想一些有效的剪枝策略，不然很有可能就要超时。
+
+### p1640_能否连接形成数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209221140521.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209221140609.png)
+
+### mine
+
+```python
+class Solution:
+    def canFormArray(self, arr: List[int], pieces: List[List[int]]) -> bool:
+        for item in pieces:
+            # 不止一个元素
+            if len(item) != 1:
+                # 元素不存在
+                if item[0] not in arr:
+                    return False
+                start = arr.index(item[0])
+                j = 1
+                # 越界了直接Flase
+                if start + len(item) > len(arr):
+                    return False
+                # 看顺序对不对
+                for i in range(start + 1, start + len(item)):
+                    if arr[i] != item[j]:
+                        return False
+                    j += 1
+            # 一个元素时只要判断在不在就行了
+            else:
+                if item[0] not in arr:
+                    return False
+        
+        return True
+```
+
+我的思路很简单，首先对pieces内元素分两种情况：
+
+- 元素长度为1，我们只需要判断这个元素有没有在arr中出现。
+- 元素长度不为1，我们首先定位到这个元素中item[0]在arr中的位置，然后判断后面的长度够不够和顺序对不对。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209221149256.png)
+
+```python
+class Solution:
+    def canFormArray(self, arr: List[int], pieces: List[List[int]]) -> bool:
+        index = {p[0]: i for i, p in enumerate(pieces)}
+        i = 0
+        while i < len(arr):
+            if arr[i] not in index:
+                return False
+            p = pieces[index[arr[i]]]
+            if arr[i: i + len(p)] != p:
+                return False
+            i += len(p)
+        return True
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209221150435.png)
+
+思路其实都差不多，官解是使用了一个哈希表来完成index的记录，但是他这个要遍历一遍prices，我那个如果运气好一开始就会False，说不好哪个快。
+
+### summary
+
+这种题主要还是讲究个思路，实现起来很简单。
