@@ -2298,3 +2298,174 @@ class Solution:
 ### summary
 
 这种题主要还是讲究个思路，实现起来很简单。
+
+## p707_设计链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209232202144.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209232202266.png)
+
+### mine
+
+```python
+class ListNode:
+
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+
+class MyLinkedList:
+
+    def __init__(self):
+        # 存长度
+        self.size = 0
+        # 存头节点
+        self.head = ListNode(0)
+
+    def get(self, index: int) -> int:
+        if index < 0 or index >= self.size:
+            return -1
+        cur = self.head
+        for _ in range(index + 1):
+            cur = cur.next
+        return cur.val
+
+
+    def addAtHead(self, val: int) -> None:
+        self.addAtIndex(0, val)
+
+
+    def addAtTail(self, val: int) -> None:
+        self.addAtIndex(self.size, val)
+
+
+    def addAtIndex(self, index: int, val: int) -> None:
+        if index > self.size:
+            return
+        add_node = ListNode(val)
+        self.size += 1
+        if index <= 0:
+            add_node.next = self.head.next
+            self.head.next = add_node
+            return
+        cur = self.head
+        for _ in range(index):
+            cur = cur.next
+        add_node.next = cur.next
+        cur.next = add_node
+
+    def deleteAtIndex(self, index: int) -> None:
+        if index < 0 or index >= self.size:
+            return
+        self.size -= 1
+        cur = self.head
+        for _ in range(index):     
+            cur = cur.next
+        cur.next = cur.next.next
+
+
+# Your MyLinkedList object will be instantiated and called as such:
+# obj = MyLinkedList()
+# param_1 = obj.get(index)
+# obj.addAtHead(val)
+# obj.addAtTail(val)
+# obj.addAtIndex(index,val)
+# obj.deleteAtIndex(index)
+```
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209232204318.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209232205236.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209232206714.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209232206156.png)
+
+```python
+class ListNode:
+
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+        self.prev = None
+
+
+class MyLinkedList:
+
+    def __init__(self):
+        self.size = 0
+        self.head, self.tail = ListNode(0), ListNode(0) 
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+
+    def get(self, index: int) -> int:
+        if index < 0 or index >= self.size:
+            return -1
+        if index + 1 < self.size - index:
+            curr = self.head
+            for _ in range(index + 1):
+                curr = curr.next
+        else:
+            curr = self.tail
+            for _ in range(self.size - index):
+                curr = curr.prev
+        return curr.val
+
+
+    def addAtHead(self, val: int) -> None:
+        self.addAtIndex(0, val)
+
+
+    def addAtTail(self, val: int) -> None:
+        self.addAtIndex(self.size, val)
+
+
+    def addAtIndex(self, index: int, val: int) -> None:
+        if index > self.size:
+            return
+        index = max(0, index)
+        if index < self.size - index:
+            pred = self.head
+            for _ in range(index):
+                pred = pred.next
+            succ = pred.next
+        else:
+            succ = self.tail
+            for _ in range(self.size - index):
+                succ = succ.prev
+            pred = succ.prev
+        self.size += 1
+        to_add = ListNode(val)
+        to_add.prev = pred
+        to_add.next = succ
+        pred.next = to_add
+        succ.prev = to_add
+
+
+    def deleteAtIndex(self, index: int) -> None:
+        if index < 0 or index >= self.size:
+            return
+        if index < self.size - index:
+            pred = self.head
+            for _ in range(index):
+                pred = pred.next
+            succ = pred.next.next
+        else:
+            succ = self.tail
+            for _ in range(self.size - index - 1):
+                succ = succ.prev
+            pred = succ.prev.prev
+        self.size -= 1
+        pred.next = succ
+        succ.prev = pred
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209232207156.png)
+
+### summary
+
+整体来说就是构造一个数据结构来模拟链表，链表主要维护节点数和头节点，并且注意头节点是不算在index里面的，头节点的后续节点是index为0的节点，操作链表时主要注意向后遍历时候的次数就行了。
