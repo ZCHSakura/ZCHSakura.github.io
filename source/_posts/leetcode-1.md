@@ -2469,3 +2469,63 @@ class MyLinkedList:
 ### summary
 
 整体来说就是构造一个数据结构来模拟链表，链表主要维护节点数和头节点，并且注意头节点是不算在index里面的，头节点的后续节点是index为0的节点，操作链表时主要注意向后遍历时候的次数就行了。
+
+## p1652_拆炸弹
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209241708418.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209241708486.png)
+
+### mine
+
+```python
+class Solution:
+    def decrypt(self, code: List[int], k: int) -> List[int]:
+        if k == 0:
+            return [0] * len(code)
+        new_code = code + code
+        num_code = len(code)
+        ans = []
+        if k > 0:
+            for i in range(num_code):
+                ans.append(sum(new_code[i+1:i+k+1]))
+        if k < 0:
+            for i in range(num_code):
+                ans.append(sum(new_code[num_code+i+k:num_code+i]))
+        return ans
+```
+
+简单题没什么复杂的地方，循环通过两个数组前后相连来解决，取k个值通过数组切片来取。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209241711890.png)
+
+```python
+class Solution:
+    def decrypt(self, code: List[int], k: int) -> List[int]:
+        if k == 0:
+            return [0] * len(code)
+        res = []
+        n = len(code)
+        code += code
+        if k > 0:
+            l, r = 1, k
+        else:
+            l, r = n + k, n - 1
+        w = sum(code[l:r+1])
+        for i in range(n):
+            res.append(w)
+            w -= code[l]
+            w += code[r + 1]
+            l, r = l + 1, r + 1
+        return res
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209241712695.png)
+
+也可以通过取模的操作解决循环数组，可以减少一点空间开销。
+
+### summary
+
+循环数组可以通过取模或者数组拼接来完成。
