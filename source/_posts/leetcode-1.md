@@ -2529,3 +2529,79 @@ class Solution:
 ### summary
 
 循环数组可以通过取模或者数组拼接来完成。
+
+## p788_旋转数字
+
+![image-20220925104558633](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209251046745.png)
+
+### mine
+
+```python
+class Solution:
+    def rotatedDigits(self, n: int) -> int:
+        """
+        遍历
+        1.不能有3，4，7(有效)
+        2.至少有2，5，6，9其中之一(不同)
+        3.分别判断有效和不同
+        """
+        ans = 0
+        for i in range(1, n + 1):
+            digital_list = [int(digital) for digital in str(i)]
+            valid = True
+            different = False
+            for digital in digital_list:
+                if digital in [3, 4, 7]:
+                    valid = False
+                    break
+                if digital in [2, 5, 6, 9]:
+                    different = True
+            if valid and different:
+                ans += 1
+        
+        return ans
+```
+
+遍历一遍N个数，对每个数遍历每一位，分别判断是否有效和是否不同。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209251050039.png)
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209251050709.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209251050869.png)
+
+```python
+class Solution:
+    def rotatedDigits(self, n: int) -> int:
+        check = [0, 0, 1, -1, -1, 1, 1, -1, 0, 1]
+        digits = [int(digit) for digit in str(n)]
+
+        @cache
+        def dfs(pos: int, bound: bool, diff: bool) -> int:
+            if pos == len(digits):
+                return int(diff)
+            
+            ret = 0
+            for i in range(0, (digits[pos] if bound else 9) + 1):
+                if check[i] != -1:
+                    ret += dfs(
+                        pos + 1,
+                        bound and i == digits[pos],
+                        diff or check[i] == 1
+                    )
+            
+            return ret
+            
+        
+        ans = dfs(0, True, False)
+        dfs.cache_clear()
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209251051083.png)
+
+### summary
+
+暴力遍历可以做，动态规划可以减少时间复杂度。
