@@ -2605,3 +2605,78 @@ class Solution:
 ### summary
 
 暴力遍历可以做，动态规划可以减少时间复杂度。
+
+## interview17.09_第k个数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209282135399.png)
+
+### mine
+
+```python
+class Solution:
+    def getKthMagicNumber(self, k: int) -> int:
+        seen = [1]
+        for i in range(k - 1):
+            new = min(seen)
+            for factor in [3, 5, 7]:
+                if new * factor not in seen:
+                    seen.append(new * factor)
+            seen.remove(new)
+        
+        return min(seen)
+```
+
+我这种方法就是暴力，而且没进行什么优化，只能说可以成功AC。
+
+就是从1开始不断找最小的数分别乘上3，5，7。因为素因子乘积得到的数的因子只可能是这些素因子。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209282156122.png)
+
+```python
+class Solution:
+    def getKthMagicNumber(self, k: int) -> int:
+        factors = [3, 5, 7]
+        seen = {1}
+        heap = [1]
+
+        for i in range(k - 1):
+            curr = heapq.heappop(heap)
+            for factor in factors:
+                if (nxt := curr * factor) not in seen:
+                    seen.add(nxt)
+                    heapq.heappush(heap, nxt)
+
+        return heapq.heappop(heap)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209282156676.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209282157149.png)
+
+```python
+class Solution:
+    def getKthMagicNumber(self, k: int) -> int:
+        dp = [0] * (k + 1)
+        dp[1] = 1
+        p3 = p5 = p7 = 1
+
+        for i in range(2, k + 1):
+            num3, num5, num7 = dp[p3] * 3, dp[p5] * 5, dp[p7] * 7
+            dp[i] = min(num3, num5, num7)
+            if dp[i] == num3:
+                p3 += 1
+            if dp[i] == num5:
+                p5 += 1
+            if dp[i] == num7:
+                p7 += 1
+        
+        return dp[k]
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202209282158915.png)
+
+### summary
+
+最小堆在数据结构方面对我的这种算法思路进行了优化，但是需要存储较多的数据，运行速度上不会很快。而动态规划的方法则可以通过三个指针的移动，每次只求出一个当前最小值，不用维护一片具有很多中间结果的数据。
