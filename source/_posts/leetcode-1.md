@@ -2680,3 +2680,41 @@ class Solution:
 ### summary
 
 最小堆在数据结构方面对我的这种算法思路进行了优化，但是需要存储较多的数据，运行速度上不会很快。而动态规划的方法则可以通过三个指针的移动，每次只求出一个当前最小值，不用维护一片具有很多中间结果的数据。
+
+## p1694_重新格式化电话号码
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210011732538.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210011733952.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210011733318.png)
+
+### mine
+
+```python
+class Solution:
+    def reformatNumber(self, number: str) -> str:
+        number = number.replace(" ", "").replace("-", "")
+        i = 0
+        ans = []
+        # 先处理前面
+        while i < len(number) - 4:
+            ans.append(number[i: i + 3])
+            i += 3
+        # 最后几个数字分类处理
+        if len(number) - i == 2:
+            ans.append(number[i:])
+        elif len(number) - i == 3:
+            ans.append(number[i:])
+        elif len(number) - i == 4:
+            ans.extend([number[i:i+2], number[i+2:]])
+
+        return "-".join(ans)
+```
+
+就先统一处理前面的数字，最后分情况讨论最后几个数字就行了。
+
+### summary
+
+没啥说的，正常模拟一遍就完了。
+
