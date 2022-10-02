@@ -2718,3 +2718,84 @@ class Solution:
 
 没啥说的，正常模拟一遍就完了。
 
+## p777_在LR字符串中交换相邻字符
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210020853265.png)
+
+### mine
+
+首先要先理解这个题目，这个题目的意思就是L和R可以在X上按方向滑动，但是不能跨过其他的L或R，因此这个问题如果为True需要满足两个条件：
+
+- start和end中LR的相对位置相同
+- start和end中同一对L或R的滑动方向要符合要求
+
+根据以上两个条件可以简单的写出以下代码，能通过，但是时空复杂度都有点大，毕竟要遍历三遍。
+
+```python
+class Solution:
+    def canTransform(self, start: str, end: str) -> bool:
+        if start.replace("X", "") != end.replace("X", ""):
+            return False
+            
+        start_index, end_index = [], []
+        for i in range(len(start)):
+            if start[i] != 'X':
+                start_index.append(i)
+        for j in range(len(end)):
+            if end[j] != 'X':
+                end_index.append(j)
+
+        start_flag = list(zip(start.replace("X", ""), start_index))
+        end_flag = list(zip(end.replace("X", ""), end_index))
+
+        for i in range(len(start_flag)):
+            if start_flag[i][0] == 'R' and start_flag[i][1] > end_flag[i][1]:
+                return False
+            if start_flag[i][0] == 'L' and start_flag[i][1] < end_flag[i][1]:
+                return False
+
+        return True
+```
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210020858238.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210020859964.png)
+
+```python
+class Solution:
+    def canTransform(self, start: str, end: str) -> bool:
+        n = len(start)
+        i = j = 0
+        while i < n and j < n:
+            while i < n and start[i] == 'X':
+                i += 1
+            while j < n and end[j] == 'X':
+                j += 1
+            if i < n and j < n:
+                if start[i] != end[j]:
+                    return False
+                c = start[i]
+                if c == 'L' and i < j or c == 'R' and i > j:
+                    return False
+                i += 1
+                j += 1
+        while i < n:
+            if start[i] != 'X':
+                return False
+            i += 1
+        while j < n:
+            if end[j] != 'X':
+                return False
+            j += 1
+        return True
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210020859555.png)
+
+双指针，只需要两个字符串各遍历一次即可。
+
+### summary
+
+这个题主要是要理解题意，分析出能返回True的两个必要条件，就肯定能写出来，只不过用双指针时空开销会更小一些。
