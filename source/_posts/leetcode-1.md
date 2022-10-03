@@ -2799,3 +2799,20 @@ class Solution:
 ### summary
 
 这个题主要是要理解题意，分析出能返回True的两个必要条件，就肯定能写出来，只不过用双指针时空开销会更小一些。
+
+## p1784_检查二进制字符串字段
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210031152722.png)
+
+### mine
+
+```python
+class Solution:
+    def checkOnesSegment(self, s: str) -> bool:
+        return '01' not in s
+```
+
+实际上是个脑筋急转弯。
+
+- 第一个条件说明开头的1和后面的1之间不能有0，不然就有两个“1”组成的字段
+- 第二个条件说明字符串只能是1111111110000000这种形式。
