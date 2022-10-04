@@ -2816,3 +2816,47 @@ class Solution:
 
 - 第一个条件说明开头的1和后面的1之间不能有0，不然就有两个“1”组成的字段
 - 第二个条件说明字符串只能是1111111110000000这种形式。
+
+## p921_使括号有效的最少添加
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210041045261.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210041045792.png)
+
+### mine
+
+```python
+class Solution:
+    def minAddToMakeValid(self, s: str) -> int:
+        while '()' in s:
+            s = s.replace('()', '')
+        return len(s)
+```
+
+说白了就是做括号匹配，python可以使用replace来不断删除字符串中已经匹配好的括号对，剩下的就是需要添加的。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210041047270.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210041047672.png)
+
+```python
+class Solution:
+    def minAddToMakeValid(self, s: str) -> int:
+        ans = cnt = 0
+        for c in s:
+            if c == '(':
+                cnt += 1
+            elif cnt > 0:
+                cnt -= 1
+            else:
+                ans += 1
+        return ans + cnt
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210041048257.png)
+
+### summary
+
+题不难，难度全在读题上。。。不知道啥人写的题目，就离谱。
