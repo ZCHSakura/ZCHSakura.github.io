@@ -2860,3 +2860,57 @@ class Solution:
 ### summary
 
 题不难，难度全在读题上。。。不知道啥人写的题目，就离谱。
+
+## p811_子域名访问计数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210051114229.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210051121307.png)
+
+### mine
+
+```python
+class Solution:
+    def subdomainVisits(self, cpdomains: List[str]) -> List[str]:
+        seen = dict()
+        for item in cpdomains:
+            visit_num, domain = item.split(' ')
+            if domain in seen:
+                seen[domain] += int(visit_num)
+            else:
+                seen[domain] = int(visit_num)
+            sub_domains = ['.'.join(domain.split('.')[i+1:]) for i in range(len(domain.split('.'))-1)]
+            for sub_domain in sub_domains:
+                if sub_domain in seen:
+                    seen[sub_domain] += int(visit_num)
+                else:
+                    seen[sub_domain] = int(visit_num)
+
+        return [str(value) + ' ' + str(key) for key, value in seen.items()]
+```
+
+使用哈希结构存储结果，处理域名获取所有的父域名，给父域名也加上访问次数。
+
+### others
+
+```python
+class Solution:
+    def subdomainVisits(self, cpdomains: List[str]) -> List[str]:
+        cnt = Counter()
+        for domain in cpdomains:
+            c, s = domain.split()
+            c = int(c)
+            cnt[s] += c
+            while '.' in s:
+                s = s[s.index('.') + 1:]
+                cnt[s] += c
+        return [f"{c} {s}" for s, c in cnt.items()]
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210051126822.png)
+
+思路一样只不过官解写法更简洁。
+
+### summary
+
+思路不难，主要是可以优化代码写法。
