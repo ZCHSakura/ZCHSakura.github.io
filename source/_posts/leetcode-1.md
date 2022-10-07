@@ -3007,3 +3007,29 @@ class Solution:
 ### summary
 
 这个题的代码部分不难，主要是分析题目得出二进制代码由最后一个等分决定。
+
+## E_p1800_最大升序子数组和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210071335869.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210071336437.png)
+
+### mine
+
+```python
+class Solution:
+    def maxAscendingSum(self, nums: List[int]) -> int:
+        ans = 0
+        cur = 0
+        for i in range(len(nums)):
+            if i == 0 or nums[i-1] < nums[i]:
+                cur += nums[i]
+            else:
+                cur = nums[i]
+            ans = max(cur, ans)
+        
+        return ans
+```
+
+循环模拟一遍就行了。
+
