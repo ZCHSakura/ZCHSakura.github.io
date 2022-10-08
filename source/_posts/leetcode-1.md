@@ -3033,3 +3033,83 @@ class Solution:
 
 循环模拟一遍就行了。
 
+## M_p870_优势洗牌
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210081946347.png)
+
+### mine
+
+```python
+class Solution:
+    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        ori_index2 = []
+        for i in range(len(nums2)):
+            ori_index2.append((i, nums2[i]))
+
+        nums1.sort()
+        ori_index2.sort(key=lambda x: x[1])
+        nums1_flag = [0] * len(nums1)
+        ans = []
+        i = j = 0
+        while i < len(nums1):
+            if nums1[i] > ori_index2[j][1]:
+                ans.append((ori_index2[j][0], nums1[i]))
+                nums1_flag[i] = 1
+                i += 1
+                j += 1
+            else:
+                i += 1
+
+        # 如果还有剩下的说明2中的这些值太大了，1中没有能符合的，那就从剩的中直接排列就行了
+        if len(nums2)-len(ans) != 0:
+            for item in ori_index2[-(len(nums2)-len(ans)):]:
+                ans.append((item[0], nums1[nums1_flag.index(0)]))
+                nums1_flag[nums1_flag.index(0)] = 1
+        
+        ans.sort(key=lambda x: x[0])
+        return [i[1] for i in ans]
+```
+
+1. 首先记录nums2中原本数字的位置
+2. 对两个数组都进行排序
+3. 使用两个指针分别指向两个数组开头，如果nums1中数大于nums2的则两个指针都后移一位，否则nums1的指针后移一位。直到nums1的指针走到头
+4. 如果nums2中还有剩余元素则将nums1中没使用的元素排列上去
+5. 最后调整回nums2中原本的顺序
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210081951696.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210081951458.png)
+
+```python
+class Solution:
+    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        n = len(nums1)
+        idx1, idx2 = list(range(n)), list(range(n))
+        idx1.sort(key=lambda x: nums1[x])
+        idx2.sort(key=lambda x: nums2[x])
+
+        ans = [0] * n
+        left, right = 0, n - 1
+        for i in range(n):
+            if nums1[idx1[i]] > nums2[idx2[left]]:
+                ans[idx2[left]] = nums1[idx1[i]]
+                left += 1
+            else:
+                ans[idx2[right]] = nums1[idx1[i]]
+                right -= 1
+        
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210081952746.png)
+
+其实整体思路差别不大的，只不过官解有两个技巧可以极大减少代码量。
+
+- 使用两个idx数组来记录nums1和nums2中原本的顺序。
+- 使用right和left两个指针来控制nums2的选择，这样子可以避免我的代码中一个数组走空了另一个数组还没走空的问题，这种方式可以保证两个数组同时走空。
+
+### summary
+
+在算法思路大致相同的情况下，代码的技巧也可以很大程度上影响整个算法的编写。
