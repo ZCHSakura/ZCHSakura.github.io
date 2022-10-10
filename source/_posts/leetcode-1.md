@@ -3223,3 +3223,101 @@ class Solution:
 ### summary
 
 暴力通不过的情况下就应该考虑一些时间复杂度低一点的算法，或者考虑用空间换时间。
+
+## M_p856_括号的分数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210091440423.png)
+
+### mine
+
+```python
+class Solution:
+    def scoreOfParentheses(self, s: str) -> int:
+        st = []
+        ans = 0
+        for i in s:
+            if i == '(':
+                st.append(i)
+            # 如果遇到右括号
+            else:
+                # 如果该右括号紧挨着左括号则加一分,之后和之前的分数相加
+                if st[-1] == '(':
+                    st.pop()
+                    st.append(1)
+                    if len(st) >= 2 and st[-2] != '(':
+                        st[-2] += st[-1]
+                        st.pop()
+                # 如果没有紧挨着左括号则其中元素×2,之后和之前的分数相加
+                else:
+                    temp = 2 * st[-1]
+                    st.pop()
+                    st.pop()
+                    st.append(temp)
+                    if len(st) >= 2 and st[-2] != '(':
+                        st[-2] += st[-1]
+                        st.pop()
+        
+        return st[0]
+```
+
+使用栈的思想不断入栈出栈。
+
+- 遇到左括号的时候很好处理，入栈就完了
+- 遇到右括号的话就要进行判断
+  - 如果该右括号紧挨着左括号则加一分,之后和之前的分数相加
+  - 如果没有紧挨着左括号则其中元素×2,之后和之前的分数相加
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101057784.png)
+
+```python
+class Solution:
+    def scoreOfParentheses(self, s: str) -> int:
+        n = len(s)
+        if n == 2:
+            return 1
+        bal = 0
+        for i, c in enumerate(s):
+            bal += 1 if c == '(' else -1
+            if bal == 0:
+                if i == n - 1:
+                    return 2 * self.scoreOfParentheses(s[1:-1])
+                return self.scoreOfParentheses(s[:i + 1]) + self.scoreOfParentheses(s[i + 1:])
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101057542.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101057852.png)
+
+```python
+class Solution:
+    def scoreOfParentheses(self, s: str) -> int:
+        st = [0]
+        for c in s:
+            if c == '(':
+                st.append(0)
+            else:
+                v = st.pop()
+                st[-1] += max(2 * v, 1)
+        return st[-1]
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101058032.png)
+
+```python
+class Solution:
+    def scoreOfParentheses(self, s: str) -> int:
+        ans = bal = 0
+        for i, c in enumerate(s):
+            bal += 1 if c == '(' else -1
+            if c == ')' and s[i - 1] == '(':
+                ans += 1 << bal
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101058587.png)
+
+### summary
+
+官解中提供了三种不同的思路，第一种是分治递归的思想；第二种是栈的思想；第三种则是直接找到题目中的关键规律直接得到答案。
