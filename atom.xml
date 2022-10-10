@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2022-07-25T02:52:51.839Z</updated>
+  <updated>2022-10-10T12:51:10.559Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ssh 22 time out</title>
+    <link href="zchsakura.github.io/ssh-22-time-out/"/>
+    <id>zchsakura.github.io/ssh-22-time-out/</id>
+    <published>2022-10-09T02:31:36.000Z</published>
+    <updated>2022-10-10T12:51:10.559Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这里记录一下git使用过程中总是碰到的一个错误，&lt;code&gt;ssh: connect to host github.com port 22: Connection timed out&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="服务器配置" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
+    
+    
+      <category term="git" scheme="zchsakura.github.io/tags/git/"/>
+    
+  </entry>
   
   <entry>
     <title>处理dm字段大小写</title>
@@ -370,7 +393,7 @@
     <link href="zchsakura.github.io/leetcode-1/"/>
     <id>zchsakura.github.io/leetcode-1/</id>
     <published>2020-06-30T12:13:05.000Z</published>
-    <updated>2022-10-08T12:52:24.209Z</updated>
+    <updated>2022-10-10T14:06:10.607Z</updated>
     
     <summary type="html">
     
@@ -482,32 +505,6 @@
     
     
       <category term="服务器" scheme="zchsakura.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Django学习笔记</title>
-    <link href="zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    <id>zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
-    <published>2020-05-18T10:32:33.000Z</published>
-    <updated>2022-07-19T06:29:09.429Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;记录Django学习笔记&lt;/p&gt;
-&lt;p&gt;https://www.bilibili.com/video/BV1rx411X717&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="Django" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Django/"/>
-    
-    
-      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
-    
-      <category term="Django" scheme="zchsakura.github.io/tags/Django/"/>
     
   </entry>
   

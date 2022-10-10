@@ -3329,6 +3329,59 @@
 <p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210082047560.png" /></p>
 <h3 id="summary-38">summary</h3>
 <p>暴力通不过的情况下就应该考虑一些时间复杂度低一点的算法，或者考虑用空间换时间。</p>
+<h2 id="m_p856_括号的分数">M_p856_括号的分数</h2>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210091440423.png" /></p>
+<h3 id="mine-42">mine</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">scoreOfParentheses</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        st = []</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> i == <span class="string">'('</span>:</span><br><span class="line">                st.append(i)</span><br><span class="line">            <span class="comment"># 如果遇到右括号</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 如果该右括号紧挨着左括号则加一分,之后和之前的分数相加</span></span><br><span class="line">                <span class="keyword">if</span> st[<span class="number">-1</span>] == <span class="string">'('</span>:</span><br><span class="line">                    st.pop()</span><br><span class="line">                    st.append(<span class="number">1</span>)</span><br><span class="line">                    <span class="keyword">if</span> len(st) &gt;= <span class="number">2</span> <span class="keyword">and</span> st[<span class="number">-2</span>] != <span class="string">'('</span>:</span><br><span class="line">                        st[<span class="number">-2</span>] += st[<span class="number">-1</span>]</span><br><span class="line">                        st.pop()</span><br><span class="line">                <span class="comment"># 如果没有紧挨着左括号则其中元素×2,之后和之前的分数相加</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    temp = <span class="number">2</span> * st[<span class="number">-1</span>]</span><br><span class="line">                    st.pop()</span><br><span class="line">                    st.pop()</span><br><span class="line">                    st.append(temp)</span><br><span class="line">                    <span class="keyword">if</span> len(st) &gt;= <span class="number">2</span> <span class="keyword">and</span> st[<span class="number">-2</span>] != <span class="string">'('</span>:</span><br><span class="line">                        st[<span class="number">-2</span>] += st[<span class="number">-1</span>]</span><br><span class="line">                        st.pop()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> st[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>使用栈的思想不断入栈出栈。</p>
+<ul>
+<li>遇到左括号的时候很好处理，入栈就完了</li>
+<li>遇到右括号的话就要进行判断
+<ul>
+<li>如果该右括号紧挨着左括号则加一分,之后和之前的分数相加</li>
+<li>如果没有紧挨着左括号则其中元素×2,之后和之前的分数相加</li>
+</ul></li>
+</ul>
+<h3 id="others-36">others</h3>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101057784.png" /></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">scoreOfParentheses</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        n = len(s)</span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        bal = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            bal += <span class="number">1</span> <span class="keyword">if</span> c == <span class="string">'('</span> <span class="keyword">else</span> <span class="number">-1</span></span><br><span class="line">            <span class="keyword">if</span> bal == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">if</span> i == n - <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">2</span> * self.scoreOfParentheses(s[<span class="number">1</span>:<span class="number">-1</span>])</span><br><span class="line">                <span class="keyword">return</span> self.scoreOfParentheses(s[:i + <span class="number">1</span>]) + self.scoreOfParentheses(s[i + <span class="number">1</span>:])</span><br></pre></td></tr></table></figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101057542.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101057852.png" /></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">scoreOfParentheses</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        st = [<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">'('</span>:</span><br><span class="line">                st.append(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                v = st.pop()</span><br><span class="line">                st[<span class="number">-1</span>] += max(<span class="number">2</span> * v, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> st[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101058032.png" /></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">scoreOfParentheses</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        ans = bal = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i, c <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            bal += <span class="number">1</span> <span class="keyword">if</span> c == <span class="string">'('</span> <span class="keyword">else</span> <span class="number">-1</span></span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">')'</span> <span class="keyword">and</span> s[i - <span class="number">1</span>] == <span class="string">'('</span>:</span><br><span class="line">                ans += <span class="number">1</span> &lt;&lt; bal</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210101058587.png" /></p>
+<h3 id="summary-39">summary</h3>
+<p>官解中提供了三种不同的思路，第一种是分治递归的思想；第二种是栈的思想；第三种则是直接找到题目中的关键规律直接得到答案。</p>
+<h2 id="h_p801_使序列递增的最小交换次数">H_p801_使序列递增的最小交换次数</h2>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102154090.png" /></p>
+<h3 id="mine-43">mine</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minSwap</span><span class="params">(self, nums1: List[int], nums2: List[int])</span> -&gt; int:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        dp[i][0]表示第i位不交换情况下的操作次数</span></span><br><span class="line"><span class="string">        dp[i][1]表示第i位交换情况下的操作次数</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        n = len(nums1)</span><br><span class="line">        dp = [[<span class="number">0</span>, <span class="number">0</span>] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range (<span class="number">1</span>, n):</span><br><span class="line">            <span class="comment"># 原本两数组均递增，互换后仍递增(i交换与否与之前无关)</span></span><br><span class="line">            <span class="keyword">if</span> (nums1[i<span class="number">-1</span>] &lt; nums1[i] <span class="keyword">and</span> nums2[i<span class="number">-1</span>] &lt; nums2[i]) <span class="keyword">and</span> (nums1[i<span class="number">-1</span>] &lt; nums2[i] <span class="keyword">and</span> nums2[i<span class="number">-1</span>] &lt; nums1[i]):</span><br><span class="line">                dp[i][<span class="number">0</span>] = min(dp[i<span class="number">-1</span>][<span class="number">0</span>], dp[i<span class="number">-1</span>][<span class="number">1</span>])</span><br><span class="line">                dp[i][<span class="number">1</span>] = dp[i][<span class="number">0</span>] + <span class="number">1</span></span><br><span class="line">            <span class="comment"># 原本两数组均递增，互换后不递增(i交换i-1就也得交换)</span></span><br><span class="line">            <span class="keyword">elif</span> nums1[i<span class="number">-1</span>] &lt; nums1[i] <span class="keyword">and</span> nums2[i<span class="number">-1</span>] &lt; nums2[i]:</span><br><span class="line">                dp[i][<span class="number">0</span>] = dp[i<span class="number">-1</span>][<span class="number">0</span>]</span><br><span class="line">                dp[i][<span class="number">1</span>] = dp[i<span class="number">-1</span>][<span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">            <span class="comment"># 原本两数组就不递增(i交换则i-1不能交换)</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][<span class="number">0</span>] = dp[i<span class="number">-1</span>][<span class="number">1</span>]</span><br><span class="line">                dp[i][<span class="number">1</span>] = dp[i<span class="number">-1</span>][<span class="number">0</span>] + <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> min(dp[n<span class="number">-1</span>][<span class="number">0</span>], dp[n<span class="number">-1</span>][<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<p>困难题肯定不可能用暴力搜索，那肯定会超时。首先我们要知道题目限定了用例一定可以实现操作，那么说起来一共只有以下三种情况：</p>
+<ul>
+<li>原本两数组均递增，互换后仍递增(i交换与否与i-1无关)</li>
+<li>原本两数组均递增，互换后不递增(i交换i-1就也得交换)</li>
+<li>原本两数组就不递增(i交换则i-1不能交换)</li>
+</ul>
+<p>说白了就这么三种情况，而且仅与上一位状态有关，这种就需要使用动态规划来完成，使用一个辅助数组来记录每一位置上交换或不交换所需的最少次数就行了。</p>
+<h3 id="others-37">others</h3>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102159917.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102200459.png" /></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minSwap</span><span class="params">(self, nums1: List[int], nums2: List[int])</span> -&gt; int:</span></span><br><span class="line">        n = len(nums1)</span><br><span class="line">        a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):</span><br><span class="line">            at, bt = a, b</span><br><span class="line">            a = b = n</span><br><span class="line">            <span class="keyword">if</span> nums1[i] &gt; nums1[i - <span class="number">1</span>] <span class="keyword">and</span> nums2[i] &gt; nums2[i - <span class="number">1</span>]:</span><br><span class="line">                a = min(a, at)</span><br><span class="line">                b = min(b, bt + <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">if</span> nums1[i] &gt; nums2[i - <span class="number">1</span>] <span class="keyword">and</span> nums2[i] &gt; nums1[i - <span class="number">1</span>]:</span><br><span class="line">                a = min(a, bt)</span><br><span class="line">                b = min(b, at + <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> min(a, b)</span><br></pre></td></tr></table></figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102200946.png" /></p>
+<p>官解的算法思路和我们的是一致的，但是官解的代码编写有两点可以学习：</p>
+<ul>
+<li>没有使用数组来记录动态规划过程中的状态，而是使用两个常量，毕竟i位置情况只与i-1位置有关，不需要维护每个位置需要的操作次数</li>
+<li>在三种情况的分支编写中，官解没有使用if-elif-else的方式，而是使用了两个if来涵盖了三个情况，更加简洁。</li>
+</ul>
+<h3 id="summary-40">summary</h3>
+<p>创建数组的时候不要使用<code>list_two = [[0] * 3] * 3</code>这种方式，不然会出现以下情况：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list_two[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">2</span></span><br><span class="line">print(list_two)</span><br><span class="line"></span><br><span class="line">[[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br><span class="line">[[<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>]]</span><br></pre></td></tr></table></figure>
+<p>为什么会出现在这种情况呢？原因是浅拷贝，我们以这种方式创建的列表，list_two 里面的三个列表的内存是指向同一块，不管我们修改哪个列表，其他两个列表也会跟着改变。</p>
+<p>如果要使用列表创建一个二维数组，可以使用列表生成器来辅助实现。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list_three = [[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)] <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line">print(list_three)</span><br><span class="line">list_three[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">3</span></span><br><span class="line">print(list_three)</span><br></pre></td></tr></table></figure>
+<p>我们对 list_three 进行更新操作，这次就能正常更新了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br><span class="line">[[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">3</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]]</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>算法</category>
@@ -3336,6 +3389,37 @@
       <tags>
         <tag>python</tag>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ssh 22 time out</title>
+    <url>/ssh-22-time-out/</url>
+    <content><![CDATA[<p>这里记录一下git使用过程中总是碰到的一个错误，<code>ssh: connect to host github.com port 22: Connection timed out</code>。</p>
+<a id="more"></a>
+<p>我碰过的这个错误基本是由两种原因引起的，一种是公钥没配置好，另一种就是网络原因。</p>
+<p>这里主要记录下网络原因引起的time out该怎么办。</p>
+<h3 id="检测">检测</h3>
+<p><code>ssh -T git@github.com</code></p>
+<p>如果出现：You’ve successfully authenticated，那么连接成功可以使用了。如果出现：ssh: connect to host github.com port 22: Connection timed out，就说明连接超时。</p>
+<p>连接失败后，可以同样试试<code>ssh -T -p 443 git@github.com</code>，检查是否有异常。</p>
+<p>如果加上443之后能够success的话基本就是网络问题，我们需要使用443端口去连接git。</p>
+<h3 id="配置">配置</h3>
+<ol type="1">
+<li>cd ~/.ssh</li>
+<li>配置或新建config文件</li>
+<li>编辑文件内容并保存退出</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">User 你的邮箱</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>使用<code>ssh -T git@github.com</code>测试下</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>服务器配置</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
       </tags>
   </entry>
 </search>
