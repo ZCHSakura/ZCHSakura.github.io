@@ -3321,3 +3321,106 @@ class Solution:
 ### summary
 
 官解中提供了三种不同的思路，第一种是分治递归的思想；第二种是栈的思想；第三种则是直接找到题目中的关键规律直接得到答案。
+
+## H_p801_使序列递增的最小交换次数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102154090.png)
+
+### mine
+
+```python
+class Solution:
+    def minSwap(self, nums1: List[int], nums2: List[int]) -> int:
+        """
+        dp[i][0]表示第i位不交换情况下的操作次数
+        dp[i][1]表示第i位交换情况下的操作次数
+        """
+        n = len(nums1)
+        dp = [[0, 0] for _ in range(n)]
+        dp[0][0] = 0
+        dp[0][1] = 1
+        for i in range (1, n):
+            # 原本两数组均递增，互换后仍递增(i交换与否与之前无关)
+            if (nums1[i-1] < nums1[i] and nums2[i-1] < nums2[i]) and (nums1[i-1] < nums2[i] and nums2[i-1] < nums1[i]):
+                dp[i][0] = min(dp[i-1][0], dp[i-1][1])
+                dp[i][1] = dp[i][0] + 1
+            # 原本两数组均递增，互换后不递增(i交换i-1就也得交换)
+            elif nums1[i-1] < nums1[i] and nums2[i-1] < nums2[i]:
+                dp[i][0] = dp[i-1][0]
+                dp[i][1] = dp[i-1][1] + 1
+            # 原本两数组就不递增(i交换则i-1不能交换)
+            else:
+                dp[i][0] = dp[i-1][1]
+                dp[i][1] = dp[i-1][0] + 1
+                
+        return min(dp[n-1][0], dp[n-1][1])
+```
+
+困难题肯定不可能用暴力搜索，那肯定会超时。首先我们要知道题目限定了用例一定可以实现操作，那么说起来一共只有以下三种情况：
+
+- 原本两数组均递增，互换后仍递增(i交换与否与i-1无关)
+- 原本两数组均递增，互换后不递增(i交换i-1就也得交换)
+- 原本两数组就不递增(i交换则i-1不能交换)
+
+说白了就这么三种情况，而且仅与上一位状态有关，这种就需要使用动态规划来完成，使用一个辅助数组来记录每一位置上交换或不交换所需的最少次数就行了。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102159917.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102200459.png)
+
+```python
+class Solution:
+    def minSwap(self, nums1: List[int], nums2: List[int]) -> int:
+        n = len(nums1)
+        a, b = 0, 1
+        for i in range(1, n):
+            at, bt = a, b
+            a = b = n
+            if nums1[i] > nums1[i - 1] and nums2[i] > nums2[i - 1]:
+                a = min(a, at)
+                b = min(b, bt + 1)
+            if nums1[i] > nums2[i - 1] and nums2[i] > nums1[i - 1]:
+                a = min(a, bt)
+                b = min(b, at + 1)
+        return min(a, b)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210102200946.png)
+
+官解的算法思路和我们的是一致的，但是官解的代码编写有两点可以学习：
+
+- 没有使用数组来记录动态规划过程中的状态，而是使用两个常量，毕竟i位置情况只与i-1位置有关，不需要维护每个位置需要的操作次数
+- 在三种情况的分支编写中，官解没有使用if-elif-else的方式，而是使用了两个if来涵盖了三个情况，更加简洁。
+
+### summary
+
+创建数组的时候不要使用`list_two = [[0] * 3] * 3`这种方式，不然会出现以下情况：
+
+```python
+list_two[1][1] = 2
+print(list_two)
+
+[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+[[0, 2, 0], [0, 2, 0], [0, 2, 0]]
+```
+
+为什么会出现在这种情况呢？原因是浅拷贝，我们以这种方式创建的列表，list_two 里面的三个列表的内存是指向同一块，不管我们修改哪个列表，其他两个列表也会跟着改变。
+
+如果要使用列表创建一个二维数组，可以使用列表生成器来辅助实现。
+
+```python
+list_three = [[0 for i in range(3)] for j in range(3)]
+print(list_three)
+list_three[1][1] = 3
+print(list_three)
+```
+
+我们对 list_three 进行更新操作，这次就能正常更新了。
+
+```python
+[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+[[0, 0, 0], [0, 3, 0], [0, 0, 0]]
+```
+
