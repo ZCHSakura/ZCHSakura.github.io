@@ -3424,3 +3424,29 @@ print(list_three)
 [[0, 0, 0], [0, 3, 0], [0, 0, 0]]
 ```
 
+## E_p1790_仅执行一次字符串交换能否使两个字符串相等
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210112308082.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210112308113.png)
+
+### mine
+
+```python
+class Solution:
+    def areAlmostEqual(self, s1: str, s2: str) -> bool:
+        x, y = [], []
+        for i in range(len(s1)):
+            if s1[i] != s2[i]:
+                x.append(s1[i])
+                y.append(s2[i])
+        
+        if len(x) == 0:
+            return True
+        
+        if len(x) == 2 and (x[0] == y[1] and x[1] == y[0]):
+            return True
+        return False
+```
+
+简单题没啥说的，遍历一遍就完了。
