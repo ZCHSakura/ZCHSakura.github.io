@@ -3450,3 +3450,68 @@ class Solution:
 ```
 
 简单题没啥说的，遍历一遍就完了。
+
+## M_p817_链表组件
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210121037372.png)
+
+### mine
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def numComponents(self, head: Optional[ListNode], nums: List[int]) -> int:
+        cur = head
+        origin = []
+        while cur != None:
+            origin.append(cur.val)
+            cur = cur.next
+        nums_index = sorted([origin.index(i) for i in nums])
+        
+        ans = 1
+        for i in range(1, len(nums_index)):
+            if nums_index[i] - nums_index[i-1] != 1:
+                ans += 1
+        
+        return ans
+```
+
+我这个思路是先把原始链表变成数组，然后获取到nums列表中元素在原始列表中的index然后看几段连在一起的index。
+
+有点慢，要遍历两次，还要排序。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210121044332.png)
+
+```python
+class Solution:
+    def numComponents(self, head: Optional[ListNode], nums: List[int]) -> int:
+        numsSet = set(nums)
+        inSet = False
+        res = 0
+        while head:
+            if head.val not in numsSet:
+                inSet = False
+            elif not inSet:
+                inSet = True
+                res += 1
+            head = head.next
+        return res
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210121044917.png)
+
+其实遍历一遍就够了，在遍历的过程中进行如下判断：
+
+- 如果该元素不在nums中则标志位置False
+- 如果该元素在nums中并且当前标志位为False(说明该链表位置之前至少有一个位置不在nums中，即当前位置会是一个组件的开头)，标志位置为True同时res+1
+
+### summary
+
+这个题其实不难，但是如何用更少的时间和空间完成算法是我们更加应该考虑的。
+
