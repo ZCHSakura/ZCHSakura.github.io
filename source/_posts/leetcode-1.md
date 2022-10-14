@@ -3515,3 +3515,68 @@ class Solution:
 
 这个题其实不难，但是如何用更少的时间和空间完成算法是我们更加应该考虑的。
 
+## H_p940_不同的子序列2
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142245732.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142245489.png)
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142245101.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142246883.png)
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        mod = 10**9 + 7
+        last = [-1] * 26
+
+        n = len(s)
+        f = [1] * n
+        for i, ch in enumerate(s):
+            for j in range(26):
+                if last[j] != -1:
+                    f[i] = (f[i] + f[last[j]]) % mod
+            last[ord(s[i]) - ord("a")] = i
+        
+        ans = 0
+        for i in range(26):
+            if last[i] != -1:
+                ans = (ans + f[last[i]]) % mod
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142246896.png)
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        mod = 10**9 + 7
+
+        g = [0] * 26
+        for i, ch in enumerate(s):
+            total = (1 + sum(g)) % mod
+            g[ord(s[i]) - ord("a")] = total
+        
+        return sum(g) % mod
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142247223.png)
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        mod = 10**9 + 7
+
+        g = [0] * 26
+        total = 0
+        for i, ch in enumerate(s):
+            oi = ord(s[i]) - ord("a")
+            g[oi], total = (total + 1) % mod, (total * 2 + 1 - g[oi]) % mod
+        
+        return total
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142247834.png)
