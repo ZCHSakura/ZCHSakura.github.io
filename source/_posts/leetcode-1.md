@@ -3580,3 +3580,33 @@ class Solution:
 ```
 
 ![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210142247834.png)
+
+## M_p1441_用栈操作构建数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210151544457.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210151544553.png)
+
+### mine
+
+```python
+class Solution:
+    def buildArray(self, target: List[int], n: int) -> List[str]:
+        cur = 0
+        ans = []
+        for i in range(len(target)):
+            for _ in range(target[i] - cur - 1):
+                ans.extend(["Push", "Pop"])
+            ans.append("Push")
+            cur = target[i]
+        
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210151546291.png)
+
+很简单没啥说的，就判断下一个和上一个是不是相连的就完了。
+
+### summary
+
+模拟一遍就完了。
