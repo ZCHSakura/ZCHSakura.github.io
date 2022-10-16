@@ -3610,3 +3610,113 @@ class Solution:
 ### summary
 
 模拟一遍就完了。
+
+## M_p886_可能的二分法
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210161203145.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210161203908.png)
+
+### mine
+
+```python
+class Solution:
+    def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
+        g = [[] for _ in range(n)]
+        for x, y in dislikes:
+            g[x - 1].append(y - 1)
+            g[y - 1].append(x - 1)
+
+        color = [0] * n
+        def dfs(x: int, c: int) -> bool:
+            color[x] = c
+            for y in g[x]:
+                if color[y] == c:
+                    return False
+                if color[y] == 0 and not dfs(y, -c):
+                    return False
+            return True
+
+        return all(c or dfs(i, 1) for i, c in enumerate(color))
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210161208157.png)
+
+一开始把题理解错了，以为是分很多组，每组里面两个。
+
+如果只是分两组其实比较简单，不会涉及到回溯，直接挨个判断就行了。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210161208845.png)
+
+```python
+class Solution:
+    def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
+        g = [[] for _ in range(n)]
+        for x, y in dislikes:
+            g[x - 1].append(y - 1)
+            g[y - 1].append(x - 1)
+        color = [0] * n  # color[x] = 0 表示未访问节点 x
+        for i, c in enumerate(color):
+            if c == 0:
+                q = deque([i])
+                color[i] = 1
+                while q:
+                    x = q.popleft()
+                    for y in g[x]:
+                        if color[y] == color[x]:
+                            return False
+                        if color[y] == 0:
+                            color[y] = -color[x]
+                            q.append(y)
+        return True
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210161209855.png)
+
+```python
+class UnionFind:
+    def __init__(self, n: int):
+        self.fa = list(range(n))
+        self.rank = [1] * n
+
+    def find(self, x: int) -> int:
+        if self.fa[x] != x:
+            self.fa[x] = self.find(self.fa[x])
+        return self.fa[x]
+
+    def union(self, x: int, y: int) -> None:
+        fx, fy = self.find(x), self.find(y)
+        if fx == fy:
+            return
+        if self.rank[fx] < self.rank[fy]:
+            fx, fy = fy, fx
+        self.rank[fx] += self.rank[fy]
+        self.fa[fy] = fx
+
+    def is_connected(self, x: int, y: int) -> bool:
+        return self.find(x) == self.find(y)
+
+class Solution:
+    def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
+        g = [[] for _ in range(n)]
+        for x, y in dislikes:
+            g[x - 1].append(y - 1)
+            g[y - 1].append(x - 1)
+        uf = UnionFind(n)
+        for x, nodes in enumerate(g):
+            for y in nodes:
+                uf.union(nodes[0], y)
+                if uf.is_connected(x, y):
+                    return False
+        return True
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210161209979.png)
+
+### summary
+
+染色法做起来不会难，毕竟只是二分，很好判断。
+
+并查集的方法可以学习在，在这个题中不如染色简单。
