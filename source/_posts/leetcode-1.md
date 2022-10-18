@@ -3720,3 +3720,124 @@ class Solution:
 染色法做起来不会难，毕竟只是二分，很好判断。
 
 并查集的方法可以学习在，在这个题中不如染色简单。
+
+## M_p904_水果成篮
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182038729.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182038091.png)
+
+### mine
+
+```python
+class Solution:
+    def totalFruit(self, fruits: List[int]) -> int:
+        left = right = 0
+        ans = 0
+        seen = Counter()
+        while right < len(fruits):
+            seen[fruits[right]] += 1
+            while len(seen) > 2:
+                seen[fruits[left]] -= 1
+                if seen[fruits[left]] == 0:
+                    seen.pop(fruits[left])
+                left += 1
+            ans = max(ans, right - left + 1)
+            right += 1
+
+        return ans
+```
+
+整体思想就是使用双指针，用两个指针来记录当前在数组中的左右位置，一开始左右指针都在0处，开始移动右指针，使用哈希结构记录下右指针遇到的水果，当哈希结构中出现第三种水果的时候则要开始处理左指针：
+
+- 首先在哈希结构中将左指针对应的水果数目减一
+- 然后判断哈希结构中左指针对应的水果数目是否已经为0，如果为0了说明篮子里没有这种水果了，将该水果从哈希结构中移除
+- 最后将左指针加一，重复上述过程直到哈希结构中只有两种水果。
+
+接着开始移动右指针，直到右指针走到头。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182045333.png)
+
+### summary
+
+双指针遍历
+
+## H_p902_最大为N的数字组合
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182046197.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182047365.png)
+
+### mine
+
+```python
+class Solution:
+    def atMostNGivenDigitSet(self, digits: List[str], n: int) -> int:
+        num_len = len(str(n))
+        list_len = len(digits)
+
+        ans = 0
+        # 按位数，除全部位数
+        for i in range(1, num_len):
+            ans += list_len ** i
+
+        # 全部位数
+        def get_all_bit_num(digits_1: List[str], n_1: List[str], all_bit_num: int) -> int:
+            for i in digits:
+                if int(i) < int(n_1[0]):
+                    all_bit_num += len(digits_1) ** (len(n_1) - 1)
+                elif int(i) == int(n_1[0]):
+                    if len(n_1) == 1:
+                        all_bit_num += 1
+                    else:
+                        all_bit_num += get_all_bit_num(digits_1, n_1[1:], 0)
+            return all_bit_num
+
+        return ans+get_all_bit_num(digits, str(n), 0)
+```
+
+这里使用了数学方法，将原本的问题分解为两个问题，一个是组合的数位数小于n，一个是组合的数位数等于n。
+
+对于组合的数位数小于n，肯定是所有组合都可以实现的，直接每一种位数做幂运算就行了。
+
+当组合的数位数等于n时，我们可以通过递归的方法从最高位开始判断：
+
+对于digits中的每一个数：
+
+- 当其小于n最高位时，后面的位数可以随便排列，也是一个幂运算。
+- 当其等于n最高位时
+  - 若n不只有一位则递归进入下一位，用下一位当最高位来接着计算
+  - 若n当前只有一位，则直接计数加一
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182121284.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182121334.png)
+
+```python
+class Solution:
+    def atMostNGivenDigitSet(self, digits: List[str], n: int) -> int:
+        m = len(digits)
+        s = str(n)
+        k = len(s)
+        dp = [[0, 0] for _ in range(k + 1)]
+        dp[0][1] = 1
+        for i in range(1, k + 1):
+            for d in digits:
+                if d == s[i - 1]:
+                    dp[i][1] = dp[i - 1][1]
+                elif d < s[i - 1]:
+                    dp[i][0] += dp[i - 1][1]
+                else:
+                    break
+            if i > 1:
+                dp[i][0] += m + dp[i - 1][0] * m
+        return sum(dp[k])
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210182122845.png)
+
+### summary
+
+用数学的方法能做出来，但是通过DP的状态转移可以更加简练。
