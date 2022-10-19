@@ -3841,3 +3841,33 @@ class Solution:
 ### summary
 
 用数学的方法能做出来，但是通过DP的状态转移可以更加简练。
+
+## M_p1700_无法吃午餐的学生数量
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210192011691.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210192012625.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210192012878.png)
+
+### mine
+
+```python
+class Solution:
+    def countStudents(self, students: List[int], sandwiches: List[int]) -> int:
+        num_1 = sum(students)
+        num_0 = len(students) - num_1
+        for i in sandwiches:
+            if i and num_1:
+                num_1 -= 1
+            elif not i and num_0:
+                num_0 -= 1
+            else:
+                break
+        return num_0 + num_1
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210192013120.png)
+
+这个题的关键其实在于理解终止条件，终止条件其实可以理解为当前没有学生喜欢吃栈顶元素，此时就终止了。
+
