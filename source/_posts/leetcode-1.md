@@ -3871,3 +3871,215 @@ class Solution:
 
 这个题的关键其实在于理解终止条件，终止条件其实可以理解为当前没有学生喜欢吃栈顶元素，此时就终止了。
 
+## M_p779_第k个语法符号
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252009388.png)
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252010466.png)
+
+```python
+class Solution:
+    def kthGrammar(self, n: int, k: int) -> int:
+        if n == 1:
+            return 0
+        return (k & 1) ^ 1 ^ self.kthGrammar(n - 1, (k + 1) // 2)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252010411.png)
+
+```python
+class Solution:
+    def kthGrammar(self, n: int, k: int) -> int:
+        if k == 1:
+            return 0
+        if k > (1 << (n - 2)):
+            return 1 ^ self.kthGrammar(n - 1, k - (1 << (n - 2)))
+        return self.kthGrammar(n - 1, k)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252011319.png)
+
+```python
+class Solution:
+    def kthGrammar(self, n: int, k: int) -> int:
+        # return (k - 1).bit_count() & 1
+        k -= 1
+        res = 0
+        while k:
+            k &= k - 1
+            res ^= 1
+        return res
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252011693.png)
+
+### summary
+
+这个题其实主要在于找规律，但是单纯的看是看不出来的，还是要靠纸和笔来写一写前面几个就能找到一定的规律才好做出来。
+
+## M_p901_股票的价格跨度
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252021929.png)
+
+### mine
+
+```python
+class StockSpanner:
+
+    def __init__(self):
+        self.stack = [(-1, inf)]
+        self.idx = -1
+
+    def next(self, price: int) -> int:
+        self.idx += 1
+        while price >= self.stack[-1][1]:
+            self.stack.pop()
+        self.stack.append((self.idx, price))
+        return self.stack[-1][0] - self.stack[-2][0]
+        
+
+# Your StockSpanner object will be instantiated and called as such:
+# obj = StockSpanner()
+# param_1 = obj.next(price)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252031363.png)
+
+### summary
+
+使用单调栈的方式解决。
+
+单调栈可以用来连续的单调排序问题，我一开始想的是遇到更大的数之后将栈中小于它的数弹出来，将其压入栈中后再将弹出来的数压回去来保证栈的单调，但是看完官解之后发现可以使用记录idx的方法避免将弹出的数字再次压入栈中。
+
+## E_p1768_交替合并字符串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252032903.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252032161.png)
+
+### mine
+
+```python
+class Solution:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        small_len = min(len(word1), len(word2))
+        res = ''
+        i = 0
+        while i < small_len:
+            res += word1[i] + word2[i]
+            i += 1
+
+        res += word1[i:] + word2[i:]
+
+        return res
+```
+
+### summary
+
+这里使用到了一个python切片的小技巧，当python切片中发生了越界行为时不会报错而是返回一个空的列表。
+
+## M_p915_分割数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252045872.png)
+
+### mine
+
+```python
+class Solution:
+    def partitionDisjoint(self, nums: List[int]) -> int:
+        n = len(nums)
+        min_right = [0] * n
+        min_right[-1] = nums[-1]
+        for i in range(n - 2, 0, -1):
+            min_right[i] = min(min_right[i + 1], nums[i])
+
+        max_left = nums[0]
+        for i in range(1, n):
+            if max_left <= min_right[i]:
+                return i
+            max_left = max(max_left, nums[i])
+```
+
+这个题的宗旨就是找到一种划分方案使得：左边的最大值小于右边的最小值。
+
+这里使用了两次遍历的方法，我们首先从右往左遍历一遍，记录下从每个i位置开始右边最小的数值。之后从左往右遍历找到第一个左边最大数值大于右边最小数值的位置就是答案。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252048824.png)
+
+```python
+class Solution:
+    def partitionDisjoint(self, nums: List[int]) -> int:
+        n = len(nums)
+        cur_max = left_max = nums[0]
+        left_pos = 0
+        for i in range(1, n - 1):
+            cur_max = max(cur_max, nums[i])
+            if nums[i] < left_max:
+                left_max, left_pos = cur_max, i
+        return left_pos + 1
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252048992.png)
+
+一次遍历的精髓在于先随便将初始划分划在最左边并记录下左边最大值（即第一个数），然后开始向后遍历整个数组，如果遇到一个比左边最大值大的数的话就把划分移过来，然后更新左边最大值。
+
+### summary
+
+这个题解题方法还是挺多的，但是核心宗旨就是左边最大值小于右边最小值，也可以理解为左边最大值小于右边所有值。
+
+## M_p934_最短的桥
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210252051795.png)
+
+### mine
+
+```python
+class Solution:
+    def shortestBridge(self, grid: List[List[int]]) -> int:
+        """
+        1.使用dfs给第一个见到的岛屿标记-1
+        2.从第一个岛开始往外一层一层扩，第一次扩到周围出现1则结束，扩的层数就是最终结果
+        """
+        n = len(grid)
+        seen = []
+
+        def dfs(i: int, j: int, seen: list) -> None:
+            grid[i][j] = -1
+            seen.append((i, j))
+            for x, y in (i-1, j), (i+1, j), (i, j-1), (i, j+1):
+                if 0<=x<=n-1 and 0<=y<=n-1 and grid[x][y] == 1:
+                    dfs(x, y, seen)
+
+        for i, row in enumerate(grid):
+            for j, value in enumerate(row):
+                if value != 1:
+                    continue
+                dfs(i, j, seen)
+
+                step = 0
+                while True:
+                    temp = seen
+                    seen = []
+                    for x, y in temp:
+                        for nx, ny in (x-1, y), (x+1, y), (x, y-1), (x, y+1):
+                            if 0<=nx<=n-1 and 0<=ny<=n-1:
+                                if grid[nx][ny] == 1:
+                                    return step
+                                elif grid[nx][ny] == 0:
+                                    grid[nx][ny] = -1
+                                    seen.append((nx, ny))
+                    step += 1
+```
+
+我这里分了两步进行：
+
+1. 使用dfs找到一个岛屿中所有的位置，并将其置为-1同时记录这些位置
+2. 对找到的第一个岛屿中的所有位置使用广度优先搜索，搜索其周边有没有另一个岛屿，如果没有的话向周围扩散一个位置，并记录下扩散了哪些位置，遍历完一遍后如果还没有找到符合的答案则从上一轮扩散的位置再往外扩散一轮，扩散的轮次就是答案
+
+### summary
+
+我在这里对深度优先搜索和广度优先搜索又有了更深一点的理解。深度优先搜索在代码的表现上主要体现为递归，一直深入下一级进行搜索直到触底之后往上返回到最近的一处分支处再向下级搜索；而广度优先搜索则主要体现为多重循环，将同一级的全部搜索完之后再进入下一级搜索。
