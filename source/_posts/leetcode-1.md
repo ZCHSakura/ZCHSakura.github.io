@@ -4083,3 +4083,113 @@ class Solution:
 ### summary
 
 我在这里对深度优先搜索和广度优先搜索又有了更深一点的理解。深度优先搜索在代码的表现上主要体现为递归，一直深入下一级进行搜索直到触底之后往上返回到最近的一处分支处再向下级搜索；而广度优先搜索则主要体现为多重循环，将同一级的全部搜索完之后再进入下一级搜索。
+
+## H_p862_和至少为K的最短子数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210261701238.png)
+
+### mine
+
+```python
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        fro_sum = []
+        for i in range(len(nums)):
+            fro_sum.append(sum(nums[:i+1]))
+        print(fro_sum)
+
+        res = inf
+        for i in range(len(fro_sum)):
+            if fro_sum[i] == k:
+                res = min(res, i + 1)
+            elif fro_sum[i] > k:
+                res = min(res, i + 1)
+                for j, v in enumerate(reversed(fro_sum[:i])):
+                    if fro_sum[i] - v >= k:
+                        res = min(res, j + 1)
+                        break
+            else:
+                for j, v in enumerate(reversed(fro_sum[:i])):
+                    if fro_sum[i] - v >= k:
+                        res = min(res, j + 1)
+                        break
+        
+        return res if res!= inf else -1
+```
+
+我完成这道题的思路是前缀和，通过前缀和可以知道从当前元素往前的元素之和，子数组和可以通过前缀和的差来得到，获得前缀和之后我们遍历前缀和数组，做如下判断：
+
+- 如果当前位置前缀和等于k：比较和当前答案的大小
+- 如果当前位置前缀和大于k：首先和当前答案比大小，之后往前遍历看能不能缩减子数组长度，如果能缩短则和当前答案比大小
+- 如果当前位置前缀和小于k：往前遍历看能不能缩减子数组长度，如果能缩短则和当前答案比大小
+
+我这种方法是符合题意的，但是由于出现了嵌套循环所以时间复杂度会比较高，在困难题中也是不出所料地出现了超时。
+
+```python
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        fro_sum = []
+        for i in range(len(nums)):
+            print(i)
+            print(fro_sum)
+            if fro_sum:
+                while fro_sum and fro_sum[-1][1] >= sum(nums[:i+1]):
+                    fro_sum.pop()
+            fro_sum.append((i, sum(nums[:i+1])))
+        print(fro_sum)
+
+        res = inf
+        for i in range(len(fro_sum)):
+            if fro_sum[i][1] == k:
+                res = min(res, fro_sum[i][0] + 1)
+            elif fro_sum[i][1] > k:
+                res = min(res, i + 1)
+                for j, v in enumerate(reversed(fro_sum[:i])):
+                    if fro_sum[i][1] - v[1] >= k:
+                        res = min(res, fro_sum[j][0] + 1)
+                        break
+            else:
+                for j, v in enumerate(reversed(fro_sum[:i])):
+                    if fro_sum[i][1] - v[1] >= k:
+                        res = min(res, fro_sum[j][0] + 1)
+                        break
+        
+        return res if res!= inf else -1
+```
+
+后来看了官解使用单调队列，我又觉得我这个是不是可以在构建前缀和数组的时候保持这个数组的单调，但是在提交的过程中发现这种方法是行不通的，因为他可能会让我们抛弃掉可能的前缀和。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210262015116.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210262016884.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210262016605.png)
+
+```python
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        ans = inf
+        s = list(accumulate(nums, initial=0))  # 计算前缀和
+        q = deque()
+        for i, cur_s in enumerate(s):
+            while q and s[q[-1]] >= cur_s:
+                q.pop()  # 优化二
+            while q and cur_s - s[q[0]] >= k:
+                ans = min(ans, i - q.popleft())  # 优化一
+            q.append(i)
+        return ans if ans < inf else -1
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210262017714.png)
+
+### summary
+
+其实看单调队列这个方法我们可以换一个思路。
+
+我们先看优化二，保证前缀和单调递增其实是比较好理解的，毕竟一个数-20可以大于等于k那他-15一定也可以大于等于k，所以20是没有用的。
+
+这时我们再来看优化一，因为我们已经保证了队列的单调递增，那么我们从队列头开始看，如果队首在当前情况下满足了条件且第一次满足条件，那么就算不删除他后面再一次满足了条件但长度一定会更长，所以队首元素满足过一次条件之后实际上就没有用了，就可以弹出了。
+
+这样就可以保证每一个前缀和顶多出入队列一次，也就能保证时间复杂度为O(n)
