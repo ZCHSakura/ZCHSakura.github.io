@@ -4193,3 +4193,25 @@ class Solution:
 这时我们再来看优化一，因为我们已经保证了队列的单调递增，那么我们从队列头开始看，如果队首在当前情况下满足了条件且第一次满足条件，那么就算不删除他后面再一次满足了条件但长度一定会更长，所以队首元素满足过一次条件之后实际上就没有用了，就可以弹出了。
 
 这样就可以保证每一个前缀和顶多出入队列一次，也就能保证时间复杂度为O(n)
+
+## E_p1822_数组元素积的符号
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210272134089.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210272134783.png)
+
+### mine
+
+```python
+class Solution:
+    def arraySign(self, nums: List[int]) -> int:
+        sign = 1
+        for num in nums:
+            if num == 0:
+                return 0
+            if num < 0:
+                sign = -sign
+        return sign
+```
+
+这个题主要就是看正负，如果有0就直接0。
