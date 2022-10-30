@@ -4215,3 +4215,140 @@ class Solution:
 ```
 
 这个题主要就是看正负，如果有0就直接0。
+
+## M_p907_子数组的最小值之和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302041890.png)
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302044264.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302045283.png)
+
+```python
+MOD = 10 ** 9 + 7
+
+class Solution:
+    def sumSubarrayMins(self, arr: List[int]) -> int:
+        n = len(arr)
+        monoStack = []
+        left = [0] * n
+        right = [0] * n
+        for i, x in enumerate(arr):
+            while monoStack and x <= arr[monoStack[-1]]:
+                monoStack.pop()
+            left[i] = i - (monoStack[-1] if monoStack else -1)
+            monoStack.append(i)
+        monoStack = []
+        for i in range(n - 1, -1, -1):
+            # 这里使用小于是为了解决最小值不唯一问题
+            while monoStack and arr[i] < arr[monoStack[-1]]:
+                monoStack.pop()
+            right[i] = (monoStack[-1] if monoStack else n) - i
+            monoStack.append(i)
+        ans = 0
+        for l, r, x in zip(left, right, arr):
+            ans = (ans + l * r * x) % MOD
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302045149.png)
+
+### summary
+
+虽然这个题描述的是所有子数组中最小值的和，但是实际上不能这样去寻找，这样去算每个子数组的最小值的话怎么都n^2^了，会超时。
+
+这道题的优化思路应该是找每个数在多少个子数组中作为了最小值，然后只要将这个数乘以子数组的数量就可以获得这个数对整个题目答案的贡献，但是还有一个问题就是子数组中出现不止一个最小值的时候在计算的过程中一定要注意去重问题。
+
+## E_p1773_统计匹配检索规则的物品数量
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302138018.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302138549.png)
+
+### mine
+
+```python
+class Solution:
+    def countMatches(self, items: List[List[str]], ruleKey: str, ruleValue: str) -> int:
+        if ruleKey == "type":
+            idx = 0
+        elif ruleKey == "color":
+            idx = 1
+        elif ruleKey == "name":
+            idx = 2
+
+        return sum(item[idx] == ruleValue for item in items)
+```
+
+简单题没啥说的，可以使用官解中的方法优化下idx的设置
+
+```python
+index = {"type": 0, "color": 1, "name": 2}[ruleKey]
+```
+
+## M_784_字母大小写全排列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302141836.png)
+
+### mine
+
+```python
+class Solution:
+    def letterCasePermutation(self, s: str) -> List[str]:
+        ans = deque()
+        for item in s:
+            if item.isdigit():
+                if not ans:
+                    ans.append(item)
+                # 如果是数字就一个个取出加上数字再压进去
+                else:
+                    q = ans
+                    ans = deque()
+                    while q:
+                        ans.append(q.popleft() + item)
+            else:
+                if not ans:
+                    ans.append(item.lower())
+                    ans.append(item.upper())
+                # 如果是字母就一个个取出，加上大小写两种再压入
+                else:
+                    q = ans
+                    ans = deque()
+                    while q:
+                        last_pop = q.popleft()
+                        ans.append(last_pop + item.lower())
+                        ans.append(last_pop + item.upper())
+
+        return list(ans)
+```
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302148059.png)
+
+```python
+class Solution:
+    def letterCasePermutation(self, s: str) -> List[str]:
+        ans = []
+        q = deque([''])
+        while q:
+            cur = q[0]
+            pos = len(cur)
+            if pos == len(s):
+                ans.append(cur)
+                q.popleft()
+            else:
+                if s[pos].isalpha():
+                    q.append(cur + s[pos].swapcase())
+                q[0] += s[pos]
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202210302149912.png)
+
+### summary
+
+一开始使用`ans.extend(s[0] if s[0].isdigit() else [s[0].lower(), s[0].upper()])`可以避免是否第一个字符的判断。
+
