@@ -4352,3 +4352,193 @@ class Solution:
 
 一开始使用`ans.extend(s[0] if s[0].isdigit() else [s[0].lower(), s[0].upper()])`可以避免是否第一个字符的判断。
 
+## M_p481_神奇字符串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032036653.png)
+
+### mine
+
+```python
+class Solution:
+    def magicalString(self, n: int) -> int:
+        """
+        122开头
+        """
+        if n < 4:
+            return 1
+        s = [''] * n
+        s[:3] = '122'
+        ans = 1
+        i = 2
+        j = 3
+        while j < n:
+            length = int(s[i])
+            num = 3 - int(s[j-1])
+            while length and j < n:
+                s[j] = num
+                if num == 1:
+                    ans += 1
+                length -= 1
+                j += 1
+            i += 1
+
+        return ans
+```
+
+这个题是以1开头举例的，我简单写了一点2开头的，感觉也可以，官解里面就是限定死以1开头，不知道是2开头确实不行还是单纯的这个题就是1开头。
+
+解题思路就是双指针，一个指针指前面控制数量，另一个指针指后面按照数量添加数字。
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032040676.png)
+
+### summary
+
+这个题只要读懂了在纸上写一下就知道了，双指针不断后移构造字符串就行了
+
+## E_p1662_检查两个字符串数组是否相等
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032042008.png)
+
+### mine
+
+```python
+class Solution:
+    def arrayStringsAreEqual(self, word1: List[str], word2: List[str]) -> bool:
+        return "".join(word1) == "".join(word2)
+```
+
+### summary
+
+没啥说的，就连起来判断是否相等就完了。
+
+## M_p1620_网络信号最好的坐标
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032043065.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032044753.png)
+
+### mine
+
+```python
+class Solution:
+    def bestCoordinate(self, towers: List[List[int]], radius: int) -> List[int]:
+        x_max = max([i[0] for i in towers])
+        y_max = max([i[1] for i in towers])
+        ans_x = ans_y = ans_power = 0
+        for i in range(x_max + 1):
+            for j in range(y_max + 1):
+                powerall = 0
+                for x, y, power in towers:
+                    d = ((x-i) ** 2 + (y-j) ** 2) ** 0.5
+                    if d <= radius:
+                        powerall += int(power / (1 + d))
+                if powerall > ans_power:
+                    ans_x, ans_y, ans_power = i, j, powerall
+        
+        return [ans_x, ans_y]
+```
+
+这个题主要是先确定可能的答案点有哪些，根据题目中的范围限制我们发现塔的范围是不会太大的，我们可以先找到所有可能的答案位置然后遍历一遍，重点在怎么确定答案的可能位置。
+
+根据题目的描述我们可以确定以下信息：
+
+- 答案位置是非负的
+- 相同信号强度位置下答案的x, y要尽可能的小
+
+根据上面两条信息我们可以判断答案位置的x, y是不会超过信号塔最大的x和最大的y的，这是因为当x, y超过信号塔的最大值时再向外信号的强度只会不变或变小，而不会变大，而在信号强度相同的情况下又要先返回坐标小的位置，所以实际上答案是不会出现在塔的坐标最大值之外的。
+
+### summary
+
+主要是理解题意，找出有限的可能位置，然后开始遍历。
+
+## E_p1668_最大重复子字符串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032053978.png)
+
+### mine
+
+```python
+class Solution:
+    def maxRepeating(self, sequence: str, word: str) -> int: 
+        len_word = len(word)
+        ans = temp = 0
+        i = 0
+        while i <= len(sequence) - len_word :
+            if sequence[i:i+len_word] == word:
+                temp += 1
+                i += len_word
+                ans = max(ans, temp)
+            else:
+                # 出现错误之后需要回退，不然可能漏掉
+                if temp != 0:
+                    i -= len_word-1
+                temp = 0
+                i += 1
+        
+        return ans
+```
+
+一开始使用split的方式是行不通的，因为要求连续，而且split从开头开始可能会截断一些可能的字符子串，还是得从头开始向后遍历。
+
+唯一需要注意的是我们遇到不能匹配的情况不能直接向后接着遍历而是要回退一个word长度减1，因为可能会有在这中间可能会有下一次匹配的开头被漏过。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032058008.png)
+
+```python
+class Solution:
+    def maxRepeating(self, sequence: str, word: str) -> int:
+        n, m = len(sequence), len(word)
+        if n < m:
+            return 0
+        
+        f = [0] * n
+        for i in range(m - 1, n):
+            valid = True
+            for j in range(m):
+                if sequence[i - m + j + 1] != word[j]:
+                    valid = False
+                    break
+            if valid:
+                f[i] = (0 if i == m - 1 else f[i - m]) + 1
+        
+        return max(f)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032059787.png)
+
+```python
+class Solution:
+    def maxRepeating(self, sequence: str, word: str) -> int:
+        n, m = len(sequence), len(word)
+        if n < m:
+            return 0
+
+        fail = [-1] * m
+        for i in range(1, m):
+            j = fail[i - 1]
+            while j != -1 and word[j + 1] != word[i]:
+                j = fail[j]
+            if word[j + 1] == word[i]:
+                fail[i] = j + 1
+        
+        f = [0] * n
+        j = -1
+        for i in range(n):
+            while j != -1 and word[j + 1] != sequence[i]:
+                j = fail[j]
+            if word[j + 1] == sequence[i]:
+                j += 1
+                if j == m - 1:
+                    f[i] = (0 if i == m - 1 else f[i - m]) + 1
+                    j = fail[j]
+        
+        return max(f)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211032059839.png)
+
+### summary
+
+KMP这种就是典型的空间换时间了，先计算一个可能的回退表放在那参考。
