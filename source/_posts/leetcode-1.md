@@ -4542,3 +4542,48 @@ class Solution:
 ### summary
 
 KMP这种就是典型的空间换时间了，先计算一个可能的回退表放在那参考。
+
+## M_p754_到达终点数字
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211041100569.png)
+
+### mine
+
+我想着用回溯能不能写，但是好像没有办法判断什么时候该回溯，好像没有办法用
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211041101975.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211041102484.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211041102583.png)
+
+```python
+class Solution:
+    def reachNumber(self, target: int) -> int:
+        target = abs(target)
+        s = n = 0
+        while s < target or (s - target) % 2:  # 没有到达（越过）终点，或者相距奇数
+            n += 1
+            s += n
+        return n
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211041103089.png)
+
+```python
+class Solution:
+    def reachNumber(self, target: int) -> int:
+        target = abs(target)
+        n = ceil((-1 + (8 * target + 1) ** 0.5) / 2)
+        return n if (n * (n + 1) // 2 - target) % 2 == 0 else n + 1 + n % 2
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211041103626.png)
+
+### summary
+
+这个题的主要思路就如同上面图解所说，当直接到达时就是答案，当超出偶数步时反转某一步一定能达成，当超出奇数步时再多走一到两步构成超出偶数步再反转一步一定能达成。
+
+所以题目转化为了一直向右走走多少步能第一次超出target偶数步。
