@@ -182,3 +182,52 @@ class Solution:
 ### summary
 
 总的来说就是遍历一遍获得答案，但是记录遍历过程的方式比较多，可以使用in判断，使用哈希集合，还可以使用位运算。
+
+## M_p764_最大加号标志
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211092120492.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211092120967.png)
+
+### mine
+
+```python
+class Solution:
+    def orderOfLargestPlusSign(self, n: int, mines: List[List[int]]) -> int:
+        grid = [[1 for i in range(n)] for i in range(n)]
+        for i in mines:
+            grid[i[0]][i[1]] = 0
+
+        # 上下左右
+        dp = [[[1, 1, 1, 1] for i in range(n)] for i in range(n)]
+
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 0:
+                    dp[i][j] = [0, 0, 0, 0]
+                else:
+                    if j > 0:
+                        dp[i][j][2] = dp[i][j-1][2] + 1
+                    if i > 0:
+                        dp[i][j][0] = dp[i-1][j][0] + 1
+        
+        for i in range(n-1, -1, -1):
+            for j in range(n-1, -1, -1):
+                if grid[i][j] == 0:
+                    dp[i][j] = [0, 0, 0, 0]
+                else:
+                    if j < n-1:
+                        dp[i][j][3] = dp[i][j+1][3] + 1
+                    if i < n-1:
+                        dp[i][j][1] = dp[i+1][j][1] + 1
+        
+        ans = 0
+        for i in range(n):
+            for j in range(n):
+                dp[i][j] = min(dp[i][j])
+                ans = max(ans, dp[i][j])
+
+        return ans
+```
+
+我的思路是动态规划
