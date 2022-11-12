@@ -230,4 +230,125 @@ class Solution:
         return ans
 ```
 
-我的思路是动态规划
+我的思路是使用动态规划，从左上开始遍历计算每个点上面和左边的1，再从右下开始遍历计算每个点右边和下面的1。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121117920.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121118464.png)
+
+```python
+class Solution:
+    def orderOfLargestPlusSign(self, n: int, mines: List[List[int]]) -> int:
+        dp = [[n] * n for _ in range(n)]
+        banned = set(map(tuple, mines))
+        for i in range(n):
+            # left
+            count = 0
+            for j in range(n):
+                count = 0 if (i, j) in banned else count + 1
+                dp[i][j] = min(dp[i][j], count)
+            # right
+            count = 0
+            for j in range(n - 1, -1, -1):
+                count = 0 if (i, j) in banned else count + 1
+                dp[i][j] = min(dp[i][j], count)
+        for j in range(n):
+            # up
+            count = 0
+            for i in range(n):
+                count = 0 if (i, j) in banned else count + 1
+                dp[i][j] = min(dp[i][j], count)
+            # down
+            count = 0
+            for i in range(n - 1, -1, -1):
+                count = 0 if (i, j) in banned else count + 1
+                dp[i][j] = min(dp[i][j], count)
+        return max(map(max, dp))
+```
+
+### summary
+
+我这种方法的空间开销比较大，需要维护一个n\*n\*4的数组，可以参考官解中的方法，虽然思路是动态规划但是没有访问dp数组，而是单独使用了一个变量来存当前方向上1的数量，不同方向上只要保存最小的那个就可以了，所以只用维护一个n\*n大小的数组。
+
+## E_p1704_判断字符串的两半是否相似
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121119022.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121119648.png)
+
+### mine
+
+```python
+class Solution:
+    def halvesAreAlike(self, s: str) -> bool:
+        VOWELS = "aeiouAEIOU"
+        a, b = s[:len(s) // 2], s[len(s) // 2:]
+        return sum(c in VOWELS for c in a) == sum(c in VOWELS for c in b)
+```
+
+### summary
+
+这个比较简单，就前后分开，分别sum就行了。
+
+## M_p790_多米诺和托米诺平铺
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121121128.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121121764.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121121731.png)
+
+### mine
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121123384.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121124544.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121124383.png)
+
+```python
+class Solution:
+    def numTilings(self, n: int) -> int:
+        MOD = 10 ** 9 + 7
+        last = [0, 0, 0, 1]
+        for i in range(1, n + 1):
+            now = [0, 0, 0, 0]
+            now[0] = last[3]
+            now[1] = (last[0] + last[2]) % MOD
+            now[2] = (last[0] + last[1]) % MOD
+            now[3] = (((last[0] + last[1]) % MOD + last[2]) % MOD + last[3]) % MOD
+            last = now
+        return now[3]
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121126969.png)
+
+我这部分其实也是参考官解的，主要就是构造一个状态转移方程，但是因为只会用到前一个状态，所以我用循环数组代替了官解中的DP数组，让空间复杂度降到了O(1)。
+
+### others
+
+还可以通过找规律的方法来做
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121125457.png)
+
+```python
+MOD = 10 ** 9 + 7
+
+class Solution:
+    def numTilings(self, n: int) -> int:
+        if n == 1: return 1
+        f = [0] * (n + 1)
+        f[0] = f[1] = 1
+        f[2] = 2
+        for i in range(3, n + 1):
+            f[i] = (f[i - 1] * 2 + f[i - 3]) % MOD
+        return f[n]
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211121126729.png)
+
+### summary
+
+在这次的DP中我吸取了p764题目中官解的做法，虽然我们的整体思路是动态规划，但是我们在计算使用前面状态的时候不一定非要从dp数组中进行读取，尤其是当前状态只与前一状态有关的情况下，我们可以单独用一个变量在遍历的过程中记录前一状态。
