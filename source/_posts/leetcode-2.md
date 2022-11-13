@@ -352,3 +352,54 @@ class Solution:
 ### summary
 
 在这次的DP中我吸取了p764题目中官解的做法，虽然我们的整体思路是动态规划，但是我们在计算使用前面状态的时候不一定非要从dp数组中进行读取，尤其是当前状态只与前一状态有关的情况下，我们可以单独用一个变量在遍历的过程中记录前一状态。
+
+## M_p791_自定义字符串排序
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211132020611.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211132021137.png)
+
+### mine
+
+```python
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        order_dict = Counter(order)
+        other_list = []
+        for letter in s:
+            if letter in order:
+                order_dict[letter] += 1
+            else:
+                other_list.append(letter)
+
+        return ''.join([i * (order_dict[i] - 1) for i in order] + other_list)
+```
+
+我的思路是先对要排序的字符计数，然后根据计数结果进行字符串构造，最后再把不用排序的字符直接加在后面就完了。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211132022096.png)
+
+```python
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        val = defaultdict(int)
+        for i, ch in enumerate(order):
+            val[ch] = i + 1
+        
+        return "".join(sorted(s, key=lambda ch: val[ch]))
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211132023515.png)
+
+### summary
+
+官解那个代码其实可以更简单，不用循环构建排序权重，直接把下标当作权重。
+
+```python
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        return ''.join(sorted(s, key=lambda x: order.index(x) if x in order else 0))
+```
+
