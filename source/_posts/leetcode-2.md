@@ -403,3 +403,52 @@ class Solution:
         return ''.join(sorted(s, key=lambda x: order.index(x) if x in order else 0))
 ```
 
+## H_p805_数组的均值分割
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211172135852.png)
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211172136593.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211172136576.png)
+
+```python
+class Solution:
+    def splitArraySameAverage(self, nums: List[int]) -> bool:
+        n = len(nums)
+        if n == 1:
+            return False
+
+        s = sum(nums)
+        for i in range(n):
+            nums[i] = nums[i] * n - s
+
+        m = n // 2
+        left = set()
+        for i in range(1, 1 << m):
+            tot = sum(x for j, x in enumerate(nums[:m]) if i >> j & 1)
+            if tot == 0:
+                return True
+            left.add(tot)
+
+        rsum = sum(nums[m:])
+        for i in range(1, 1 << (n - m)):
+            tot = sum(x for j, x in enumerate(nums[m:]) if i >> j & 1)
+            if tot == 0 or rsum != tot and -tot in left:
+                return True
+        return False
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211172137515.png)
+
+这个题有一个非常重要的隐含条件，**分成的两个数组均值相等，那么这两个数组的均值一定等于原始数组的均值。**之后我们再对原始数组中的每一个元素都减去这个均值，那么此时均值就变为了0。
+
+因为我们直接暴力搜索每种组合的均值需要$2^n$种可能性，n最大为30，这个数量级太大了，我们选择将其分为两半，这样分别遍历一半最多只有$2*2^{15}$种可能性，之后在两半中分别挑出一个子集使他们和为0，这样没挑出来的部分和自然也为0。
+
+在遍历的过程中可以通过位运算来优化代码的编写。
+
+### summary
+
+这个题的隐含条件非常重要，如果没有想到这个隐含条件那么这个题就无从下手了，理解到了隐含条件之后发现直接遍历情况太多所以选择分别遍历一半的数据，之后通过位运算来优化代码的编写。
+
