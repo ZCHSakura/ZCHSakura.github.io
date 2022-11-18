@@ -452,3 +452,121 @@ class Solution:
 
 这个题的隐含条件非常重要，如果没有想到这个隐含条件那么这个题就无从下手了，理解到了隐含条件之后发现直接遍历情况太多所以选择分别遍历一半的数据，之后通过位运算来优化代码的编写。
 
+## E_p1710_卡车上的最大单元数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211181004758.png)
+
+### mine
+
+```python
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        boxTypes.sort(key=lambda x: x[1], reverse=True)
+        res = 0
+        for numberOfBoxes, numberOfUnitsPerBox in boxTypes:
+            if numberOfBoxes >= truckSize:
+                res += truckSize * numberOfUnitsPerBox
+                break
+            res += numberOfBoxes * numberOfUnitsPerBox
+            truckSize -= numberOfBoxes
+        return res
+```
+
+这个题的思路很简单，就是先装单元数量大的箱子，首先按照单元数量排序一次，然后开始放入，直到箱子个数放满就是最大单元数。
+
+### summary
+
+主要技巧在于使用自定义排序
+
+## M_p775_全局倒置与局部倒置
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211181008348.png)
+
+### mine
+
+```python
+class Solution:
+    def isIdealPermutation(self, nums: List[int]) -> bool:
+        min_suf = nums[-1]
+        for i in range(len(nums) - 2, 0, -1):
+            if nums[i - 1] > min_suf:
+                return False
+            min_suf = min(min_suf, nums[i])
+        return True
+```
+
+这个题的思路就是看能不能找到不是局部倒置的全局倒置，因为局部倒置一定是全局倒置，如果能找到一个不相邻的全局倒置，那就说明全局一定会比局部多，就可以返回**False**。
+
+为了记录是否出现不相邻的倒置，我们从后开始遍历，记录后面的最小值，一旦遍历过程中出现前面的值大于后面的最小值就可以直接False了。从前遍历记录最大值也是可以的。
+
+## M_p792_匹配子序列的单词数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211181020741.png)
+
+### mine
+
+```python
+class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
+        pos = defaultdict(list)
+        for i, c in enumerate(s):
+            pos[c].append(i)
+        ans = len(words)
+        for w in words:
+            if len(w) > len(s):
+                ans -= 1
+                continue
+            p = -1
+            for c in w:
+                ps = pos[c]
+                j = bisect_right(ps, p)
+                if j == len(ps):
+                    ans -= 1
+                    break
+                p = ps[j]
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211181024541.png)
+
+朴素的想法就是首先遍历一遍字符串s，用一个哈希结构来记录s中每一种字母出现的位置索引。
+
+之后开始遍历words中的每一个word，通过二分查找来寻找一个满足位置索引递增的可能，如果能找到则说明该word是子序列。
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211181024620.png)
+
+```python
+class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -> int:
+        p = defaultdict(list)
+        for i, w in enumerate(words):
+            p[w[0]].append((i, 0))
+        ans = 0
+        for c in s:
+            q = p[c]
+            p[c] = []
+            for i, j in q:
+                j += 1
+                if j == len(words[i]):
+                    ans += 1
+                else:
+                    p[words[i][j]].append((i, j))
+        return ans
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202211181024180.png)
+
+这种是一个多指针共同遍历的方法，整体思路就是在遍历s的过程中看words中的每一个word的当前位置是否为当前s中的字母，如果过相同则word中的指针向后移一位。
+
+具体实现方法如下：
+
+我们先使用一个哈希结构来保存所有word的初始情况（即每个word的第一个元素），使用（i, j）这样一个元组来记录，其中i表示该word在words数组中的下标，j表示该字母在word中的下标。
+
+当我们在遍历s的过程中，我们访问哈希结构的对应字母的所有元组，就可以获取到当前元素为该字母所有word元组，然后逐一判断，长度走完了就ans加1，没走完就将下一个元素的（i, j）元组加入到哈希结构中，记得要清空上一个状态，代码中而可以使用一个辅助变量来记录上一状态，然后直接清空哈希表对应字母记录的元组。
+
+### summary
+
+朴素的办法可以实现题目的需求，而且在思路上也比较简单。多指针的方式更多的是一种思想，最终还是通过哈希结构来记录每个word的当前指向位置。
+
