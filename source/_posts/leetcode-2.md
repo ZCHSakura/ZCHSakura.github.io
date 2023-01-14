@@ -570,3 +570,37 @@ class Solution:
 
 朴素的办法可以实现题目的需求，而且在思路上也比较简单。多指针的方式更多的是一种思想，最终还是通过哈希结构来记录每个word的当前指向位置。
 
+## H_p1819_序列中不同最大公约数的数目
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202301141405186.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202301141405178.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202301141405821.png)
+
+### solution
+
+```python
+class Solution:
+    def countDifferentSubsequenceGCDs(self, nums: List[int]) -> int:
+        """
+        1.主要在于遍历每个可能的最大公约数x，看是否存在一个子序列满足该子序列的最大公约数为x。
+        2.随着子序列长度的增加，该子序列的最大公约数会减小或不变，当最大公约数减小到和x相等时，说明我们找到了一个子序列满足最大公约数为x。
+        3.根据最大公约数的性质，我们不用每次都在完整的子序列中进行最大公约数的计算，我们只需要将当前的最大公约数和要新加入子序列的数进行最大公约数计算即可。
+        4.对于子序列数组，x倍数的个数增加，那么子序列中最大公因数一定会减小或者不变（也就是保底x），每个kx都要判断一次是否找到最大公约数为x的子序列，找到立刻跳出加强举的例子写为[6,12,15]，x=3时枚举到[6,12]时gcd仍为6，但是[6,12,15]时加入15,gcd为3判断后找到子序列。
+        """
+        ans, mx = 0, max(nums)
+        has = [False] * (mx + 1)
+        for x in nums: 
+            has[x] = True
+        for i in range(1, mx + 1):
+            g = 0  # 0 和任何数 x 的最大公约数都是 x
+            for j in range(i, mx + 1, i):  # 枚举 i 的倍数 j
+                if has[j]:  # 如果 j 在 nums 中
+                    g = gcd(g, j)  # 更新最大公约数
+                    if g == i:  # 找到一个答案（g 无法继续减小）
+                        ans += 1
+                        break  # 提前退出循环
+        return ans
+```
+
