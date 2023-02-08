@@ -605,3 +605,957 @@ class Solution:
 ```
 
 ![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202301141534778.png)
+
+## E_p2293_极大极小游戏
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082058714.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082058815.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082058214.png)
+
+### solution
+
+```python
+class Solution:
+    def minMaxGame(self, nums: List[int]) -> int:
+        def min_max(sub_nums: List[int]):
+            # 到了最后一步则退出递归
+            if len(sub_nums) <= 2:
+                return min(sub_nums)
+            else:
+                temp = []
+                # 模拟
+                for i in range(0, len(sub_nums), 4):
+                    temp.append(min(sub_nums[i], sub_nums[i+1]))
+                    temp.append(max(sub_nums[i+2], sub_nums[i+3]))
+                return min_max(temp)
+        
+        return min_max(nums)
+```
+
+## M_1813_句子相似性Ⅲ
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082101018.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082101938.png)
+
+### solution
+
+```python
+class Solution:
+    def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:
+        """
+        1.固定让sentence1更短
+        2.分别计算公共前缀和公共后缀的长度
+        """
+        sentence1 = sentence1.split(' ')
+        sentence2 = sentence2.split(' ')
+        if len(sentence1) > len(sentence2):
+            sentence1, sentence2 = sentence2, sentence1
+        
+        forward_len = backward_len = 0
+        # 计算公共前缀长度
+        for i in range(len(sentence1)):
+            if sentence1[i] == sentence2[i]:
+                forward_len += 1
+            else:
+                break
+
+        # 计算公共后缀长度,一定要减去前面已经匹配前缀的部分，不然会导致重复计算
+        for i in range(1, len(sentence1) + 1 - forward_len):
+            if sentence1[-i] == sentence2[-i]:
+                backward_len += 1
+            else:
+                break
+
+        print(forward_len, backward_len)
+
+        return forward_len + backward_len == len(sentence1)
+```
+
+## M_p1814_统计一个数组中好对子的数目
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082114290.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082114814.png)
+
+### solution
+
+```python
+class Solution:
+    def countNicePairs(self, nums: List[int]) -> int:
+        """
+        1.核心思想是把原题中的式子改写为nums[i] - rev(nums[i]) == nums[j] - rev(nums[j])
+        2.令f(x) = nums[x] - rev(nums[x])
+        3.计算nums中每一个f(x)的结果，并记录，看有多少相同的。
+        4.因为题目中要求下标对中i<j所以先遍历到的不需要考虑后面的情况，只需要后遍历到的和前面的结果一一配对即可
+        """
+        res = 0
+        cnt = Counter()
+        for i in nums:
+            j = int(str(i)[::-1])
+            res += cnt[i - j]
+            cnt[i - j] += 1
+        return res % (10 ** 9 + 7)
+```
+
+## E_p2299_强密码检验器Ⅱ
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082115274.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082115522.png)
+
+### solution
+
+```python
+class Solution:
+    def strongPasswordCheckerII(self, password: str) -> bool:
+        """
+        每个情况判断
+        """
+        n = len(password)
+        small_list = [chr(i) for i in range(97,123)]
+        big_list = [chr(i) for i in range(65,91)]
+        num_list = [str(i) for i in range(0,10)]
+        special_list = list("!@#$%^&*()-+")
+        small_flag = big_falg = num_flag = special_flag = False
+
+        if n < 8:
+            return False
+        
+        for i in range(n):
+            if i > 0 and password[i] == password[i-1]:
+                return False
+            if password[i] in small_list:
+                small_flag = True
+            if password[i] in big_list:
+                big_falg = True
+            if password[i] in num_list:
+                num_flag = True
+            if password[i] in special_list:
+                special_flag = True
+            
+        return small_flag and big_falg and num_flag and special_flag
+```
+
+### others
+
+```python
+class Solution:
+    def strongPasswordCheckerII(self, password: str) -> bool:
+        if len(password) < 8:
+            return False
+        
+        specials = set("!@#$%^&*()-+")
+        hasLower = hasUpper = hasDigit = hasSpecial = False
+
+        for i, ch in enumerate(password):
+            if i != len(password) - 1 and password[i] == password[i + 1]:
+                return False
+
+            if ch.islower():
+                hasLower = True
+            elif ch.isupper():
+                hasUpper = True
+            elif ch.isdigit():
+                hasDigit = True
+            elif ch in specials:
+                hasSpecial = True
+
+        return hasLower and hasUpper and hasDigit and hasSpecial
+```
+
+## M_p1817_查找用户活跃分钟数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082119167.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082120449.png)
+
+### solution
+
+```python
+class Solution:
+    def findingUsersActiveMinutes(self, logs: List[List[int]], k: int) -> List[int]:
+        ans = [0] * k
+        # 用一个哈希表来记录每个用户在哪些分钟内活跃，使用set是为了避免重复计数
+        usr_hash = defaultdict(set)
+
+        for usr_id, active_min in logs:
+            usr_hash[usr_id].add(active_min)
+
+        for usr_id in usr_hash:
+            ans[len(usr_hash[usr_id]) - 1] += 1
+        return ans
+```
+
+## M_p1824_最小侧跳次数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082128488.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082128993.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082128006.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082129084.png)
+
+### solution
+
+```python
+class Solution:
+    def minSideJumps(self, obstacles: List[int]) -> int:
+        # res里面保存了在当前位置在三个跑道上分别需要的横跨次数
+        res = [1, 0, 1]
+        for idx in range(1, len(obstacles)):
+            # 这里先计算从同一个跑道上直接走到当前位置需要的横跨次数
+            for i in range(3):
+                # 如果当前跑道上有石头，则当前位置的该条跑道是不可达的
+                if i + 1 == obstacles[idx]:
+                    res[i] = inf
+            
+            # 这里再计算从已经走到当前位置从别的跑道横跨过来需要的横跨次数
+            for i in range(3):
+                # 如果当前跑道上没有有石头，则当前位置最小横跨次数再加一
+                if i + 1 != obstacles[idx]:
+                    # 这里比大小的两个部分分别是：直着走到当前跑道需要的横跨次数；需要从别的跑道再横跨过来的横跨次数
+                    res[i] = min(res[i], min(res) + 1)
+
+        
+        return min(res)
+```
+
+## H_p1815_得到新鲜甜甜圈的最多组数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082130244.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082130811.png)
+
+### others
+
+```python
+class Solution:
+    def maxHappyGroups(self, batchSize: int, groups: List[int]) -> int:
+        kWidth = 5
+        kWidthMask = (1 << kWidth) - 1
+
+        cnt = Counter(x % batchSize for x in groups)
+
+        start = 0
+        for i in range(batchSize - 1, 0, -1):
+            start = (start << kWidth) | cnt[i]
+
+        @cache
+        def dfs(mask: int) -> int:
+            if mask == 0:
+                return 0
+
+            total = 0
+            for i in range(1, batchSize):
+                amount = ((mask >> ((i - 1) * kWidth)) & kWidthMask)
+                total += i * amount
+
+            best = 0
+            for i in range(1, batchSize):
+                amount = ((mask >> ((i - 1) * kWidth)) & kWidthMask)
+                if amount > 0:
+                    result = dfs(mask - (1 << ((i - 1) * kWidth)))
+                    if (total - i) % batchSize == 0:
+                        result += 1
+                    best = max(best, result)
+
+            return best
+
+        ans = dfs(start) + cnt[0]
+        dfs.cache_clear()
+        return ans
+```
+
+## E_p2303_计算应缴税款总额
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082132461.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082133434.png)
+
+### solution
+
+```python
+class Solution:
+    def calculateTax(self, brackets: List[List[int]], income: int) -> float:
+        ans = 0.0
+        brackets = [[0, 0]] + brackets
+        for i in range(1, len(brackets)):
+            # 如果在当前区间内，则要计算该区间内税款并返回
+            if income <= brackets[i][0]:
+                return ans + (income - brackets[i-1][0]) * brackets[i][1] / 100.0
+            # 如果不在当前区间则计算该区间内的全部税款
+            else:
+                ans += (brackets[i][0] - brackets[i-1][0]) * brackets[i][1] / 100.0
+```
+
+## H_p1632_矩阵转换后的秩
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082134602.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082134690.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082134862.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082135769.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082135792.png)
+
+### others
+
+```python
+class Solution:
+    def matrixRankTransform(self, matrix: List[List[int]]) -> List[List[int]]:
+        m, n = len(matrix), len(matrix[0])
+        uf = UnionFind(m, n)
+        for i, row in enumerate(matrix):
+            num2indexList = defaultdict(list)
+            for j, num in enumerate(row):
+                num2indexList[num].append([i, j])
+            for indexList in num2indexList.values():
+                i1, j1 = indexList[0]
+                for k in range(1, len(indexList)):
+                    i2, j2 = indexList[k]
+                    uf.union(i1, j1, i2, j2)
+        for j in range(n):
+            num2indexList = defaultdict(list)
+            for i in range(m):
+                num2indexList[matrix[i][j]].append([i, j])
+            for indexList in num2indexList.values():
+                i1, j1 = indexList[0]
+                for k in range(1, len(indexList)):
+                    i2, j2 = indexList[k]
+                    uf.union(i1, j1, i2, j2)
+
+        degree = Counter()
+        adj = defaultdict(list)
+        for i, row in enumerate(matrix):
+            num2index = {}
+            for j, num in enumerate(row):
+                num2index[num] = (i, j)
+            sortedArray = sorted(num2index.keys())
+            for k in range(1, len(sortedArray)):
+                i1, j1 = num2index[sortedArray[k - 1]]
+                i2, j2 = num2index[sortedArray[k]]
+                ri1, rj1 = uf.find(i1, j1)
+                ri2, rj2 = uf.find(i2, j2)
+                degree[(ri2, rj2)] += 1
+                adj[(ri1, rj1)].append([ri2, rj2])
+        for j in range(n):
+            num2index = {}
+            for i in range(m):
+                num = matrix[i][j]
+                num2index[num] = (i, j)
+            sortedArray = sorted(num2index.keys())
+            for k in range(1, len(sortedArray)):
+                i1, j1 = num2index[sortedArray[k - 1]]
+                i2, j2 = num2index[sortedArray[k]]
+                ri1, rj1 = uf.find(i1, j1)
+                ri2, rj2 = uf.find(i2, j2)
+                degree[(ri2, rj2)] += 1
+                adj[(ri1, rj1)].append([ri2, rj2])
+        
+        rootSet = set()
+        ranks = {}
+        for i in range(m):
+            for j in range(n):
+                ri, rj = uf.find(i, j)
+                rootSet.add((ri, rj))
+                ranks[(ri, rj)] = 1
+        q = deque([[i, j] for i, j in rootSet if degree[(i, j)] == 0])
+        while q:
+            i, j = q.popleft()
+            for ui, uj in adj[(i, j)]:
+                degree[(ui, uj)] -= 1
+                if degree[(ui, uj)] == 0:
+                    q.append([ui, uj])
+                ranks[(ui, uj)] = max(ranks[(ui, uj)], ranks[(i, j)] + 1)
+        res = [[1] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                ri, rj = uf.find(i, j)
+                res[i][j] = ranks[(ri, rj)]
+        return res
+
+class UnionFind:
+    def __init__(self, m, n):
+        self.m = m
+        self.n = n
+        self.root = [[[i, j] for j in range(n)] for i in range(m)]
+        self.size = [[1] * n for _ in range(m)]
+
+    def find(self, i, j):
+        ri, rj = self.root[i][j]
+        if [ri, rj] == [i, j]:
+            return [i, j]
+        self.root[i][j] = self.find(ri, rj)
+        return self.root[i][j]
+
+    def union(self, i1, j1, i2, j2):
+        ri1, rj1 = self.find(i1, j1)
+        ri2, rj2 = self.find(i2, j2)
+        if [ri1, rj1] != [ri2, rj2]:
+            if self.size[ri1][rj1] >= self.size[ri2][rj2]:
+                self.root[ri2][rj2] = [ri1, rj1]
+                self.size[ri1][rj1] += self.size[ri2][rj2]
+            else:
+                self.root[ri1][rj1] = [ri2, rj2]
+                self.size[ri2][rj2] += self.size[ri1][rj1]
+```
+
+## M_p1663_具有给定数值的最小字符串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082136932.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082136177.png)
+
+### solution
+
+```python
+class Solution:
+    def getSmallestString(self, n: int, k: int) -> str:
+        """
+        前面尽可能多的a，后面尽可能多的z
+        """
+        front = middle = behind = ''
+        
+        # 在前面放入尽可能多的a
+        i = 0
+        while (i+1) * 1 + (n-i-1) * 26 >= k and i < n:
+            front += 'a'
+            i += 1
+
+        k -= i
+        n -= i
+        # 此时全部填a填满了，直接返回
+        if n <= 0:
+            return front
+        # 在后面放入尽可能多的z
+        i = 0
+        while (i+1) * 26 <= k and i < n:
+            behind += 'z'
+            i += 1
+
+        k -= i * 26
+        n -= i
+
+        # 前后凑满了则返回
+        if n <= 0:
+            return front + behind
+
+        # 最后计算中间那个
+        middle = chr(ord('a') + k - 1)
+
+        return front + middle + behind
+```
+
+### others
+
+```python
+class Solution:
+    def getSmallestString(self, n: int, k: int) -> str:
+        s = []
+        for i in range(1, n + 1):
+            lower = max(1, k - (n - i) * 26)
+            k -= lower
+            s.append(ascii_lowercase[lower - 1])
+        return ''.join(s)
+```
+
+## E_p2309_兼具大小写的最好英文字母
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082142890.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082142854.png)
+
+### solution
+
+```python
+class Solution:
+    def greatestLetter(self, s: str) -> str:
+        cnt = defaultdict(set)
+        ans = ' '
+        for i in s:
+            cnt[i.lower()].add(i)
+            if len(cnt[i.lower()]) == 2 and ord(ans) < ord(list(cnt[i.lower()])[0].upper()):
+                ans = list(cnt[i.lower()])[0].upper()
+
+        return ans if ans != ' ' else ''
+```
+
+### others
+
+```python
+class Solution:
+    def greatestLetter(self, s: str) -> str:
+        s = set(s)
+        for lower, upper in zip(reversed(ascii_lowercase), reversed(ascii_uppercase)):
+            if lower in s and upper in s:
+                return upper
+        return ""
+```
+
+## M_p1664_生成平衡数组的方案数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082145831.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082145782.png)
+
+### solution
+
+```python
+class Solution:
+    def waysToMakeFair(self, nums: List[int]) -> int:
+        # 奇数位置和
+        sum_odd = sum(nums[1::2])
+        # 偶数位置和
+        sum_even = sum(nums[::2])
+        # 记录走到当前位置时的奇数位置和与偶数位置和
+        ans = t_odd = t_even = 0
+        for i in range(len(nums)):
+            # 如果当前是奇数位置且奇等于偶
+            if i % 2 != 0 and t_odd + sum_even - t_even == t_even + sum_odd - t_odd - nums[i]:
+                ans += 1
+            # 如果当前是偶数位置且奇等于偶
+            if i % 2 == 0 and t_even + sum_odd - t_odd == t_odd + sum_even - t_even - nums[i]:
+                ans += 1
+
+            t_odd += nums[i] if i % 2 != 0 else 0
+            t_even += nums[i] if i % 2 == 0 else 0
+        
+        return ans
+```
+
+## E_p2315_统计星号
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082147145.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082148385.png)
+
+### solution
+
+```python
+class Solution:
+    def countAsterisks(self, s: str) -> int:
+        in_flag = False
+        ans = 0
+        for letter in s:
+            if not in_flag and letter == '*':
+                ans += 1
+            elif not in_flag and letter == '|':
+                in_flag = True
+            elif in_flag and letter == '|':
+                in_flag = False
+        
+        return ans
+```
+
+## M_p1669_合并两个链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082149035.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082149099.png)
+
+### solution
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeInBetween(self, list1: ListNode, a: int, b: int, list2: ListNode) -> ListNode:
+        temp = list1
+        # 先取到a节点的前一个
+        for _ in range(a-1):
+            temp = temp.next
+        start_Node = temp
+
+        # 取到b节点的后一个
+        for _ in range(b-a+2):
+            temp = temp.next
+        end_Node = temp
+
+        # 开始拼接list2
+        start_Node.next = list2
+        while list2.next:
+            list2 = list2.next
+        list2.next = end_Node
+
+        return list1
+```
+
+## E_p2319_判断矩阵是否是一个X矩阵
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082151430.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082151905.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082152079.png)
+
+### solution
+
+```python
+class Solution:
+    def checkXMatrix(self, grid: List[List[int]]) -> bool:
+        n = len(grid)
+        for i, row in enumerate(grid):
+            for j, x in enumerate(row):
+                if i == j or (i + j) == (n - 1):
+                    if x == 0:
+                        return False
+                elif x:
+                    return False
+        return True
+```
+
+## E_p2325_解密消息
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082152733.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082153154.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082153836.png)
+
+### solution
+
+```python
+class Solution:
+    def decodeMessage(self, key: str, message: str) -> str:
+        # 构造对应表
+        real_key = list(dict.fromkeys(list(key)))
+        if ' ' in real_key:
+            real_key.remove(' ')
+
+        # 根据对应表转换内容
+        message = list(message)
+        for i in range(len(message)):
+            if message[i] != ' ':
+                message[i] = chr(ord('a') + real_key.index(message[i]))
+
+        return ''.join(message)
+```
+
+## M_p1129_颜色交替的最短路径
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082154740.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082154127.png)
+
+### solution
+
+```python
+class Solution:
+    def shortestAlternatingPaths(self, n: int, redEdges: List[List[int]], blueEdges: List[List[int]]) -> List[int]:
+        """
+        0.最短路径应该是用广度优先搜索，一层一层遍历，层数就是最短路径数
+        1.首先建建立一个图g，里面节点到节点之间的颜色g中的一个元素为(y,color)，即g[x] = (y, color)，表示x到y的线条为color，用0表示红色，1表示蓝色。
+        2.使用vis记录出现使用过的边，这里说明一下为什么要记录使用过的边，同时为什么不是记录使用过的节点
+            如果不记录使用过的边可能会出现无限循环的情况，而且前面使用过的边后面再使用说明层数变多了，一定不是最短路径
+            记录边而不是点是因为有颜色的区别，比如xyz三个点，x到y有红蓝，y到z有蓝，如果我们先搜索了x到y的蓝边并且记录了x，那么就搜索不到z点的路径了。
+        3.使用q表示当前层的节点
+        4.ans表示答案，开始初始化全为-1
+        """
+        g=[[] for _ in range(n)]
+        for x, y in redEdges:
+            g[x].append((y, 0))
+        for x, y in blueEdges:
+            g[x].append((y, 1))
+
+        ans = [-1 for _ in range(n)]
+        level = 0
+
+        # 初始化一个记录见过边的变量
+        vis = set()
+
+        # 0到0是随便的，因为从0开始既可以走红也可以走蓝
+        q = [(0, 0), (0, 1)]
+
+        # 如果下一层还有未搜索的节点则继续搜索
+        while q:
+            next_q = []
+            # 遍历当前层节点中的每一个节点
+            for x, color in q:
+                if ans[x] == -1:
+                    ans[x] = level
+                # 寻找当前节点的所有下一可跳节点
+                for p in g[x]:
+                    if p[1] != color and p not in vis:
+                        vis.add(p)
+                        next_q.append(p)
+            
+            q = next_q
+            level += 1
+
+        return ans
+```
+
+## M_p1145_二叉树着色游戏
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082155469.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082155389.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082155188.png)
+
+### solution
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def btreeGameWinningMove(self, root: Optional[TreeNode], n: int, x: int) -> bool:
+        """
+        1.开始的x能将整个树分为三部分：上面和左右，我们需要找到一个部分让他的节点数大于总节点数的一半即可
+        2.使用dfs计算每个部分的节点数
+        """
+        x_node = None
+
+        def subTreeNum(node: TreeNode):
+            if not node:
+                return 0
+            if node.val == x:
+                nonlocal x_node
+                x_node = node
+            return 1 + subTreeNum(node.left) + subTreeNum(node.right)
+
+        
+        root_num = subTreeNum(root)
+
+        left_num = subTreeNum(x_node.left)
+        if left_num >= (n + 1) / 2:
+            return True
+
+        right_num = subTreeNum(x_node.right)
+        if right_num >= (n + 1) / 2:
+            return True
+
+        father_num = n - left_num - right_num - 1
+        if father_num >= (n + 1) / 2:
+            return True
+
+        return False
+```
+
+## M_p1798_你能构造出连续值的最大数目
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082156540.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082157259.png)
+
+### others
+
+```python
+class Solution:
+    def getMaximumConsecutive(self, coins: List[int]) -> int:
+        """
+        首先我们用[l,r]，0≤l,r 表示一段连续的从l到r的连续整数区间，不妨设我们现在能构造出[0,x]区间的整数，现在我们新增一个整数y，那么我们可以构造出的区间为[0,x]和[y,x+y]，那么如果y≤x+1，则加入整数 y后我们能构造出[0,x+y]区间的整数，否则我们还是只能构造出[0,x]区间的数字。因此我们每次从数组中找到未选择数字中的最小值来作为y，因为如果此时的最小值y 都不能更新区间[0,x]，那么剩下的其他元素都不能更新区间[0,x]。那么我们初始从x=0 开始，按照升序来遍历数组nums的元素来作为y，如果y≤x+1 那么我们扩充区间为[0,x+y]，否则我们无论选任何未选的数字都不能使答案区间变大，此时直接退出即可。
+        """
+        ans = 1
+        coins.sort()
+        for i in range(len(coins)):
+            if coins[i] > ans:
+                break
+            ans += coins[i]
+
+        return ans
+```
+
+## H_p1210_穿过迷宫的最少移动次数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082158823.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082158199.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082158604.png)
+
+### others
+
+```python
+class Solution:
+    def minimumMoves(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        dist = {(0, 0, 0): 0}
+        q = deque([(0, 0, 0)])
+
+        while q:
+            x, y, status = q.popleft()
+            if status == 0:
+                # 向右移动一个单元格
+                if y + 2 < n and (x, y + 1, 0) not in dist and grid[x][y + 2] == 0:
+                    dist[(x, y + 1, 0)] = dist[(x, y, 0)] + 1
+                    q.append((x, y + 1, 0))
+                
+                # 向下移动一个单元格
+                if x + 1 < n and (x + 1, y, 0) not in dist and grid[x + 1][y] == grid[x + 1][y + 1] == 0:
+                    dist[(x + 1, y, 0)] = dist[(x, y, 0)] + 1
+                    q.append((x + 1, y, 0))
+                
+                # 顺时针旋转 90 度
+                if x + 1 < n and y + 1 < n and (x, y, 1) not in dist and grid[x + 1][y] == grid[x + 1][y + 1] == 0:
+                    dist[(x, y, 1)] = dist[(x, y, 0)] + 1
+                    q.append((x, y, 1))
+            else:
+                # 向右移动一个单元格
+                if y + 1 < n and (x, y + 1, 1) not in dist and grid[x][y + 1] == grid[x + 1][y + 1] == 0:
+                    dist[(x, y + 1, 1)] = dist[(x, y, 1)] + 1
+                    q.append((x, y + 1, 1))
+                
+                # 向下移动一个单元格
+                if x + 2 < n and (x + 1, y, 1) not in dist and grid[x + 2][y] == 0:
+                    dist[(x + 1, y, 1)] = dist[(x, y, 1)] + 1
+                    q.append((x + 1, y, 1))
+                
+                # 逆时针旋转 90 度
+                if x + 1 < n and y + 1 < n and (x, y, 0) not in dist and grid[x][y + 1] == grid[x + 1][y + 1] == 0:
+                    dist[(x, y, 0)] = dist[(x, y, 1)] + 1
+                    q.append((x, y, 0))
+
+        return dist.get((n - 1, n - 2, 0), -1)
+```
+
+## E_p2331_计算布尔二叉树的值
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082159407.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082159667.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082200744.png)
+
+### solution
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        def getSubResult(node: TreeNode):
+            if node.val in [0, 1]:
+                return True if node.val == 1 else False
+            else:
+                if node.val == 2:
+                    return getSubResult(node.right) or getSubResult(node.left)
+                else:
+                    return getSubResult(node.right) and getSubResult(node.left)
+
+        return getSubResult(root)
+```
+
+### others
+
+```python
+class Solution:
+    def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        if root.left is None:
+            return root.val == 1
+        if root.val == 2:
+            return self.evaluateTree(root.left) or self.evaluateTree(root.right)
+        return self.evaluateTree(root.left) and self.evaluateTree(root.right)
+```
+
+## M_p1604_警告一小时内使用相同员工卡大于等于三次的人
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082203522.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082203308.png)
+
+### solution
+
+```python
+class Solution:
+    def alertNames(self, keyName: List[str], keyTime: List[str]) -> List[str]:
+        """
+        1.首先遍历一遍两个数组，统计每个用户各自的时间，并转化为一天内的分钟数
+        2.对每个用户的时间进行排序，看有没有间隔两次的时间的分钟差小于等于60
+        """
+        usr_hash = defaultdict(list)
+        for usr, time in zip(keyName, keyTime):
+            time = time.split(":")
+            hour, minute = int(time[0]), int(time[1])
+            usr_hash[usr].append(hour * 60 + minute)
+
+        ans = []
+        for usr, times in usr_hash.items():
+            times.sort()
+            for i in range(2, len(times)):
+                if times[i] - times[i-2] <= 60:
+                    ans.append(usr)
+                    break
+
+        ans.sort()
+        return ans
+```
+
+## M_p1233_删除子文件夹
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082204897.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082205248.png)
+
+### solution
+
+```python
+class DictTree:
+    def __init__(self):
+        self.children = dict()
+        self.val = -1
+
+class Solution:
+    def removeSubfolders(self, folder: List[str]) -> List[str]:
+        """
+        字典树
+        我们可以使用字典树来解决本题。文件夹的拓扑结构正好是树形结构，即字典树上的每一个节点就是一个文件夹。对于字典树中的每一个节点，我们仅需要存储一个变量val，如果val≥0，说明该节点对应着folder[val]，否则（val=−1）说明该节点只是一个中间节点。我们首先将每一个文件夹按照“/” 进行分割，作为一条路径加入字典树中。随后我们对字典树进行一次深度优先搜索，搜索的过程中，如果我们走到了一个val≥0 的节点，就将其加入答案，并且可以直接回溯，因为后续（更深的）所有节点都是该节点的子文件夹。
+        """
+        root = DictTree()
+        for i, path in enumerate(folder):
+            path = path.split('/')
+            # 先把当前指针指向根目录
+            cur = root
+            # 开始循环判断当前路径中的每一层有没有被记录在字典树中，并把最后一层节点的val置为i，说明有一个目录介质在该层。这里从1开始是因为最前面有个空值
+            for name in path[1:]:
+                if name not in cur.children:
+                    cur.children[name] = DictTree()
+                cur = cur.children[name]
+            cur.val = i
+        
+        ans = []
+
+        def dfs(cur: DictTree):
+            # 不为-1说明该目录出现过，同时更深层的目录不用再去遍历了，一定是该目录的子目录
+            if cur.val != -1:
+                ans.append(folder[cur.val])
+                return
+            for path in cur.children.values():
+                dfs(path)
+
+        dfs(root)
+        return ans
+```
+
+### others
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302082206375.png)
+
+```python
+class Solution:
+    def removeSubfolders(self, folder: List[str]) -> List[str]:
+        folder.sort()
+        ans = [folder[0]]
+        for i in range(1, len(folder)):
+            if not ((pre := len(ans[-1])) < len(folder[i]) and ans[-1] == folder[i][:pre] and folder[i][pre] == "/"):
+                ans.append(folder[i])
+        return ans
+```
+
