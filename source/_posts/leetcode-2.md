@@ -1559,3 +1559,51 @@ class Solution:
         return ans
 ```
 
+## M_p1797_设计一个验证系统
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302091716099.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302091716516.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302091716515.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302091717133.png)
+
+### solution
+
+```python
+class AuthenticationManager:
+    """
+    1.self.hash保存所有的token过期时间
+    2.过期时间和currentTime一致时认为过期
+    """
+    def __init__(self, timeToLive: int):
+        self.hash = dict()
+        self.timeToLive = timeToLive
+
+
+    def generate(self, tokenId: str, currentTime: int) -> None:
+        self.hash[tokenId] = currentTime + self.timeToLive
+
+
+    def renew(self, tokenId: str, currentTime: int) -> None:
+        if tokenId in self.hash and self.hash[tokenId] > currentTime:
+            self.hash[tokenId] = currentTime + self.timeToLive
+
+
+    def countUnexpiredTokens(self, currentTime: int) -> int:
+        ans = 0
+        for outtime in self.hash.values():
+            if outtime > currentTime:
+                ans += 1
+        return ans
+
+
+# Your AuthenticationManager object will be instantiated and called as such:
+# obj = AuthenticationManager(timeToLive)
+# obj.generate(tokenId,currentTime)
+# obj.renew(tokenId,currentTime)
+# param_3 = obj.countUnexpiredTokens(currentTime)
+```
+
+统计当前存活token时可以顺便删去已经过期的token，减少后续的遍历次数。
