@@ -1607,3 +1607,71 @@ class AuthenticationManager:
 ```
 
 统计当前存活token时可以顺便删去已经过期的token，减少后续的遍历次数。
+
+## H_p1223_掷骰子模拟
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302101912415.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302101912906.png)
+
+### 记忆化深搜
+
+```python
+class Solution:
+    def dieSimulator(self, n: int, rollMax: List[int]) -> int:
+        """
+        先尝试下递归的方法
+        输入参数有：剩余骰子次数，上次点数，该点数剩余可重复次数
+        """
+        MOD = 10 ** 9 + 7
+        # 记忆化搜索
+        @cache
+        def dfs(i: int, last: int, left: int) -> int:
+            # 如果i为0了说明找到了一种可行方案
+            if i == 0:
+                return 1
+            res = 0
+            # 遍历这一次骰子的所有可能性
+            for j, mx in enumerate(rollMax):
+                # 如果该次点数和上次不一样，重置left，那么进入到(i−1,j,rollMax[j]−1)
+                if j != last:
+                    res += dfs(i-1, j, rollMax[j]-1)
+                # 如果该次点数和上次一致，且还有剩余可重复次数，那么进入(i−1,j,left−1)
+                elif left:
+                    res += dfs(i-1,j,left-1)
+            return res % MOD
+
+        return sum(dfs(n - 1, j, mx - 1) for j, mx in enumerate(rollMax)) % MOD
+```
+
+### 动态dp
+
+```python
+class Solution:
+    def dieSimulator(self, n: int, rollMax: List[int]) -> int:
+        """
+        动态规划
+        建立一个三维的动态数组[i][j][x]
+        其中i代表当前是第i次掷骰子，j表示本次点数为j，x表示已经连续投掷点数为j的次数
+        """
+        f = [[[0] * 16 for _ in range(7)] for _ in range(n + 1)]
+        for j in range(1, 7):
+            f[1][j][1] = 1
+        for i in range(2, n + 1):
+            for j in range(1, 7):
+                for x in range(1, rollMax[j - 1] + 1):
+                    # 遍历本轮所有点数可能性
+                    for k in range(1, 7):
+                        if k != j:
+                            f[i][k][1] += f[i - 1][j][x]
+                        # 此时k一定等于j
+                        elif x + 1 <= rollMax[j - 1]:
+                            f[i][k][x + 1] += f[i - 1][k][x]
+        mod = 10**9 + 7
+        ans = 0
+        for j in range(1, 7):
+            for x in range(1, rollMax[j - 1] + 1):
+                ans = (ans + f[n][j][x]) % mod
+        return ans
+```
+
