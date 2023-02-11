@@ -1675,3 +1675,42 @@ class Solution:
         return ans
 ```
 
+## E_p2335_装满杯子需要的最短总时长
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302112321254.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302112322277.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302112322906.png)
+
+### 贪心+排序
+
+```python
+class Solution:
+    def fillCups(self, amount: List[int]) -> int:
+        """
+        排序，每次减少最大的两个
+        """
+        ans = 0
+        while sum(amount):
+            amount.sort(reverse=True)
+            amount[0] -= 1
+            amount[1] = max(0, amount[1] - 1)
+            ans += 1
+        return ans
+```
+
+### 数学
+
+```python
+class Solution:
+    def fillCups(self, amount: List[int]) -> int:
+        """
+        理想情况就是一次充两个，除非有一个的数量比另外两个加起来还高。
+        """
+        amount.sort()
+        if amount[2] > amount[1] + amount[0]:
+            return amount[2]
+        return (sum(amount) + 1) // 2
+```
+
