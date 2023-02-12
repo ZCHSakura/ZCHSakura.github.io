@@ -1714,3 +1714,83 @@ class Solution:
         return (sum(amount) + 1) // 2
 ```
 
+## M_p1138_字母版上的路径
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302122017418.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302122017990.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302122018799.png)
+
+### 模拟（复杂）
+
+```python
+class Solution:
+    def alphabetBoardPath(self, target: str) -> str:
+        position_hash = dict()
+        board = ["abcde", "fghij", "klmno", "pqrst", "uvwxy", "z"]
+        # 先使用哈希表保存所有字母的位置
+        for i, row in enumerate(board):
+            for j, x in enumerate(row):
+                position_hash[x] = (i, j)
+        
+        def get_path(now, target):
+            now, target = position_hash[now], position_hash[target]
+            res = ""
+            # 先变纵轴
+            if (y := target[0] - now[0]) > 0:
+                res += 'D' * y
+            else:
+                res += 'U' * -y
+            # 再变横轴
+            if (x := target[1] - now[1]) > 0:
+                res += 'R' * x
+            else:
+                res += 'L' * -x
+            return res
+
+        # 构造答案
+        ans = ''
+        for i, letter in enumerate(target):
+            # 开头要从'a'
+            if i == 0:
+                ans = ans + get_path('a', letter) + '!'
+            # 如果起点和终点涉及z则要从u处走，但要注意排除zz相连的情况
+            elif (letter == 'z' or target[i-1] == 'z') and not target[i-1] == letter:
+                ans = ans + get_path(target[i-1], 'u') + get_path('u', letter) + '!'
+            else:
+                ans = ans + get_path(target[i-1], letter) + '!'
+
+        return ans
+```
+
+### 模拟（简洁）
+
+```python
+class Solution:
+    def alphabetBoardPath(self, target: str) -> str:
+        cx = cy = 0
+        res = []
+        for c in target:
+            c = ord(c) - ord('a')
+            nx = c // 5
+            ny = c % 5
+            if nx < cx:
+                res.append('U' * (cx - nx))
+            if ny < cy:
+                res.append('L' * (cy - ny))
+            if nx > cx:
+                res.append('D' * (nx - cx))
+            if ny > cy:
+                res.append('R' * (ny - cy))
+            res.append('!')
+            cx = nx
+            cy = ny
+        return ''.join(res)
+```
+
+主要优化两个方面：
+
+- 先向上再向左可以避免z的特殊位置带来的问题
+- 可以使用ASCII码之间的数字差来计算他们的相对位置，不需要使用哈希结构来记录每个字母的位置
+
