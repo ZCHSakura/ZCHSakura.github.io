@@ -1794,3 +1794,191 @@ class Solution:
 - 先向上再向左可以避免z的特殊位置带来的问题
 - 可以使用ASCII码之间的数字差来计算他们的相对位置，不需要使用哈希结构来记录每个字母的位置
 
+## H_p10_正则表达式匹配
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302141955957.png)
+
+### DP
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302141954874.png)
+
+```python
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        """
+        这个题中最重要的就是写出状态转移方程
+        其次就是一定要注意计算dp数组的时候i要从0开始，j从1开始。这是因为s串为空p不为空有可能是合法的（''和'a*'），p为空而s不为空的话结果一定是不合法的
+        """
+        m, n = len(s), len(p)
+
+        # matches中的i,j是s和p中的实际下标加1
+        def matches(i, j):
+            # .和任何字符都能匹配
+            if p[j-1] == '.':
+                return True
+            return s[i-1] == p[j-1]
+
+        # 这里要特别注意，dp的开头加了一个dp[0][0]，所以dp[1][1]才是s和p的首字符
+        dp = [[False for _ in range(n+1)] for _ in range(m+1)]
+        # 两个空字符串是可以匹配的
+        dp[0][0] = True
+        for i in range(m+1):
+            for j in range(1, n+1):
+                if p[j-1] == '*':
+                    if matches(i, j-1):
+                        dp[i][j] = dp[i-1][j] or dp[i][j-2]
+                    else:
+                        dp[i][j] = dp[i][j-2]
+                else:
+                    if matches(i, j):
+                        dp[i][j] = dp[i-1][j-1] 
+                    else:
+                        dp[i][j] = False
+
+        return dp[m][n]
+```
+
+## M_p11_盛最多水的容器
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302141956206.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302141956410.png)
+
+### 双指针
+
+```python
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        """
+        有两个核心问题：
+        1.能容纳的水由板子之间的距离和较短的板子高度决定
+        2.当板子向内收拢时，若长板向内收拢则水量必然减少，而短板向内收拢水量可能增大，所以每次收拢短板
+        """
+        l, r = 0, len(height) - 1
+        ans = 0
+        while l != r:
+            ans = max(ans, min(height[l], height[r]) * (r-l))
+            if height[l] > height[r]:
+                r -= 1
+            else:
+                l += 1
+        
+        return ans
+```
+
+## M_P15_三数之和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302141957617.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302141957365.png)
+
+### 超时
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+
+        ans = []
+        l = 0
+        while l < len(nums)-1:
+            if nums[l] > 0:
+                return ans
+            r = l + 1
+            while r < len(nums):
+                # 如果存在满足条件的就记录下来
+                if - (nums[l] + nums[r]) in nums[l+1:r]:
+                    ans.append([nums[l], - (nums[l] + nums[r]), nums[r]])
+                    # 只有匹配成功时右指针向右划过重复的
+                    r = bisect.bisect_right(nums, nums[r])
+                else:
+                    r += 1
+            # 左指针向右划过重复的
+            l = bisect.bisect_right(nums, nums[l])
+
+        return ans
+```
+
+我这种方式双指针指向左右两边，中间的那个每次还得用in来判断，时间复杂度有点大
+
+### [i, L, R]
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        记得避免重复，这里通过使用二分查找来跳过重复
+        """
+        nums.sort()
+        n=len(nums)
+        # 特殊情况直接return
+        if(not nums or n<3):
+            return []
+        res=[]
+        for i in range(n):
+            # 最小的元素已经大于0了，那整体肯定大于0
+            if(nums[i]>0):
+                return res
+            # 遇到重复就continue
+            if(i>0 and nums[i]==nums[i-1]):
+                continue
+            L=i+1
+            R=n-1
+            while(L<R):
+                if(nums[i]+nums[L]+nums[R]==0):
+                    res.append([nums[i],nums[L],nums[R]])
+                    # 跳过重复部分
+                    R = bisect.bisect_left(nums, nums[R])
+                    L = bisect.bisect_right(nums, nums[L])
+                elif(nums[i]+nums[L]+nums[R]>0):
+                    R=R-1
+                else:
+                    L=L+1
+        return res
+```
+
+这种方法每次都是确定的i，只用移动L和R就行了，少了一层循环。
+
+## M_p17_电话号码的字母组合
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302142104262.png)
+
+### 递归
+
+```python
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        """
+        递归
+        """
+        phone_map = {
+            '2': 'abc',
+            '3': 'def',
+            '4': 'ghi',
+            '5': 'jkl',
+            '6': 'mno',
+            '7': 'pqrs',
+            '8': 'tuv',
+            '9': 'wxyz',
+        }
+
+        ans = []
+        temp = []
+
+        def backtrack(index: int):
+            # 如果index超越了后界，说明某一个分支已经递归到最深处了，将该分支的答案压入最终的结果中
+            if index == len(digits):
+                ans.append("".join(temp))
+            else:
+                digit = digits[index]
+                for letter in phone_map[digit]:
+                    temp.append(letter)
+                    # 进入更深一层
+                    backtrack(index + 1)
+                    # 每一个分支走完之后往回退一步，走下个分支
+                    temp.pop()
+
+        backtrack(0)
+        return ans
+```
+
