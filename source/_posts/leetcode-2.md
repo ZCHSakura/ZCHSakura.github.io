@@ -1982,3 +1982,124 @@ class Solution:
         return ans
 ```
 
+## M_p19_删除链表的倒数第N个节点
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302151658964.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302151658717.png)
+
+### 获取链表长度
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        def getLinkLen(head: Optional[ListNode]):
+            """
+            获取链表长度
+            """
+            length = 0
+            while head.next:
+                head = head.next
+                length += 1
+            length += 1
+            return length
+
+        link_len = getLinkLen(head)
+        new_head = ListNode(0, head)
+        temp = new_head
+        for i in range(link_len - n):
+            temp = temp.next
+        temp.next = temp.next.next
+        return new_head.next
+```
+
+## E_p20_有效的括号
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302151719735.png)
+
+### 栈
+
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        """
+        栈
+        """
+        my_dict = {
+            '{': '}',
+            '[': ']',
+            '(': ')',
+        }
+        stack = []
+        for i, x in enumerate(s):
+            if x in my_dict:
+                stack.append(x)
+            else:
+                # 这里主要是为了避免出现第一个字符就是右括号的情况下会报错
+                if not stack:
+                    return False
+                if not my_dict[stack.pop()] == x:
+                    return False
+        
+        return not stack
+```
+
+## E_p21_合并两个有序链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302151728190.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302151729249.png)
+
+### 遍历
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        head = ListNode()
+        temp = head
+        # 两个链表都没走完
+        while list1 and list2:
+            if list1.val >= list2.val:
+                temp.next = list2
+                list2 = list2.next
+            else:
+                temp.next = list1
+                list1 = list1.next
+            temp = temp.next
+        
+        # 其中一个走完了，把另一个剩下的补在后面
+        if list1:
+            temp.next = list1
+        else:
+            temp.next = list2
+        
+        return head.next
+```
+
+### 递归
+
+```python
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        if l1 is None:
+            return l2
+        elif l2 is None:
+            return l1
+        elif l1.val < l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+```
+
