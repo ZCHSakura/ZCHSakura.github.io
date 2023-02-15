@@ -2103,3 +2103,80 @@ class Solution:
             return l2
 ```
 
+## M_p22_括号生成
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302152109846.png)
+
+### 深搜
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
+
+        def dfs(cur_str, left, right):
+            """
+            :param cur_str: 从根结点到叶子结点的路径字符串
+            :param left: 左括号已经使用的个数
+            :param right: 右括号已经使用的个数
+            :return:
+            """
+            if left == n and right == n:
+                res.append(cur_str)
+                return
+            if left < right:
+                return
+
+            if left < n:
+                dfs(cur_str + '(', left + 1, right)
+
+            if right < n:
+                dfs(cur_str + ')', left, right + 1)
+
+        dfs('', 0, 0)
+        return res
+```
+
+### 回溯
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
+
+        def backtrack(cur_list, left, right):
+            """
+            :param cur_list: 从根结点到叶子结点的路径字符串
+            :param left: 左括号已经使用的个数
+            :param right: 右括号已经使用的个数
+            :return:
+            """
+            if left == n and right == n:
+                res.append("".join(cur_list))
+                return
+            if left < right:
+                return
+
+            if left < n:
+                cur_list.append('(')
+                backtrack(cur_list, left + 1, right)
+                cur_list.pop()
+
+            if right < n:
+                cur_list.append(')')
+                backtrack(cur_list, left, right + 1)
+                cur_list.pop()
+
+        backtrack([], 0, 0)
+        return res
+```
+
+### 是否回溯的区别
+
+我们可以看到深搜和回溯其实非常的相似，回溯使用list而不是str只是单纯的为了方便撤销，没有本质区别。仔细看起来主要就是有没有pop，也就是有没有撤销操作的区别，为什么回溯要撤销而深搜不用撤销呢。
+
+「回溯算法」强调了在状态空间特别大的时候，只用一份状态变量去搜索所有可能的状态，在搜索到符合条件的解的时候，通常会做一个拷贝，这就是为什么经常在递归终止条件的时候，有 `res.append("".join(cur_list))` 这样的代码。正是因为全程使用一份状态变量，因此它就有「恢复现场」和「撤销选择」的需要。
+
+而深搜这份代码里面的区别就是我们传入`dfs`函数中的其实并不一直是一个状态变量，我们使用`dfs(cur_str + '(', left + 1, right)`时，实际上是创建了一个新的变量`cur_str + '('`，当这个dfs返回的时候`cur_str`还是进入`dfs`之前的`cur_str`，也就不用手动撤销选择了。
+
+可以想象搜索遍历的问题其实就像是做实验，每一次实验都用新的实验材料，那么做完了就废弃了。但是如果只使用一份材料，在做完一次以后，一定需要将它恢复成原样（就是这里「回溯」的意思），才可以做下一次尝试。而`dfs(cur_str + '(', left + 1, right)`这种方式实际上相当于找了一份新的和当前一样的材料去进行下一步实验，不管结果如何现在这份材料都不会受到影响。
