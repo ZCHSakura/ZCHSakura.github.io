@@ -2173,10 +2173,275 @@ class Solution:
 
 ### 是否回溯的区别
 
-我们可以看到深搜和回溯其实非常的相似，回溯使用list而不是str只是单纯的为了方便撤销，没有本质区别。仔细看起来主要就是有没有pop，也就是有没有撤销操作的区别，为什么回溯要撤销而深搜不用撤销呢。
+我们可以看到深搜和回溯其实非常的相似，~~回溯使用list而不是str只是单纯的为了方便撤销，没有本质区别。~~这一段是错误的，在python中list是mutable的，如果使用list一定要注意最后要深拷贝赋值给ans，仔细看起来主要就是有没有pop，也就是有没有撤销操作的区别，为什么回溯要撤销而深搜不用撤销呢。
 
 「回溯算法」强调了在状态空间特别大的时候，只用一份状态变量去搜索所有可能的状态，在搜索到符合条件的解的时候，通常会做一个拷贝，这就是为什么经常在递归终止条件的时候，有 `res.append("".join(cur_list))` 这样的代码。正是因为全程使用一份状态变量，因此它就有「恢复现场」和「撤销选择」的需要。
 
 而深搜这份代码里面的区别就是我们传入`dfs`函数中的其实并不一直是一个状态变量，我们使用`dfs(cur_str + '(', left + 1, right)`时，实际上是创建了一个新的变量`cur_str + '('`，当这个dfs返回的时候`cur_str`还是进入`dfs`之前的`cur_str`，也就不用手动撤销选择了。
 
 可以想象搜索遍历的问题其实就像是做实验，每一次实验都用新的实验材料，那么做完了就废弃了。但是如果只使用一份材料，在做完一次以后，一定需要将它恢复成原样（就是这里「回溯」的意思），才可以做下一次尝试。而`dfs(cur_str + '(', left + 1, right)`这种方式实际上相当于找了一份新的和当前一样的材料去进行下一步实验，不管结果如何现在这份材料都不会受到影响。
+
+## H_p23_合并K个升序链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162005293.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162005473.png)
+
+### 不断遍历每个链表的头节点
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        ans = ListNode()
+        head = ans
+        while None in lists:
+            lists.remove(None)
+
+        while lists:
+            min_cur = ListNode(inf)
+            min_idx = -1
+            # 找一圈当前最小的元素
+            for i in range(len(lists)):
+                # lists.remove(cur)
+                if min_cur.val > lists[i].val:
+                    min_cur = lists[i]
+                    min_idx = i
+
+            # 将一圈找到的最小值放在head后面
+            head.next = lists[min_idx]
+            head = head.next
+            # 最小值那一个链表向后一位，或者从lists中删除
+            if lists[min_idx].next:
+                lists[min_idx] = lists[min_idx].next
+            else:
+                lists.pop(min_idx)
+
+        return ans.next
+```
+
+### 优先级队列存储头节点
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        import heapq
+        # 优先级队列底层使用的是堆结构，如果升序排列就对应小顶堆，降序排列对应大顶堆。
+        # heapq使用小顶堆，即升序排序，如果插入元组则从前面的元素开始排序，可以以此调节元素优先级
+        dummy = ListNode(0)
+        p = dummy
+        head = []
+
+        # 先将所有不为空的链表的首元素如队列
+        for i in range(len(lists)):
+            if lists[i] :
+                heapq.heappush(head, (lists[i].val, i))
+                lists[i] = lists[i].next
+
+        while head:
+            # 取出当前队列中值最小的
+            val, idx = heapq.heappop(head)
+            # 插入答案中
+            p.next = ListNode(val)
+            p = p.next
+            # 如果最小值所在链表还有后续节点则将该节点加入优先级队列，并向后移一个
+            if lists[idx]:
+                heapq.heappush(head, (lists[idx].val, idx))
+                lists[idx] = lists[idx].next
+        return dummy.next
+```
+
+## M_p31_下一个排列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162054468.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162054858.png)
+
+### 扫描
+
+```python
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        我们需要将一个左边的「较小数」与一个右边的「较大数」交换，以能够让当前排列变大，从而得到下一个排列。
+
+        同时我们要让这个「较小数」尽量靠右，而「较大数」尽可能小。当交换完成后，「较大数」右边的数需要按照升序重新排列。这样可以在保证新排列大于原来排列的情况下，使变大的幅度尽可能小。
+        """
+
+        n = len(nums)
+        left, right = n - 2, n - 1
+        # 先找到最靠右的一组升序，left的位置就是「较小数」
+        while left > 0:
+            if nums[left] < nums[right]:
+                break
+            else:
+                left -= 1
+                right -= 1
+        
+        # 保证nums是完全倒序的
+        if left == 0 and right != n - 1 and nums[left] > nums[right]:
+            nums.sort()
+            return
+
+        smaller = nums[left]
+        biger_idx = n - 1
+        # 寻找「较小数」右侧范围内的「较大数」
+        for i in range(right + 1, n):
+            if nums[i] <= smaller:
+                biger_idx = i - 1
+                # 找到最小的「较大数」时停止寻找
+                break
+
+        # 交换「较大数」和「较小数」
+        nums[left], nums[biger_idx] = nums[biger_idx],  nums[left]
+        # 将「较小数」之后的部分调整为升序
+        for i in range(right, n - 1):
+            for j in range(i+1, n):
+                if nums[i] > nums[j]:
+                    nums[i], nums[j] = nums[j], nums[i]
+```
+
+### 优化扫描
+
+```python
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        i = len(nums) - 2
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
+        if i >= 0:
+            j = len(nums) - 1
+            while j >= 0 and nums[i] >= nums[j]:
+                j -= 1
+            nums[i], nums[j] = nums[j], nums[i]
+        
+        left, right = i + 1, len(nums) - 1
+        # 因为后面本身一定是降序的，这里变为升序只需要两两互换，可以O(N)
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
+```
+
+## H_p32_最长有效括号
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162124951.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162124956.png)
+
+### 栈
+
+```python
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        # 一开始先放一个占位符，保证栈中首元素为右括号
+        stack = [-1]
+        ans = 0
+        for i in range(len(s)):
+            # 如果是左括号则入栈
+            if s[i] == '(':
+                stack.append(i)
+            # 如果是右括号则从栈里面弹出来一个
+            else:
+                last_idx = stack.pop()
+                # 如果此时栈为空了，那说明本次弹出来的是占位的右括号，将本次的右括号放入占位
+                if not stack:
+                    stack.append(i)
+                # 如果没空说明弹出来了一个有效的左括号
+                else:
+                    ans = max(ans, i - stack[-1])
+        
+        return ans
+```
+
+## M_p33_搜索旋转排序数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162201125.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162201308.png)
+
+### 二分
+
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        """
+        二分，旋转有序的数组经过二分后至少有一半是有序的，只要区分一下目标是不是在有序的部分就可以了
+        """
+        left, right = 0, len(nums) - 1
+        mid = (left + right) // 2
+
+        if not nums:
+            return -1
+
+        while left <= right:
+            mid = (left + right) // 2
+            print(left, mid, right)
+            if nums[mid] == target:
+                return mid
+            # 如果左边是有序的，这里有等号是因为//除法的结果会更倾向于左边（当数量为偶数时），导致mid可能和left重合
+            if nums[left] <= nums[mid]:
+                # 且目标在左边
+                if nums[left] <= target < nums[mid]:
+                    right = mid - 1
+                # 目标在右边
+                else:
+                    left = mid + 1
+            # 如果右边是有序的
+            else:
+                # 且目标在右边
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                # 目标在左边
+                else:
+                    right = mid - 1
+
+        return -1
+```
+
+## M_p39_组合总和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162253009.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302162253906.png)
+
+### 深搜
+
+```python
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        ans = []
+
+        def dfs(target, combine, idx):
+            if idx == len(candidates):
+                return 
+            if target == 0:
+                print('**', target, combine, idx)
+                # 重点中的重点，要深拷贝出来一份，不然后面都会变成[]
+                ans.append(combine[:])
+                return
+            # 不使用该位置
+            dfs(target, combine, idx+1)
+            # 使用该位置
+            if target - candidates[idx] >= 0:
+                combine.append(candidates[idx])
+                dfs(target - candidates[idx], combine, idx)
+                combine.pop()
+        
+        dfs(target, [], 0)
+
+        return ans
+```
+
+**一定一定要注意python的list是mutable的，最后一定要深拷贝出来，不然会变成空的。**
