@@ -2445,3 +2445,506 @@ class Solution:
 ```
 
 **一定一定要注意python的list是mutable的，最后一定要深拷贝出来，不然会变成空的。**
+
+## M_p34_在排序数组中查找元素的第一个和最后一个位置
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302171911026.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302171911779.png)
+
+### 二分
+
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        """
+        logN肯定是二分法
+        二分两次，一次找到target的第一个位置，一次找到第一个大于target的位置。
+        """
+        if not nums:
+            return [-1, -1]
+
+        def getFirstTarget(nums: List[int], target: int) -> int:
+            left, right = 0, len(nums) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                # print(left, mid, right)
+                # 如果左右指针重合了并且当前位置元素等于target说明找到了该元素的第一个位置
+                if target == nums[mid] and left == right:
+                    return mid
+                # 没找到但重合了说明没有这个元素
+                elif left == right:
+                    return -1
+                # 这里使用小于等于是为了确保right一定能圈到target值，同时我们为了寻找第一个target希望right在能圈住的情况下尽可能地左缩
+                if target <= nums[mid]:
+                    right = mid
+                # mid处小于target，left可以直接mid+1，此时不会错过第一个target
+                else:
+                    left = mid + 1
+
+        def getFirstBiger(nums: List[int], target: int) -> int:
+            left, right = 0, len(nums) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                # print(left, mid, right)
+                # 如果左右指针重合了并且当前位置元素大于target说明找到了大于target元素的第一个位置
+                if target < nums[mid] and left == right:
+                    return mid
+                # 这种情况主要是为了防止这个列表中没有比target元素更大的元素，这时候right和left会汇合在最右端，为了适配后面的-1，这里返回right+1
+                elif left == right:
+                    return right + 1
+                # 要保证right位置上的元素永远大于target
+                if target < nums[mid]:
+                    right = mid
+                # 等号在下面是因为，这里我们希望left尽可能地右缩，同时不必保证target一定被left圈住，所以可以+1
+                else:
+                    left = mid + 1
+
+
+        # print(getFirstTarget(nums, target))
+        # print(getFirstBiger(nums, target))
+        if (first_idx := getFirstTarget(nums, target)) != -1:
+            return [first_idx, getFirstBiger(nums, target) - 1]
+        return [-1, -1]
+```
+
+## H_p42_接雨水
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172044284.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172044613.png)
+
+### 动规
+
+```python
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        """
+        动规
+        先分别从两边扫描一遍，获取leftMax数组和rightMax数组，其中元素代表着在i位置左边的最大高度和右边的最大高度
+        """
+        if not height:
+            return 0
+        
+        n = len(height)
+        leftMax = [height[0]] + [0] * (n - 1)
+        for i in range(1, n):
+            leftMax[i] = max(leftMax[i - 1], height[i])
+
+        rightMax = [0] * (n - 1) + [height[n - 1]]
+        for i in range(n - 2, -1, -1):
+            rightMax[i] = max(rightMax[i + 1], height[i])
+
+        ans = sum(min(leftMax[i], rightMax[i]) - height[i] for i in range(n))
+        return ans
+```
+
+### 双指针
+
+```python
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        ans = 0
+        left, right = 0, len(height) - 1
+        leftMax = rightMax = 0
+
+        while left < right:
+            leftMax = max(leftMax, height[left])
+            rightMax = max(rightMax, height[right])
+            # 此时leftMax < rightMax，应该移动左指针
+            # 此时存在更高的右边界，左指针指的位置到leftMax中间的水必能接住
+            if height[left] < height[right]:
+                ans += leftMax - height[left]
+                left += 1
+            # 此时leftMax >= rightMax，应该移动右指针
+            # 此时存在更高的左边界，右指针指的位置到rightMax中间的水必能接住
+            else:
+                ans += rightMax - height[right]
+                right -= 1
+        
+        return ans
+```
+
+双指针的优势在于可以使用两个变量来代替两个数组，节省空间开销。
+
+## M_p46_全排列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172053507.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172054198.png)
+
+### 深搜
+
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        """
+        深搜
+        """
+        def dfs(nums, combine):
+            if len(combine) == len(nums):
+                # 注意深拷贝，如果ans.append(combine)最后结果全是指向同一个位置的空列表
+                ans.append(combine[:])
+                return
+            for number in nums:
+                if number not in combine:
+                    combine.append(number)
+                    dfs(nums, combine)
+                    combine.pop()
+        
+        ans = []
+        dfs(nums, [])
+        return ans
+```
+
+**注意深拷贝**
+
+## M_p48_旋转图像
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172100913.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172101892.png)
+
+### 翻转
+
+```python
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        先水平翻转再主对角线翻转
+        """
+        n = len(matrix)
+        # 水平翻转
+        for i in range(n // 2):
+            for j in range(n):
+                matrix[i][j], matrix[n - i - 1][j] = matrix[n - i - 1][j], matrix[i][j]
+        # 主对角线翻转
+        for i in range(n):
+            for j in range(i):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+```
+
+## M_p49_字母异位词分组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172111477.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172111563.png)
+
+### 排序
+
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        """
+        直接把每个元素排序，结果相同的放到一个哈希表位置
+        """
+        hash_dict = collections.defaultdict(list)
+
+        for st in strs:
+            key = "".join(sorted(st))
+            hash_dict[key].append(st)
+        
+        return list(hash_dict.values())
+```
+
+## M_p53_最大子数组和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172122302.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172122344.png)
+
+### 动规
+
+```python
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        """
+        从头到尾遍历一遍，计算以每个位置结尾的子数组最大和
+        """
+        ans = nums[0]
+        temp = 0
+        for i in range(len(nums)):
+            temp = max(nums[i], temp + nums[i])
+            ans = max(ans, temp)
+        
+        return ans
+```
+
+## M_p55_跳跃游戏
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172133947.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172133824.png)
+
+### 贪心
+
+```python
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        """
+        贪心，记录一个能达到的最远距离，遍历每一个能到达的点的位置加上它自身数值和当前最远距离对比，不断更新最远距离，直到超过n-1或者遍历结束。
+        """
+        n, rightmost = len(nums), 0
+        for i in range(n):
+            if i <= rightmost:
+                rightmost = max(rightmost, i + nums[i])
+                if rightmost >= n - 1:
+                    return True
+        return False
+```
+
+## M_p56_合并区间
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172146526.png)
+
+### 排序
+
+```python
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        # 先对左端点进行排序，这样能保证最后合并的大区间中的小区间一定是连续的
+        intervals.sort(key=lambda x: x[0])
+        ans = []
+        for i, x in enumerate(intervals):
+            if i == 0:
+                ans.append(x)
+            # 如果当前左端点小于ans中最后一个元素的右端点则说明该小区间可以合并入ans中最后一个区间
+            if x[0] <= ans[-1][1]:
+                # 判断合并后区间有没有变长
+                ans[-1][1] = max(ans[-1][1], x[1])
+            # 不能合并就直接加入ans
+            else:
+                ans.append(x)
+        
+        return ans
+```
+
+## M_p62_不同路径
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172201189.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172201044.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302172201177.png)
+
+### 动规
+
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        """
+        动规
+        走到每一个位置可能性只和走到它左边的而可能性和走到它上面的可能性有关
+        初始化的时候记得把最左边和最上边初始化为1
+        """
+        f = [[1] * n] + [[1] + [0] * (n - 1) for _ in range(m - 1)]
+        print(f)
+        for i in range(1, m):
+            for j in range(1, n):
+                f[i][j] = f[i - 1][j] + f[i][j - 1]
+        return f[m - 1][n - 1]
+```
+
+### 数学
+
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        """
+        排列组合
+        一共走m + n - 2步，其中n - 1步向右，找出所有不同向右的数量
+        """
+        return comb(m + n - 2, n - 1)
+```
+
+## M_p64_最小路径和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192013267.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192013055.png)
+
+### DP
+
+```python
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        """
+        DP
+        """
+        m = len(grid)
+        n = len(grid[0])
+        dp = [[0 for _ in range(n)] for _ in range(m)]
+        # print(dp)
+        for row in range(m):
+            for col in range(n):
+                # 初始位置
+                if row == 0 and col == 0:
+                    dp[row][col] = grid[row][col]
+                # 最上面一行
+                elif row == 0:
+                    dp[row][col] = dp[row][col - 1] + grid[row][col]
+                # 最左边一列
+                elif col == 0:
+                    dp[row][col] = dp[row - 1][col] + grid[row][col]
+                else:
+                    dp[row][col] = min(dp[row - 1][col], dp[row][col - 1]) + grid[row][col]
+        
+        # print(dp)
+        return dp[m-1][n-1]
+```
+
+## E_p70_爬楼梯
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192032072.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192032234.png)
+
+### DP滚动数组
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        """
+        DP滚动数组
+        到第x阶的方案数为到x-1和x-2的方案数之和
+        """
+        # 到第零阶和第一阶的方案数都为1
+        p, q = 1, 1
+        ans = 1
+        # 滚动数组，只保存连续的三个位置p,q,ans
+        for i in range(1, n):
+            ans = p + q
+            p = q
+            q = ans
+        return ans
+```
+
+## H_p72_编辑距离
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192140271.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192140766.png)
+
+### DP
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192141293.jpg)
+
+```python
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        """
+        二维DP
+        dp[i][j]表示word1的前i个字母和word2的前i个字母的匹配最小操作数
+        
+        """
+        m = len(word1)
+        n = len(word2)
+
+        dp = [[0 for _ in range(n+1)] for _ in range(m+1)]
+
+        # 初始化dp[0][j]
+        for j in range(n+1):
+            dp[0][j] = j
+
+        # 初始化dp[i][0]
+        for i in range(m+1):
+            dp[i][0] = i
+
+        for i in range(1, m+1):
+            for j in range(1, n+1):
+                if word1[i-1] == word2[j-1]:
+                    # 分别对应对word1增，删，改（相同时不用改）
+                    dp[i][j] = 1 + min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1] - 1)
+                else:
+                    # 分别对应对word1增，删，改
+                    dp[i][j] = 1 + min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1])
+        
+        return dp[m][n]
+```
+
+## M_p75_颜色分类
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192231163.png)
+
+### 双指针（快排思想）
+
+```python
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        采用双指针，一个指向2，一个指向0
+        注意必须要先比较当前元素是不是2，再比较是不是0，因为我们有可能从后面换过来一个0，但是我们不可能从i走过的地方换过来一个2，所以必须要先比较2再比较0。
+        比较2的时候还要注意换过来的是不是2，如果换过来的是2还要接着换，不然i就后移了。
+        但是比较0的时候换过来的只可能是1或者i和ptr_0在一个位置，这是因为：
+            ptr_0一定是等于或者落后于i的，i已经划过的位置中不可能还有2，只有前面全是0或者把2换了0过来的情况下i才可能一直等于ptr_0，一旦i超过了ptr_0，说明i划过的位置出现过1，而此时ptr_0一定卡在1的那个位置上。
+        """
+        ptr_0 = 0
+        ptr_2 = len(nums) - 1
+
+        i = 0
+        while i <= ptr_2:
+            # print(ptr_0, i, ptr_2)
+            # 如果换过来的是2还要接着换，不然i就后移了
+            while i <= ptr_2 and nums[i] == 2:
+                nums[i], nums[ptr_2] = nums[ptr_2], nums[i]
+                ptr_2 -= 1
+            if nums[i] == 0:
+                nums[i], nums[ptr_0] = nums[ptr_0], nums[i]
+                ptr_0 += 1
+            i += 1
+
+        return nums
+```
+
+## H_p76_最小覆盖字串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192258321.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302192258325.png)
+
+### 滑动窗口
+
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        """
+        滑动窗口
+        两个哈希表，一个记录要求，一个记录当前窗口内情况
+        """
+        if len(s) < len(t):
+            return ""
+
+        t_dict = Counter(t)
+        s_dict = Counter()
+
+        def check(s_dict, t_dict):
+            # print(s_dict, t_dict)
+            for key in t_dict:
+                # 如果某一个字母没满足要求就返回False
+                if t_dict[key] > s_dict[key]:
+                    return False
+            return True
+
+        left = right = 0
+        ans = " " * len(s)
+        flag = False
+        while right < len(s):
+            # print(left, right)
+            # 先将右节点加入哈希表中
+            s_dict[s[right]] += 1
+            # 开始检查，看能否回缩左窗口
+            while check(s_dict, t_dict):
+                s_dict[s[left]] -= 1
+                left += 1
+                # 实际上满足条件的是left左边的那个位置
+                if len(ans) >= len(s[left-1:right+1]):
+                    flag = True
+                    ans = s[left-1:right+1]
+            # 当前不满足条件，将右窗口扩大
+            right += 1
+
+        return ans if flag else ""
+```
+
