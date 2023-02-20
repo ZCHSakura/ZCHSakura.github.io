@@ -2948,3 +2948,236 @@ class Solution:
         return ans if flag else ""
 ```
 
+## M_p78_子集
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302201935825.png)
+
+### 回溯
+
+```python
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        """
+        回溯
+        """
+        ans = []
+        def dfs(cur, idx):
+            if idx == len(nums):
+                ans.append(cur[:])
+                return
+            # 选取当前位置元素
+            cur.append(nums[idx])
+            dfs(cur, idx + 1)
+            cur.pop()
+            # 不选取当前位置元素
+            dfs(cur, idx + 1)
+
+        dfs([], 0)
+        return ans
+```
+
+## M_p79_单词搜索
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202108354.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202108817.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202109918.png)
+
+### 回溯
+
+```python
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        """
+        回溯
+        """
+        around_b = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+        
+        # 当前判断第idx元素，used中保存使用过的位置，i,j为当前坐标
+        def dfs(idx, used, i, j):
+            if word[idx] != board[i][j]:
+                return False
+
+            if idx == len(word) - 1:
+                return True
+            
+            # 先将这个节点加入used中
+            used.append([i, j])
+            for bi, bj in around_b:
+                newi, newj = i+bi, j+bj
+                # 遍历当前位置的四个邻居，看有没有没被用过的而且后续能成功的
+                if 0 <= newi < len(board) and 0 <= newj < len(board[0]) and [newi, newj] not in used:
+                    if dfs(idx+1, used, i+bi, j+bj):
+                        return True
+            # 如果这个节点四个方向都搜索完了都不行，那就把这个节点弹出去
+            used.pop()
+            return False
+
+        m, n = len(board), len(board[0])
+
+        # 避免极端情况，看要不要反转word
+        head_or_tail = 0
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == word[0]:
+                    head_or_tail += 1
+                elif board[i][j] == word[-1]:
+                    head_or_tail -= 1
+
+        if head_or_tail > 0:
+            word = word[::-1]
+
+        # 以每个点为起点看能不能找到一个答案
+        for i in range(m):
+            for j in range(n):
+                if dfs(0, [], i, j):
+                    return True
+
+        return False
+```
+
+## H_p84_柱状图中最大的矩形
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202152919.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202152905.png)
+
+### 两次单调栈
+
+```python
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        """
+        两次单调栈
+        记录以每个位置的高度为高可构建的矩形的左右边界分别在哪里
+        """
+        n = len(heights)
+
+        if n < 1:
+            return 0
+
+        left, right = [0] * n, [0] * n
+
+        stack = []
+        # 先从左向右遍历一遍,找到每个heights[i]当作高的左边界在哪里
+        for i in range(n):
+            # 找到一个高度比当前位置小的位置作为左边界,这就是单调栈维护单调递增的意义
+            while stack and heights[stack[-1]] >= heights[i]:
+                stack.pop()
+            left[i] = stack[-1] if stack else -1
+            stack.append(i)
+
+        stack = []
+        # 再从右向左遍历一遍,找到每个heights[i]当作高的右边界在哪里
+        for i in range(n-1, -1, -1):
+            while stack and heights[stack[-1]] >= heights[i]:
+                stack.pop()
+            right[i] = stack[-1] if stack else n
+            stack.append(i)
+
+        print(left)
+        print(right)
+        
+        return max([(right[i] - left[i] - 1) * heights[i] for i in range(n)])
+```
+
+### 一次单调栈
+
+```python
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        """
+        一次单调栈
+        我们在对位置i进行入栈操作时，确定了它的左边界。从直觉上来说，与之对应的我们在对位置 i进行出栈操作时可以确定它的右边界！仔细想一想，这确实是对的。当位置i被弹出栈时，说明此时遍历到的位置i0的高度小于等于height[i]，并且在i0​与i之间没有其他高度小于height[i]的柱子。
+        """
+        n = len(heights)
+        left, right = [0] * n, [n] * n
+
+        mono_stack = list()
+        for i in range(n):
+            while mono_stack and heights[mono_stack[-1]] >= heights[i]:
+                # 被弹出的时候记录右边界,但是我们这里只要相等就会弹出,所以当有一排高度相等的时候可能无法获取到正确的右边界,但其实不会影响最终结果.
+                #在答案对应的矩形中，如果有若干个柱子的高度都等于矩形的高度，那么最右侧的那根柱子是可以求出正确的右边界的
+                right[mono_stack[-1]] = i
+                mono_stack.pop()
+            left[i] = mono_stack[-1] if mono_stack else -1
+            mono_stack.append(i)
+        
+        ans = max((right[i] - left[i] - 1) * heights[i] for i in range(n)) if n > 0 else 0
+        return ans
+```
+
+## H_p85_最大矩阵
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202247503.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202247478.png)
+
+### 每一行向上截取，转化为p84
+
+```python
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        """
+        使用84题的思路,每一行往上截取连续的1作为柱状图的高
+        """
+        def largestRectangleArea(heights: List[int]) -> int:
+            """
+            一次单调栈
+            我们在对位置i进行入栈操作时，确定了它的左边界。从直觉上来说，与之对应的我们在对位置 i进行出栈操作时可以确定它的右边界！仔细想一想，这确实是对的。当位置i被弹出栈时，说明此时遍历到的位置i0的高度小于等于height[i]，并且在i0​与i之间没有其他高度小于height[i]的柱子。
+            """
+            n = len(heights)
+            left, right = [0] * n, [n] * n
+
+            mono_stack = list()
+            for i in range(n):
+                while mono_stack and heights[mono_stack[-1]] >= heights[i]:
+                    # 被弹出的时候记录右边界,但是我们这里只要相等就会弹出,所以当有一排高度相等的时候可能无法获取到正确的右边界,但其实不会影响最终结果.
+                    #在答案对应的矩形中，如果有若干个柱子的高度都等于矩形的高度，那么最右侧的那根柱子是可以求出正确的右边界的
+                    right[mono_stack[-1]] = i
+                    mono_stack.pop()
+                left[i] = mono_stack[-1] if mono_stack else -1
+                mono_stack.append(i)
+            
+            ans = max((right[i] - left[i] - 1) * heights[i] for i in range(n)) if n > 0 else 0
+            return ans
+
+        # 初始化up矩阵,用来记录每个点往上的连续1个数
+        up = [[0 for j in range(len(matrix[0]))] for i in range(len(matrix))]
+        
+        # 计算up矩阵
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if (matrix[i][j] == '1'):
+                    up[i][j] = up[i-1][j] + 1 if i != 0 else 1
+
+        # print(up)
+        ans = 0
+        # 取每一行计算柱状图中最大矩阵
+        for row in up:
+            ans = max(ans, largestRectangleArea(row))
+
+        return ans
+```
+
+## E_p94_二叉树的中序遍历
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302202206148.png)
+
+### 递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        return self.inorderTraversal(root.left) + [root.val] + self.inorderTraversal(root.right)
+```
+
