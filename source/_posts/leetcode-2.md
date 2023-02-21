@@ -3181,3 +3181,252 @@ class Solution:
         return self.inorderTraversal(root.left) + [root.val] + self.inorderTraversal(root.right)
 ```
 
+## M_p96_不同的二叉搜索树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212135515.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212135125.png)
+
+### 递归+记忆化
+
+```python
+class Solution:
+    @cache
+    def numTrees(self, n: int) -> int:
+        """
+        递归与记忆化
+        以N个节点中的每一个节点为根节点，以该节点为根节点
+        的树的数目为其左边节点组成的树数目×右边节点组成的树的数目
+        注意记忆化，当输入的n一致时返回树的数量也一致。
+        """
+        if n == 0 or n == 1:
+            return 1
+
+        ans = 0
+        for i in range(n):
+            left_num = self.numTrees(i)
+            right_num = self.numTrees(n - i - 1)
+            ans += left_num * right_num
+
+        return ans
+```
+
+## M_p98_验证二叉搜索树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212203235.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212203887.png)
+
+### 递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        """
+        递归
+        每次进行递归的时候要传入下一个节点和当前的上下界
+        """
+        def check(node: TreeNode, lower: int, upper: int):
+            if not node:
+                return True
+            
+            val = node.val
+            # 当前节点不满足要求
+            if val <= lower or val >= upper:
+                return False
+            # 左子树不满足
+            if not check(node.left, lower, val):
+                return False
+            # 右子树不满足
+            if not check(node.right, val, upper):
+                return False
+
+            return True
+        
+        return check(root, -inf, inf)
+```
+
+## E_p101_对称二叉树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212218568.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212218708.png)
+
+### 递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        """
+        递归
+        复制一份该二叉树，如果对称需要满足两个条件：
+        1.根节点的值相同
+        2.左子树等于对方右子树，右子树等于对方左子树
+          2         2
+  		 / \       / \
+  		3   4     4   3
+	   / \ / \   / \ / \
+	  8  7 6  5 5  6 7  8
+        """
+        if not root:
+            return True
+        
+        def check(node1: TreeNode, node2:TreeNode):
+            # 如果都为空
+            if (not node1 and not node2):
+                return True
+            # 有一个为空
+            if (not node1 or not node2):
+                return False
+            # 根节点的值相同;
+            # 左子树等于对方右子树，右子树等于对方左子树;
+            return node1.val == node2.val and check(node1.right, node2.left) and check(node1.left, node2.right)
+
+        return check(root, root)
+```
+
+## M_p102_二叉树的层序遍历
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212238981.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212239711.png)
+
+### 队列迭代
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """
+        队列
+        from queue import Queue
+        初始化队列：node_list = Queue()
+        返回队列长度：node_list.qsize()
+        入队：node_list.put(node.left)
+        出队：node = node_list.get()
+        """
+        if not root:
+            return []
+
+        from queue import Queue
+        # 初始化一个先进先出队列
+        node_list = Queue()
+        ans = []
+        node_list.put(root)
+        while not node_list.empty():
+            # 存该层结果
+            temp = []
+            node_num = node_list.qsize()
+            # 遍历该层所有的节点，并将子节点压入队列
+            for _ in range(node_num):
+                node = node_list.get()
+                temp.append(node.val)
+                # 先如左
+                if node.left:
+                    node_list.put(node.left)
+                # 再入右
+                if node.right:
+                    node_list.put(node.right)
+
+            ans.append(temp)
+        
+        return ans
+```
+
+## E_p104_二叉树的最大深度
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212241043.png)
+
+### 递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxDepth(self, root):
+        """
+        递归
+        分别计算左右子树深度，取大的+1
+        """
+        if root is None: 
+            return 0 
+        else: 
+            left_height = self.maxDepth(root.left) 
+            right_height = self.maxDepth(root.right) 
+            return max(left_height, right_height) + 1 
+```
+
+## M_p105_从前序和中序遍历序列构造二叉树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212302368.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302212302617.png)
+
+### 递归+分支
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        """
+        递归+分支
+        先序遍历定位根节点
+        中序遍历定位左右子树范围
+        """
+        # 构造哈希映射，帮助我们快速定位根节点
+        index = {element: i for i, element in enumerate(inorder)}
+
+        def subBuildTree(preorder_left, preorder_right, inorder_left, inorder_right):
+            if preorder_left > preorder_right:
+                return None
+
+            # 先序遍历的第一个就是根节点
+            preorder_root = preorder_left
+            
+            # 查询根节点在中序遍历中的位置
+            inorder_root = index[preorder[preorder_root]]
+
+            # 建造根节点
+            root = TreeNode(preorder[preorder_root])
+
+            # 计算左子树节点数
+            num_leftsub = inorder_root - inorder_left
+
+            # 构造左子树
+            root.left = subBuildTree(preorder_left + 1, preorder_left + num_leftsub, inorder_left, inorder_root - 1)
+
+            # 构造右子树
+            root.right = subBuildTree(preorder_left + num_leftsub + 1, preorder_right, inorder_root + 1, inorder_right)
+
+            return root
+        
+        n = len(preorder)
+        return subBuildTree(0, n-1, 0, n-1)
+```
+
