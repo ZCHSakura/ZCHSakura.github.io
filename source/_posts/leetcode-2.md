@@ -3430,3 +3430,301 @@ class Solution:
         return subBuildTree(0, n-1, 0, n-1)
 ```
 
+## M_p114_二叉树展开为链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222007080.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222007086.png)
+
+### 递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if not root:
+            return root
+
+        ans = TreeNode()
+        temp = ans
+        def dfs(node: TreeNode):
+            nonlocal temp 
+            if not node:
+                return
+
+            temp.right = TreeNode(node.val)
+            temp.left = None
+            temp = temp.right
+
+            if node.left:
+                dfs(node.left)
+            if node.right:
+                dfs(node.right)
+
+        dfs(root)
+        root.left = None
+        root.right = ans.right.right
+```
+
+### 寻找前驱节点（原地）
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222007156.png)
+
+```python
+class Solution:
+    def flatten(self, root: TreeNode) -> None:
+        curr = root
+        while curr:
+            if curr.left:
+                predecessor = nxt = curr.left
+                while predecessor.right:
+                    predecessor = predecessor.right
+                predecessor.right = curr.right
+                curr.left = None
+                curr.right = nxt
+            curr = curr.right
+```
+
+## E_p121_买卖股票的最佳时机
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222008463.png)
+
+### 遍历
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        遍历
+        使用一个值记录当前遇到的最小值，每次和当前最小值比较，更新答案
+        """
+        min_num = inf
+        ans = 0
+
+        for i in range(len(prices)):
+            min_num = min(min_num, prices[i])
+            if prices[i] - min_num > ans:
+                ans = prices[i] - min_num
+
+        return ans
+```
+
+## H_p124_二叉树中的最大路径和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222028980.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222029171.png)
+
+### 递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        """
+        递归
+        递归的过程中计算每个节点的贡献度，也就是该节点作为子节点时能提供的最大路径和
+        这里要注意贡献度和最大路径和是不一样的，路径中的根节点的最大路径和可以同时包含左右节点的贡献度
+        但是一个节点作为子节点时意味着他只能带左右孩子中的一个，那要选择贡献度大的孩子
+        """
+        max_path = -inf
+
+        def get_contribution(node: TreeNode) -> int:
+            """
+            该函数的返回值为该node节点作为子节点时的贡献度，而不是最大路径和！
+            """
+            # 空节点的贡献度为0
+            if not node:
+                return 0
+
+            # 如果左儿子贡献度小于0那不如直接不选
+            left_contr = max(0, get_contribution(node.left))
+            right_contr = max(0, get_contribution(node.right))
+
+            nonlocal max_path
+            # 这里记录的是该node节点作为根节点时（即左右儿子都能选）的最大路径和
+            max_path = max(max_path, node.val + left_contr + right_contr)
+
+            # 函数返回的是该节点的贡献度，只能左右孩子中取其一
+            return node.val + max(left_contr, right_contr)
+        
+        get_contribution(root)
+        return max_path
+```
+
+## M_p128_最长连续序列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222118083.png)
+
+### 遍历+优化
+
+```python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        """
+        遍历并优化
+        以每一个元素为序列开头，向后寻找有没有连续的序列
+        同时我们在外层循环中做了判断，当前元素为x，如果x-1在set中则不用将x作为序列开头来寻找序列
+        这是因为x-1在set中时，要么x已经被记录过，要么将来x-1做序列头时会被记录，且一定比x-1开头要短，所以没必要寻找
+        因此虽然我们代码有两重循环，但实际上每个元素在内循环中最多出现一次，仍然能保证时间是O(n)
+        """
+        # in 查询set的时间复杂度为O(1)
+        nums = set(nums)
+        ans = 0
+
+        for x in nums:
+            if x - 1 not in nums:
+                cur = x
+                cur_len = 1
+                while cur + 1 in nums:
+                    cur += 1
+                    cur_len += 1
+                ans = max(ans, cur_len)
+            
+        return ans
+```
+
+### 遍历+哈希
+
+```python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        """
+        用哈希表存储每个端点值对应连续区间的长度
+        若数已在哈希表中：跳过不做处理
+        若是新数加入：
+            取出其左右相邻数已有的连续区间长度 left 和 right
+            计算当前数的区间长度为：cur_length = left + right + 1
+            根据 cur_length 更新最大长度 max_length 的值
+            更新区间两端点的长度值为cur_length
+        
+        注：这里说明为什么只更新端点处长度值，这是因为新出现的节点若能和当前区间结合则
+        一定出现在当前区间端点左右，所以每次只用更新端点处长度即可。
+
+        """
+        # 哈希表中存储当前节点所在区间的区间长度值
+        hash_dict = dict()
+        ans = 0
+        for x in nums:
+            # 如果x不在hash中
+            if x not in hash_dict:
+                # 取其左右相邻区间长度，没有就没0
+                left_len = hash_dict.get(x - 1, 0)
+                right_len = hash_dict.get(x + 1, 0)
+
+                # 计算当前区间长度
+                cur_length = left_len + 1 + right_len
+
+                # 更新最大区间长度
+                ans = max(ans, cur_length)
+
+                # 更新区间端点长度值
+                hash_dict[x] = cur_length
+                hash_dict[x-left_len] = cur_length
+                hash_dict[x+right_len] = cur_length
+            
+        return ans
+```
+
+## E_p136_只出现一次的数字
+
+### 神之异或！！！
+
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        """
+        异或
+        异或具有交换律和结合律，a^b^a=a^a^b=b
+        最后会变成0^ans，最后答案还是ans
+        python中的reduce函数将一个数据集合（链表，元组等）中的所有数据进行下列操作：
+            用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，
+            得到的结果再与第三个数据用 function 函数运算，最后得到一个结果
+        """
+        return reduce(lambda x, y: x ^ y, nums)
+```
+
+## M_p139_单词拆分
+
+### DP
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        DP
+        1.初始化dp=[False,⋯,False]，长度为n+1。n为字符串长度。dp[i] 表示s的前i位(s[0,⋯,i))是否可以用wordDict中的单词表示。
+        2.初始化dp[0]=True，空字符可以被表示。
+        3.遍历字符串的所有子串，遍历开始索引i，遍历区间[0,n)：
+            遍历结束索引j，遍历区间[i+1,n+1)：
+                若dp[i]=True 且s[i,⋯,j) 在wordlist 中：dp[j]=True。
+                解释：dp[i]=True 说明s的前i位可以用wordDict表示，则s[i,⋯,j) 出现在wordDict中，说明s的前j位可以表示。
+        4.返回dp[n]
+        注意dp[i]和s[i]中的i是不一致的
+        """
+        n = len(s)
+        dp = [False] * (n + 1)
+        dp[0] = True
+
+        for i in range(n):
+            for j in range(i+1, n+1):
+                if dp[i] and (s[i:j] in wordDict):
+                    dp[j] = True
+        
+        return dp[n]
+```
+
+## E_p141_环形链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222202806.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222202898.png)
+
+### 快慢指针（Floyd判圈算法）
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        """
+        快慢指针（Floyd判圈算法）
+        两个指针，快指针每次走两步，慢指针每次走一步。
+        最终只有两种情况，快指针走到头，或者快指针遇到了慢指针。
+        前者说明该链表是无圈的，后者则说明该链表有圈
+        """
+        if not head or not head.next:
+            return False
+
+        slow_ptr = head
+        fast_ptr = head.next
+
+        # 只要没相遇就一直走
+        while slow_ptr != fast_ptr:
+            # 快指针走到头
+            if not fast_ptr or not fast_ptr.next:
+                return False
+
+            slow_ptr = slow_ptr.next
+            fast_ptr= fast_ptr.next.next
+        
+        return True
+```
+
