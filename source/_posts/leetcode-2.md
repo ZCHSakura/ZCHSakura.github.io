@@ -3430,3 +3430,324 @@ class Solution:
         return subBuildTree(0, n-1, 0, n-1)
 ```
 
+## M_p142_环形链表Ⅱ
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302231826306.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302231826212.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302231827616.png)
+
+### 哈希O(n)
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        哈希
+        """
+
+        hash_node = set()
+
+        while head:
+            if head not in hash_node:
+                hash_node.add(head)
+            else:
+                return head
+            head = head.next
+```
+
+### 双指针O(1)
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        双指针
+        快慢指针一开始都从head开始，快指针每次走两步，慢指针每次走一步
+        设链表共有a+b个节点，其中链表头部到链表入口有a个节点（不计链表入口节点），链表环有b个节点
+        fast的步数是slow的两倍：f=2s
+        fast的步数是slow步数加n倍的圈长：f=s+nb
+        所以s=nb，当s=a+nb的时候慢指针就回到了环的入口，所以需要让慢指针再走a步
+        此时我们将快指针移回head让并让他每次走一步，这样当快指针走了a步之后他会和慢指针在环入口处相遇
+        """
+
+        fast, slow = head, head
+
+        # 题目保证有环
+        while True:
+            if not fast or not fast.next:
+                return
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+
+        # 此时s=nb，把fast放回head上走a步
+        fast = head
+        while fast != slow:
+            fast = fast.next
+            slow = slow.next
+
+        return fast
+```
+
+## M_p146_LRU缓存
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302231953559.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302231953305.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302231954452.png)
+
+### 哈希+双向链表
+
+```python
+class DLinkedNode:
+    def __init__(self, key=0, value=0):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    """
+    哈希+双向链表
+    哈希表存的是双向链表的节点对象
+    每次get后，移到头节点
+    每次put后，移到头节点，如果长度溢出需要删除尾节点
+    """
+
+    def __init__(self, capacity: int):
+        self.hash = dict()
+        # 伪头部和伪尾部节点
+        self.head = DLinkedNode()
+        self.tail = DLinkedNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.capacity = capacity
+        self.size = 0
+
+
+    def get(self, key: int) -> int:
+        """
+        先通过hash判断在不在链表中
+        如果在链表中则返回节点value，同时将节点移至头部
+        """
+        if key not in self.hash:
+            return -1
+        node = self.hash[key]
+        self.moveToHead(node)
+        return node.value
+
+    def put(self, key: int, value: int) -> None:
+        """
+        先通过hash判断在不在链表中
+            如果在链表中则更新节点value，同时将节点移至头部
+            如果不在则插入，同时判断size是否超过capacity
+                如果超过则移除尾部节点，同时删除hash中对应内容
+        """
+        if key in self.hash:
+            node = self.hash[key]
+            node.value = value
+            self.moveToHead(node)
+
+        else:
+            node = DLinkedNode(key, value)
+            self.hash[key] = node
+            self.addToHead(node)
+            self.size += 1
+            if self.size > self.capacity:
+                removed_node = self.removeTail()
+                self.hash.pop(removed_node.key)
+                self.size -= 1
+
+
+    def addToHead(self, node: DLinkedNode):
+        """
+        在头部增加一个节点
+        """
+        node.next = self.head.next
+        self.head.next = node
+        node.next.prev = node
+        node.prev = self.head
+
+    def removeNode(self, node: DLinkedNode):
+        """
+        删除当前节点
+        """
+        node.prev.next = node.next
+        node.next.prev = node.prev
+    
+    def moveToHead(self, node: DLinkedNode):
+        """
+        在原位置删除，在头节点新增
+        """
+        self.removeNode(node)
+        self.addToHead(node)
+
+    def removeTail(self):
+        node = self.tail.prev
+        self.removeNode(node)
+        return node
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+```
+
+## M_p148_排序链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302232024691.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302232024201.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302232024257.png)
+
+### 自顶向下，递归版归并
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        """
+        1.找到链表的中点，以中点为分界，将链表拆分成两个子链表。
+        寻找链表的中点可以使用快慢指针的做法，快指针每次移动2步，慢指针每次移动1步，
+        当快指针到达链表末尾时，慢指针指向的链表节点即为链表的中点。
+        2.对两个子链表分别排序。
+        3.将两个排序后的子链表合并，得到完整的排序后的链表。
+        可以使用「21. 合并两个有序链表」的做法，将两个有序的子链表进行合并。
+        """
+        def sortFunc(head: ListNode, tail: ListNode) -> ListNode:
+            if not head:
+                return head
+            if head.next == tail:
+                head.next = None
+                return head
+            slow = fast = head
+            while fast != tail:
+                slow = slow.next
+                fast = fast.next
+                if fast != tail:
+                    fast = fast.next
+            mid = slow
+            return merge(sortFunc(head, mid), sortFunc(mid, tail))
+            
+        def merge(head1: ListNode, head2: ListNode) -> ListNode:
+            dummyHead = ListNode(0)
+            temp, temp1, temp2 = dummyHead, head1, head2
+            while temp1 and temp2:
+                if temp1.val <= temp2.val:
+                    temp.next = temp1
+                    temp1 = temp1.next
+                else:
+                    temp.next = temp2
+                    temp2 = temp2.next
+                temp = temp.next
+            if temp1:
+                temp.next = temp1
+            elif temp2:
+                temp.next = temp2
+            return dummyHead.next
+        
+        return sortFunc(head, None)
+```
+
+### 自底向上归并，空间O(1)
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        """
+        1.用subLength表示每次需要排序的子链表的长度，初始时subLength=1。
+        2.每次将链表拆分成若干个长度为subLength的子链表（最后一个子链表的长度可以小于subLength），
+        按照每两个子链表一组进行合并，合并后即可得到若干个长度为subLength×2
+        的有序子链表（最后一个子链表的长度可以小于subLength×2）。
+        合并两个子链表仍然使用「21. 合并两个有序链表」的做法。
+        3.将subLength的值加倍，重复第 2 步，对更长的有序子链表进行合并操作，
+        直到有序子链表的长度大于或等于length，整个链表排序完毕。
+        """
+        def merge(head1: ListNode, head2: ListNode) -> ListNode:
+            dummyHead = ListNode(0)
+            temp, temp1, temp2 = dummyHead, head1, head2
+            while temp1 and temp2:
+                if temp1.val <= temp2.val:
+                    temp.next = temp1
+                    temp1 = temp1.next
+                else:
+                    temp.next = temp2
+                    temp2 = temp2.next
+                temp = temp.next
+            if temp1:
+                temp.next = temp1
+            elif temp2:
+                temp.next = temp2
+            return dummyHead.next
+        
+        if not head:
+            return head
+        
+        length = 0
+        node = head
+        while node:
+            length += 1
+            node = node.next
+        
+        dummyHead = ListNode(0, head)
+        subLength = 1
+        while subLength < length:
+            prev, curr = dummyHead, dummyHead.next
+            while curr:
+                head1 = curr
+                for i in range(1, subLength):
+                    if curr.next:
+                        curr = curr.next
+                    else:
+                        break
+                head2 = curr.next
+                curr.next = None
+                curr = head2
+                for i in range(1, subLength):
+                    if curr and curr.next:
+                        curr = curr.next
+                    else:
+                        break
+                
+                succ = None
+                if curr:
+                    succ = curr.next
+                    curr.next = None
+                
+                merged = merge(head1, head2)
+                prev.next = merged
+                while prev.next:
+                    prev = prev.next
+                curr = succ
+            subLength <<= 1
+        
+        return dummyHead.next
+```
+
