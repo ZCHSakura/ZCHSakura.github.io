@@ -3430,7 +3430,6 @@ class Solution:
         return subBuildTree(0, n-1, 0, n-1)
 ```
 
-<<<<<<< HEAD
 ## M_p114_二叉树展开为链表
 
 ![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302222007080.png)
@@ -4071,5 +4070,178 @@ class Solution:
             subLength <<= 1
         
         return dummyHead.next
+```
+
+## M_p152_乘积最大子数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302241945767.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302241946382.png)
+
+### DP
+
+```python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        """
+        DP
+        由于存在负数，如果只记录每个位置结尾的最大值的话可能会漏掉很小的负值，
+        而这个值在后面如果再遇到负值可能会变得很大。
+        所以需要两个动态数组分别记录每个位置结尾的子数组的最小值和最大值。
+        又由于只与前一个位置有关所以只用记录两个变量即可。
+        """
+        max_dp = min_dp = ans = nums[0]
+        for i in range(1, len(nums)):
+            mx, mn = max_dp, min_dp
+            max_dp = max(nums[i], mx * nums[i], mn * nums[i])
+            min_dp = min(nums[i], mx * nums[i], mn * nums[i])
+            ans = max(ans, max_dp)
+        
+        return ans
+```
+
+## M_p155_最小栈
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242004021.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242004914.png)
+
+### List实现栈
+
+```python
+class MinStack:
+    """
+    list实现栈
+    不能直接维护一个最小值，不然把最小值弹出去了之后不知道次小值是多少
+    把握栈先进后出的思想，每一个位置的元素都会知道当自己作为栈顶的时候栈的最小值
+    每次压栈的时候压一个元组(val, min_value)
+    """
+
+    def __init__(self):
+        self.stack = [(-1, inf)]
+
+    def push(self, val: int) -> None:
+        min_value = min(val, self.stack[-1][1])
+        self.stack.append((val, min_value))
+
+    def pop(self) -> None:
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1][0]
+
+    def getMin(self) -> int:
+        return self.stack[-1][1]
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(val)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+```
+
+## E_p160_相交链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242039650.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242041216.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242041967.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242041696.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242042041.png)
+
+### 我吹过你吹过的晚风
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        """
+        走到尽头见不到你，于是走过你来时的路，等到相遇时才发现，你也走过我来时的路。
+        若相遇:a+c+b = b+c+a
+        若不相遇:a+b = b+a
+        """
+        ptr_a, ptr_b = headA, headB
+        while ptr_a != ptr_b:
+            # 走到头就换路
+            if not ptr_a:
+                ptr_a = headB
+            else:
+                ptr_a = ptr_a.next
+
+            if not ptr_b:
+                ptr_b = headA
+            else:
+                ptr_b = ptr_b.next
+        
+        return ptr_a
+```
+
+## E_p169_多数元素
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242120338.png)
+
+### 哈希计数
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        """
+        哈希计数
+        max()函数可以通过key参数指定排序规则
+        """
+        counts = Counter(nums)
+        return max(counts.keys(), key=counts.get)
+```
+
+### 排序
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+    """
+    如果将数组nums中的所有元素按照单调递增或单调递减的顺序排序，那么下标为⌊n/2⌋的元素（下标从0开始）一定是众数。
+    """
+        nums.sort()
+        return nums[len(nums) // 2]
+```
+
+## M_p198_打家劫舍
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242259904.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242259789.png)
+
+### DP
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        """
+        DP
+        dp[i]表示前i间房屋能偷窃到的最高总金额
+        dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+        只和前两个相邻位置有关，可以使用两个变量代替
+        """
+        if len(nums) <= 2:
+            return max(nums)
+
+        first = nums[0]
+        second = max(nums[0], nums[1])
+        for i in range(2, len(nums)):
+            temp = max(second, first + nums[i])
+            first = second
+            second = temp
+
+        return second
 ```
 
