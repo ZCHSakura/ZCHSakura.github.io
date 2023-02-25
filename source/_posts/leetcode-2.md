@@ -4535,3 +4535,71 @@ class Solution:
         return heapq.nlargest(k, nums)[-1]
 ```
 
+## M_p221_最大正方形
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251913829.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251913251.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251913550.png)
+
+### DP
+
+```python
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        """
+        DP
+        dp[i][j]存储以(i, j)为右下角时可构建的最大正方形边长
+        dp[i][j]为左边元素，左上元素，上方元素中最小的值+1
+        """
+        row = len(matrix)
+        col = len(matrix[0])
+
+        dp = [[0 for _ in range(col)] for _ in range(row)]
+        max_edge = 0
+
+        for i in range(row):
+            for j in range(col):
+                if matrix[i][j] == '1':
+                    if i == 0 or j == 0:
+                        dp[i][j] = 1
+                    else:
+                        dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+                    max_edge = max(max_edge, dp[i][j])
+
+        return max_edge * max_edge
+```
+
+## E_p226_翻转二叉树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251923297.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251923464.png)
+
+### 递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        递归
+        交换自己的左右子树
+        """
+        if root is None:
+            return
+        
+        # 左右互换
+        root.right, root.left = root.left, root.right
+        # 两个子树也各自递归
+        self.invertTree(root.right)
+        self.invertTree(root.left)
+        return root
+```
+
