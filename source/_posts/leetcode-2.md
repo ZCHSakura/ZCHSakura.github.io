@@ -4245,3 +4245,293 @@ class Solution:
         return second
 ```
 
+## M_p200_岛屿数量
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251404281.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251404031.png)
+
+### DFS
+
+```python
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        DFS
+        每一次dfs将一片岛屿置为0
+        """
+        row = len(grid)
+        col = len(grid[0])
+
+
+        def dfs(r, c):
+            """
+            深搜目的是将一片岛屿置0
+            """
+            grid[r][c] = '0'
+            for x, y in [(r+1, c), (r-1, c), (r, c+1), (r, c-1)]:
+                if 0 <= x <= row-1 and 0 <= y <= col-1 and grid[x][y] == '1':
+                    dfs(x, y)
+        
+        ans = 0
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                if grid[r][c] == '1':
+                    # 深搜了几次就有几个岛屿
+                    dfs(r, c)
+                    ans += 1
+        
+        return ans
+```
+
+## E_p206_反转链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251452504.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251453893.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251453607.png)
+
+### 迭代
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        迭代
+        1 2 3 none
+        3 2 1 none
+        """
+        # ans和cur用来构造新链表
+        ans = None
+        cur = head
+        while cur:
+            # 提前保存一个cur的后续节点，原始的cur马上会被用掉
+            # next_node始终位于原始链表
+            next_node = cur.next
+            # 将当前答案放到cur后边
+            cur.next = ans
+            # 将答案指针指向cur
+            ans = cur
+            # 把cur取回到原始链表上的下一个节点
+            cur= next_node
+
+        return ans
+```
+
+### 递归
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        递归
+        """
+        if head == None or head.next == None:
+            return head
+        newHead = self.reverseList(head.next)
+        # print(newHead)
+        # 此时head右边已经被反转完成，我们希望右边的next是head
+        head.next.next = head
+        # 最后要指向None，不然可能会产生环
+        head.next = None
+        return newHead
+```
+
+## M_p207_课程表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251543180.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251543735.png)
+
+### 拓扑排序
+
+```python
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        """
+        拓扑排序
+        1.根据依赖关系，构建邻接表、入度数组。
+        2.选取入度为 0 的数据，根据邻接表，减小依赖它的数据的入度。
+        3.找出入度变为 0 的数据，重复第 2 步。
+        4.直至所有数据的入度为 0，得到排序，如果还有数据的入度不为 0，说明图中存在环。
+        """
+        # 邻接矩阵
+        adjacency_dict = defaultdict(list)
+        # 入度数组
+        indeg = [0] * numCourses
+        # y->x
+        for x, y in prerequisites:
+            adjacency_dict[y].append(x)
+            indeg[x] += 1
+        
+        # 定义一个队列，里面保存所有当前入度为空（即没有前置要求，或已满足前置要求）的节点，
+        q = deque([u for u in range(numCourses) if indeg[u] == 0])
+
+        # 记录能成功完成学习的门数
+        visited = 0
+
+        while q:
+            visited += 1
+            # 弹出一个入度为0的课程y，并完成该课程学习
+            y = q.popleft()
+            # 所有需要提前学习y的课程入度减1
+            for x in adjacency_dict[y]:
+                indeg[x] -= 1
+                # 如果一个可能入度减为0，则将该课程也入队列
+                if indeg[x] == 0:
+                    q.append(x)
+
+        return visited == numCourses
+```
+
+## M_p208_实现Trie(前缀树)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251613240.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251614425.png)
+
+### 字典树
+
+```python
+class Trie:
+    """
+    该字典树与普通树不同
+    每个节点维护一个是否是单词结尾的标志
+    每个节点维护一个26种可能的数组
+    """
+    def __init__(self):
+        self.children = [None] * 26
+        self.isEnd = False
+    
+    def searchPrefix(self, prefix: str) -> "Trie":
+        node = self
+        for p in prefix:
+            idx = ord(p) - ord('a')
+            # 如果下一个查询的单词不在字典树中，返回空节点
+            if not node.children[idx]:
+                return None
+            node = node.children[idx]
+        return node
+
+    def insert(self, word: str) -> None:
+        node = self
+        for p in word:
+            idx = ord(p) - ord('a')
+            # 如果下一个查询的单词不在字典树中，构造节点
+            if not node.children[idx]:
+                node.children[idx] = Trie()
+            node = node.children[idx]
+        node.isEnd = True
+        print(self.children)
+
+    def search(self, word: str) -> bool:
+        node = self.searchPrefix(word)
+        return node is not None and node.isEnd
+
+    def startsWith(self, prefix: str) -> bool:
+        return self.searchPrefix(prefix) is not None
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
+```
+
+## M_p215_数组中的第K个最大元素
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251742494.png)
+
+### 快排分区
+
+```python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        快速排序的分区思想，快排的思想是一次找出一个数的正确位置，
+        并使得该数左边的元素都比它小，该数右边的元素都比它大，要找出第k
+	    大的元素，只需要在快排的时候采用降序排序，找到下标为k-1的元素即可。
+        """
+        def quickPartition(start, end, target):
+            """
+            在[start, end)中寻找下标为target的元素，降序
+            """
+            # 随机选取一个元素进行定位
+            random_idx = random.randint(start, end-1)
+            nums[random_idx], nums[start] = nums[start], nums[random_idx]
+
+            cur_idx = start
+            base = nums[start]
+            # 遍历整个[start+1, end)数组，保证所有大于等于base的数都在cur_idx前面
+            for i in range(start + 1, end):
+                if nums[i] >= base:
+                    nums[cur_idx+1], nums[i] = nums[i], nums[cur_idx+1]
+                    cur_idx += 1
+            
+            # 把base换到cur_idx位置
+            nums[cur_idx], nums[start] = nums[start], nums[cur_idx]
+
+            # 如果该次元素位置小于目标，则对右半部分排序
+            if cur_idx < target:
+                quickPartition(cur_idx+1, end, target)
+            # 如果该次元素位置大于目标，则对左半部分排序
+            elif cur_idx > target:
+                quickPartition(start, cur_idx, target)
+            # 如果等于目标位置就不用操作了，说明找到了
+
+        quickPartition(0, len(nums), k-1)
+        return nums[k-1]
+```
+
+### 优先级队列
+
+```python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        优先级队列
+        遍历一遍nums，维护一个大小为k的小顶堆，最后的堆顶就是答案
+        """
+        import heapq
+        heap = []
+
+        for i in nums:
+            # 如果当前入队元素小于k个就直接入队
+            if len(heap) < k:
+                heapq.heappush(heap, i)
+            # 如果已经到达了k个就pushpop
+            else:
+                heapq.heappushpop(heap, i)
+        
+        return heapq.heappop(heap)
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302251804151.png)
+
+### 直接调用优先级队列
+
+```python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        """
+        优先级队列
+        遍历一遍nums，维护一个大小为k的小顶堆，最后的堆顶就是答案
+        """
+        import heapq
+        
+        # 返回的是前k个最大的
+        return heapq.nlargest(k, nums)[-1]
+```
+
