@@ -2173,7 +2173,7 @@ class Solution:
 
 ### 是否回溯的区别
 
-我们可以看到深搜和回溯其实非常的相似，~~回溯使用list而不是str只是单纯的为了方便撤销，没有本质区别。~~这一段是错误的，在python中list是mutable的，如果使用list一定要注意最后要深拷贝赋值给ans，仔细看起来主要就是有没有pop，也就是有没有撤销操作的区别，为什么回溯要撤销而深搜不用撤销呢。
+我们可以看到深搜和回溯其实非常的相似，~~回溯使用list而不是str只是单纯的为了方便撤销，没有本质区别。~~这一段是错误的，在python中list是mutable的，如果使用list一定要注意最后要浅拷贝赋值给ans，仔细看起来主要就是有没有pop，也就是有没有撤销操作的区别，为什么回溯要撤销而深搜不用撤销呢。
 
 「回溯算法」强调了在状态空间特别大的时候，只用一份状态变量去搜索所有可能的状态，在搜索到符合条件的解的时候，通常会做一个拷贝，这就是为什么经常在递归终止条件的时候，有 `res.append("".join(cur_list))` 这样的代码。正是因为全程使用一份状态变量，因此它就有「恢复现场」和「撤销选择」的需要。
 
@@ -2428,7 +2428,7 @@ class Solution:
                 return 
             if target == 0:
                 print('**', target, combine, idx)
-                # 重点中的重点，要深拷贝出来一份，不然后面都会变成[]
+                # 重点中的重点，要浅拷贝出来一份，不然后面都会变成[]
                 ans.append(combine[:])
                 return
             # 不使用该位置
@@ -2444,7 +2444,7 @@ class Solution:
         return ans
 ```
 
-**一定一定要注意python的list是mutable的，最后一定要深拷贝出来，不然会变成空的。**
+**一定一定要注意python的list是mutable的，最后一定要浅拷贝出来，不然会变成空的。**
 
 ## M_p34_在排序数组中查找元素的第一个和最后一个位置
 
@@ -2583,7 +2583,7 @@ class Solution:
         """
         def dfs(nums, combine):
             if len(combine) == len(nums):
-                # 注意深拷贝，如果ans.append(combine)最后结果全是指向同一个位置的空列表
+                # 注意浅拷贝，如果ans.append(combine)最后结果全是指向同一个位置的空列表
                 ans.append(combine[:])
                 return
             for number in nums:
@@ -2597,7 +2597,7 @@ class Solution:
         return ans
 ```
 
-**注意深拷贝**
+**注意浅拷贝**
 
 ## M_p48_旋转图像
 
@@ -4601,5 +4601,361 @@ class Solution:
         self.invertTree(root.right)
         self.invertTree(root.left)
         return root
+```
+
+## E_p234_回文链表
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262051312.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262051256.png)
+
+### 遍历
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+        """
+        遍历
+        把值复制到数组中，然后翻转数组
+        """
+        vals = []
+        current_node = head
+        while current_node is not None:
+            vals.append(current_node.val)
+            current_node = current_node.next
+        return vals == vals[::-1]
+```
+
+### 反转后半段输入
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+        """
+        反转后半段输入
+        1.找到前半部分链表的尾节点。
+        2.反转后半部分链表。
+        3.判断是否回文。
+        4.恢复链表。
+        5.返回结果。
+        该方法虽然可以将空间复杂度降到O(1)，但是在并发环境下，该方法也有缺点。在并发环境下，
+        函数运行时需要锁定其他线程或进程对链表的访问，因为在函数执行过程中链表会被修改。
+        """
+        if head is None:
+            return True
+
+        # 找到前半部分链表的尾节点并反转后半部分链表
+        first_half_end = self.end_of_first_half(head)
+        second_half_start = self.reverse_list(first_half_end.next)
+
+        # 判断是否回文
+        result = True
+        first_position = head
+        second_position = second_half_start
+        while result and second_position is not None:
+            if first_position.val != second_position.val:
+                result = False
+            first_position = first_position.next
+            second_position = second_position.next
+
+        # 还原链表并返回结果
+        first_half_end.next = self.reverse_list(second_half_start)
+        return result    
+
+    def end_of_first_half(self, head):
+        fast = head
+        slow = head
+        while fast.next is not None and fast.next.next is not None:
+            fast = fast.next.next
+            slow = slow.next
+        return slow
+
+    def reverse_list(self, head):
+        previous = None
+        current = head
+        while current is not None:
+            next_node = current.next
+            current.next = previous
+            previous = current
+            current = next_node
+        return previous
+```
+
+## M_p236_二叉树的最近公共祖先
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262253093.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262254117.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262254873.png)
+
+### 记录父节点
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        记录祖先
+        深搜的过程中记录自己的祖先，最后对比双方祖先
+        """
+        import copy
+        step_1 = []
+        step_2 = []
+
+        def dfs(node: 'TreeNode', target: 'TreeNode', visited: list, step: list, flag = False):
+            # 搜索剪枝
+            if flag:
+                return
+            # 记录访问过的节点
+            if node is not None:
+                visited.append(node)
+
+            if node.val == target.val:
+                step.extend(visited[:])
+                flag = True
+                return
+
+            if node.left:
+                dfs(node.left, target, visited, step, flag)
+                visited.pop()
+
+            if node.right:
+                dfs(node.right, target, visited, step, flag)
+                visited.pop()
+
+        dfs(root, p, [], step_1, False)
+        dfs(root, q, [], step_2, False)
+
+        ans = TreeNode()
+        i = 0
+        # 对比双方父节点
+        while i < min(len(step_2), len(step_1)) and step_1[i] == step_2[i]:
+            ans = step_1[i]
+            i += 1
+
+        return ans
+```
+
+### 直接深搜
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        直接深搜
+        深搜的过程找有没有满足题意的答案
+        一开始我也会疑惑虽然是深搜，第一次的答案是最深的，但是后面难道不会覆盖掉最深的答案吗
+        其实是不会的，这里是因为判断条件十分巧妙
+        必须要满足（一个节点在左子树中，一个节点在右子树中）或（一个节点在当前位置，一个节点在子树）
+        更上面的父节点其实是不会满足这个条件的，因为两个节点必在其同一个子树中，也就不会覆盖正确答案
+        """
+        def dfs(node: 'TreeNode', p: 'TreeNode', q: 'TreeNode'):
+            if node is None:
+                return False
+
+            # 当前位置是否有目标
+            inCurrentNode = node.val == p.val or node.val == q.val
+            # 左子树中是否有目标
+            inLeft = dfs(node.left, p, q)
+            # 右子树中是否有目标
+            inRight = dfs(node.right, p, q)
+
+            # 更新答案
+            # （一个节点在左子树中，一个节点在右子树中）或（一个节点在当前位置，一个节点在子树）
+            if (inLeft and inRight) or (inCurrentNode and (inLeft or inRight)):
+                nonlocal ans
+                ans = node
+
+            return inCurrentNode or inLeft or inRight
+
+        ans = TreeNode()
+        dfs(root, p, q)
+        return ans
+```
+
+### 简洁递归
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+        """
+        简洁递归
+        配图理解，能往上一直return的一定是p和q分居不同子树的一个公共先祖节点，或者一个本身就是另一个的先祖
+        """
+        if not root or root == p or root == q: return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        if not left: return right
+        if not right: return left
+        return root
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262256757.png)
+
+## M_P238_除自身以外数组的乘积
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262307393.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262307158.png)
+
+### 前缀积，后缀积
+
+```python
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """
+        前缀积和后缀积
+        可以分别左右遍历两边，最后再乘起来
+        也可以直接在输出数组中计算一边前缀积，然后用一个变量储存后缀积的同时遍历这样可以空间O(1)
+        """
+        length = len(nums)
+        answer = [0]*length
+
+        # 先计算一遍前缀积
+        answer[0] = 1
+        for i in range(1, length):
+            answer[i] = answer[i-1] * nums[i-1]
+
+        # 开始乘后缀积，R记录后缀积
+        R = 1
+        for i in range(length-1, -1, -1):
+            answer[i] *= R
+            R *= nums[i]
+
+        return answer
+```
+
+## H_p239_滑动窗口最大值
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262341256.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302262341115.png)
+
+### 优先级队列
+
+```python
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        优先级队列
+        维护一个大顶堆，每次取窗口内的堆顶元素
+        """
+        import heapq
+        n = len(nums)
+        # 注意 Python 默认的优先队列是小根堆
+        q = [(-nums[i], i) for i in range(k)]
+        heapq.heapify(q)
+
+        ans = [-q[0][0]]
+        for i in range(k, n):
+            heapq.heappush(q, (-nums[i], i))
+            # 保证最大元素在窗口内
+            while q[0][1] <= i - k:
+                heapq.heappop(q)
+            ans.append(-q[0][0])
+        
+        return ans
+```
+
+### 单调减双端队列
+
+```python
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """
+        单调减双端队列
+        我们可以观察到新入队的元素如果比前面还在窗口内的元素大时，
+        前面这些元素就失去了作用，因为他们在窗口内时，后来的更大的元素也一定在窗口内
+        """
+        from collections import deque
+        
+        n = len(nums)
+        q = deque()
+        for i in range(k):
+            # 保证单调减
+            while q and nums[q[-1]] < nums[i]:
+                q.pop()
+            q.append(i)
+
+        ans = [nums[q[0]]]
+        for i in range(k, n):
+            # 保证单调减
+            while q and nums[q[-1]] < nums[i]:
+                q.pop()
+            q.append(i)
+            # 弹出过期的最大元素
+            while q[0] <= i-k:
+                q.popleft()
+            # 加入最大值
+            ans.append(nums[q[0]])
+
+        return ans
+```
+
+## M_p240_搜索二维矩阵Ⅱ
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302270005107.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302270005571.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302270005047.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302270006097.png)
+
+### Z字形查找
+
+```python
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        """
+        Z字形查找
+        由于矩阵特殊的有序性，从矩阵的最右上角开始取点(i, j)
+        若target大于点，则点下移
+        若target小于点，则点左移
+        直到找到target或点越界
+        """
+        m, n = len(matrix), len(matrix[0])
+
+        i, j = 0, n-1
+        while i < m and j >= 0:
+            if target == matrix[i][j]:
+                return True
+            elif target > matrix[i][j]:
+                i += 1
+            else:
+                j -= 1
+
+        return False
 ```
 
