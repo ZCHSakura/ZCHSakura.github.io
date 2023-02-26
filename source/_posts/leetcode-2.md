@@ -2173,7 +2173,7 @@ class Solution:
 
 ### 是否回溯的区别
 
-我们可以看到深搜和回溯其实非常的相似，~~回溯使用list而不是str只是单纯的为了方便撤销，没有本质区别。~~这一段是错误的，在python中list是mutable的，如果使用list一定要注意最后要浅拷贝赋值给ans，仔细看起来主要就是有没有pop，也就是有没有撤销操作的区别，为什么回溯要撤销而深搜不用撤销呢。
+我们可以看到深搜和回溯其实非常的相似，~~回溯使用list而不是str只是单纯的为了方便撤销，没有本质区别。~~这一段是错误的，在python中list是mutable的，如果使用list一定要注意最后要深拷贝赋值给ans，仔细看起来主要就是有没有pop，也就是有没有撤销操作的区别，为什么回溯要撤销而深搜不用撤销呢。
 
 「回溯算法」强调了在状态空间特别大的时候，只用一份状态变量去搜索所有可能的状态，在搜索到符合条件的解的时候，通常会做一个拷贝，这就是为什么经常在递归终止条件的时候，有 `res.append("".join(cur_list))` 这样的代码。正是因为全程使用一份状态变量，因此它就有「恢复现场」和「撤销选择」的需要。
 
@@ -2428,7 +2428,7 @@ class Solution:
                 return 
             if target == 0:
                 print('**', target, combine, idx)
-                # 重点中的重点，要浅拷贝出来一份，不然后面都会变成[]
+                # 重点中的重点，要深拷贝出来一份，不然后面都会变成[]
                 ans.append(combine[:])
                 return
             # 不使用该位置
@@ -2444,7 +2444,7 @@ class Solution:
         return ans
 ```
 
-**一定一定要注意python的list是mutable的，最后一定要浅拷贝出来，不然会变成空的。**
+**一定一定要注意python的list是mutable的，最后一定要深拷贝出来，不然会变成空的。**
 
 ## M_p34_在排序数组中查找元素的第一个和最后一个位置
 
@@ -2583,7 +2583,7 @@ class Solution:
         """
         def dfs(nums, combine):
             if len(combine) == len(nums):
-                # 注意浅拷贝，如果ans.append(combine)最后结果全是指向同一个位置的空列表
+                # 注意深拷贝，如果ans.append(combine)最后结果全是指向同一个位置的空列表
                 ans.append(combine[:])
                 return
             for number in nums:
