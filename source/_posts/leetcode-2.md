@@ -4959,3 +4959,61 @@ class Solution:
         return False
 ```
 
+## M_279_完全平方数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302272154863.png)
+
+### DP
+
+```python
+class Solution:
+    def numSquares(self, n: int) -> int:
+        """
+        DP
+        维护一个dp[i]表示整数i需要的最少完全平方数
+        dp[i] = min(dp[i-j*j] + 1) , 1 <= j * j <= i
+        """
+        dp = [inf] * (n+1)
+        dp[0] = 0
+
+        for i in range(1, n+1):
+            j = 1
+            min_temp = inf
+            while j * j <= i:
+                min_temp = min(min_temp, dp[i-j*j] + 1)
+                j += 1
+            dp[i] = min_temp
+
+        return dp[n]
+```
+
+### BFS
+
+```python
+class Solution:
+    def numSquares(self, n: int) -> int:
+        """
+        BFS
+        维护一个双端队列，队列里面记录当前值和已经经过的步数(n, step)
+        每次从队列头部取出一个元素，然后记录这个元素所有的减去平方数后的可能targets，并将step加1后入队
+        可以维护一个visited哈希结构，记录见过的所有可能，因为是BFS，后见的相同可能需要的步数不会更小，所以不用入队
+        """
+        from collections import deque
+        q = deque()
+        visited = set()
+
+        q.append((n, 0))
+
+        while q:
+            number, step = q.popleft()
+            targets = [number - i * i for i in range(1, int(number ** 0.5) + 1)]
+            for target in targets:
+                if target == 0:
+                    return step + 1
+                if target not in visited:
+                    visited.add(target)
+                    q.append((target, step + 1))
+
+        return -1
+```
+
