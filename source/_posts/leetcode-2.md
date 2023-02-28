@@ -4215,6 +4215,31 @@ class Solution:
         return nums[len(nums) // 2]
 ```
 
+### 投票
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        """
+        投票算法
+        有一个团伙在擂台上
+        遍历每个人：
+            如果发现当前擂台上是自己人那就自己上台，台上人数加1
+            如果发现台上不是自己人就上去拉下来一个，台上人数减1
+            最终还能站在台上的一定是多数元素
+            因为本身就会有小党派间的争斗会消耗人数，就算只有两个党派这样下来站在台上的一定也是多数人的党派
+        """
+        count = 0
+        candidate = None
+
+        for num in nums:
+            if count == 0:
+                candidate = num
+            count += (1 if num == candidate else -1)
+
+        return candidate
+```
+
 ## M_p198_打家劫舍
 
 ![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302242259904.png)
@@ -5015,5 +5040,233 @@ class Solution:
                     q.append((target, step + 1))
 
         return -1
+```
+
+## E_p283_移动零
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282019303.png)
+
+### 双指针
+
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        双指针
+        左指针保证走过的位置不包含0
+        右指针每次遇到不为0的数就和左指针位置交换
+        要么左右指针齐头并进，说明前面没遇到过0
+        要么需要交换时，左指针一定停在0上，左指针左边不可能出现0
+        """
+        left = right = 0
+
+        while right < len(nums):
+            # 如果右指针遇到不为0的shu
+            if nums[right] != 0:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+            
+            right += 1
+
+        return nums
+```
+
+## M_p287_寻找重复数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282058244.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282058073.png)
+
+### 二分
+
+```python
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        """
+        二分
+        取left和right中间数mid，看输入数组中小于等于mid的数字个数是否大于mid
+        如果大于mid则说明在目标在左边，否则目标在右边
+        """
+        n = len(nums) - 1
+        left, right = 1, n
+        while left < right:
+            mid = (left + right) // 2
+            cnt = 0
+            for num in nums:
+                if num <= mid:
+                    cnt += 1
+            # 如果个数大于mid，说明在[left, mid]
+            if cnt > mid:
+                right = mid
+            # 不然在[mid+1, right]
+            else:
+                left = mid + 1
+
+        return right
+```
+
+### Floyd判圈
+
+```python
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        """
+        Floyd判圈
+        我们对nums数组建图，每个位置i连一条i→nums[i]的边。由于存在的重复的数字target，
+        因此target这个位置一定有起码两条指向它的边，因此整张图一定存在环，
+        且我们要找到的target就是这个环的入口，那么整个问题就等价于带环链表的环入口
+
+        同时还要注意链表的起点，我们一定要找一个入度为0的点作为起点
+        在该题中0位置的入度为，这样可以保证我们的起点一定不在环内
+        """
+        fast = slow = 0
+        # 保证有环
+        while True:
+            fast = nums[nums[fast]]
+            slow = nums[slow]
+            if fast == slow:
+                break
+
+        fast = 0
+        while slow != fast:
+            fast = nums[fast]
+            slow = nums[slow]
+
+        return fast
+```
+
+## H_p297_二叉树的序列化与反序列化
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282218463.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282219761.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282219116.png)
+
+### 先序遍历+递归构造
+
+```python
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Codec:
+    """
+    先序遍历+递归构造
+    """
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        return str(self._serialize(root, []))
+        
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        return self._deserialize(eval(data))
+    
+    def _serialize(self, root, str_list):
+        """
+        先序遍历
+        """
+        if root is None:
+            str_list.append(None)
+        else:
+            str_list.append(root.val)
+            self._serialize(root.left, str_list)
+            self._serialize(root.right, str_list)
+        
+        return str_list
+
+    def _deserialize(self, data: list) -> 'TreeNode':
+        """
+        根据先序遍历结果递归构造
+        """
+        if data[0] == None:
+            data.pop(0)
+            return None
+        
+        new_node = TreeNode(data[0])
+        data.pop(0)
+        new_node.left = self._deserialize(data)
+        new_node.right = self._deserialize(data)
+        return new_node
+
+
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
+```
+
+## M_p300_最长递增子序列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282311492.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202302282311306.png)
+
+### DP
+
+```python
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        DP
+        dp[i]表示以i结尾的最长严格递增子序列的长度（包含i位置）
+        dp[i] = max(dp[j]) + 1, 0<=j<i且nums[i]>nums[j]
+        """
+        if not nums:
+            return 0
+        
+        dp = [1] * len(nums)
+        for i in range(1, len(nums)):
+            for j in range(i):
+                if nums[j] < nums[i]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+
+        return max(dp)
+```
+
+### 贪心+二分
+
+```python
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        """
+        贪心+二分
+        当新员工的贡献可以替代老员工时就把老员工开了
+        以输入序列[0,8,4,12,2] 为例：
+        第一步插入0，d=[0]；
+        第二步插入8，d=[0,8]；
+        第三步插入4，d=[0,4]；
+        第四步插入12，d=[0,4,12]；
+        第五步插入2，d=[0,2,12]。
+        """
+        d = []
+        for n in nums:
+            if not d or n > d[-1]:
+                d.append(n)
+            else:
+                # idx = bisect.bisect_left(d, n)
+                left, right = 0, len(d) - 1
+                while left < right:
+                    mid = (left+right) // 2
+                    if d[mid] >= n:
+                        right = mid
+                    else:
+                        left = mid + 1
+                d[left] = n
+        return len(d)
 ```
 
