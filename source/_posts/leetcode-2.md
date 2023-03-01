@@ -5270,3 +5270,427 @@ class Solution:
         return len(d)
 ```
 
+## H_p301_删除无效的括号
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303011923092.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303011923530.png)
+
+### 递归
+
+```python
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        """
+        递归
+        1.计算要删去多少左括号和多少有括号
+        2.写一个函数判断序列是否有效
+        3.回溯搜索所有删除括号方式
+        """
+        # 先计算左右括号各需要删除多少
+        lremove, rremove = 0, 0
+        for i in s:
+            if i == '(':
+                lremove += 1
+            elif i == ')':
+                if lremove > 0:
+                    lremove -= 1
+                else:
+                    rremove += 1
+
+        def isValid(str):
+            """
+            判断括号序列是否合法
+            """
+            cnt = 0
+            for c in str:
+                if c == '(':
+                    cnt += 1
+                elif c == ')':
+                    cnt -= 1
+                    if cnt < 0:
+                        return False
+            return cnt == 0
+
+        def dfs(s, start, lremove, rremove):
+            """
+            字符串s，当前判断start位置，左右括号还需要删除lremove和rremove
+            """
+            if lremove == 0 and rremove == 0:
+                if isValid(s):
+                    ans.append(s)
+                return
+            
+            for i in range(start, len(s)):
+                # 剪枝1，((()这种情况下删除前面三个中的任何一个结果都一样
+                if i > start and s[i] == s[i-1]:
+                    continue
+
+                # 剪枝2，如果还需要删除的个数比剩下的个数还多肯定不对了
+                # 出现这种情况是因为剪枝1，在剪枝1中可能滑过了很多连续括号
+                if lremove + rremove > len(s) - i:
+                    break
+
+                # 删除左括号
+                if lremove > 0 and s[i] == '(':
+                    dfs(s[:i] + s[i+1:], i, lremove-1, rremove)
+
+                # 删除右括号
+                if rremove > 0 and s[i] == ')':
+                    dfs(s[:i] + s[i+1:], i, lremove, rremove-1)
+                
+                # 不删除括号
+                # 这里不用专门写不删除括号的情况，因为本身就在进行for循环
+                # start到i中间这一部分在i这个循环里面就是没有删除括号的
+                # dfs(s, i+1, lremove, rremove)
+
+        ans = []
+        dfs(s, 0, lremove, rremove)
+        return ans
+
+
+
+
+
+
+
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        """
+        递归
+        1.计算要删去多少左括号和多少有括号
+        2.写一个函数判断序列是否有效
+        3.回溯搜索所有删除括号方式
+        """
+        # 先计算左右括号各需要删除多少
+        lremove, rremove = 0, 0
+        for i in s:
+            if i == '(':
+                lremove += 1
+            elif i == ')':
+                if lremove > 0:
+                    lremove -= 1
+                else:
+                    rremove += 1
+
+        def isValid(str):
+            """
+            判断括号序列是否合法
+            """
+            cnt = 0
+            for c in str:
+                if c == '(':
+                    cnt += 1
+                elif c == ')':
+                    cnt -= 1
+                    if cnt < 0:
+                        return False
+            return cnt == 0
+
+        def dfs(s, start, lremove, rremove):
+            """
+            字符串s，当前判断start位置，左右括号还需要删除lremove和rremove
+            """
+            if lremove == 0 and rremove == 0:
+                if isValid(s):
+                    ans.append(s)
+                return
+            
+            for i in range(start, len(s)):
+                # 剪枝1，((()这种情况下删除前面三个中的任何一个结果都一样
+                if i > start and s[i] == s[i-1]:
+                    continue
+
+                # 剪枝2，如果还需要删除的个数比剩下的个数还多肯定不对了
+                # 出现这种情况是因为剪枝1，在剪枝1中可能滑过了很多连续括号
+                if lremove + rremove > len(s) - i:
+                    break
+
+                # 删除左括号
+                if lremove > 0 and s[i] == '(':
+                    dfs(s[:i] + s[i+1:], i, lremove-1, rremove)
+
+                # 删除右括号
+                if rremove > 0 and s[i] == ')':
+                    dfs(s[:i] + s[i+1:], i, lremove, rremove-1)
+                
+                # 不删除括号
+                # 这里不用专门写不删除括号的情况，因为本身就在进行for循环
+                # start到i中间这一部分在i这个循环里面就是没有删除括号的
+                # dfs(s, i+1, lremove, rremove)
+
+        ans = []
+        dfs(s, 0, lremove, rremove)
+        return ans
+```
+
+### BFS
+
+```python
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        """
+        BFS
+        1.写一个函数判断序列是否有效
+        2.每次保存上一轮搜索的结果，然后对上一轮已经保存的结果中的每一个字符串
+        尝试所有可能的删除一个括号的方法，然后将保存的结果进行下一轮搜索。
+        """
+        def isValid(str):
+            """
+            判断括号序列是否合法
+            """
+            cnt = 0
+            for c in str:
+                if c == '(':
+                    cnt += 1
+                elif c == ')':
+                    cnt -= 1
+                    if cnt < 0:
+                        return False
+            return cnt == 0
+
+        ans = []
+        last_set = set()
+        last_set.add(s)
+        while True:
+            # 先查看上一轮次中有没有满足要求的，如果有就是有效的最小次数
+            for ss in last_set:
+                if isValid(ss):
+                    ans.append(ss)
+            
+            # 如果ans中出现了答案，说明上一轮次出现了最优次数
+            if ans:
+                return ans
+
+            cur_set = set()
+            for ss in last_set:
+                # 遍历字符串所有的删除一个括号的可能
+                for i in range(len(ss)):
+                    # 剪枝，((()前三个位置结果一样
+                    if i > 0 and ss[i] == ss[i-1]:
+                        continue
+                    # 删除一个位置的括号
+                    if ss[i] in ['(', ')']:
+                        cur_set.add(ss[:i] + ss[i+1:])
+
+            last_set = cur_set
+
+        return -1
+```
+
+## M_p309_最佳买卖股票时机含冷冻期
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012008754.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012008137.png)
+
+### DP
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        """
+        DP
+        我们用f[i] 表示第i天结束之后的「累计最大收益」
+        f[i][0]: 手上持有股票的最大收益
+        f[i][1]: 手上不持有股票，并且处于冷冻期中的累计最大收益
+        f[i][2]: 手上不持有股票，并且不在冷冻期中的累计最大收益
+        只与前一天有关，可以只保留三个变量
+        """
+        if not prices:
+            return 0
+
+        f0 = -prices[0]
+        # 这里初始化的第0天后的f1实际上不存在的，但是初始化一定不能比f2大，不然影响统一的转移方程
+        f1 = -inf
+        f2 = 0
+        for i in range(len(prices)):
+            # 今天过完手上还有股票，说明要么买入了，要么昨天就持有
+            temp0 = max(f0, f2 - prices[i])
+            # 今天过完手上不持有股票，且冷却，说明今天卖出了
+            temp1 = f0 + prices[i]
+            # 今天过完手上不持有股票，且没冷却，说明今天啥都没干，且昨天过完就没股票
+            temp2 = max(f1, f2)
+
+            f0, f1, f2 = temp0, temp1, temp2
+
+        return max(f0, f1, f2)
+```
+
+## H_p312_戳气球
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012038835.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012038943.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012040684.png)
+
+### 记忆化搜索
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012040644.png)
+
+```python
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        n = len(nums)
+        val = [1] + nums + [1]
+        
+        @lru_cache(None)
+        def solve(left: int, right: int) -> int:
+            if left >= right - 1:
+                return 0
+            
+            best = 0
+            for i in range(left + 1, right):
+                total = val[left] * val[i] * val[right]
+                total += solve(left, i) + solve(i, right)
+                best = max(best, total)
+            
+            return best
+
+        return solve(0, n + 1)
+```
+
+### 区间DP
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012041871.png)
+
+```python
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        n = len(nums)
+        rec = [[0] * (n + 2) for _ in range(n + 2)]
+        val = [1] + nums + [1]
+
+        for i in range(n - 1, -1, -1):
+            for j in range(i + 2, n + 2):
+                for k in range(i + 1, j):
+                    total = val[i] * val[k] * val[j]
+                    total += rec[i][k] + rec[k][j]
+                    rec[i][j] = max(rec[i][j], total)
+        
+        return rec[0][n + 1]
+```
+
+## M_p322_零钱兑换
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012116338.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012116946.png)
+
+### 记忆化搜索
+
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        """
+        记忆化搜索
+        使用记忆化搜索必须要把状态的答案作为返回值
+        """
+        @lru_cache(amount)
+        def dp(cur) -> int:
+            if cur == 0: 
+                return 0
+            mini = inf
+            for coin in coins:
+                if cur - coin >= 0:
+                    res = dp(cur - coin)
+                    # 只有返回来的结果是有效的，并且更优时才更新mini
+                    if res >= 0 and mini > res:
+                        mini = res + 1
+            return mini if mini != inf else -1
+
+        if amount < 1:
+            return 0
+        return dp(amount)
+```
+
+### DP
+
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        """
+        DP
+        DP[i]记录amount为i的时候需要的最小硬币数
+        """
+        dp = [inf] * (amount + 1)
+        dp[0] = 0
+
+        for i in range(1, amount + 1):
+            for coin in coins:
+                # 如果i可以通过之前的某个最小硬币数再加一个硬币，更新i需要的最小硬币数
+                if i - coin >= 0:
+                    dp[i] = min(dp[i], dp[i-coin] + 1)
+        
+        return dp[amount] if dp[amount] != inf else -1
+```
+
+## M_p337_打家劫舍Ⅲ
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012206904.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012206610.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012206257.png)
+
+### DFS
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rob(self, root: Optional[TreeNode]) -> int:
+        """
+        DFS
+        对每一个节点进行深搜，返回选他和不选他的两种结果
+        """
+        def dfs(node: TreeNode) -> tuple:
+            if node is None:
+                return 0, 0
+            
+            # 返回左右子树选不选的结果
+            left_s, left_ns = dfs(node.left)
+            right_s, right_ns = dfs(node.right)
+
+            # 选该节点
+            node_s = node.val + left_ns + right_ns
+            # 不选该节点
+            node_ns = max(left_s, left_ns) + max(right_s, right_ns)
+
+            return node_s, node_ns
+
+        return max(dfs(root))
+```
+
+## E_p338_比特位计数
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012215404.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303012215577.png)
+
+### DP+规律
+
+```python
+class Solution:
+    def countBits(self, n: int) -> List[int]:
+        """
+        DP+规律
+        如果 i 为偶数，那么f(i) = f(i/2) ,因为 i/2 本质上是i的二进制左移一位，低位补零
+        如果 i 为奇数，那么f(i) = f(i - 1) + 1， 因为如果i为奇数，
+        那么 i - 1必定为偶数，而偶数的二进制最低位一定是0，
+        那么该偶数 +1 后最低位变为1且不会进位，所以奇数比它上一个偶数bit上多一个1
+        """
+        ans = [0]
+        for i in range(1, n + 1):
+            if i % 2 == 0: # 偶数
+                ans.append(ans[i//2])
+            else: # 奇数
+                ans.append(ans[i - 1] + 1)
+        return ans
+```
+
