@@ -5694,3 +5694,297 @@ class Solution:
         return ans
 ```
 
+## M_p347_前K个高频元素
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022009882.png)
+
+
+
+### Counter+排序
+
+```python
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        counter+排序
+        """
+        from collections import Counter
+        cnt = Counter(nums)
+        # 使用字典值对字典键进行排序
+        sorted_cnt = sorted(cnt.keys(), key=cnt.get, reverse=True)
+        return sorted_cnt[:k]
+```
+
+### Counter+小顶堆
+
+```python
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        counter+小顶堆
+        """
+        from collections import Counter
+        import heapq
+
+        cnt = Counter(nums)
+        heap = []
+
+        for key in cnt:
+            # 如果堆内元素小于k个则直接入堆
+            if len(heap) < k:
+                heapq.heappush(heap, (cnt[key], key))
+            # 堆内已经有k个元素，将当前元素与堆顶元素比较，把小的弹出，始终保留最大的k个
+            else:
+                heapq.heappushpop(heap, (cnt[key], key))
+
+        # 获取结果并反转，原始结果是从小到大
+        return [heapq.heappop(heap)[1] for _ in range(k)][::-1]
+```
+
+### 快排分区
+
+```python
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        def mySort(count, start, end, res, k):
+            randIndex = random.randint(start, end - 1)  # 随机挑一个下标作为中间值开始找
+            count[start], count[randIndex] = count[randIndex], count[start] # 先把这个随机找到的中间元素放到开头
+            
+            midVal = count[start][1] # 选中的中间值
+            index = start + 1
+            for i in range(start + 1, end):
+                if count[i][1] > midVal: # 把所有大于中间值的放到左边
+                    count[index], count[i] = count[i], count[index]
+                    index += 1
+            count[start], count[index - 1] = count[index - 1], count[start] # 中间元素归位
+
+            if k < index - start: # 随机找到的top大元素比k个多，继续从前面top大里面找k个
+                mySort(count, start, index, res, k)
+            elif k > index - start: # 随机找到的比k个少
+                for i in range(start, index): # 先把top大元素的key存入结果
+                    res.append(count[i][0])
+                mySort(count, index, end, res, k - (index - start)) # 继续往后找
+            else: # 随机找到的等于k个
+                for i in range(start, index): # 把topk元素的key存入结果
+                    res.append(count[i][0])
+                return
+        
+        num_map = collections.defaultdict(int)  # 次数字典
+        for num in nums:
+            num_map[num] += 1
+        
+        count = list(num_map.items())  # 转换为列表
+        res = [] # 结果
+        mySort(count, 0, len(count), res, k)  # 迭代函数求前k个
+        return res
+```
+
+## M_394_字符串解码
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022141853.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022141249.png)
+
+### 栈
+
+```python
+class Solution:
+    def decodeString(self, s: str) -> str:
+        """
+        栈
+        一个字符栈，一个数字栈
+        """
+        letter_stack = []
+        multiple_stack = []
+        ans = []
+        # 用来保存未完整的数字
+        temp_num = ''
+
+        for i in range(len(s)):
+            if s[i].islower():
+                # 如果当前栈是空的而且元素是字符，说明不需要重复，直接写入ans
+                if len(letter_stack) == 0:
+                    ans.append(s[i])
+                # 不是空的就入栈
+                else:
+                    letter_stack.append(s[i])
+
+            
+            elif s[i].isdigit():
+                # 如果后面也是数字就先等等，组成完整的数字就入multiple_stack
+                if i+1<len(s) and s[i+1].isdigit():
+                    temp_num = temp_num + s[i]
+                # 如果后面不是数字
+                else:
+                    # 这里就是一个单个数字
+                    if len(temp_num) == 0:
+                        multiple_stack.append(int(s[i]))
+                    # 之前的一组数字
+                    else:
+                        multiple_stack.append(int(temp_num + s[i]))
+                        temp_num = ''
+
+            # 如果当前元素是']'就开始处理栈里面的内容
+            elif s[i] == ']':
+                temp = []
+                while (x := letter_stack.pop()) != '[':
+                    temp = [x] + temp
+                letter_stack.extend(temp * int(multiple_stack.pop()))
+                # 如果multiple_stack里面空了就说明当前栈里面没有需要解码的内容，全部移到ans中
+                if len(multiple_stack) == 0:
+                    ans += letter_stack
+                    letter_stack = []
+            
+            # 当前元素是'['
+            else:
+                letter_stack.append(s[i])
+
+        return ''.join(ans)
+```
+
+## M_p399_除法求值
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022214318.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022215367.png)
+
+### DFS
+
+```python
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        """
+        DFS
+        使用visit记录每一次计算除法时候遇到过的被除数，
+        如果被一个数已经被作为过被除数那就不要让他作为被除数继续dfs
+        """
+        graph=defaultdict(dict)
+        for (a,b),v in zip(equations,values):
+            graph[a][b]=v
+            graph[b][a]=1/v
+
+        def dfs(s,e):
+            if s not in graph or e not in graph:
+                return -1
+            if s==e:
+                return 1
+            visited.add(s)
+            for i in graph[s]:
+                if i==e:
+                    return graph[s][i]
+                if i not in visited:
+                    ans=dfs(i,e)
+                    if ans!=-1:
+                        return graph[s][i]*ans
+            return -1
+        res=[]
+        for a,b in queries:
+            visited=set()
+            res.append(dfs(a,b))
+        return res
+```
+
+### 并查集
+
+https://leetcode.cn/problems/evaluate-division/solution/399-chu-fa-qiu-zhi-nan-du-zhong-deng-286-w45d/
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022217843.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022217586.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022217444.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022217615.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022218464.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022218240.png)
+
+```python
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+
+        equationSize = len(equations)
+
+        unionfind = UnionFind(2 * equationSize)
+
+        # 第一步 预处理 将变量的值与id进行映射 方便编码
+
+        hash_dict = dict()
+        id = 0
+        for i in range(equationSize):
+            var1 = equations[i][0]
+            var2 = equations[i][1]
+
+            if var1 not in hash_dict and len(hash_dict) <= 2 * equationSize:
+                hash_dict[var1] = len(hash_dict)
+            if var2 not in hash_dict and len(hash_dict) <= 2 * equationSize:
+                hash_dict[var2] = len(hash_dict)
+
+            # 合并
+            # print(hash_dict[var1], hash_dict[var2], values[i])
+            unionfind.union(hash_dict[var1], hash_dict[var2], values[i])
+
+        # 做查询
+        queriesSize = len(queries) # 
+        res = [0.0] * queriesSize # 结果
+
+        for i in range(queriesSize):
+            var1 = queries[i][0]
+            var2 = queries[i][1]
+
+            id1 = hash_dict.get(var1, -1)
+            id2 = hash_dict.get(var2, -1)
+            #  print(var1, var2, id1, id2)
+            if id1 == -1 or id2 == -1:
+                res[i] = -1.0
+            else:
+                res[i] = unionfind.isConnected(id1, id2)
+            
+        return res
+
+
+class UnionFind:
+    def __init__(self, n):
+
+        # eg a / b  = 2的表示方法
+        # a --> 0
+        # b --> 1
+        # self.parent[0] = 1
+        # self.weight[0] = 2
+        self.parent = [i for i in range(n)]
+        # 这题额外加入weight 数组
+        self.weight = [1.0 for i in range(n)] # i / i = 1.0  
+
+    # 有没有老哥解释一下 为什么隔代路径压缩不行？ 有几个示例没法通过 --> 懂了 因为调用isconnected的时候有些是直接输出结果 隔代压缩没法得到最后的除法的值 如果多次调用就可以 算是吸取一个教训。
+    # def find(self, x):
+    #     while x != self.parent[x]:
+    #         origin = self.parent[x]
+    #         self.parent[x] = self.parent[self.parent[x]]
+    #         self.weight[x] = self.weight[x] * self.weight[origin]
+    #         x = self.parent[x]   
+    #     return x
+    
+    def find(self, x):
+        if x != self.parent[x]:
+            origin = self.parent[x]
+            self.parent[x] = self.find(self.parent[x])
+            self.weight[x] = self.weight[x] * self.weight[origin]
+        return self.parent[x]
+
+    def union(self, x, y, value):
+        root_x = self.find(x)
+        root_y = self.find(y)
+        if root_x != root_y:
+            self.parent[root_x] = root_y
+            self.weight[root_x] = value * self.weight[y] / self.weight[x]
+    def isConnected(self, x, y):
+        root_x = self.find(x)
+        root_y = self.find(y)
+        if root_x == root_y:
+            return self.weight[x] / self.weight[y]
+        else:
+            return -1.0
+```
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022219045.png)
