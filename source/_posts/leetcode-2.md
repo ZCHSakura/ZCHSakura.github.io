@@ -6047,3 +6047,313 @@ class Solution:
         return dfs(0, 0)
 ```
 
+### 背包DP
+
+```python
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        """
+        DP
+        dp[i][j]表示在[0, i]这个子区间内挑选一些正整数，每个数只能用一次，使得这些数的和恰好等于j
+        dp[i][j] = dp[i - 1][j] or dp[i - 1][j - nums[i]]
+        dp[i - 1][j]表示不选nums[i]的情况
+        dp[i - 1][j - nums[i]]表示选nums[i]的情况，但需要满足j >= nums[i]
+        """
+        if sum(nums) % 2 != 0:
+            return False
+
+        target = sum(nums) // 2
+
+        dp = [[False for _ in range(target + 1)] for _ in range(len(nums))]
+
+        # 初始化条件，因为在j - nums[i] = 0时是应该为True的
+        for i in range(len(dp)):
+            dp[i][0] = True
+
+        if nums[0] <= target:
+            dp[0][nums[0]] = True
+
+        for i in range(1, len(dp)):
+            for j in range(len(dp[0])):
+                dp[i][j] = dp[i - 1][j]
+                if j >= nums[i] and dp[i - 1][j - nums[i]]:
+                    dp[i][j] = dp[i - 1][j - nums[i]]
+            
+            # 如果前面某些数字就满足条件了就不用继续了
+            if dp[i][len(dp[0]) - 1]:
+                return True
+        
+        return dp[len(dp) - 1][len(dp[0]) - 1]
+```
+
+## M_p437_路径总和Ⅲ
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032017342.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032018081.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032018620.png)
+
+### 前缀和
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        """
+        前缀和
+        使用DFS遍历每个节点计算前缀和
+        使用哈希表记录目前路径上已有的前缀和出现次数
+        往回回溯的时候记得要在哈希表中减去前缀和出现次数
+        """
+        prefix = defaultdict(int)
+        # 默认存在前缀和为0
+        prefix[0] = 1
+
+        def dfs(node, cur):
+            """
+            cur记录从根节点到当前节点时的前缀和
+            返回值ans记录当前节点路径中满足要求的个数(自己作为某个路径结尾，自己某个孩子作为路径结尾)
+            """
+            if node is None:
+                return 0
+
+            ans = 0
+            cur += node.val
+            # 看是否存在合适的前缀和
+            ans += prefix[cur - targetSum]
+            prefix[cur] += 1
+            ans += dfs(node.left, cur)
+            ans += dfs(node.right, cur)
+            # 当前节点不再属于当前路径时需要弹出它对应的前缀和
+            prefix[cur] -= 1
+
+            return ans
+        
+        return dfs(root, 0)
+```
+
+## M_p438_找到字符串中所有字母异位词
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032034516.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032035222.png)
+
+### 滑动窗口
+
+```python
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        """
+        滑动窗口
+        记录窗口内的每个字母出现个数
+        """
+        s_len, p_len = len(s), len(p)
+
+        s_cnt = [0] * 26
+        p_cnt = [0] * 26
+
+        if s_len < p_len:
+            return []
+
+        ans = []
+        # 先初始化两个cnt
+        for i in range(p_len):
+            s_cnt[ord(s[i]) - ord('a')] += 1
+            p_cnt[ord(p[i]) - ord('a')] += 1
+
+        if s_cnt == p_cnt:
+            ans.append(0)
+
+        for i in range(p_len, s_len):
+            s_cnt[ord(s[i]) - ord('a')] += 1
+            s_cnt[ord(s[i - p_len]) - ord('a')] -= 1
+
+            if s_cnt == p_cnt:
+                ans.append(i-p_len+1)
+
+        return ans
+```
+
+## E_p448_找到所有数组中消失的数字
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032041677.png)
+
+### 哈希
+
+```python
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        """
+        哈希
+        """
+        cnt = Counter(range(1, len(nums) + 1))
+
+        for i in nums:
+            cnt[i] -= 1
+
+        ans = []
+        for key in cnt:
+            if cnt[key] == 1:
+                ans.append(key)
+
+        return ans
+```
+
+### 原地哈希
+
+```python
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        """
+        原地哈希
+        由于nums的数字范围均在[1,n] 中，我们可以利用这一范围之外的数字，来表达「是否存在」的含义。
+        具体来说，遍历nums，每遇到一个数x，就让nums[x−1] 增加n。
+        由于nums 中所有数均在[1,n] 中，增加以后，这些数必然大于n。
+        最后我们遍历nums，若nums[i] 未大于n，就说明没有遇到过数i+1。这样我们就找到了缺失的数字。
+        注意，当我们遍历到某个位置时，其中的数可能已经被增加过，因此需要对n取模来还原出它本来的值
+        """
+        n = len(nums)
+        for num in nums:
+            x = (num - 1) % n
+            nums[x] += n
+
+        return [i+1 for i, x in enumerate(nums) if x <= n]
+```
+
+## E_p461_汉明距离
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032101954.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032101952.png)
+
+### 计算二进制中1的个数
+
+```python
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        """
+        计算二进制1个数
+        """
+        ans = x ^ y
+        b_ans = bin(ans)
+        # 开头有0b
+        str_ans = str(b_ans)[2:]
+        list_ans = [int(i) for i in str_ans]
+        return sum(list_ans)
+```
+
+## M_p494_目标和
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032200188.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032200539.png)
+
+### DFS(但超时)
+
+```python
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        """
+        dfs
+        """
+        cnt = 0
+        def dfs(cur, idx):
+            if idx == len(nums):
+                if cur == target:
+                    nonlocal cnt
+                    cnt += 1
+            else:
+                dfs(cur + nums[idx], idx + 1)
+                dfs(cur - nums[idx], idx + 1)
+
+        dfs(0, 0)
+        return cnt
+```
+
+### 背包DP
+
+```python
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        """
+        DP
+        记数组的元素和为sum，添加-号的元素之和为neg，则其余添加+的元素之和为sum−neg，
+        得到的表达式的结果为(sum−neg)−neg=sum−2⋅neg=target，即neg = (sum - target) / 2
+        dp[i][j]表示在[0, i]这个子区间内挑选一些整数，每个数只能用一次，使得这些数的和恰好等于j
+        dp[i][j] = dp[i - 1][j]，如果j < nums[i]，选不了
+        dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]]，如果j >= nums[i]，选或不选
+        返回dp[n][neg]
+        """
+        if ((sum(nums) - target) % 2 != 0) or (sum(nums) - target) < 0:
+            return 0
+
+        neg = (sum(nums) - target) // 2
+        n = len(nums)
+
+        dp = [[0 for _ in range(neg + 1)] for _ in range(n)]
+
+        # 初始化条件，因为在j - nums[i] = 0时是应该有1种可能的
+        for i in range(len(dp)):
+            dp[i][0] = 1
+
+        if nums[0] <= neg:
+            # 如果首元素为0的话dp[0][0]应该为2，选不选都是0
+            if nums[0] == 0:
+                dp[0][nums[0]] = 2
+            else:
+                dp[0][nums[0]] = 1
+
+        for i in range(1, n):
+            for j in range(neg+1):
+                dp[i][j] = dp[i-1][j]
+                # 可以选择当前元素nums[i]时
+                if j >= nums[i]:
+                    dp[i][j] += dp[i - 1][j - nums[i]]
+
+        print(dp)
+        
+        return dp[n-1][neg]
+```
+
+## M_p538_把二叉搜索树转换为累加树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032215764.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032215772.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303032215188.png)
+
+### DFS
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        DFS
+        反中序遍历
+        """
+        num = 0
+        def dfs(node):
+            nonlocal num
+            if node:
+                dfs(node.right)
+                num += node.val
+                node.val = num
+                dfs(node.left)
+
+        dfs(root)
+        return root
+```
+
