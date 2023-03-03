@@ -5988,3 +5988,62 @@ class UnionFind:
 ```
 
 ![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303022219045.png)
+
+## M_p406_根据身高重建队列
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303031105851.png)
+
+### 排序+插入
+
+```python
+class Solution:
+    def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+        """
+        排序+插入
+        先按身高降序排列，在一个个插入最终答案中的对应位置
+        """
+        people.sort(key=lambda x: (-x[0], x[1]))
+        n = len(people)
+        ans = list()
+        for person in people:
+            # 使用切片的方式可以不改变整体队列的相对位置
+            # ans[person[1]:person[1]] = [person]
+            ans.insert(person[1], person)
+        return ans
+```
+
+## M_p416_分割等和子集
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303031909544.png)
+
+### DFS(但超时)
+
+```python
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        """
+        dfs
+        看有没有子集元素和是nums的一半
+        """
+        if sum(nums) % 2 != 0:
+            return False
+        target = sum(nums) // 2
+        def dfs(cur, idx):
+            # print(cur, idx)
+            if idx == len(nums):
+                return False
+            if cur == target:
+                return True
+
+            if cur + nums[idx] <= target:
+                if dfs(cur + nums[idx], idx+1):
+                    return True
+
+            if dfs(cur, idx+1):
+                return True
+
+            return False
+
+        return dfs(0, 0)
+```
+
