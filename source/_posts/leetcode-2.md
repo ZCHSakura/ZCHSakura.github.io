@@ -6357,3 +6357,264 @@ class Solution:
         return root
 ```
 
+## E_p543_二叉树的直径
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303041648805.png)
+
+### DFS
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        """
+        DFS
+        """
+        ans = 0
+        def dfs(node) -> int:
+            """
+            更新二叉树直径ans
+            和node作为子节点能提供的最长路径res
+            最终res会比实际大1，但是要返回的是ans
+            """
+            if node is None:
+                return 0
+            
+            res = 1
+            left_res = dfs(node.left)
+            right_res = dfs(node.right)
+
+            nonlocal ans
+            ans = max(ans, left_res + right_res)
+            res += max(left_res, right_res)
+            # print(node, res, ans)
+            return res
+
+        res = dfs(root)
+        return ans
+```
+
+## M_p560_和为K的子数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303041709255.png)
+
+### 前缀和
+
+```python
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        """
+        前缀和
+        """
+        # 哈希表记录每个前缀和遇到的次数
+        prefix = defaultdict(int)
+        prefix[0] = 1
+
+        ans = 0
+        cur = 0
+        for x in nums:
+            cur += x
+            # cur - last_cur = k
+            # 加上所有可能的前缀和为last_cur的数目
+            ans += prefix[cur - k]
+            # 一定要先更新ans再更新当前的前缀和，不然可能遇到k=0，查询到自己的情况
+            prefix[cur] += 1
+
+        return ans
+```
+
+## M_p581_最短无序连续子数组
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303041904990.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303041904459.png)
+
+### 单调栈
+
+```python
+class Solution:
+    def findUnsortedSubarray(self, nums: List[int]) -> int:
+        """
+        单调栈
+        """
+        stack = [(-inf, -1)]
+        idx = []
+
+        for i, x in enumerate(nums):
+            poped_item = None
+            # 这里要记录一个弹出前面栈内容过程中遇到的最大值
+            max_item = (-inf, -1)
+
+            while stack[-1][0] > x:
+                poped_item = stack.pop()
+                if poped_item[0] > max_item[0]:
+                    max_item = poped_item
+            stack.append((x, i))
+
+            # 如果发生过弹出操作
+            if poped_item:
+                # 在idx中记录哪里发生过弹出
+                idx.extend([poped_item[1], i])
+                # 要把弹出过程中遇到的最大值再压回栈中，不然可能遇到后面一个小值因为前面大值被弹出而有序
+                stack.append(max_item)
+
+        return idx[-1] - min(idx) + 1 if idx else 0
+```
+
+### 一次遍历
+
+```python
+class Solution:
+    def findUnsortedSubarray(self, nums: List[int]) -> int:
+        """
+        一次遍历
+        无序子数组中最小元素的正确位置可以决定左边界，最大元素的正确位置可以决定右边界。
+        """
+        n = len(nums)
+        maxn, right = float("-inf"), -1
+        minn, left = float("inf"), -1
+
+        for i in range(n):
+            if maxn > nums[i]:
+                right = i
+            else:
+                maxn = nums[i]
+            
+            if minn < nums[n - i - 1]:
+                left = n - i - 1
+            else:
+                minn = nums[n - i - 1]
+        
+        return 0 if right == -1 else right - left + 1
+```
+
+## E_p617_合并二叉树
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303041947216.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303041947850.png)
+
+### DFS
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        DFS
+        """
+        if root1 and root2:
+            root1.val += root2.val
+            root1.left = self.mergeTrees(root1.left, root2.left)
+            root1.right = self.mergeTrees(root1.right, root2.right)
+            return root1
+        # 有人没有
+        else:
+            if root1:
+                return root1
+            elif root2:
+                return root2
+            else:
+                return None
+```
+
+## M_p621_任务调度器
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042001329.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042001426.png)
+
+### 桶思想
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042002594.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042002922.png)
+
+```python
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        """
+        桶思想
+        看图
+        """
+        freq = collections.Counter(tasks)
+
+        # 最多的执行次数
+        maxExec = max(freq.values())
+        # 具有最多执行次数的任务数量
+        maxCount = sum(1 for v in freq.values() if v == maxExec)
+
+        # 前者代表有冷却时间情况下，也就是没有全部填满时的情况
+        # 后者代表冷却时间被全部填满，甚至有超出，则直接是任务长度
+        return max((maxExec - 1) * (n + 1) + maxCount, len(tasks))
+```
+
+## M_p647_回文子串
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042015737.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042015002.png)
+
+### 中心拓展
+
+```python
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        """
+        中心拓展
+        枚举每个中心，向两边拓展
+        长度为n的字符串会生成2n−1组回文中心[li,ri]，其中li=⌊2 // i⌋，ri = li+(i % 2)。
+        这样我们只要从0到2n−2遍历i，就可以得到所有可能的回文中心
+        """
+        n = len(s)
+        ans = 0
+
+        for i in range(2 * n - 1):
+            left = i // 2
+            right = i // 2 + i % 2
+            # 向两边拓展
+            while left >= 0 and right < n and s[left] == s[right]:
+                ans += 1
+                left -= 1
+                right += 1
+
+        return ans
+```
+
+## M_p739_每日温度
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042041010.png)
+
+![](https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202303042041343.png)
+
+### 单调减队列
+
+```python
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        """
+        单调减队列
+        """
+        stack = [(inf, -1)]
+        ans = [0 for i in range(len(temperatures))]
+
+        for i, x in enumerate(temperatures):
+            while stack[-1][0] < x:
+                poped_item = stack.pop()
+                ans[poped_item[1]] = i - poped_item[1]
+            
+            stack.append((x, i))
+
+        return ans
+```
+
