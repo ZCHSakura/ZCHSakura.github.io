@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2023-02-26T17:03:02.931Z</updated>
+  <updated>2023-03-05T11:41:32.259Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>图片转视频</title>
+    <link href="zchsakura.github.io/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/"/>
+    <id>zchsakura.github.io/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/</id>
+    <published>2023-03-05T11:31:22.000Z</published>
+    <updated>2023-03-05T11:41:32.259Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;使用python的cv2库完成图片转视频，解决灰度图片和中文路径问题&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    
+    
+      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
+    
+  </entry>
   
   <entry>
     <title>python赋值&amp;浅拷贝&amp;深拷贝</title>
@@ -477,30 +500,6 @@
     
     
       <category term="Python" scheme="zchsakura.github.io/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>阿里云安全组开放端口不生效</title>
-    <link href="zchsakura.github.io/%E9%98%BF%E9%87%8C%E4%BA%91%E5%AE%89%E5%85%A8%E7%BB%84%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%94%9F%E6%95%88/"/>
-    <id>zchsakura.github.io/%E9%98%BF%E9%87%8C%E4%BA%91%E5%AE%89%E5%85%A8%E7%BB%84%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3%E4%B8%8D%E7%94%9F%E6%95%88/</id>
-    <published>2020-05-20T14:36:18.000Z</published>
-    <updated>2022-07-02T06:53:38.315Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;有一天开始练习Django，然后发现怎么都在7997端口上跑不起来，一开始我还以为是新版本和老版本方式不一样，因为我7997已经在阿里云控制台放行了，但是在之前开放的8000端口却能够正常运行，这时我感觉应该是端口的问题，后来发现是不知道为什么阿里云里面已经开放了但是ufw却没有允许7997端口，原因我不知道是为什么，只找到了解决方法。这里记录一些ufw用法。&lt;/p&gt;
-&lt;p&gt;参考：https://blog.csdn.net/bigdata_mining/article/details/80699180&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="服务器配置" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
-    
-    
-      <category term="服务器" scheme="zchsakura.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
   </entry>
   

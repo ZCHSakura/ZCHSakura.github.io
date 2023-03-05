@@ -4647,4 +4647,34 @@
         <tag>python</tag>
       </tags>
   </entry>
+  <entry>
+    <title>图片转视频</title>
+    <url>/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/</url>
+    <content><![CDATA[<p>使用python的cv2库完成图片转视频，解决灰度图片和中文路径问题</p>
+<a id="more"></a>
+<p>先上代码</p>
+<figure class="highlight python"><figcaption><span>img2video.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">img_array = []</span><br><span class="line"><span class="comment"># 取图片的时候排序</span></span><br><span class="line"><span class="keyword">for</span> filename <span class="keyword">in</span> sorted(glob.glob(<span class="string">r'***\0X1AA30623C1AE4641\*.png'</span>), key=<span class="keyword">lambda</span> x: int(x.split(<span class="string">'.'</span>)[<span class="number">0</span>].split(<span class="string">'_'</span>)[<span class="number">-1</span>])):</span><br><span class="line">	<span class="comment"># 注意读图方式</span></span><br><span class="line">    img = cv2.imdecode(np.fromfile(filename, dtype=np.uint8), <span class="number">1</span>)</span><br><span class="line">    img_array.append(img)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">height, width, channel = img_array[<span class="number">0</span>].shape</span><br><span class="line">size = (width, height)</span><br><span class="line"></span><br><span class="line"><span class="comment"># avi：视频类型，mp4也可以</span></span><br><span class="line"><span class="comment"># cv2.VideoWriter_fourcc(*'I420')：编码格式</span></span><br><span class="line"><span class="comment"># 50：视频帧率</span></span><br><span class="line"><span class="comment"># size:视频中图片大小</span></span><br><span class="line">out = cv2.VideoWriter(<span class="string">r'***\0X1AA30623C1AE4641_predict.avi'</span>,</span><br><span class="line">                      cv2.VideoWriter_fourcc(*<span class="string">'I420'</span>),</span><br><span class="line">                      <span class="number">50</span>, size)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> img_array:</span><br><span class="line">    out.write(img)</span><br><span class="line"></span><br><span class="line">out.release()</span><br></pre></td></tr></table></figure>
+<h3 id="中文路径">中文路径</h3>
+<p>cv2在读取带有中文路径图片的时候不能直接使用<code>cv2.imread()</code>，读出来是None。需要使用<code>cv2.imdecode(np.fromfile(filepath, dtype=np.uint8), -1)</code>，注意后面的数字带有具体含义，下面将灰度图的时候说明。</p>
+<h3 id="灰度图片">灰度图片</h3>
+<p><code>cv2.imdecode(np.fromfile(filepath, dtype=np.uint8), flag=-1)</code></p>
+<p>此处的<strong>flag</strong>带有明确含义：</p>
+<ul>
+<li>flag = -1, 8位深度，原通道，此时读取的是原来的图像</li>
+<li>flag = 0, 8位深度，1通道，读取的是灰度图</li>
+<li>flag = 1， 8位深度，3通道彩图</li>
+<li>flag = 2， 原深度， 灰度</li>
+<li>flag = 3，原深度，彩图</li>
+<li>flag = 4， 8位深度， 3通道彩图</li>
+</ul>
+<p>我最终的结果是一张灰度图，需要读成三通道彩图才能进行保存，注意cv2读出来的是BGR而不是RGB，只要中途不经过PIL之类的转化，直接再<code>cv2.VideoWriter</code>的话其实不影响。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
 </search>
