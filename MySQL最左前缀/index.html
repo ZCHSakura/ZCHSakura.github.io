@@ -33,21 +33,20 @@
     var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。">
+  <meta name="description" content="记录下MySQL中索引的最左前缀原则和联合索引有什么好处">
 <meta property="og:type" content="article">
-<meta property="og:title" content="创建python虚拟环境">
-<meta property="og:url" content="zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:title" content="MySQL最左前缀">
+<meta property="og:url" content="zchsakura.github.io/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/index.html">
 <meta property="og:site_name" content="周小天的Blog">
-<meta property="og:description" content="如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。">
+<meta property="og:description" content="记录下MySQL中索引的最左前缀原则和联合索引有什么好处">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-26T07:04:38.000Z">
-<meta property="article:modified_time" content="2022-07-02T06:53:49.513Z">
+<meta property="article:published_time" content="2023-03-19T15:27:57.000Z">
+<meta property="article:modified_time" content="2023-03-19T15:35:34.895Z">
 <meta property="article:author" content="周小天">
-<meta property="article:tag" content="python">
-<meta property="article:tag" content="虚拟环境">
+<meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/">
+<link rel="canonical" href="zchsakura.github.io/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/">
 
 
 <script id="page-configurations">
@@ -59,7 +58,7 @@
   };
 </script>
 
-  <title>创建python虚拟环境 | 周小天的Blog</title>
+  <title>MySQL最左前缀 | 周小天的Blog</title>
   
 
 
@@ -226,7 +225,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/">
+    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/%E4%B9%9D%E5%8D%81.jpeg">
@@ -239,7 +238,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          创建python虚拟环境
+          MySQL最左前缀
         </h2>
 
         <div class="post-meta">
@@ -248,16 +247,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-04-26 15:04:38" itemprop="dateCreated datePublished" datetime="2020-04-26T15:04:38+08:00">2020-04-26</time>
+              <time title="创建时间：2023-03-19 23:27:57 / 修改时间：23:35:34" itemprop="dateCreated datePublished" datetime="2023-03-19T23:27:57+08:00">2023-03-19</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-02 14:53:49" itemprop="dateModified" datetime="2022-07-02T14:53:49+08:00">2022-07-02</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -268,7 +261,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
                 </span>
             </span>
 
@@ -281,8 +274,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
+    <a title="valine" href="/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -292,7 +285,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>829</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -311,31 +304,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。</p>
+        <p>记录下MySQL中索引的最左前缀原则和联合索引有什么好处</p>
 <a id="more"></a>
-<h2 id="安装虚拟环境">1.安装虚拟环境</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
-<p>virtualenvwrapper类似于一个虚拟环境管理工具会比原生的virtualenv方便一些</p>
-<p>安装完虚拟环境如果找不到mkvirtualenv命令，须配置环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 1、在~（家目录）下创建目录用来存放虚拟环境</span><br><span class="line">mkdir .virtualenvs</span><br><span class="line"></span><br><span class="line"># 2、打开~&#x2F;.bashrc文件，并添加如下：</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs</span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"># 3、运行</span><br><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
-<h2 id="创建虚拟环境">2.创建虚拟环境</h2>
-<p>如果不指定Python版本，默认安装的是Python2的虚拟环境</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在python2中，创建虚拟环境</span><br><span class="line">mkvirtualenv 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv py_flask</span><br></pre></td></tr></table></figure>
-<p>如果想要指定python版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv -p python3 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv -p python3 py3_flask</span><br></pre></td></tr></table></figure>
-<p>提示：</p>
-<p>所有的虚拟环境都位于/~/下的隐藏目录.virtualenvs下</p>
-<h2 id="使用虚拟环境">3.使用虚拟环境</h2>
-<h3 id="查看已有虚拟环境">3.1查看已有虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">workon</span><br></pre></td></tr></table></figure>
-<h3 id="进入虚拟环境">3.2进入虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">workon 虚拟环境名称</span><br></pre></td></tr></table></figure>
-<h3 id="退出虚拟环境">3.3退出虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deativate</span><br></pre></td></tr></table></figure>
-<h3 id="删除虚拟环境">3.4删除虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先退出：deactivate</span><br><span class="line">再删除：rmvirtualenv py3_flask</span><br></pre></td></tr></table></figure>
-<h2 id="虚拟环境工具包位置">4.虚拟环境工具包位置</h2>
-<p>~/.virtualenvs/虚拟环境名称/lib/python3.5/site-packages</p>
+<h3 id="最左前缀原则">最左前缀原则</h3>
+<p>最左匹配原则就是指在联合索引中，如果你的 SQL 语句中用到了联合索引中的最左边的索引，那么这条 SQL 语句就可以利用这个联合索引去进行匹配。例如某表现有索引(a,b,c)，现在你有如下语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b&#x3D;1 and c &#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b,c</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1 and b&#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b</span><br><span class="line"></span><br><span class="line">select * from t where b&#x3D;1 and a&#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b（mysql有查询优化器）</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1;     #这样也可以利用到定义的索引（a,b,c）,用上a</span><br><span class="line"></span><br><span class="line">select * from t where b&#x3D;1 and c&#x3D;1;     #这样不可以利用到定义的索引（a,b,c）</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1 and c&#x3D;1;     #这样可以利用到定义的索引（a,b,c），但只用上a索引，b,c索引用不到</span><br></pre></td></tr></table></figure>
+<p><strong>当遇到范围查询(&gt;、&lt;、between、like)就会停止匹配</strong>。也就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b&gt;1 and c &#x3D;1; #这样a,b可以用到（a,b,c），c索引用不到</span><br></pre></td></tr></table></figure>
+<p>这条语句只有 a,b 会用到索引，c 都不能用到索引。这个原因可以从联合索引的结构来解释。</p>
+<p>但是如果是建立(a,c,b)联合索引，则a,b,c都可以使用索引，因为优化器会自动改写为最优查询语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b &gt;1 and c&#x3D;1;  #如果是建立(a,c,b)联合索引，则a,b,c都可以使用索引</span><br><span class="line">#优化器改写为</span><br><span class="line">select * from t where a&#x3D;1 and c&#x3D;1 and b &gt;1;</span><br></pre></td></tr></table></figure>
+<p>以index （a,b,c）为例建立这样的索引相当于建立了索引a、ab、abc三个索引。</p>
+<h3 id="联合索引优点">联合索引优点</h3>
+<ul>
+<li><strong>减少开销。</strong>建一个联合索引(col1,col2,col3)，实际相当于建了(col1),(col1,col2),(col1,col2,col3)三个索引。每多一个索引，都会增加写操作的开销和磁盘空间的开销。对于大量数据的表，使用联合索引会大大的减少开销！</li>
+<li><strong>覆盖索引。</strong>对联合索引(col1,col2,col3)，如果有如下的sql: select col1,col2,col3 from test where col1=1 and col2=2。那么MySQL可以直接通过遍历索引取得数据，而无需回表，这减少了很多的随机io操作。减少io操作，特别的随机io其实是dba主要的优化策略。所以，在真正的实际应用中，覆盖索引是主要的提升性能的优化手段之一。</li>
+<li><strong>效率高。</strong>索引列越多，通过索引筛选出的数据越少。有1000W条数据的表，有如下sql:select from table where col1=1 and col2=2 and col3=3,假设假设每个条件可以筛选出10%的数据，如果只有单值索引，那么通过该索引能筛选出1000W * 10%=100w条数据，然后再回表从100w条数据中找到符合col2=2 and col3= 3的数据，然后再排序，再分页；如果是联合索引，通过索引筛选出1000w *10% *10% *10%=1w，效率提升可想而知！</li>
+</ul>
 
     </div>
 
@@ -357,19 +342,10 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\Django学习笔记\" rel="bookmark">Django学习笔记</a></div>
+      <div class="popular-posts-title"><a href="\Ubuntu安装mysql\" rel="bookmark">Ubuntu安装MySQL</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
+      <div class="popular-posts-title"><a href="\爬虫常用操作笔记\" rel="bookmark">爬虫常用操作笔记</a></div>
     </li>
   </ul>
 
@@ -397,7 +373,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" title="创建python虚拟环境">zchsakura.github.io/创建python虚拟环境/</a>
+    <a href="http://zchsakura.github.io/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/" title="MySQL最左前缀">zchsakura.github.io/MySQL最左前缀/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -428,8 +404,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
-              <a href="/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" rel="tag"><i class="fa fa-tag"></i> 虚拟环境</a>
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
           </div>
 
         
@@ -438,13 +413,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E5%9F%BA%E4%BA%8Eredis%E4%BD%BF%E7%94%A8scrapy%E4%B8%8B%E8%BD%BD%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E5%A2%9E%E9%87%8F%E7%88%AC%E8%99%AB/" rel="prev" title="基于redis使用scrapy下载中间件实现简单的增量爬虫">
-      <i class="fa fa-chevron-left"></i> 基于redis使用scrapy下载中间件实现简单的增量爬虫
+    <a href="/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="prev" title="python中==和is的区别">
+      <i class="fa fa-chevron-left"></i> python中==和is的区别
     </a></div>
-      <div class="post-nav-item">
-    <a href="/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/" rel="next" title="将flask部署到Ubuntu服务器上">
-      将flask部署到Ubuntu服务器上 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -505,7 +477,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装虚拟环境"><span class="nav-text">1.安装虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建虚拟环境"><span class="nav-text">2.创建虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用虚拟环境"><span class="nav-text">3.使用虚拟环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看已有虚拟环境"><span class="nav-text">3.1查看已有虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入虚拟环境"><span class="nav-text">3.2进入虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#退出虚拟环境"><span class="nav-text">3.3退出虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除虚拟环境"><span class="nav-text">3.4删除虚拟环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟环境工具包位置"><span class="nav-text">4.虚拟环境工具包位置</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#最左前缀原则"><span class="nav-text">最左前缀原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#联合索引优点"><span class="nav-text">联合索引优点</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

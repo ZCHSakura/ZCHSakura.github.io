@@ -33,21 +33,20 @@
     var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。">
+  <meta name="description" content="常见的一种理解是&#x3D;&#x3D;判断值相等，is判断内存中是否指向同一个位置，但其实这个和python的交互模式，py文件模式都有点关系，这里简单总结一下网上搜罗的内容。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="创建python虚拟环境">
-<meta property="og:url" content="zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:title" content="python中&#x3D;&#x3D;和is的区别">
+<meta property="og:url" content="zchsakura.github.io/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="周小天的Blog">
-<meta property="og:description" content="如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。">
+<meta property="og:description" content="常见的一种理解是&#x3D;&#x3D;判断值相等，is判断内存中是否指向同一个位置，但其实这个和python的交互模式，py文件模式都有点关系，这里简单总结一下网上搜罗的内容。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-26T07:04:38.000Z">
-<meta property="article:modified_time" content="2022-07-02T06:53:49.513Z">
+<meta property="article:published_time" content="2023-03-06T08:09:13.000Z">
+<meta property="article:modified_time" content="2023-03-19T15:25:52.090Z">
 <meta property="article:author" content="周小天">
 <meta property="article:tag" content="python">
-<meta property="article:tag" content="虚拟环境">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/">
+<link rel="canonical" href="zchsakura.github.io/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/">
 
 
 <script id="page-configurations">
@@ -59,7 +58,7 @@
   };
 </script>
 
-  <title>创建python虚拟环境 | 周小天的Blog</title>
+  <title>python中==和is的区别 | 周小天的Blog</title>
   
 
 
@@ -226,7 +225,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/">
+    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/%E4%B9%9D%E5%8D%81.jpeg">
@@ -239,7 +238,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          创建python虚拟环境
+          python中==和is的区别
         </h2>
 
         <div class="post-meta">
@@ -249,14 +248,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-04-26 15:04:38" itemprop="dateCreated datePublished" datetime="2020-04-26T15:04:38+08:00">2020-04-26</time>
+              <time title="创建时间：2023-03-06 16:09:13" itemprop="dateCreated datePublished" datetime="2023-03-06T16:09:13+08:00">2023-03-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-02 14:53:49" itemprop="dateModified" datetime="2022-07-02T14:53:49+08:00">2022-07-02</time>
+                <time title="修改时间：2023-03-19 23:25:52" itemprop="dateModified" datetime="2023-03-19T23:25:52+08:00">2023-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,8 +280,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" itemprop="commentCount"></span>
+    <a title="valine" href="/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -292,14 +291,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>829</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -311,31 +310,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本， 如果不使用虚拟环境， 在同一个目录下安装或者更新， 新版本会覆盖以前的版本， 其它的项目就无法运行了。</p>
+        <p>常见的一种理解是==判断值相等，is判断内存中是否指向同一个位置，但其实这个和python的交互模式，py文件模式都有点关系，这里简单总结一下网上搜罗的内容。</p>
 <a id="more"></a>
-<h2 id="安装虚拟环境">1.安装虚拟环境</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
-<p>virtualenvwrapper类似于一个虚拟环境管理工具会比原生的virtualenv方便一些</p>
-<p>安装完虚拟环境如果找不到mkvirtualenv命令，须配置环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 1、在~（家目录）下创建目录用来存放虚拟环境</span><br><span class="line">mkdir .virtualenvs</span><br><span class="line"></span><br><span class="line"># 2、打开~&#x2F;.bashrc文件，并添加如下：</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs</span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"># 3、运行</span><br><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
-<h2 id="创建虚拟环境">2.创建虚拟环境</h2>
-<p>如果不指定Python版本，默认安装的是Python2的虚拟环境</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在python2中，创建虚拟环境</span><br><span class="line">mkvirtualenv 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv py_flask</span><br></pre></td></tr></table></figure>
-<p>如果想要指定python版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv -p python3 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv -p python3 py3_flask</span><br></pre></td></tr></table></figure>
-<p>提示：</p>
-<p>所有的虚拟环境都位于/~/下的隐藏目录.virtualenvs下</p>
-<h2 id="使用虚拟环境">3.使用虚拟环境</h2>
-<h3 id="查看已有虚拟环境">3.1查看已有虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">workon</span><br></pre></td></tr></table></figure>
-<h3 id="进入虚拟环境">3.2进入虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">workon 虚拟环境名称</span><br></pre></td></tr></table></figure>
-<h3 id="退出虚拟环境">3.3退出虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deativate</span><br></pre></td></tr></table></figure>
-<h3 id="删除虚拟环境">3.4删除虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先退出：deactivate</span><br><span class="line">再删除：rmvirtualenv py3_flask</span><br></pre></td></tr></table></figure>
-<h2 id="虚拟环境工具包位置">4.虚拟环境工具包位置</h2>
-<p>~/.virtualenvs/虚拟环境名称/lib/python3.5/site-packages</p>
+<h3 id="问题出现">问题出现</h3>
+<p>在py文件中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">"hello"</span></span><br><span class="line">b = <span class="string">"hello"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 True </span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 False</span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True </span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">b = a</span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 True </span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br></pre></td></tr></table></figure>
+<p>官方文档中说 is 表示的是对象标示符（object identity），而 == 表示的是相等（equality）。is 的作用是用来检查对象的标示符是否一致，也就是比较两个对象在内存中的地址是否一样，而 == 是用来检查两个对象是否相等。</p>
+<p>我们在检查 a is b 的时候，其实相当于检查 id(a) == id(b)。而检查 a == b 的时候，实际是调用了对象 a 的 <code>__eq()__</code>方法，a == b 相当于 <code>a.__eq__(b)</code>。</p>
+<p>一般情况下，如果 a is b 返回True的话，即 a 和 b 指向同一块内存地址的话，a == b 也返回True，即 a 和 b 的值也相等。</p>
+<p>接下来再看下面的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">"hello"</span></span><br><span class="line">b = <span class="string">"hello"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 True </span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"hello world"</span></span><br><span class="line">b = <span class="string">"hello world"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 False</span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br></pre></td></tr></table></figure>
+<p>这里我们又发现hello使用is判断为True，但hello world判断为False。这就和python中的小整数对象池和大整数对象池和intern机制有关系了。</p>
+<h3 id="小整数对象池">小整数对象池</h3>
+<p>python解释器为了提升运行速度使用了小整数对象池，来避免为整数频繁定义与销毁内存空间。</p>
+<p>小整数对象池定义的范围<strong>[-5,256]</strong>在这个范围的整数对象都是提前创建好的，不会被垃圾回收机制以内存垃圾回收，在这个范围内的整数使用的都是同一个对象(引用 id内存地址值相同)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a=-5</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b=-5</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a=256</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b=256</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<h3 id="大整数对象池">大整数对象池</h3>
+<p>大整数对象池是在上述范围之外</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a=-6</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b=-6</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">False</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a=257</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b=257</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<h3 id="intern机制">intern机制</h3>
+<p>如果两个或以上的字符串变量它们的值相同且仅由数字字母下划线组成并且长度不超过20个字符，或者值仅含有一个字符时，内存空间中只创建一个对象来让这些变量都指向该内存地址（共享引用），当字符串不满足该条件时，相同值的字符串变量在创建时都会申请一个新的内存地址来保存值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 单个字符或者为空以及空格的字符串，是同一个对象，共享引用</span></span><br><span class="line"></span><br><span class="line">// 两个相同的单字符</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'a'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'a'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a), id(b)</span></span><br><span class="line">(140478486488208, 140478486488208)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br><span class="line">// 两个相同的空字符串</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">''</span> </span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">''</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a), id(b)</span></span><br><span class="line">(140377617439408, 140377617439408)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br><span class="line">// 两个相同空格的字符串</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">' '</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">' '</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a), id(b)</span></span><br><span class="line">(140377616103608, 140377616103608)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br><span class="line"><span class="meta">#</span><span class="bash"> 两个相同值的字符串，是同一个对象，共享引用</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'liunx'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'liunx'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a), id(b)</span></span><br><span class="line">(140478486363976, 140478486363976)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br><span class="line"><span class="meta">#</span><span class="bash"> 两个相同值但长度不超过20位的字符串，是同一个对象，共享引用</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'linux'</span> * 4</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'linux'</span> * 4</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a), id(b)</span></span><br><span class="line">(140478486391736, 140478486391736)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br><span class="line"><span class="meta">#</span><span class="bash"> 两个相同值但长度超过20位的字符串，不是同一个对象</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'linux'</span> * 5</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'linux'</span> * 5</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a), id(b)</span></span><br><span class="line">(140478486354640, 140478486355280)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">False</span><br><span class="line"><span class="meta">#</span><span class="bash"> 两个相同值但包含特殊字符串(非大小写字母和数字或下划线)的，不是同一个对象</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'**'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'**'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">False</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'_-'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'_-'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">False</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'a*c'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'a*c'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">False</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = <span class="string">'lin ux'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = <span class="string">'lin ux'</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a), id(b)</span></span><br><span class="line">(140478486364088, 140478485729384)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>以上是在交互模式下的结果，但是在pycharm中运行如下代码得到的结果会是True</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">c = <span class="string">"hello world"</span></span><br><span class="line">d = <span class="string">"hello world"</span></span><br><span class="line">print(c == d)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line">print(c <span class="keyword">is</span> d)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>说明在交互模式下和在文件py中也还是存在区别，或者也可能是pycharm这个IDE引起的。</p>
 
     </div>
 
@@ -397,7 +395,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://zchsakura.github.io/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" title="创建python虚拟环境">zchsakura.github.io/创建python虚拟环境/</a>
+    <a href="http://zchsakura.github.io/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/" title="python中&#x3D;&#x3D;和is的区别">zchsakura.github.io/python中-和is的区别/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -429,7 +427,6 @@
           
           <div class="post-tags">
               <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
-              <a href="/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" rel="tag"><i class="fa fa-tag"></i> 虚拟环境</a>
           </div>
 
         
@@ -438,12 +435,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/%E5%9F%BA%E4%BA%8Eredis%E4%BD%BF%E7%94%A8scrapy%E4%B8%8B%E8%BD%BD%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E5%A2%9E%E9%87%8F%E7%88%AC%E8%99%AB/" rel="prev" title="基于redis使用scrapy下载中间件实现简单的增量爬虫">
-      <i class="fa fa-chevron-left"></i> 基于redis使用scrapy下载中间件实现简单的增量爬虫
+    <a href="/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/" rel="prev" title="图片转视频">
+      <i class="fa fa-chevron-left"></i> 图片转视频
     </a></div>
       <div class="post-nav-item">
-    <a href="/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/" rel="next" title="将flask部署到Ubuntu服务器上">
-      将flask部署到Ubuntu服务器上 <i class="fa fa-chevron-right"></i>
+    <a href="/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/" rel="next" title="MySQL最左前缀">
+      MySQL最左前缀 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -505,7 +502,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装虚拟环境"><span class="nav-text">1.安装虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建虚拟环境"><span class="nav-text">2.创建虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用虚拟环境"><span class="nav-text">3.使用虚拟环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看已有虚拟环境"><span class="nav-text">3.1查看已有虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入虚拟环境"><span class="nav-text">3.2进入虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#退出虚拟环境"><span class="nav-text">3.3退出虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除虚拟环境"><span class="nav-text">3.4删除虚拟环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟环境工具包位置"><span class="nav-text">4.虚拟环境工具包位置</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题出现"><span class="nav-text">问题出现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小整数对象池"><span class="nav-text">小整数对象池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大整数对象池"><span class="nav-text">大整数对象池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#intern机制"><span class="nav-text">intern机制</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
