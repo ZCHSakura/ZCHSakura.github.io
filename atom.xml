@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2023-03-19T15:35:34.895Z</updated>
+  <updated>2023-08-07T14:03:48.688Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>python程序打包成exe</title>
+    <link href="zchsakura.github.io/python%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E6%88%90exe/"/>
+    <id>zchsakura.github.io/python%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E6%88%90exe/</id>
+    <published>2023-08-07T13:34:32.000Z</published>
+    <updated>2023-08-07T14:03:48.688Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录帮表姐写了一个txt转xlsx，同时进行格式转换和合并去重的脚本，最后将其打包成exe过程中遇到的小问题&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    
+    
+      <category term="Python" scheme="zchsakura.github.io/tags/Python/"/>
+    
+      <category term="EXE" scheme="zchsakura.github.io/tags/EXE/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL最左前缀</title>
@@ -105,29 +130,6 @@
     
     
       <category term="python" scheme="zchsakura.github.io/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>leetcode_2</title>
-    <link href="zchsakura.github.io/leetcode-2/"/>
-    <id>zchsakura.github.io/leetcode-2/</id>
-    <published>2022-11-05T08:36:05.000Z</published>
-    <updated>2023-03-04T12:42:39.451Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这里记录在leetcode上做题的经过，包含自己的解法和优秀解法&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="算法" scheme="zchsakura.github.io/categories/%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
-    
-      <category term="算法" scheme="zchsakura.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
