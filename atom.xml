@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>周小天的Blog</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="zchsakura.github.io/"/>
+  <updated>2024-06-16T08:10:22.751Z</updated>
+  <id>zchsakura.github.io/</id>
+  
+  <author>
+    <name>周小天</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>python程序打包成exe</title>
+    <link href="zchsakura.github.io/python%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E6%88%90exe/"/>
+    <id>zchsakura.github.io/python%E7%A8%8B%E5%BA%8F%E6%89%93%E5%8C%85%E6%88%90exe/</id>
+    <published>2023-08-07T13:34:32.000Z</published>
+    <updated>2024-06-16T08:10:22.751Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录帮表姐写了一个txt转xlsx，同时进行格式转换和合并去重的脚本，最后将其打包成exe过程中遇到的小问题&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    
+    
+      <category term="Python" scheme="zchsakura.github.io/tags/Python/"/>
+    
+      <category term="EXE" scheme="zchsakura.github.io/tags/EXE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL最左前缀</title>
+    <link href="zchsakura.github.io/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/"/>
+    <id>zchsakura.github.io/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/</id>
+    <published>2023-03-19T15:27:57.000Z</published>
+    <updated>2024-06-16T08:10:22.744Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下MySQL中索引的最左前缀原则和联合索引有什么好处&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="MySQL" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/MySQL/"/>
+    
+    
+      <category term="MySQL" scheme="zchsakura.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python中==和is的区别</title>
+    <link href="zchsakura.github.io/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>zchsakura.github.io/python%E4%B8%AD-%E5%92%8Cis%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2023-03-06T08:09:13.000Z</published>
+    <updated>2024-06-16T08:10:22.750Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;常见的一种理解是==判断值相等，is判断内存中是否指向同一个位置，但其实这个和python的交互模式，py文件模式都有点关系，这里简单总结一下网上搜罗的内容。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    
+    
+      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>图片转视频</title>
+    <link href="zchsakura.github.io/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/"/>
+    <id>zchsakura.github.io/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/</id>
+    <published>2023-03-05T11:31:22.000Z</published>
+    <updated>2024-06-16T08:10:22.827Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;使用python的cv2库完成图片转视频，解决灰度图片和中文路径问题&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    
+    
+      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python赋值&amp;浅拷贝&amp;深拷贝</title>
+    <link href="zchsakura.github.io/python%E8%B5%8B%E5%80%BC-%E6%B5%85%E6%8B%B7%E8%B4%9D-%E6%B7%B1%E6%8B%B7%E8%B4%9D/"/>
+    <id>zchsakura.github.io/python%E8%B5%8B%E5%80%BC-%E6%B5%85%E6%8B%B7%E8%B4%9D-%E6%B7%B1%E6%8B%B7%E8%B4%9D/</id>
+    <published>2023-02-26T16:46:25.000Z</published>
+    <updated>2024-06-16T08:10:22.753Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录Python中赋值&amp;amp;浅拷贝&amp;amp;深拷贝和区别，同时还有list.append()时浅拷贝的问题&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    
+    
+      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ssh 22 time out</title>
+    <link href="zchsakura.github.io/ssh-22-time-out/"/>
+    <id>zchsakura.github.io/ssh-22-time-out/</id>
+    <published>2022-10-09T02:31:36.000Z</published>
+    <updated>2024-06-16T08:10:22.754Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这里记录一下git使用过程中总是碰到的一个错误，&lt;code&gt;ssh: connect to host github.com port 22: Connection timed out&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="服务器配置" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
+    
+    
+      <category term="git" scheme="zchsakura.github.io/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>处理dm字段大小写</title>
+    <link href="zchsakura.github.io/%E5%A4%84%E7%90%86dm%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F%E5%86%99/"/>
+    <id>zchsakura.github.io/%E5%A4%84%E7%90%86dm%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F%E5%86%99/</id>
+    <published>2022-07-25T02:52:51.000Z</published>
+    <updated>2024-06-16T08:10:22.828Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下使用达梦数据库遇到的大小写问题，达梦数据库在建库的时候可以选择不区分大小写，默认是选择区分的，我看网上的博客很多都建议取消区分大小写，但是我对接的用户这边建库的时候没有取消，然后dm好像有把字段名全部大写，就算他们建表时写的小写，没有仔细研究，我这里主要只是做了有无大写判断。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="达梦" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E8%BE%BE%E6%A2%A6/"/>
+    
+    
+      <category term="Python" scheme="zchsakura.github.io/tags/Python/"/>
+    
+      <category term="达梦" scheme="zchsakura.github.io/tags/%E8%BE%BE%E6%A2%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>达梦数据库插入或更新</title>
+    <link href="zchsakura.github.io/%E8%BE%BE%E6%A2%A6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E6%88%96%E6%9B%B4%E6%96%B0/"/>
+    <id>zchsakura.github.io/%E8%BE%BE%E6%A2%A6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E6%88%96%E6%9B%B4%E6%96%B0/</id>
+    <published>2022-07-17T13:09:46.000Z</published>
+    <updated>2024-06-16T08:10:22.839Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下在国产达梦数据库中使用merge into来进行数据的更新或新增&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="达梦" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E8%BE%BE%E6%A2%A6/"/>
+    
+    
+      <category term="达梦" scheme="zchsakura.github.io/tags/%E8%BE%BE%E6%A2%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>机器学习打印训练日志</title>
+    <link href="zchsakura.github.io/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%B0%E8%AE%AD%E7%BB%83%E6%97%A5%E5%BF%97/"/>
+    <id>zchsakura.github.io/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%B0%E8%AE%AD%E7%BB%83%E6%97%A5%E5%BF%97/</id>
+    <published>2022-07-11T02:30:22.000Z</published>
+    <updated>2024-06-16T08:10:22.832Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这里记录下我使用python的sklearn库中的机器学习模型，训练过程中使用打印训练日志的方法。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="Python" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/Python/"/>
+    
+    
+      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
+    
+      <category term="机器学习" scheme="zchsakura.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="线程" scheme="zchsakura.github.io/tags/%E7%BA%BF%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python调用CIC</title>
+    <link href="zchsakura.github.io/python%E8%B0%83%E7%94%A8CIC/"/>
+    <id>zchsakura.github.io/python%E8%B0%83%E7%94%A8CIC/</id>
+    <published>2022-07-07T08:48:11.000Z</published>
+    <updated>2024-06-16T08:10:22.752Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在这里记录下使用python通过命令行调用CIC的过程，包含给pcap整体打标签，多个pcap整合等内容&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="CICFlowMeter" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/CICFlowMeter/"/>
+    
+    
+      <category term="CICFlowMeter" scheme="zchsakura.github.io/tags/CICFlowMeter/"/>
+    
+      <category term="python" scheme="zchsakura.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CICFlowMeter部署</title>
+    <link href="zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/"/>
+    <id>zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/</id>
+    <published>2022-07-06T02:54:45.000Z</published>
+    <updated>2024-06-16T08:10:22.743Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="CICFlowMeter" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/CICFlowMeter/"/>
+    
+    
+      <category term="CICFlowMeter" scheme="zchsakura.github.io/tags/CICFlowMeter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>多台电脑同步博客</title>
+    <link href="zchsakura.github.io/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/"/>
+    <id>zchsakura.github.io/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/</id>
+    <published>2022-07-04T09:07:35.000Z</published>
+    <updated>2024-06-16T08:10:22.829Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录一下在多台电脑上同时写博客时候的同步问题&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.zhihu.com/question/23934523&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="博客" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E5%8D%9A%E5%AE%A2/"/>
+    
+    
+      <category term="git" scheme="zchsakura.github.io/tags/git/"/>
+    
+      <category term="hexo" scheme="zchsakura.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深度学习笔记(四)---优化方法理解</title>
+    <link href="zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E5%9B%9B)---%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%90%86%E8%A7%A3/"/>
+    <id>zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E5%9B%9B)---%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%90%86%E8%A7%A3/</id>
+    <published>2020-10-23T08:14:15.000Z</published>
+    <updated>2024-06-16T08:10:22.836Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录网络模型的各种优化&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="深度学习" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="zchsakura.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="正则化" scheme="zchsakura.github.io/tags/%E6%AD%A3%E5%88%99%E5%8C%96/"/>
+    
+      <category term="归一化" scheme="zchsakura.github.io/tags/%E5%BD%92%E4%B8%80%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深度学习笔记(三)---基础理解</title>
+    <link href="zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/"/>
+    <id>zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</id>
+    <published>2020-10-21T06:31:27.000Z</published>
+    <updated>2024-06-16T08:10:22.833Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;稍微记录一下看吴恩达课程后对深度学习各种概念的理解&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="深度学习" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="zchsakura.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>研究生组会</title>
+    <link href="zchsakura.github.io/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/"/>
+    <id>zchsakura.github.io/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/</id>
+    <published>2020-10-21T04:50:55.000Z</published>
+    <updated>2024-06-16T08:10:22.838Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录组会内容&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="组会" scheme="zchsakura.github.io/categories/%E7%BB%84%E4%BC%9A/"/>
+    
+    
+      <category term="图像处理" scheme="zchsakura.github.io/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"/>
+    
+      <category term="组会" scheme="zchsakura.github.io/tags/%E7%BB%84%E4%BC%9A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>服务器安装jupyter</title>
+    <link href="zchsakura.github.io/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85jupyter/"/>
+    <id>zchsakura.github.io/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85jupyter/</id>
+    <published>2020-10-15T02:07:28.000Z</published>
+    <updated>2024-06-16T08:10:22.831Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;属实不想用xshell上的ipython，命令行也确实没有jupyter方便，毕竟jupyter还可以保存运行过程，还可以进行拓展。所以我在服务器上搭建了一个jupyter&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="服务器配置" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
+    
+    
+      <category term="服务器" scheme="zchsakura.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+      <category term="jupyter" scheme="zchsakura.github.io/tags/jupyter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深度学习笔记(零)---英语</title>
+    <link href="zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/"/>
+    <id>zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/</id>
+    <published>2020-10-14T06:20:20.000Z</published>
+    <updated>2024-06-16T08:10:22.837Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录一下常用英语词汇&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="深度学习" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="zchsakura.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="英语" scheme="zchsakura.github.io/tags/%E8%8B%B1%E8%AF%AD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深度学习笔记(二)---框架</title>
+    <link href="zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%BA%8C)---%E6%A1%86%E6%9E%B6/"/>
+    <id>zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%BA%8C)---%E6%A1%86%E6%9E%B6/</id>
+    <published>2020-10-13T01:09:28.000Z</published>
+    <updated>2024-06-16T08:10:22.835Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;昨天大致了解了一下什么是深度学习，深度学习，人工智能，机器学习之间有什么关系，深度学习框架的总览。今天来找找各个框架之间的对比和目前比较常用的tensorflow和pytorch一些资料。我觉得框架属实是个好东西，让我可以不用写CUDA，反正Django的ORM是属实舒服，轻松摆脱巨长的MySql，但是会有一些自己特殊的地方，比如插入一个带外键的数据时要先获取其主键Model，还是要多了解多记录。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="深度学习" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="zchsakura.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="框架" scheme="zchsakura.github.io/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+      <category term="Tensorflow" scheme="zchsakura.github.io/tags/Tensorflow/"/>
+    
+      <category term="Pytorch" scheme="zchsakura.github.io/tags/Pytorch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深度学习笔记(一)---基础</title>
+    <link href="zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/"/>
+    <id>zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/</id>
+    <published>2020-10-12T07:06:19.000Z</published>
+    <updated>2024-06-16T08:10:22.832Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;待录取已经下来了，应该没什么意外就尘埃落定了，这几天都没怎么睡好，下午困得很。今天下午和晚上就看看什么是深度学习，稍微了解一下，晚上跑个步回去早点睡。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="深度学习" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="zchsakura.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="CUAD" scheme="zchsakura.github.io/tags/CUAD/"/>
+    
+      <category term="神经网络" scheme="zchsakura.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="机器学习" scheme="zchsakura.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从考研到995</title>
+    <link href="zchsakura.github.io/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/"/>
+    <id>zchsakura.github.io/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/</id>
+    <published>2020-10-12T01:43:40.000Z</published>
+    <updated>2024-06-16T08:10:22.826Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这么久都没更博了，主要是之前在准备参加考研，9月底突然得知因为疫情扩保把本弟弟保上了，说实话运气很好，属实要好好感谢学校，只要学校够努力就能抬我一手。今天保研尘埃落定了虽然直接开始995，但是心理压力没那么大了，还要学习新的知识，肯定要多记录记录。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="碎碎念" scheme="zchsakura.github.io/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+    
+    
+  </entry>
+  
+</feed>

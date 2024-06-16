@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<script>
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163934312-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-163934312-1');
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_logosc/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon_logosc/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录Django学习笔记 https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1rx411X717">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django学习笔记">
+<meta property="og:url" content="zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="周小天的Blog">
+<meta property="og:description" content="记录Django学习笔记 https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1rx411X717">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-18T10:32:33.000Z">
+<meta property="article:modified_time" content="2024-06-16T08:10:22.744Z">
+<meta property="article:author" content="周小天">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="Django">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Django学习笔记 | 周小天的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="周小天的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周小天的Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">34</span></a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+	    <div class="site-search">
+		  <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+	    </div>
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E4%B9%9D%E5%8D%81.jpeg">
+      <meta itemprop="name" content="周小天">
+      <meta itemprop="description" content="站台汽笛响起<br>想念是你的声音<br>我们提着过去走入人人人人群">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周小天的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Django学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-18 18:32:33" itemprop="dateCreated datePublished" datetime="2020-05-18T18:32:33+08:00">2020-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-16 16:10:22" itemprop="dateModified" datetime="2024-06-16T16:10:22+08:00">2024-06-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>记录Django学习笔记</p>
+<p>https://www.bilibili.com/video/BV1rx411X717</p>
+<a id="more"></a>
+<h3 id="创建工程">创建工程</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject HelloDjango</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182816.png"
+alt="image-20200513182805245" />
+<figcaption aria-hidden="true">image-20200513182805245</figcaption>
+</figure>
+<h3 id="创建应用">创建应用</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp App</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182932.png"
+alt="image-20200513182930988" />
+<figcaption aria-hidden="true">image-20200513182930988</figcaption>
+</figure>
+<p>在setting.py中注册应用：</p>
+<figure class="highlight diff"><figcaption><span>setting.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    'django.contrib.admin',</span><br><span class="line">    'django.contrib.auth',</span><br><span class="line">    'django.contrib.contenttypes',</span><br><span class="line">    'django.contrib.sessions',</span><br><span class="line">    'django.contrib.messages',</span><br><span class="line">    'django.contrib.staticfiles',</span><br><span class="line"><span class="addition">+   'learn1',</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="开发者服务器">开发者服务器</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">8000</span></span><br></pre></td></tr></table></figure>
+<h3 id="允许访问范围">允许访问范围</h3>
+<figure class="highlight python"><figcaption><span>settings.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">"*"</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="语言和时区设置">语言和时区设置</h3>
+<figure class="highlight python"><figcaption><span>settings.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LANGUAGE_CODE = <span class="string">'zh-hans'</span></span><br><span class="line"></span><br><span class="line">TIME_ZONE = <span class="string">'Asia/Shanghai'</span></span><br></pre></td></tr></table></figure>
+<h3 id="迁移">迁移</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+<h3 id="注册路由">注册路由</h3>
+<figure class="highlight python"><figcaption><span>urls.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> learn1 <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'hello/'</span>, views.hello),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><figcaption><span>views.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">"hello Django"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="html模板">html模板</h3>
+<p>两种</p>
+<ul>
+<li>在App中进行模板配置
+<ul>
+<li>只需在App的根目录创建templates文件夹即可</li>
+<li>如果想让代码自动提示，我们应该标记文件夹为模板文件夹</li>
+</ul></li>
+<li>在项目目录中进行模板配置
+<ul>
+<li>需要在项目目录中创建templates文件夹并标记</li>
+<li>需要在settings中进行注册</li>
+</ul></li>
+<li>在开发中使用第二种
+<ul>
+<li>模板可以继承，复用</li>
+</ul></li>
+</ul>
+<hr />
+<p>在HelloDjango中新建templates文件夹并设置为模板文件夹（方便代码提示），在其中新建html模板</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200518175701.png"
+alt="image-20200518175638301" />
+<figcaption aria-hidden="true">image-20200518175638301</figcaption>
+</figure>
+<p>然后再settings.py中加入templates路径</p>
+<figure class="highlight diff"><figcaption><span>settings.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">TEMPLATES = [</span><br><span class="line">    &#123;</span><br><span class="line">        'BACKEND': 'django.template.backends.django.DjangoTemplates',</span><br><span class="line">        'DIRS': [</span><br><span class="line"><span class="addition">+           os.path.join(BASE_DIR, 'templates'),</span></span><br><span class="line">        ],</span><br><span class="line">        'APP_DIRS': True,</span><br><span class="line">        'OPTIONS': &#123;</span><br><span class="line">            'context_processors': [</span><br><span class="line">                'django.template.context_processors.debug',</span><br><span class="line">                'django.template.context_processors.request',</span><br><span class="line">                'django.contrib.auth.context_processors.auth',</span><br><span class="line">                'django.contrib.messages.context_processors.messages',</span><br><span class="line">            ],</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><strong>HTML小技巧：</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ul&gt;li*4(tab键)</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li&gt;今天&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;天气&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;真好&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;嘿嘿嘿&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="分发路由">分发路由</h3>
+<p>这样就可以访问ip/learn2/hello了</p>
+<ul>
+<li>项目如果逻辑过于复杂，可以进行拆分</li>
+<li>拆分为多个App</li>
+<li>继续拆分路由器 urls
+<ul>
+<li>在App中创建自己的urls
+<ul>
+<li>urlpatterns 路由规则列表</li>
+<li>在根urls中进行子路由的包含</li>
+</ul></li>
+<li>子路由使用
+<ul>
+<li>根路由规则 + 子路由的规则</li>
+</ul></li>
+</ul></li>
+</ul>
+<hr />
+<p>在新建的应用learn2里面新建urls.py</p>
+<figure class="highlight python"><figcaption><span>learn2/urls.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> learn2 <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'hello/'</span>, views.hello),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>在HelloDjango的urls.py中导入learn2中的路由</p>
+<figure class="highlight diff"><figcaption><span>HelloDjango/urls.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path('admin/', admin.site.urls),</span><br><span class="line">    path('hello/', views.hello),</span><br><span class="line">    path('index/', views.index),</span><br><span class="line"><span class="addition">+   path('learn2/', include('learn2.urls')),</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="models-使用了orm技术">models 使用了ORM技术</h3>
+<ul>
+<li>Object Relational Mapping 对象关系映射</li>
+<li>将业务逻辑进行了一个解耦合
+<ul>
+<li>object.save()</li>
+<li>object.delete()</li>
+</ul></li>
+<li>关系型数据库
+<ul>
+<li>DDL</li>
+<li>通过models定义实现 数据库表的定义</li>
+</ul></li>
+<li>数据操作
+<ul>
+<li>增删改查</li>
+<li>存储
+<ul>
+<li>save()</li>
+</ul></li>
+<li>查询
+<ul>
+<li>查所有 objects.all()</li>
+<li>查单个 objects.get(pk=xx)</li>
+</ul></li>
+<li>更新
+<ul>
+<li>基于查询的</li>
+<li>查好的对象，修改属性，然后save()</li>
+</ul></li>
+<li>删除
+<ul>
+<li>基于查询的</li>
+<li>调用 delete()</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="快捷键">快捷键</h3>
+<ul>
+<li>control + p
+<ul>
+<li>参数提示</li>
+</ul></li>
+</ul>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200608171058.png"
+alt="image-20200608171048103" />
+<figcaption aria-hidden="true">image-20200608171048103</figcaption>
+</figure>
+<ul>
+<li>shift + f6 重命名，重构</li>
+<li>.re 快捷生成return</li>
+<li>.if 多用点看看世界的美好</li>
+</ul>
+<h3 id="连接mysql驱动">连接mysql驱动</h3>
+<ul>
+<li>mysqlclient
+<ul>
+<li>python2,3都能直接使用</li>
+<li>致命缺点
+<ul>
+<li>对mysql安装有要求，必须指定位置存在配置文件</li>
+</ul></li>
+</ul></li>
+<li>python-mysql
+<ul>
+<li>python2 支持很好</li>
+<li>python3 不支持</li>
+</ul></li>
+<li>pymysql
+<ul>
+<li>python2，python3都支持</li>
+<li>它还可以伪装成前面的库</li>
+</ul></li>
+</ul>
+<figure class="highlight python"><figcaption><span>__init__.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line">pymysql.version_info = (<span class="number">1</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="string">'final'</span>, <span class="number">0</span>)  <span class="comment"># change mysqlclient version</span></span><br><span class="line">pymysql.install_as_MySQLdb()</span><br></pre></td></tr></table></figure>
+<h3 id="重新建立-migration-文件">重新建立 migration 文件</h3>
+<p>1.首先要保证,目前的migration文件和数据库是同步的，通过执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br></pre></td></tr></table></figure>
+<p>如果看到 这样的提示: No changes detected，则可以继续接下来的步骤</p>
+<p>2.通过执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py showmigrations</span><br></pre></td></tr></table></figure>
+<p>结果，可以看到当前项目，所有的app及对应的已经生效的migration文件如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git_hook</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">guardian</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">kombu_transport_django</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">message</span><br><span class="line"> (no migrations)</span><br><span class="line">order</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">pay</span><br><span class="line"> [X] 0001_initial</span><br><span class="line"> [x] 0002_add_model</span><br><span class="line">sessions</span><br><span class="line"> [X] 0001_initial</span><br></pre></td></tr></table></figure>
+<p>3.通过执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate –fake pay zero</span><br></pre></td></tr></table></figure>
+<p>这里的 pay就是你要重置的app 4.之后再执行
+<code>python manage.pu showmigrations</code>，你会发现 文件前的 [x]
+变成了[ ]</p>
+<p>现在，你可以删除pay 这个 app下的migrations模块中 除 init.py
+之外的所有文件。</p>
+<p>5.之后，执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br></pre></td></tr></table></figure>
+<p>程序会再次为这个app 生成 0001_initial.py 之类的文件</p>
+<p>6.最重要的一步来了, 执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate –fake-inital</span><br></pre></td></tr></table></figure>
+<p>–fake-inital 会在数据库中的 migrations表中记录当前这个app 执行到
+0001_initial.py ，但是它不会真的执行该文件中的 代码。
+这样就做到了，既不对现有的数据库改动，而又可以重置 migraion
+文件，妈妈再也不用在 migration模块中看到一推文件了。</p>
+<h3 id="重新生成数据库中的某张表">重新生成数据库中的某张表</h3>
+<p>1.删除数据库中的django_migration 表中对应的记录以及你要重新导的表</p>
+<p>2.将你要导的那个app中的migrate 文件删除掉</p>
+<p>3.重新导入你需要的表</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigration shop(你要导的app)</span><br><span class="line">python manage.py migrate shop</span><br></pre></td></tr></table></figure>
+<p>这样就完成了。</p>
+<h3 id="表关系">表关系</h3>
+<ul>
+<li><p>分类</p>
+<ul>
+<li><p>ForeignKey：一对多，将字段定义在多的端中</p></li>
+<li><p>ManyToManyField：多对多，将字段定义在两端</p></li>
+<li><p>OneToOneField：一对一，将字段定义在任意一端中</p></li>
+</ul></li>
+<li><p>用一访问多</p>
+<ul>
+<li>格式
+<ul>
+<li>对象.模型类小写_set</li>
+</ul></li>
+<li>示例
+<ul>
+<li>grade.students_set</li>
+</ul></li>
+</ul></li>
+<li><p>用一访问一</p>
+<ul>
+<li>格式
+<ul>
+<li>对象.模型类小写</li>
+</ul></li>
+<li>示例
+<ul>
+<li>grade.students</li>
+</ul></li>
+</ul></li>
+<li><p>访问id</p>
+<ul>
+<li>格式
+<ul>
+<li>对象.属性_id</li>
+</ul></li>
+<li>示例
+<ul>
+<li>student.sgrade_id</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="模型过滤">模型过滤</h3>
+<ul>
+<li>filter()：返回符合筛选条件的结果</li>
+<li>exclude()：返回不符合筛选条件的结果</li>
+<li>all()：返回所有数据</li>
+<li>order_by('id')：排序，如果要逆序就加个<code>-</code></li>
+<li>values()：一条数据就是一个字典，返回一个列表</li>
+<li>连续使用
+<ul>
+<li>链式调用</li>
+<li>Person.objects.filter().filter().xxxx.eclude().exclude().yyyy</li>
+</ul></li>
+</ul>
+<h3 id="方法">方法</h3>
+<ul>
+<li><p>对象方法</p>
+<ul>
+<li>可以调用对象的属性，也可以调用类的属性</li>
+</ul></li>
+<li><p>类方法</p>
+<ul>
+<li>不能调用对象属性，只能调用类属性</li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@classmethod</span><br><span class="line">def create(cls, p_name, p_age&#x3D;100):</span><br><span class="line">	return cls(p_name&#x3D;p_name, p_age&#x3D;p_age)</span><br></pre></td></tr></table></figure></p></li>
+<li><p>静态方法</p>
+<ul>
+<li>啥都不能调用，不能获取对象属性，也不能获取类属性</li>
+<li>只是寄生在我们这个类上而已</li>
+</ul></li>
+</ul>
+<h3 id="获取单个对象">获取单个对象</h3>
+<ul>
+<li>get
+<ul>
+<li>查询条件没有匹配的对象，会抛异常，DoesNotExist</li>
+<li>如果查询条件对应多个对象，会抛异常，MultipleObjectsReturned</li>
+</ul></li>
+<li>first</li>
+<li>last</li>
+<li>count</li>
+<li>exist</li>
+</ul>
+<h3 id="first和last">first和last</h3>
+<ul>
+<li>默认情况下可以正常从QuerySet中获取</li>
+<li>隐藏bug
+<ul>
+<li>可能会出现 first和last获取到的是相同的对象
+<ul>
+<li>显式，手动写排序规则（先order_by）</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="切片">切片</h3>
+<ul>
+<li>和python中的切片不太一样</li>
+<li>QuerySet[5:15] 获取第五条到第十五条数据
+<ul>
+<li>相当于SQL中limit和offset</li>
+</ul></li>
+</ul>
+<h3 id="缓存集">缓存集</h3>
+<ul>
+<li>filter</li>
+<li>exclude</li>
+<li>all</li>
+<li>都不会真正的去查询数据库</li>
+<li>只有我们在迭代结果集，或者获取单个对象属性的时候，它才会去查询数据库</li>
+<li>懒查询
+<ul>
+<li>为了优化我们结构和查询</li>
+</ul></li>
+</ul>
+<h3 id="查询条件">查询条件</h3>
+<ul>
+<li>属性__运算符=值</li>
+<li>gt 大于</li>
+<li>lt 小于</li>
+<li>gte 大于等于</li>
+<li>lte 小于等于</li>
+<li>in 在某一集合中</li>
+<li>contains 类似于 模糊查询 like</li>
+<li>startswith 以xx开始 本质也是like</li>
+<li>endswith 以 xx 结束 也是like</li>
+<li>exact</li>
+<li>前面同时添加i , ignore 忽略
+<ul>
+<li>iexact</li>
+<li>icontains</li>
+<li>istartswith</li>
+<li>iendswith</li>
+</ul></li>
+<li>django中查询条件有时区问题
+<ul>
+<li>关闭django中自定义的时区</li>
+<li>在数据库中创建对应的时区表</li>
+</ul></li>
+</ul>
+<h3 id="模型成员">模型成员</h3>
+<ul>
+<li>显性属性
+<ul>
+<li>开发者手动书写的属性</li>
+</ul></li>
+<li>隐性属性
+<ul>
+<li>开发者没有书写，ORM自动生成的</li>
+<li>如果你把隐性属性手动声明了，系统就不会为你产生隐性属性了</li>
+</ul></li>
+</ul>
+<h3 id="从mysql到model">从MySql到model</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py inspectdb &gt; backstage/models.py</span><br></pre></td></tr></table></figure>
+<h3 id="sort排序">sort排序</h3>
+<p>2）key参数/函数
+从python2.4开始，list.sort()和sorted()函数增加了key参数来指定一个函数，此函数将在每个元素比较前被调用。
+例如通过key指定的函数来忽略字符串的大小写： 代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sorted(<span class="string">"This is a test string from Andrew"</span>.split(), key=str.lower)</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'Andrew'</span>, <span class="string">'from'</span>, <span class="string">'is'</span>, <span class="string">'string'</span>, <span class="string">'test'</span>, <span class="string">'This'</span>]</span><br></pre></td></tr></table></figure>
+<p>key参数的值为一个函数，此函数只有一个参数且返回一个值用来进行比较。这个技术是快速的因为key指定的函数将准确地对每个元素调用。</p>
+<p>更广泛的使用情况是用复杂对象的某些值来对复杂对象的序列排序，例如：</p>
+<p>代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">student_tuples = [</span><br><span class="line">(<span class="string">'john'</span>, <span class="string">'A'</span>, <span class="number">15</span>),</span><br><span class="line">(<span class="string">'jane'</span>, <span class="string">'B'</span>, <span class="number">12</span>),</span><br><span class="line">(<span class="string">'dave'</span>, <span class="string">'B'</span>, <span class="number">10</span>),</span><br><span class="line">]</span><br><span class="line">sorted(student_tuples, key=<span class="keyword">lambda</span> student: student[<span class="number">2</span>])   <span class="comment"># sort by age</span></span><br><span class="line">[(<span class="string">'dave'</span>, <span class="string">'B'</span>, <span class="number">10</span>), (<span class="string">'jane'</span>, <span class="string">'B'</span>, <span class="number">12</span>), (<span class="string">'john'</span>, <span class="string">'A'</span>, <span class="number">15</span>)]</span><br></pre></td></tr></table></figure>
+<h3 id="paginator分页">Paginator分页</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.core.paginator <span class="keyword">import</span> Paginator</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行分页</span></span><br><span class="line">pagenator = Paginator(result_list, limit)</span><br><span class="line">result = pagenator.page(page).object_list</span><br></pre></td></tr></table></figure>
+<h3 id="pop间接修改键的key值">pop()间接修改键的key值</h3>
+<p>pop()一般用作删除列表中元素，但是它的返回值很有趣</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pop(key[,default])</span><br></pre></td></tr></table></figure>
+<ul>
+<li>key: 要删除的键/值对所对应的键</li>
+<li>default:
+可选参数，给定键不在字典中时必须设置，否者会报错(没有默认值)，此时返回default值，</li>
+</ul>
+<p>Python 字典 pop()
+方法删除给定键所对应的键/值对，并返回被删除的值。给定键如果不在字典中，则必须设置一个default值，否则会报错，此时返回的就是default值。</p>
+<h3 id="model_to_dict单个对象转字典">model_to_dict()单个对象转字典</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from django.forms import model_to_dict</span><br><span class="line"></span><br><span class="line">result &#x3D; UserUserinfo.objects.filter(nickname__contains&#x3D;key).first()</span><br><span class="line">result &#x3D; model_to_dict(result)</span><br></pre></td></tr></table></figure>
+<h3 id="取日期区间">取日期区间</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> dateutil.relativedelta <span class="keyword">import</span> relativedelta</span><br><span class="line"></span><br><span class="line">now_date = datetime.datetime.now().date()</span><br><span class="line">dates = &#123;</span><br><span class="line">    <span class="string">'1'</span>: now_date - datetime.timedelta(days=<span class="number">1</span>),  <span class="comment"># 近一天</span></span><br><span class="line">    <span class="string">'2'</span>: now_date - datetime.timedelta(weeks=<span class="number">1</span>),  <span class="comment"># 近一周</span></span><br><span class="line">    <span class="string">'3'</span>: now_date - relativedelta(months=<span class="number">1</span>)  <span class="comment"># 近一月</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">parameter_time = dates.get(<span class="string">'%s'</span> % time)</span><br><span class="line">obj_list = Customer.objects.filter(deal_date__gte=parameter_time, deal_date__lte=cur_date)</span><br></pre></td></tr></table></figure>
+<h3
+id="django中通过model名字获取model">django中通过model名字获取model</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; from django.apps import apps</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; apps.get_app_config(<span class="string">'auth'</span>) </span></span><br><span class="line">&lt;AuthConfig: auth&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 注意得到的结果是迭代器(iterator)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; auth = apps.get_app_config(<span class="string">'auth'</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; auth.get_models()</span></span><br><span class="line">&lt;generator object get_models at 0x31422d0&gt;</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> auth.get_models():</span></span><br><span class="line">...  print i</span><br><span class="line">... </span><br><span class="line">&lt;class 'django.contrib.auth.models.Permission'&gt;</span><br><span class="line">&lt;class 'django.contrib.auth.models.Group'&gt;</span><br><span class="line">&lt;class 'django.contrib.auth.models.User'&gt;</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; auth.get_model(<span class="string">'User'</span>)         </span></span><br><span class="line">&lt;class 'django.contrib.auth.models.User'&gt;</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; User = auth.get_model(<span class="string">'User'</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; User.objects.all()[0]</span></span><br><span class="line">&lt;User: root&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="时间类型">时间类型</h3>
+<ol type="1">
+<li><p>default=datetime.now()</p>
+<p>model每次初始化，都会自动设置该字段的默认值为初始化时间。</p></li>
+<li><p>default=datetime.now</p>
+<p>model每次进行新增或修改操作，都会自动设置该字段的值为操作时间。设置后仍可以使用ORM手动修改该字段。</p></li>
+<li><p>auto_now_add=True</p>
+<p>默认值为False，若设置为True，model每次进行新增操作，都会自动设置该字段的值为操作时间。设置为True后无法使用ORM手动修改该字段，哪怕填充了字段的值也会被覆盖。</p></li>
+<li><p>auto_now=True</p>
+<p>默认值为False，若设置为True，model每次进行新增或修改操作，都会自动设置该字段的值为操作时间。设置为True后无法使用ORM手动修改该字段，哪怕填充了字段的值也会被覆盖。</p></li>
+<li><p>要注意的点</p>
+<p>除非想设置动态默认时间为项目的启动时间，否则default=datetime.now()这种用法是错误的，会得到期望之外的结果。</p>
+<p>使用User.objects.update方法时，设置的default=datetime.now和auto_now=True都不会生效，由于设置了auto_now=True的字段不能手动修改，此时只能使用save方法修改数据，这对于多个数据的更新是不友好的。</p>
+<p>因此如果设置动态默认时间的字段，应该使用default=datetime.now和auto_now_add=True来实现。</p></li>
+</ol>
+<h3 id="djang获取models字段方法">djang获取models字段方法</h3>
+<p>通过._meta.fields获取 以Student这个model为例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">In [59]: Student._meta.fields</span><br><span class="line">Out[59]: </span><br><span class="line">(&lt;django.db.models.fields.AutoField: id&gt;,</span><br><span class="line"> &lt;django.db.models.fields.CharField: stu_name&gt;,</span><br><span class="line"> &lt;django.db.models.fields.CharField: stu_no&gt;,</span><br><span class="line"> &lt;django.db.models.fields.CharField: stu_sex&gt;,</span><br><span class="line"> &lt;django.db.models.fields.IntegerField: stu_age&gt;,</span><br><span class="line"> &lt;django.db.models.fields.DateTimeField: stu_birth&gt;)</span><br></pre></td></tr></table></figure>
+<p>获取字段名：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In [62]: stu = Student._meta.fields </span><br><span class="line">In [62]: [stu[i].name for i in range(len(stu))]</span><br><span class="line">Out[62]: [u'id', 'stu_name', 'stu_no', 'stu_sex', 'stu_age', 'stu_birth']</span><br></pre></td></tr></table></figure>
+<h3 id="修改数据库中部分信息">修改数据库中部分信息</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_work</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        data = simplejson.loads(request.body)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">return</span> JsonResponse(&#123;<span class="string">"code"</span>: <span class="number">-1</span>, <span class="string">"msg"</span>: <span class="string">'参数接受失败'</span>&#125;)</span><br><span class="line">    print(data)</span><br><span class="line">    DataModel = firsttypeid_to_model(data[<span class="string">'firsttypeid'</span>]).objects.create()</span><br><span class="line">    <span class="comment"># 获取该模型内所有字段名数据</span></span><br><span class="line">    fields_data = DataModel._meta.fields</span><br><span class="line">    <span class="comment"># 这里是将当前的model转换成数据字典，方便后面修改后提交</span></span><br><span class="line">    data_dict = DataModel.__dict__</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> data:</span><br><span class="line">        <span class="keyword">for</span> field <span class="keyword">in</span> fields_data:</span><br><span class="line">            <span class="comment"># 这样或输出这条记录的所有字段名，需要的话还可以输出verbose_name</span></span><br><span class="line">            <span class="keyword">if</span> field.name == key:</span><br><span class="line">                <span class="comment"># 进行匹配，将前端传来的字段匹配到，然后修改数据库里面的数据</span></span><br><span class="line">                <span class="keyword">if</span> data[key] == <span class="string">''</span>:</span><br><span class="line">                    data_dict[key] = <span class="literal">None</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    data_dict[key] = data[key]</span><br><span class="line">    data_dict[<span class="string">'secondtypeid_id'</span>] = data[<span class="string">'secondtypeid'</span>]</span><br><span class="line">    <span class="comment"># 保存数据到数据库，这样的好处就是提高效率，避免过多重复操作</span></span><br><span class="line">    DataModel.save()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> JsonResponse(&#123;<span class="string">"code"</span>: <span class="number">1</span>, <span class="string">"msg"</span>: <span class="string">'成功'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="外键不能直接插入">外键不能直接插入</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">publisher = UserAdmin.objects.get(id=publisherid)</span><br><span class="line">    obj = UserNotice.objects.create(noticetitle=title, noticecontent=content, publisherid=publisher)</span><br></pre></td></tr></table></figure>
+<h3 id="去重查询">去重查询</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">works = MainDataTougaolanmu.objects.all().values(<span class="string">'userid_id'</span>).distinct()</span><br></pre></td></tr></table></figure>
+<h3 id="解决跨域">解决跨域</h3>
+<p>在整个项目的setting.py中进行修改</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    'django.contrib.admin',</span><br><span class="line">    'django.contrib.auth',</span><br><span class="line">    'django.contrib.contenttypes',</span><br><span class="line">    'django.contrib.sessions',</span><br><span class="line">    'django.contrib.messages',</span><br><span class="line">    'django.contrib.staticfiles',</span><br><span class="line"><span class="addition">+   'corsheaders',  # 跨域</span></span><br><span class="line">    'learn1',</span><br><span class="line">    'backstage',</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    'django.middleware.security.SecurityMiddleware',</span><br><span class="line">    'django.contrib.sessions.middleware.SessionMiddleware',</span><br><span class="line"><span class="addition">+   'corsheaders.middleware.CorsMiddleware',  # 解决跨域</span></span><br><span class="line">    'django.middleware.common.CommonMiddleware',</span><br><span class="line">    'django.middleware.csrf.CsrfViewMiddleware',</span><br><span class="line">    'django.contrib.auth.middleware.AuthenticationMiddleware',</span><br><span class="line">    'django.contrib.messages.middleware.MessageMiddleware',</span><br><span class="line">    'django.middleware.clickjacking.XFrameOptionsMiddleware',</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 跨域增加忽略</span></span><br><span class="line">CORS_ALLOW_CREDENTIALS = <span class="literal">True</span></span><br><span class="line">CORS_ORIGIN_ALLOW_ALL = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">CORS_ALLOW_METHODS = (</span><br><span class="line">    <span class="string">'DELETE'</span>,</span><br><span class="line">    <span class="string">'GET'</span>,</span><br><span class="line">    <span class="string">'OPTIONS'</span>,</span><br><span class="line">    <span class="string">'PATCH'</span>,</span><br><span class="line">    <span class="string">'POST'</span>,</span><br><span class="line">    <span class="string">'PUT'</span>,</span><br><span class="line">    <span class="string">'VIEW'</span>,</span><br><span class="line">)</span><br><span class="line">CORS_ALLOW_HEADERS = (</span><br><span class="line">    <span class="string">'XMLHttpRequest'</span>,</span><br><span class="line">    <span class="string">'X_FILENAME'</span>,</span><br><span class="line">    <span class="string">'accept-encoding'</span>,</span><br><span class="line">    <span class="string">'authorization'</span>,</span><br><span class="line">    <span class="string">'content-type'</span>,</span><br><span class="line">    <span class="string">'dnt'</span>,</span><br><span class="line">    <span class="string">'origin'</span>,</span><br><span class="line">    <span class="string">'user-agent'</span>,</span><br><span class="line">    <span class="string">'x-csrftoken'</span>,</span><br><span class="line">    <span class="string">'x-requested-with'</span>,</span><br><span class="line">    <span class="string">'token'</span>,    <span class="comment"># token</span></span><br><span class="line">    <span class="string">'authentication'</span>,   <span class="comment"># token</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+     <!-- 文章结束表示语-->
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 啦 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
+    
+</div>
+
+      
+    </div>
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python中-和is的区别\" rel="bookmark">python中==和is的区别</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python赋值-浅拷贝-深拷贝\" rel="bookmark">python赋值&浅拷贝&深拷贝</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/WeChatpay.jpg" alt="周小天 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>周小天
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Django学习笔记">zchsakura.github.io/Django学习笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python%E6%93%8D%E4%BD%9Credis%E5%A4%A7%E5%85%A8/" rel="prev" title="python操作redis大全">
+      <i class="fa fa-chevron-left"></i> python操作redis大全
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/" rel="next" title="强制关闭端口">
+      强制关闭端口 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建工程"><span class="nav-text">创建工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建应用"><span class="nav-text">创建应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发者服务器"><span class="nav-text">开发者服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#允许访问范围"><span class="nav-text">允许访问范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言和时区设置"><span class="nav-text">语言和时区设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迁移"><span class="nav-text">迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册路由"><span class="nav-text">注册路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#html模板"><span class="nav-text">html模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分发路由"><span class="nav-text">分发路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-使用了orm技术"><span class="nav-text">models 使用了ORM技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快捷键"><span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接mysql驱动"><span class="nav-text">连接mysql驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新建立-migration-文件"><span class="nav-text">重新建立 migration 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新生成数据库中的某张表"><span class="nav-text">重新生成数据库中的某张表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表关系"><span class="nav-text">表关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型过滤"><span class="nav-text">模型过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取单个对象"><span class="nav-text">获取单个对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#first和last"><span class="nav-text">first和last</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切片"><span class="nav-text">切片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存集"><span class="nav-text">缓存集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询条件"><span class="nav-text">查询条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型成员"><span class="nav-text">模型成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从mysql到model"><span class="nav-text">从MySql到model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort排序"><span class="nav-text">sort排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#paginator分页"><span class="nav-text">Paginator分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pop间接修改键的key值"><span class="nav-text">pop()间接修改键的key值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model_to_dict单个对象转字典"><span class="nav-text">model_to_dict()单个对象转字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取日期区间"><span class="nav-text">取日期区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#django中通过model名字获取model"><span class="nav-text">django中通过model名字获取model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间类型"><span class="nav-text">时间类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#djang获取models字段方法"><span class="nav-text">djang获取models字段方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改数据库中部分信息"><span class="nav-text">修改数据库中部分信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键不能直接插入"><span class="nav-text">外键不能直接插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去重查询"><span class="nav-text">去重查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决跨域"><span class="nav-text">解决跨域</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="周小天"
+      src="/images/%E4%B9%9D%E5%8D%81.jpeg">
+  <p class="site-author-name" itemprop="name">周小天</p>
+  <div class="site-description" itemprop="description">站台汽笛响起<br>想念是你的声音<br>我们提着过去走入人人人人群</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZCHSakura" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZCHSakura" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:724353935@qq.com" title="E-Mail → mailto:724353935@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zchsakura.github.io/categories/%E7%AE%97%E6%B3%95/" title="https:&#x2F;&#x2F;zchsakura.github.io&#x2F;categories&#x2F;%E7%AE%97%E6%B3%95&#x2F;">Leetcode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kezhi.tech/" title="https:&#x2F;&#x2F;www.kezhi.tech&#x2F;" rel="noopener" target="_blank">于小鸡的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kezhi.tech/linux-command/" title="https:&#x2F;&#x2F;www.kezhi.tech&#x2F;linux-command&#x2F;" rel="noopener" target="_blank">Linux命令查询</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.jianshu.com/p/191d1e21f7ed/" title="https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;191d1e21f7ed&#x2F;" rel="noopener" target="_blank">Markdown基本语法</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhuanlan.zhihu.com/p/110756681" title="https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;110756681" rel="noopener" target="_blank">LeTaX公式</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+      <!--数字时钟-->
+      
+      
+      
+      <div style="">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      
+	  
+	  <!--音乐播放器-->
+	  <!--
+		<div>
+		  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=1412266089&auto=1&height=66"></iframe>
+        </div>
+	  -->
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周小天</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">121k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:50</span>
+</div>
+
+
+
+
+    <script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
+    本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+    <span class="post-meta-divider">|</span>
+    本站访客数<span id="busuanzi_value_site_uv"></span>人
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.1/es5/tex-mml-chtml.min.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'FnNdu3eMMy5MBI9uBtoGkOq8-gzGzoHsz',
+      appKey     : 'eaqzpiD8qTAmamfDoRSzQqnA',
+      placeholder: "在这里输入评论内容，请不要忘记留下邮箱地址以便接收通知^_^",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '5' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+
+
+  
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+
+
+  <script src="/js/wobblewindow.js"></script>
+  <script>
+    //只在桌面版网页启用特效
+    if( window.innerWidth > 768  ){
+      $(document).ready(function () {
+        
+          $('#header').wobbleWindow({
+            radius: 50,
+            movementTop: false,
+            movementLeft: false,
+            movementRight: false,
+            debug: false,
+          });
+        
+
+        
+          $('#sidebar').wobbleWindow({
+            radius: 50,
+            movementLeft: false,
+            movementTop: false,
+            movementBottom: false,
+            position: 'fixed',
+            debug: false,
+          });
+        
+
+        
+          $('#footer').wobbleWindow({
+            radius: 50,
+            movementBottom: false,
+            movementLeft: false,
+            movementRight: false,
+            offsetX: ,
+            position: 'absolute',
+            debug: false,
+          });
+        
+      });
+    }
+  </script>
+
+
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

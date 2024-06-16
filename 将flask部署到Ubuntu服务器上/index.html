@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<script>
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163934312-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-163934312-1');
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_logosc/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon_logosc/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我们做的项目最终都是要跑在服务器上的，我们不可能在服务器上一直跑着我们的Flask程序，而且程序也可能因为某些错误而挂掉，我们需要保证它的可用性，这篇文章就是我根据别人的Flask部署教程总结出来的东西还有几个特别需要注意的小坑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将flask部署到Ubuntu服务器上">
+<meta property="og:url" content="zchsakura.github.io/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/index.html">
+<meta property="og:site_name" content="周小天的Blog">
+<meta property="og:description" content="我们做的项目最终都是要跑在服务器上的，我们不可能在服务器上一直跑着我们的Flask程序，而且程序也可能因为某些错误而挂掉，我们需要保证它的可用性，这篇文章就是我根据别人的Flask部署教程总结出来的东西还有几个特别需要注意的小坑。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-26T12:59:00.000Z">
+<meta property="article:modified_time" content="2024-06-16T08:10:22.830Z">
+<meta property="article:author" content="周小天">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="Flask">
+<meta property="article:tag" content="部署至服务器">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="zchsakura.github.io/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>将flask部署到Ubuntu服务器上 | 周小天的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="周小天的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周小天的Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">34</span></a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+	    <div class="site-search">
+		  <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+	    </div>
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E4%B9%9D%E5%8D%81.jpeg">
+      <meta itemprop="name" content="周小天">
+      <meta itemprop="description" content="站台汽笛响起<br>想念是你的声音<br>我们提着过去走入人人人人群">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周小天的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          将flask部署到Ubuntu服务器上
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-26 20:59:00" itemprop="dateCreated datePublished" datetime="2020-04-26T20:59:00+08:00">2020-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-16 16:10:22" itemprop="dateModified" datetime="2024-06-16T16:10:22+08:00">2024-06-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/Flask/" itemprop="url" rel="index"><span itemprop="name">Flask</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我们做的项目最终都是要跑在服务器上的，我们不可能在服务器上一直跑着我们的Flask程序，而且程序也可能因为某些错误而挂掉，我们需要保证它的可用性，这篇文章就是我根据别人的<a
+href="https://www.cnblogs.com/Ray-liang/p/4173923.html">Flask部署教程</a>总结出来的东西还有几个特别需要注意的小坑。</p>
+<a id="more"></a>
+<p>总体部署方案是：</p>
+<ul>
+<li><p>Web 服务器采用 uwsgi host Flask</p></li>
+<li><p>用 Supervisor 引用 uwsgi 作常规启动服务</p></li>
+<li><p>基于 Nginx 作反向代理</p></li>
+</ul>
+<h1 id="安装python并创建虚拟环境">1.安装python并创建虚拟环境</h1>
+<p>安装python的教程有很多也很简单这里就不再赘述了。</p>
+<p>要说一下的是python的虚拟环境创建，大家可能都知道virtualenv，但是其实原生的virtualenv使用起来不是那么方便，所以我推荐使用virtualenvwrapper来管理我们的虚拟环境。具体操作可以参考我的另一篇文章<a href="/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" title="[创建python虚拟环境]">[创建python虚拟环境]</a>。</p>
+<h1 id="安装-uwsgi">2.安装 uWSGI</h1>
+<p>安装uwsgi还是比较简单的，记得进入相应的虚拟环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv)my_flask root$ pip install uwsgi</span><br></pre></td></tr></table></figure>
+<p>应该是秒装，安装完我们先不管他，后面再来配置他。</p>
+<h1 id="安装flask">3.安装Flask</h1>
+<p>我是用清单文件一次性安装Flask和他的相关依赖的，这样会更快。我的引用清单是这样的：</p>
+<figure class="highlight plain"><figcaption><span>requirements.txt</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Flask&#x3D;&#x3D;0.10.1</span><br><span class="line">Flask-Login&#x3D;&#x3D;0.2.11</span><br><span class="line">Flask-Mail&#x3D;&#x3D;0.9.1</span><br><span class="line">Flask-Moment&#x3D;&#x3D;0.4.0</span><br><span class="line">Flask-PageDown&#x3D;&#x3D;0.1.5</span><br><span class="line">Flask-SQLAlchemy&#x3D;&#x3D;2.0</span><br><span class="line">Flask-Script&#x3D;&#x3D;2.0.5</span><br><span class="line">Flask-WTF&#x3D;&#x3D;0.10.2</span><br><span class="line">Flask-Cache&#x3D;&#x3D;0.13.1</span><br><span class="line">Flask-Restless&#x3D;&#x3D;0.15.0</span><br><span class="line">Flask-Uploads&#x3D;&#x3D;0.1.3</span><br><span class="line">Jinja2&#x3D;&#x3D;2.7.3</span><br><span class="line">Mako&#x3D;&#x3D;1.0.0</span><br><span class="line">Markdown&#x3D;&#x3D;2.5.1</span><br><span class="line">MarkupSafe&#x3D;&#x3D;0.23</span><br><span class="line">SQLAlchemy&#x3D;&#x3D;0.9.8</span><br><span class="line">WTForms&#x3D;&#x3D;2.0.1</span><br><span class="line">Werkzeug&#x3D;&#x3D;0.9.6</span><br><span class="line">html5lib&#x3D;&#x3D;1.0b3</span><br><span class="line">itsdangerous&#x3D;&#x3D;0.24</span><br><span class="line">six&#x3D;&#x3D;1.8.0</span><br><span class="line">awesome-slugify&#x3D;&#x3D;1.6</span><br></pre></td></tr></table></figure>
+<p>安装清单文件（记得在虚拟环境中操作）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv)my_flask root$ pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+<h1 id="项目文件">4.项目文件</h1>
+<p>接下来就是上传
+Flask的项目文件，之前我在各大的“转载专业户”里找了好多的资料，在这一步中大多只是在上面加个标准的Flask运行文件，虽说做个范例可以但说实在的这很让人迷惑，为什么？先看看代码吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"> </span><br><span class="line">app = Flask(__name__)</span><br><span class="line"> </span><br><span class="line"><span class="meta">@app.route("/")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello World!"</span></span><br></pre></td></tr></table></figure>
+<p>生产环境内，谁会用这样的代码呢，这只是Flask
+的最简入门范，我的Flask项目中 app
+是被做在包内的，相信很多人都是这样做的，在包外我们采用 Flask Script
+写一个 <code>manage.py</code> 文件
+作为启动文件，这更方便于支持各种的项目</p>
+<figure class="highlight python"><figcaption><span>manage.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask_script <span class="keyword">import</span> Manager,Server</span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> app</span><br><span class="line"></span><br><span class="line">manager = Manager(app)</span><br><span class="line">manager.add_command(<span class="string">'runserver'</span>,Server(host=<span class="string">'0.0.0.0'</span>,port=<span class="number">5000</span>,use_debugger=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    manager.run()</span><br></pre></td></tr></table></figure>
+<p>此时如果我们使用命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>已经可以运行在本地
+<code>http://127.0.0.1:5000</code>（记得开启5000端口）</p>
+<h1 id="配置uwsgi">5.配置uWSGI</h1>
+<p>uWSGI有两种启动方式，在这里我们选了通过配置文件启动的方法</p>
+<p>在项目目录中新建<code>config.ini</code>，写入如下内容：</p>
+<figure class="highlight python"><figcaption><span>config.ini</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line"></span><br><span class="line"><span class="comment"># uwsgi 启动时所使用的地址与端口</span></span><br><span class="line"><span class="comment">#http=0.0.0.0:9102</span></span><br><span class="line">socket=<span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">9102</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指向网站目录</span></span><br><span class="line">chdir = /var/www/flask</span><br><span class="line"></span><br><span class="line">home = /root/.virtualenvs/py3_flask</span><br><span class="line"></span><br><span class="line"><span class="comment"># python 启动程序文件</span></span><br><span class="line">wsgi-file = manage.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># python 程序内用以启动的 application 变量名</span></span><br><span class="line">callable = app</span><br><span class="line"></span><br><span class="line"><span class="comment">#daemonize=/www/wwwroot/www.chineseculture.xyz/flask_test/my_flask.log</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理器数</span></span><br><span class="line">processes = <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 线程数</span></span><br><span class="line">threads = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>这里的9102就是我们外网访问时服务器监听的地址，记得在控制台开启9102端口。</p>
+<p>配置好端口之后，输入命令直接运行uWSGI：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uwsgi config.ini</span><br></pre></td></tr></table></figure>
+<p>到此为止，我们已经可以通过<code>服务器公网ip:9102</code>访问你的Flask应用</p>
+<p><strong>注意！！这里出现了第一个坑</strong></p>
+<p>uwsgi
+启动时所使用的地址与端口前面可以写http也可以写socket，当我们这里写http的时候我们是可以通过<code>服务器公网ip:9102</code>访问Flask的，但如果是socket则不可以。相应的我们后期使用nginx进行端口转发到uwsgi的时候我们这里必须是socket，如果是http将不成功。</p>
+<p>OK， 此时已经正常启动 uwsgi 并将 Flask 项目载入其中了，ctrl+c
+关闭程序。但这只是命令启动形式，要使其随同服务器启动并作为后台服务运行才是运营环境的实际所需要。因此接下来我们需要安装另一个工具来引导
+uwsgi 。</p>
+<h1 id="安装-supervisor">6.安装 Supervisor</h1>
+<p><a
+href="http://supervisord.org/configuration.html">Supervisor</a>可以同时启动多个应用，最重要的是，当某个应用Crash的时候，他可以自动重启该应用，保证可用性。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install supervisor</span><br></pre></td></tr></table></figure>
+<p>Supervisor 的全局的配置文件位置在：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;supervisor&#x2F;supervisor.conf</span><br></pre></td></tr></table></figure>
+<p>正常情况下我们并不需要去对其作出任何的改动，只需要添加一个新的 *.conf
+文件放在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;supervisor&#x2F;conf.d&#x2F;</span><br></pre></td></tr></table></figure>
+<p>下就可以，那么我们就新建立一个用于启动 my_flask 项目的 uwsgi 的
+supervisor 配置 (命名为：flask_supervisor.conf)：</p>
+<figure class="highlight python"><figcaption><span>flask_supervisor.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[program:my_flask]</span><br><span class="line"><span class="comment"># 启动命令入口</span></span><br><span class="line">command=/root/.virtualenvs/py3_flask/bin/uwsgi /var/www/flask/config.ini</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令程序所在目录</span></span><br><span class="line">directory=/var/www/flask</span><br><span class="line"><span class="comment">#运行命令的用户名</span></span><br><span class="line">user=root</span><br><span class="line"></span><br><span class="line">stopasgroup = true</span><br><span class="line">killasgroup = true</span><br><span class="line"></span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line"><span class="comment">#日志地址</span></span><br><span class="line">stdout_logfile=/var/www/flask/uwsgi_supervisor.log</span><br></pre></td></tr></table></figure>
+<p><strong>注意！！这里是第二个坑</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stopasgroup = true  <span class="comment"># 用于停止进程组，即停止所有通过“uwsgi.ini”配置启动的进程。</span></span><br><span class="line">killasgroup = true  <span class="comment"># 用于关闭进程组，即关闭所有通过“uwsgi.ini”配置启动的进程。</span></span><br></pre></td></tr></table></figure>
+<p>这两句话在很多教程里是没有的，如果没有这两局代码也就意味着我们使用<code>supervisorctl</code>命令stop了<code>my_flask</code>之后这个uwsgi进程占用的<code>9102端口</code>不会被释放也就意味着我们无法再start
+<code>my_flask</code>。这个问题一开始困扰了我好久，我一直不明白哪里出了问题，每次restart都不成功，希望看到的有缘人能注意一下。</p>
+<p><strong>启动服务</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service supervisor start</span><br></pre></td></tr></table></figure>
+<p><strong>终止服务</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service supervisor stop</span><br></pre></td></tr></table></figure>
+<h2 id="supervisor补充">Supervisor补充</h2>
+<p>supervisor：要安装的软件的名称。
+supervisord：装好supervisor软件后，supervisord用于启动supervisor服务。
+supervisorctl：用于管理supervisor配置文件中program。</p>
+<p><strong>启动supervisor服务：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisord -c /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
+<p><strong>supervisorctl 操作</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl status</span><br><span class="line"></span><br><span class="line">supervisorctl reload</span><br><span class="line"></span><br><span class="line">supervisorctl stop program_name</span><br><span class="line"></span><br><span class="line">supervisorctl start program_name</span><br><span class="line"></span><br><span class="line">supervisorctl restart program_name</span><br></pre></td></tr></table></figure>
+<p># 7.安装并配置nginx</p>
+<p><a
+href="http://nginx.com/">Nginx</a>是轻量级、性能强、占用资源少，能很好的处理高并发的反向代理软件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+<p>Ubuntu 上配置 Nginx 也是很简单，不要去改动默认的 nginx.conf
+只需要将</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;nginx&#x2F;sites-available&#x2F;default</span><br></pre></td></tr></table></figure>
+<p>文件替换掉就可以了。</p>
+<p>新建一个 default 文件:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen  <span class="number">80</span>;</span><br><span class="line">    server_name XXX.XXX.XXX; <span class="comment">#公网地址</span></span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">        include uwsgi_params;<span class="comment">#转发到那个地址，转发到uwgi的地址，在通过uwsgi来启动我们的项目</span></span><br><span class="line">        uwsgi_pass <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">9102</span>;</span><br><span class="line">        uwsgi_connect_timeout <span class="number">60</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将default配置文件替换掉就大功告成了！
+还有，更改配置还需要记得重启一下nginx:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+     <!-- 文章结束表示语-->
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 啦 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
+    
+</div>
+
+      
+    </div>
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\Django学习笔记\" rel="bookmark">Django学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python中-和is的区别\" rel="bookmark">python中==和is的区别</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/WeChatpay.jpg" alt="周小天 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>周小天
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://zchsakura.github.io/%E5%B0%86flask%E9%83%A8%E7%BD%B2%E5%88%B0Ubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A/" title="将flask部署到Ubuntu服务器上">zchsakura.github.io/将flask部署到Ubuntu服务器上/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i> Flask</a>
+              <a href="/tags/%E9%83%A8%E7%BD%B2%E8%87%B3%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 部署至服务器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/" rel="prev" title="创建python虚拟环境">
+      <i class="fa fa-chevron-left"></i> 创建python虚拟环境
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Ubuntu%E5%AE%89%E8%A3%85mysql/" rel="next" title="Ubuntu安装MySQL">
+      Ubuntu安装MySQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装python并创建虚拟环境"><span class="nav-text">1.安装python并创建虚拟环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-uwsgi"><span class="nav-text">2.安装 uWSGI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装flask"><span class="nav-text">3.安装Flask</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目文件"><span class="nav-text">4.项目文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置uwsgi"><span class="nav-text">5.配置uWSGI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-supervisor"><span class="nav-text">6.安装 Supervisor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#supervisor补充"><span class="nav-text">Supervisor补充</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="周小天"
+      src="/images/%E4%B9%9D%E5%8D%81.jpeg">
+  <p class="site-author-name" itemprop="name">周小天</p>
+  <div class="site-description" itemprop="description">站台汽笛响起<br>想念是你的声音<br>我们提着过去走入人人人人群</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZCHSakura" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZCHSakura" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:724353935@qq.com" title="E-Mail → mailto:724353935@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zchsakura.github.io/categories/%E7%AE%97%E6%B3%95/" title="https:&#x2F;&#x2F;zchsakura.github.io&#x2F;categories&#x2F;%E7%AE%97%E6%B3%95&#x2F;">Leetcode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kezhi.tech/" title="https:&#x2F;&#x2F;www.kezhi.tech&#x2F;" rel="noopener" target="_blank">于小鸡的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kezhi.tech/linux-command/" title="https:&#x2F;&#x2F;www.kezhi.tech&#x2F;linux-command&#x2F;" rel="noopener" target="_blank">Linux命令查询</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.jianshu.com/p/191d1e21f7ed/" title="https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;191d1e21f7ed&#x2F;" rel="noopener" target="_blank">Markdown基本语法</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhuanlan.zhihu.com/p/110756681" title="https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;110756681" rel="noopener" target="_blank">LeTaX公式</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+      <!--数字时钟-->
+      
+      
+      
+      <div style="">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      
+	  
+	  <!--音乐播放器-->
+	  <!--
+		<div>
+		  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=1412266089&auto=1&height=66"></iframe>
+        </div>
+	  -->
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周小天</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">121k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:50</span>
+</div>
+
+
+
+
+    <script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
+    本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+    <span class="post-meta-divider">|</span>
+    本站访客数<span id="busuanzi_value_site_uv"></span>人
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.1/es5/tex-mml-chtml.min.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'FnNdu3eMMy5MBI9uBtoGkOq8-gzGzoHsz',
+      appKey     : 'eaqzpiD8qTAmamfDoRSzQqnA',
+      placeholder: "在这里输入评论内容，请不要忘记留下邮箱地址以便接收通知^_^",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '5' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+
+
+  
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+
+
+  <script src="/js/wobblewindow.js"></script>
+  <script>
+    //只在桌面版网页启用特效
+    if( window.innerWidth > 768  ){
+      $(document).ready(function () {
+        
+          $('#header').wobbleWindow({
+            radius: 50,
+            movementTop: false,
+            movementLeft: false,
+            movementRight: false,
+            debug: false,
+          });
+        
+
+        
+          $('#sidebar').wobbleWindow({
+            radius: 50,
+            movementLeft: false,
+            movementTop: false,
+            movementBottom: false,
+            position: 'fixed',
+            debug: false,
+          });
+        
+
+        
+          $('#footer').wobbleWindow({
+            radius: 50,
+            movementBottom: false,
+            movementLeft: false,
+            movementRight: false,
+            offsetX: ,
+            position: 'absolute',
+            debug: false,
+          });
+        
+      });
+    }
+  </script>
+
+
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>

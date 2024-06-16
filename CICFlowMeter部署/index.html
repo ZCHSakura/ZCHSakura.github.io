@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<script>
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163934312-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-163934312-1');
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_logosc/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_logosc/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_logosc/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon_logosc/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CICFlowMeter部署">
+<meta property="og:url" content="zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="周小天的Blog">
+<meta property="og:description" content="记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-06T02:54:45.000Z">
+<meta property="article:modified_time" content="2024-06-16T08:10:22.743Z">
+<meta property="article:author" content="周小天">
+<meta property="article:tag" content="CICFlowMeter">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>CICFlowMeter部署 | 周小天的Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="周小天的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">周小天的Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">34</span></a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+	    <div class="site-search">
+		  <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+	    </div>
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E4%B9%9D%E5%8D%81.jpeg">
+      <meta itemprop="name" content="周小天">
+      <meta itemprop="description" content="站台汽笛响起<br>想念是你的声音<br>我们提着过去走入人人人人群">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="周小天的Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          CICFlowMeter部署
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-06 10:54:45" itemprop="dateCreated datePublished" datetime="2022-07-06T10:54:45+08:00">2022-07-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-16 16:10:22" itemprop="dateModified" datetime="2024-06-16T16:10:22+08:00">2024-06-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/CICFlowMeter/" itemprop="url" rel="index"><span itemprop="name">CICFlowMeter</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/CICFlowMeter%E9%83%A8%E7%BD%B2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/CICFlowMeter%E9%83%A8%E7%BD%B2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。</p>
+<a id="more"></a>
+<h2 id="部署整体流程">部署整体流程</h2>
+<p>下面我把CICFlowMeter简写为CIC。这里先说一下联网部署的整体流程，在联网情况下部署一般只有一个问题，就是jnetpcap依赖的安装。</p>
+<blockquote>
+<p>在这里特别提醒一下，尽量不要使用open
+jdk，笔者使用openjdk就会有问题，建议最好使用Oracle的JDK！！！！！！</p>
+<p>还有就是笔者尝试过在相同操作系统，相同架构的电脑上完成打包的CIC是可以直接复制到别的电脑上的，这就意味着在另一台电脑上不用配置mvn和gradle这些内容，只需要配置JDK然后把打出来的压缩包复制过去，然后配置好libpcap-dev和jnetpcap依赖就可以使用了，不同系统和架构的笔者没有尝试过。</p>
+</blockquote>
+<h3 id="环境配置">环境配置</h3>
+<p>笔者使用是自己下载的软件包，所以要自己配置下环境</p>
+<ul>
+<li><p>/etc/profile</p></li>
+<li><p>/home/user(用户名)/.bashrc</p></li>
+</ul>
+<p>在上述两个文件末尾中添加下列环境变量，添加完成后使用source
+etc/profile和source /home/user/.bashrc</p>
+<ul>
+<li>配置jdk 1.8.0_311</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;jdk1.8.0_333</span><br><span class="line">export JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">export CLASSPATH&#x3D;$JAVA_HOME&#x2F;lib:$JRE_HOME&#x2F;lib</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置maven 3.8.4</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export MAVEN_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;apache-maven-3.8.4</span><br><span class="line">export PATH&#x3D;$PATH:$MAVEN_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置gradle 3.3</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GRADLE_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;gradle-3.3</span><br><span class="line">export PATH&#x3D;$GRADLE_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+<h3 id="验证环境是否配置成功">验证环境是否配置成功</h3>
+<ul>
+<li><p>使用java -version查看java版本是否与环境变量中一致</p></li>
+<li><p>使用which java查看路径是否与环境变量一致</p></li>
+<li><p>如果which
+java显示与环境变量不一致，而是/usr/bin/java之类的路径则使用以下命令（这种情况主要是机子上本身存在jdk，理论上将如果在配置环境变量时如果把新的路径放在$PATH前的话是不会出现这个问题的）</p></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br><span class="line">sudo ln -s &#x2F;***&#x2F;Traffic_x86&#x2F;jdk1.8.0_311&#x2F;bin&#x2F;java &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>再使用java -version和which java验证环境配置结果</p></li>
+<li><p>如果还没有生效尝试关闭shell重开一个shell或切换用户看有无生效</p></li>
+<li><p>如果出现权限不够的情况，使用sudo chmod 777 path 修改权限</p></li>
+</ul>
+<h3 id="导入jnetpcap">导入jnetpcap</h3>
+<ul>
+<li>Dfile路径改为/Traffic_arm/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425下的jnetpcap.jar</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file -Dfile&#x3D;&#x2F;***&#x2F;jnetpcap.jar -DgroupId&#x3D;org.jnetpcap -DartifactId&#x3D;jnetpcap -Dversion&#x3D;1.4.1 -Dpackaging&#x3D;jar</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在/Traffic_arm/CICFlowMeter-master下构建项目</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;gradlew distZip</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在/Traffic_arm/CICFlowMeter-master/build/distributions里解压缩CICFlowMeter-4.0.zip</li>
+<li>安装libpcap-dev依赖（centos里面好像是libpcap-devel）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libpcap-dev</span><br><span class="line">yum install libpcap-devel</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将/CICFlowMeter-master/jnetcap/linux/jnetpcap-1.4.r1425里的libjnetpcap.so和libjnetpcap-pcap100.so复制到/Traffic_arm/jdk1.8.0_333/jre/lib/aarch64（或amd64，和平台架构相关）目录下</li>
+<li>在/***/Traffic_arm/CICFlowMeter-master/build/distributions/CICFlowMeter-4.0/bin运行cfm文件即可</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;cfm [pcap_file] [target_path]</span><br><span class="line">&#x2F;***&#x2F;Traffic&#x2F;CICFlowMeter-master&#x2F;build&#x2F;distributions&#x2F;CICFlowMeter-4.0&#x2F;bin&#x2F;cfm ***.pcap &#x2F;***&#x2F;</span><br></pre></td></tr></table></figure>
+<h3 id="相关描述">相关描述</h3>
+<ul>
+<li>按照上述操作在有网的x86的Ubuntu中应该是不会出现问题的，笔者已经在多台X86的Ubuntu中成功部署。</li>
+<li>在一个全新的机子上部署是要走完以上全部流程的，但是笔者本身不会JAVA所以不是很清楚mvn和gradle这样使用的原理，<a
+href="https://github.com/ahlashkari/CICFlowMeter">CICgithub</a>上作者就是这么用的，github上的流程是在为了在IDE上能使用，但是我们希望把他变成一个工具在任何地方都可以通过命令行使用，所以要把两个so动态库放到jre里面去，这个大概就是要我们在命令行全局使用的时候能找到jnetpcap的动态链接库，这就涉及到了JAVA本身的依赖管理，<del>笔者确实不懂JAVA，都是师兄教的😀。</del></li>
+<li>在X86的Ubuntu上使用上述步骤理论上讲不存在问题了，但是在别的操作系统或者非X86架构上还是存在问题，一般主要是遇到下面这个问题</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cic.cs.unb.ca.ifm.Cmd You select: &#x2F;Integ&#x2F;pcapsource&#x2F;d1&#x2F;1_00001_20210104112753.pcap</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd Out folder: .&#x2F;</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd CICFlowMeter received 1 pcap file</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava&#x2F;lang&#x2F;String;)J</span><br><span class="line">        at com.slytechs.library.NativeLibrary.dlopen(Native Method)</span><br><span class="line">        at com.slytechs.library.NativeLibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.loadLibrary(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at org.jnetpcap.Pcap.&lt;clinit&gt;(Unknown Source)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.config(PacketReader.java:58)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.&lt;init&gt;(PacketReader.java:52)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.readPcapFile(Cmd.java:128)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.main(Cmd.java:80)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这个问题根据笔者自己的尝试和网上的 <a
+href="https://blog.csdn.net/lizheng2017/article/details/121455590">参考</a>
+基本可以确定是由于jnetpcap这个东西引起的，应该是jnetpcap这个东西在不同架构下不兼容的问题，在arm架构上使用CICgithub中提供的so是不行的，必须要自己重新编译，甚至我之后在部署一台X86的centos的时候这个os也不能用最后还是笔者自己重新编译之后才能使用，这个东西的兼容性确实很差，实在不行了需要编译安装的时候可以看下面的内容。</li>
+</ul>
+<h2 id="x86架构">X86架构</h2>
+<blockquote>
+<p>对X86架构下的Ubuntu系统来讲，按照上述流程应该不会存在问题，github上提供的jnetpcap的so本身是适配ubuntu的。</p>
+<p>对X86架构下的Centos和其他系统来讲，可能会遇到上面jnetpcap报错的问题，那应该就是github上提供的so依赖和系统不兼容，需要重新编译，或者看网上有没有好心人提供编译好的，或者看下面的jnetpcap编译安装部分。</p>
+</blockquote>
+<h2 id="arm架构">ARM架构</h2>
+<blockquote>
+<p>ARM架构下的部署，最主要的问题还是在jnetpcap上，github上提供的so肯定是用不了的，笔者也亲身体验过，确实不行。但是笔者这里在CSDN上搜到了一个好心老哥自己在银河麒麟V10，
+aarch64架构上编译出来的结果，这里贴出来供大家参考。</p>
+</blockquote>
+<p><a
+href="https://blog.csdn.net/lizheng2017/article/details/121455590">ARM架构依赖</a></p>
+<h2 id="jnetpcap编译安装">jnetpcap编译安装</h2>
+<p>以下内容全部来源于上面ARM架构中提到的好心老哥，而且他还提供了他编译好的so，真的是大善人，我怕他的博客哪天没了所以我这里复制一遍<a
+href="https://blog.csdn.net/lizheng2017/article/details/121455590">ARM架构依赖</a></p>
+<hr />
+<p><strong>编译环境</strong>：银河麒麟V10， aarch64架构
+网上很容易下载到jnetpcap的包，但是却没有arm64架构的编译好的so，于是下载源码包自己编译。下面是遇到的问题解决，整个流程耗时6个多小时：</p>
+<ol type="1">
+<li>下载jnetpcap-src-1.4.r1425-1.zip并解压：</li>
+</ol>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639724.png"
+alt="解压的文件" />
+<figcaption aria-hidden="true">解压的文件</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>安装ant， 命令大概是：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ant</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>编译，问题1，xml:119: taskdef class org . vafer.jdeb . ant
+DebAntTask cannot be found using the classloader AntclassL oader[ ]</li>
+</ol>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639887.png"
+alt="问题1" />
+<figcaption aria-hidden="true">问题1</figcaption>
+</figure>
+<p>​ 方法：直接将build.xml第119行删除，不是debian系统。</p>
+<ol start="4" type="1">
+<li>编译，问题2，use aresiurce collection to copy directories.</li>
+</ol>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640674.png"
+alt="问题2" />
+<figcaption aria-hidden="true">问题2</figcaption>
+</figure>
+<p>​
+根据提示，xml的611行有问题，直接找到你系统的libpcap.so的路径，填入xml：</p>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640724.png"
+alt="问题行" />
+<figcaption aria-hidden="true">问题行</figcaption>
+</figure>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640701.png"
+alt="解决方法" />
+<figcaption aria-hidden="true">解决方法</figcaption>
+</figure>
+<ol start="5" type="1">
+<li>编译，问题3，网上的答案都说是xml的问题，但在这里其实是少了cpptask.jar的原因。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Problem: failed to create task or type cc</span><br><span class="line">Cause: The name is undefined.</span><br><span class="line">Action: Check the spelling.</span><br><span class="line">Action: Check that any custom tasks&#x2F;types have been declared.</span><br><span class="line">Action: Check that any &lt;presetdef&gt;&#x2F;&lt;macrodef&gt; declarations have taken place.</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061641290.png"
+alt="问题3" />
+<figcaption aria-hidden="true">问题3</figcaption>
+</figure>
+<p>​ 解决办法：下载cpptasks-1.0b4.jar，放到jnetpcap的lib文件夹下。</p>
+<p>​
+这里的具体cpptasks.jar的版本需要你查看xml文件，放的路径也是要看xml，直接在xml中搜索cpptask相信你能找到线索的。</p>
+<p>​
+ps：我这里是放的路径是[项目路径]/cpptasks-1.0b4/cpptasks.jar，然后在xml里面路径直接写死</p>
+<ol start="6" type="1">
+<li>编译，问题四：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;C ommand- line&gt;:0: 19: error: token “”is not valid in preprocessor expressions&#x2F;home&#x2F;ka&#x2F; jnetpcap-src-1.4.1425-1&#x2F;src&#x2F;c&#x2F;jnetpcap_pcap100.cpp:87:6: note: in expansion of macro &#39; L IBPCAP_ VERSION &#39;</span><br><span class="line">#if (L IBPCAP VERSION &lt; L IBPCAP PCAP CREATE )</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061643419.png"
+alt="问题四" />
+<figcaption aria-hidden="true">问题四</figcaption>
+</figure>
+<p>​
+解决，明显是找不到LIBPCAP_VERSION，即libpcap的版本号没有，我们编辑Linux.properties文件，添加如下行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">complier.LIBPCAP_VERSION &#x3D; 174</span><br><span class="line">(具体版本可用apt list|grep libpcap获取，填个很大的数就行)，这里一定是一个数字，不能像1.7.4这样。</span><br></pre></td></tr></table></figure>
+<p><img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061644038.png" /></p>
+<ol start="7" type="1">
+<li>问题五</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">	[javac] 注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。</span><br><span class="line">    [javac] 注: 某些输入文件使用了未经检查或不安全的操作。</span><br><span class="line">    [javac] 注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。</span><br><span class="line">    [javac] 78 个错误</span><br><span class="line"></span><br><span class="line">BUILD FAILED</span><br><span class="line">&#x2F;home&#x2F;ka&#x2F;jnetpcap-src-1.4.r1425-1&#x2F;build.xml:1090: Compile failed; see the compiler error output for details.</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.compile(Javac.java:1181)</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.execute(Javac.java:936)</span><br><span class="line">        at org.apache.tools.ant.UnknownElement.execute(UnknownElement.java:293)</span><br><span class="line">        at sun.reflect.GeneratedMethodAccessor4.invoke(Unknown Source)</span><br><span class="line">        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">        at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line">        at org.apache.tools.ant.dispatch.DispatchUtils.execute(DispatchUtils.java:106)</span><br><span class="line">        at org.apache.tools.ant.Task.perform(Task.java:348)</span><br><span class="line">        at org.apache.tools.ant.Target.execute(Target.java:435)</span><br><span class="line">        at org.apache.tools.ant.Target.performTasks(Target.java:456)</span><br><span class="line">        at org.apache.tools.ant.Project.executeSortedTargets(Project.java:1405)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTarget(Project.java:1376)</span><br><span class="line">        at org.apache.tools.ant.helper.DefaultExecutor.executeTargets(DefaultExecutor.java:41)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTargets(Project.java:1260)</span><br><span class="line">        at org.apache.tools.ant.Main.runBuild(Main.java:853)</span><br><span class="line">        at org.apache.tools.ant.Main.startAnt(Main.java:235)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.run(Launcher.java:285)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.main(Launcher.java:112)</span><br></pre></td></tr></table></figure>
+<p><img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645003.png" /></p>
+<p>​
+这个问题可能是我没有下载正确版本的cpptask的原因，要根据build.xml里的要求来下载。
+但是检查./build/obj/我已经得到了我们想要的so文件</p>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645493.png"
+alt="大功告成" />
+<figcaption aria-hidden="true">大功告成</figcaption>
+</figure>
+<p>程序终于跑起来了！！！！！！！</p>
+<p><img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061646710.png" /></p>
+<h3 id="附编译好的文件链接">附编译好的文件链接</h3>
+<p>https://download.csdn.net/download/lizheng2017/46217421</p>
+<h2 id="离线部署">离线部署</h2>
+<p>离线部署其实挺麻烦的，如果平时没有经常使用Linux服务器的话还是比较恼火的，最好的方法还是让机子联网，但是确实有很多情况下没法联网，笔者这里也只能提供我在尝试离线部署过程中的一些经验</p>
+<ul>
+<li>尽量找到一台相同系统相同架构的能联网的机器，这会让离线部署简单得多，apt和yum都提供了下载安装包的功能，我们可以在能联网的机子上先下载好适配的离线包然后复制到不能联网的机子上进行编译安装，这样的成功率就会很高，也比较方便，这里贴两个参考<a
+href="https://blog.csdn.net/qq_17576885/article/details/122070612">apt离线包下载</a>，<a
+href="https://www.codeleading.com/article/78986008408/">yum离线包下载</a></li>
+<li>相同系统相同架构的机器不用每个都使用mvn和gradle，只要有一台成功打出了压缩包后面就可以直接复制，只要配置新机器的JDK和各种依赖就行了</li>
+</ul>
+<h2 id="其他问题">其他问题</h2>
+<h3 id="问题1">问题1</h3>
+<blockquote>
+<p>问题描述：经过上面的一通操作，CIC已经成功跑了起来，我把CIC用python封装成了一个接口供后端调用，但是出现了一个非常奇怪的问题，那就我直接跑我的接口CIC稳定能用，但是后端调我的接口就时而能用时而不行，一旦不行之后就稳定不行。</p>
+</blockquote>
+<blockquote>
+<p>这个问题的产生是因为后端使用Linux的/etc/crontab做了后端服务的定时重启，但是crontab里面有一个自己的$PATH，并且它不会去读取/etc/profile里面的路径，所以会导致读不到我们的JDK和各种依赖，解决方法也很简单，只要把我们在profile里面写的JDK路径加到crontab里面就行了</p>
+</blockquote>
+<h3 id="问题2">问题2</h3>
+<blockquote>
+<p>问题描述：在实际使用中我们发现提取出来的协议号基本只有0，6，17。6代表TCP，17代表UDP，剩下其他所有协议全部被识别为0，例如ARP，ICMP，SEP之类的全部识别为0，而且组流的情况看起来也不是很好，绝大部分列都是全为0，简单看了下代码发现CIC本事就只对有限的几种protocol做了处理，泛用性不是很广。</p>
+</blockquote>
+<figure>
+<img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061724179.png"
+alt="protocol" />
+<figcaption aria-hidden="true">protocol</figcaption>
+</figure>
+
+    </div>
+
+    
+    
+    
+     <!-- 文章结束表示语-->
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 啦 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
+    
+</div>
+
+      
+    </div>
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/WeChatpay.jpg" alt="周小天 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>周小天
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/" title="CICFlowMeter部署">zchsakura.github.io/CICFlowMeter部署/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/CICFlowMeter/" rel="tag"><i class="fa fa-tag"></i> CICFlowMeter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/" rel="prev" title="多台电脑同步博客">
+      <i class="fa fa-chevron-left"></i> 多台电脑同步博客
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python%E8%B0%83%E7%94%A8CIC/" rel="next" title="python调用CIC">
+      python调用CIC <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#部署整体流程"><span class="nav-text">部署整体流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证环境是否配置成功"><span class="nav-text">验证环境是否配置成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入jnetpcap"><span class="nav-text">导入jnetpcap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关描述"><span class="nav-text">相关描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#x86架构"><span class="nav-text">X86架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#arm架构"><span class="nav-text">ARM架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jnetpcap编译安装"><span class="nav-text">jnetpcap编译安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#附编译好的文件链接"><span class="nav-text">附编译好的文件链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离线部署"><span class="nav-text">离线部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他问题"><span class="nav-text">其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题1"><span class="nav-text">问题1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题2"><span class="nav-text">问题2</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="周小天"
+      src="/images/%E4%B9%9D%E5%8D%81.jpeg">
+  <p class="site-author-name" itemprop="name">周小天</p>
+  <div class="site-description" itemprop="description">站台汽笛响起<br>想念是你的声音<br>我们提着过去走入人人人人群</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ZCHSakura" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ZCHSakura" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:724353935@qq.com" title="E-Mail → mailto:724353935@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zchsakura.github.io/categories/%E7%AE%97%E6%B3%95/" title="https:&#x2F;&#x2F;zchsakura.github.io&#x2F;categories&#x2F;%E7%AE%97%E6%B3%95&#x2F;">Leetcode</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kezhi.tech/" title="https:&#x2F;&#x2F;www.kezhi.tech&#x2F;" rel="noopener" target="_blank">于小鸡的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.kezhi.tech/linux-command/" title="https:&#x2F;&#x2F;www.kezhi.tech&#x2F;linux-command&#x2F;" rel="noopener" target="_blank">Linux命令查询</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.jianshu.com/p/191d1e21f7ed/" title="https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;191d1e21f7ed&#x2F;" rel="noopener" target="_blank">Markdown基本语法</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://zhuanlan.zhihu.com/p/110756681" title="https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;110756681" rel="noopener" target="_blank">LeTaX公式</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+      <!--数字时钟-->
+      
+      
+      
+      <div style="">
+  <canvas id="canvas" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas>
+</div>
+<script>
+(function(){
+
+   var digit=
+    [
+        [
+            [0,0,1,1,1,0,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,0,1,1,0],
+            [0,0,1,1,1,0,0]
+        ],//0
+        [
+            [0,0,0,1,1,0,0],
+            [0,1,1,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [1,1,1,1,1,1,1]
+        ],//1
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,1,1],
+            [1,1,1,1,1,1,1]
+        ],//2
+        [
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//3
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,0],
+            [0,0,1,1,1,1,0],
+            [0,1,1,0,1,1,0],
+            [1,1,0,0,1,1,0],
+            [1,1,1,1,1,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,1,1]
+        ],//4
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,1,1,1,1,0],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//5
+        [
+            [0,0,0,0,1,1,0],
+            [0,0,1,1,0,0,0],
+            [0,1,1,0,0,0,0],
+            [1,1,0,0,0,0,0],
+            [1,1,0,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//6
+        [
+            [1,1,1,1,1,1,1],
+            [1,1,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,0,0,1,1,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0],
+            [0,0,1,1,0,0,0]
+        ],//7
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,1,1,0]
+        ],//8
+        [
+            [0,1,1,1,1,1,0],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [1,1,0,0,0,1,1],
+            [0,1,1,1,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,0,1,1],
+            [0,0,0,0,1,1,0],
+            [0,0,0,1,1,0,0],
+            [0,1,1,0,0,0,0]
+        ],//9
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,1,1,1,0,0],
+            [0,0,0,0,0,0,0]
+        ]//:
+    ];
+
+var canvas = document.getElementById('canvas');
+
+if(canvas.getContext){
+    var cxt = canvas.getContext('2d');
+    //声明canvas的宽高
+    var H = 100,W = 700;
+    canvas.height = H;
+    canvas.width = W;
+    cxt.fillStyle = '#f00';
+    cxt.fillRect(10,10,50,50);
+
+    //存储时间数据
+    var data = [];
+    //存储运动的小球
+    var balls = [];
+    //设置粒子半径
+    var R = canvas.height/20-1;
+    (function(){
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        //存储时间数字，由十位小时、个位小时、冒号、十位分钟、个位分钟、冒号、十位秒钟、个位秒钟这7个数字组成
+        data.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+    })();
+
+    /*生成点阵数字*/
+    function renderDigit(index,num){
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    cxt.beginPath();
+                    cxt.arc(14*(R+2)*index + j*2*(R+1)+(R+1),i*2*(R+1)+(R+1),R,0,2*Math.PI);
+                    cxt.closePath();
+                    cxt.fill();
+                }
+            }
+        }
+    }
+
+    /*更新时钟*/
+    function updateDigitTime(){
+        var changeNumArray = [];
+        var temp = /(\d)(\d):(\d)(\d):(\d)(\d)/.exec(new Date());
+        var NewData = [];
+        NewData.push(temp[1],temp[2],10,temp[3],temp[4],10,temp[5],temp[6]);
+        for(var i = data.length-1; i >=0 ; i--){
+            //时间发生变化
+            if(NewData[i] !== data[i]){
+                //将变化的数字值和在data数组中的索引存储在changeNumArray数组中
+                changeNumArray.push(i+'_'+(Number(data[i])+1)%10);
+            }
+        }
+        //增加小球
+        for(var i = 0; i< changeNumArray.length; i++){
+            addBalls.apply(this,changeNumArray[i].split('_'));
+        }
+        data = NewData.concat();
+    }
+
+    /*更新小球状态*/
+    function updateBalls(){
+        for(var i = 0; i < balls.length; i++){
+            balls[i].stepY += balls[i].disY;
+            balls[i].x += balls[i].stepX;
+            balls[i].y += balls[i].stepY;
+            if(balls[i].x > W + R || balls[i].y > H + R){
+                balls.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    /*增加要运动的小球*/
+    function addBalls(index,num){
+        var numArray = [1,2,3];
+        var colorArray =  ["#3BE","#09C","#A6C","#93C","#9C0","#690","#FB3","#F80","#F44","#C00"];
+        for(var i = 0; i < digit[num].length; i++){
+            for(var j = 0; j < digit[num][i].length; j++){
+                if(digit[num][i][j] == 1){
+                    var ball = {
+                        x:14*(R+2)*index + j*2*(R+1)+(R+1),
+                        y:i*2*(R+1)+(R+1),
+                        stepX:Math.floor(Math.random() * 4 -2),
+                        stepY:-2*numArray[Math.floor(Math.random()*numArray.length)],
+                        color:colorArray[Math.floor(Math.random()*colorArray.length)],
+                        disY:1
+                    };
+                    balls.push(ball);
+                }
+            }
+        }
+    }
+
+    /*渲染*/
+    function render(){
+        //重置画布宽度，达到清空画布的效果
+        canvas.height = 100;
+        //渲染时钟
+        for(var i = 0; i < data.length; i++){
+            renderDigit(i,data[i]);
+        }
+        //渲染小球
+        for(var i = 0; i < balls.length; i++){
+            cxt.beginPath();
+            cxt.arc(balls[i].x,balls[i].y,R,0,2*Math.PI);
+            cxt.fillStyle = balls[i].color;
+            cxt.closePath();
+            cxt.fill();
+        }
+    }
+
+    clearInterval(oTimer);
+    var oTimer = setInterval(function(){
+        //更新时钟
+        updateDigitTime();
+        //更新小球状态
+        updateBalls();
+        //渲染
+        render();
+    },50);
+}
+
+})();
+</script>
+      
+	  
+	  <!--音乐播放器-->
+	  <!--
+		<div>
+		  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=1412266089&auto=1&height=66"></iframe>
+        </div>
+	  -->
+      
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">周小天</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">121k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:50</span>
+</div>
+
+
+
+
+    <script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
+    本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+    <span class="post-meta-divider">|</span>
+    本站访客数<span id="busuanzi_value_site_uv"></span>人
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.1/es5/tex-mml-chtml.min.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'FnNdu3eMMy5MBI9uBtoGkOq8-gzGzoHsz',
+      appKey     : 'eaqzpiD8qTAmamfDoRSzQqnA',
+      placeholder: "在这里输入评论内容，请不要忘记留下邮箱地址以便接收通知^_^",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '5' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+
+
+  
+
+  <script async src="/js/cursor/fireworks.js"></script>
+
+
+
+
+  <script src="/js/wobblewindow.js"></script>
+  <script>
+    //只在桌面版网页启用特效
+    if( window.innerWidth > 768  ){
+      $(document).ready(function () {
+        
+          $('#header').wobbleWindow({
+            radius: 50,
+            movementTop: false,
+            movementLeft: false,
+            movementRight: false,
+            debug: false,
+          });
+        
+
+        
+          $('#sidebar').wobbleWindow({
+            radius: 50,
+            movementLeft: false,
+            movementTop: false,
+            movementBottom: false,
+            position: 'fixed',
+            debug: false,
+          });
+        
+
+        
+          $('#footer').wobbleWindow({
+            radius: 50,
+            movementBottom: false,
+            movementLeft: false,
+            movementRight: false,
+            offsetX: ,
+            position: 'absolute',
+            debug: false,
+          });
+        
+      });
+    }
+  </script>
+
+
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":200,"height":270},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+</html>
