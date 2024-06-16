@@ -33,20 +33,18 @@
     var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个scrapy.Request执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="scrapy中的yield请求未被正常抛出">
-<meta property="og:url" content="zchsakura.github.io/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/index.html">
+  <meta name="description" content="站台汽笛响起想念是你的声音我们提着过去走入人群">
+<meta property="og:type" content="website">
+<meta property="og:title" content="周小天的Blog">
+<meta property="og:url" content="zchsakura.github.io/archives/2024/index.html">
 <meta property="og:site_name" content="周小天的Blog">
-<meta property="og:description" content="有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个scrapy.Request执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。">
+<meta property="og:description" content="站台汽笛响起想念是你的声音我们提着过去走入人群">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-05-08T13:19:36.000Z">
-<meta property="article:modified_time" content="2024-06-16T08:10:22.753Z">
 <meta property="article:author" content="周小天">
-<meta property="article:tag" content="scrapy">
+<meta property="article:tag" content="笔记，计算机">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="zchsakura.github.io/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/">
+<link rel="canonical" href="zchsakura.github.io/archives/2024/">
 
 
 <script id="page-configurations">
@@ -54,11 +52,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true
+    isPost : false
   };
 </script>
 
-  <title>scrapy中的yield请求未被正常抛出 | 周小天的Blog</title>
+  <title>归档 | 周小天的Blog</title>
   
 
 
@@ -220,232 +218,54 @@
           <div class="content">
             
 
-  <div class="posts-expand">
-      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="zchsakura.github.io/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E4%B9%9D%E5%8D%81.jpeg">
-      <meta itemprop="name" content="周小天">
-      <meta itemprop="description" content="站台汽笛响起<br>想念是你的声音<br>我们提着过去走入人群">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="周小天的Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          scrapy中的yield请求未被正常抛出
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-08 21:19:36" itemprop="dateCreated datePublished" datetime="2020-05-08T21:19:36+08:00">2020-05-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-06-16 16:10:22" itemprop="dateModified" datetime="2024-06-16T16:10:22+08:00">2024-06-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
-                </span>
-            </span>
-
-          
   
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>628</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个<code>scrapy.Request</code>执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。</p>
-<a id="more"></a>
-<p>参考：https://blog.csdn.net/qq_32670879/article/details/85042464</p>
-<p>问题来源：我在爬取医书的时候因为是书籍所以存在章节信息，在书籍的介绍页既有书籍简介，又有目录，我想要写两个函数来分别处理，当书籍简介获取完之后要进入获取目录信息函数的时候不能正确进入。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509152400.png"
-alt="image-20200509152349586" />
-<figcaption aria-hidden="true">image-20200509152349586</figcaption>
-</figure>
-<p>经过在网上查找信息发现应该是我调用下面函数的时候，因为又请求了之前请求过的<code>response.url</code>导致scrapy自带的去重机制将本次请求全部拦截了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;)</span><br></pre></td></tr></table></figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509153757.png"
-alt="20181216232557785" />
-<figcaption aria-hidden="true">20181216232557785</figcaption>
-</figure>
-<p>解决方法：在函数参数中加入<code>dont_filter=True</code>，结果如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;, dont_filter=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-    </div>
-
-    
-    
-    
-     <!-- 文章结束表示语-->
-    <div>
-      
-        <div>
-    
-        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 啦 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
-    
-</div>
-
-      
-    </div>
-      
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\xpath常用相关\" rel="bookmark">xpath常用相关</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\基于redis使用scrapy下载中间件实现简单的增量爬虫\" rel="bookmark">基于redis使用scrapy下载中间件实现简单的增量爬虫</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\爬虫常用操作笔记\" rel="bookmark">爬虫常用操作笔记</a></div>
-    </li>
-  </ul>
-
-        <div class="reward-container">
-  <div></div>
-  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
-  </button>
-  <div id="qr" style="display: none;">
-      
-      <div style="display: inline-block;">
-        <img src="/images/WeChatpay.jpg" alt="周小天 微信支付">
-        <p>微信支付</p>
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        
+        <span class="collection-header">还行! 目前共计 35 篇日志。 继续努力。</span>
       </div>
 
-  </div>
-</div>
-
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>周小天
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="http://zchsakura.github.io/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/" title="scrapy中的yield请求未被正常抛出">zchsakura.github.io/scrapy中的yield请求未被正常抛出/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-        
-
-  <div class="followme">
-    <p>欢迎关注我的其它发布渠道</p>
-
-    <div class="social-list">
-
-            <div class="social-item">
-              <a target="_blank" class="social-link" href="/atom.xml">
-                <span class="icon">
-                  <i class="fa fa-rss"></i>
-                </span>
-
-                <span class="label">RSS</span>
-              </a>
-            </div>
+      
+    <div class="collection-year">
+      <h2 class="collection-header">2024</h2>
     </div>
-  </div>
 
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/tags/scrapy/" rel="tag"><i class="fa fa-tag"></i> scrapy</a>
-          </div>
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2024-06-16T17:05:26+08:00"
+              content="2024-06-16">
+          06-16
+        </time>
+      </div>
 
-        
+      <h3 class="post-title">
+          <a class="post-title-link" href="/%E5%87%86%E5%A4%87%E6%AF%95%E4%B8%9A%E5%95%A6/" itemprop="url">
+            <span itemprop="name">准备毕业啦</span>
+          </a>
+      </h3>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/" rel="prev" title="lxml相关操作">
-      <i class="fa fa-chevron-left"></i> lxml相关操作
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/" rel="next" title="爬虫常用操作笔记">
-      爬虫常用操作笔记 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+
+    </div>
+  </div>
   
   
   
 
-  </div>
+  
+
 
 
           </div>
           
-    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {

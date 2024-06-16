@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2024-06-16T08:10:22.751Z</updated>
+  <updated>2024-06-16T09:06:19.860Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>准备毕业啦</title>
+    <link href="zchsakura.github.io/%E5%87%86%E5%A4%87%E6%AF%95%E4%B8%9A%E5%95%A6/"/>
+    <id>zchsakura.github.io/%E5%87%86%E5%A4%87%E6%AF%95%E4%B8%9A%E5%95%A6/</id>
+    <published>2024-06-16T09:05:26.193Z</published>
+    <updated>2024-06-16T09:06:19.860Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;c大撒大撒&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="碎碎念" scheme="zchsakura.github.io/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>python程序打包成exe</title>
@@ -483,25 +502,6 @@
       <category term="神经网络" scheme="zchsakura.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
     
       <category term="机器学习" scheme="zchsakura.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从考研到995</title>
-    <link href="zchsakura.github.io/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/"/>
-    <id>zchsakura.github.io/%E4%BB%8E%E8%80%83%E7%A0%94%E5%88%B0995/</id>
-    <published>2020-10-12T01:43:40.000Z</published>
-    <updated>2024-06-16T08:10:22.826Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这么久都没更博了，主要是之前在准备参加考研，9月底突然得知因为疫情扩保把本弟弟保上了，说实话运气很好，属实要好好感谢学校，只要学校够努力就能抬我一手。今天保研尘埃落定了虽然直接开始995，但是心理压力没那么大了，还要学习新的知识，肯定要多记录记录。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="碎碎念" scheme="zchsakura.github.io/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
-    
     
   </entry>
   
