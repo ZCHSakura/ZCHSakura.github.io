@@ -317,13 +317,11 @@
 </blockquote>
 <h3 id="replace-into">replace into</h3>
 <blockquote>
-<p>这部分主要参考以下该篇<a
-href="https://blog.csdn.net/liu379702831/article/details/105819304/">博客</a></p>
+<p>这部分主要参考以下该篇<a href="https://blog.csdn.net/liu379702831/article/details/105819304/" target="_blank" rel="noopener">博客</a></p>
 </blockquote>
-<p>首先说一下比较常见的replace into操作，在mysql中经常会用到replace
-into操作。</p>
+<p>首先说一下比较常见的replace into操作，在mysql中经常会用到replace into操作。</p>
 <p>replace into 首先尝试插入数据到表中：</p>
-<ol type="1">
+<ol>
 <li>如果发现表中已经有此行数据（根据主键或者唯一索引判断）则先删除此行数据，然后插入新的数据。</li>
 <li>否则，直接插入新数据</li>
 </ol>
@@ -331,40 +329,29 @@ into操作。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replace into tbl_name(col_name, …) values(…)</span><br></pre></td></tr></table></figure>
 <p>注意事项：</p>
 <ul>
-<li>插入数据的表必须有主键或者是唯一索引！否则的话，replace into
-会直接插入数据，这将导致表中出现重复的数据。</li>
-<li>如果数据库里边有这条记录，则直接修改这条记录；如果没有则，则直接插入，在有外键的情况下，对主表进行这样操作时，因为如果主表存在一条记录，被从表所用时，直接使用replace
-into是会报错的，这和replace
-into的内部原理是相关（先删除然后再插入）。</li>
+<li>插入数据的表必须有主键或者是唯一索引！否则的话，replace into 会直接插入数据，这将导致表中出现重复的数据。</li>
+<li>如果数据库里边有这条记录，则直接修改这条记录；如果没有则，则直接插入，在有外键的情况下，对主表进行这样操作时，因为如果主表存在一条记录，被从表所用时，直接使用replace into是会报错的，这和replace into的内部原理是相关（先删除然后再插入）。</li>
 <li>表中有一个自增的主键,会带来的问题：
 <ul>
 <li>replace操作在自增主键的情况下，遇到唯一键冲突时执行的是delete+insert，但是在记录binlog时，却记录成了update操作，update操作不会涉及到auto_increment的修改。备库应用了binlog之后，备库的表的auto_increment属性不变。如果主备库发生主从切换，备库变为原来的主库，写新的主库则有风险发生主键冲突。</li>
-<li>频繁的REPLACE INTO
-会造成新纪录的主键的值迅速增大。总有一天。达到最大值后就会因为数据太大溢出了。就没法再插入新纪录了。数据表满了，不是因为空间不够了，而是因为主键的值没法再增加了。</li>
-</ul></li>
+<li>频繁的REPLACE INTO 会造成新纪录的主键的值迅速增大。总有一天。达到最大值后就会因为数据太大溢出了。就没法再插入新纪录了。数据表满了，不是因为空间不够了，而是因为主键的值没法再增加了。</li>
+</ul>
+</li>
 </ul>
 <h3 id="merge-into">merge into</h3>
 <blockquote>
-<p>达梦数据库不是每个版本都支持replace into命令的，而且replace
-into命令功能比较固定，而且在存在自增主键时还会有一些限制，所以这里我们采用merge
-into命令来完成达梦数据库的插入或更新</p>
+<p>达梦数据库不是每个版本都支持replace into命令的，而且replace into命令功能比较固定，而且在存在自增主键时还会有一些限制，所以这里我们采用merge into命令来完成达梦数据库的插入或更新</p>
 </blockquote>
-<p>merge
-into是Oracle的指令，达梦对Oracle的兼容性还比较好，而且开发文档里说明了支持merge
-into指令。</p>
+<p>merge into是Oracle的指令，达梦对Oracle的兼容性还比较好，而且开发文档里说明了支持merge into指令。</p>
 <p>用法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 新增或更新基线</span><br><span class="line">db &#x3D; dmPython.connect(user&#x3D;dm_user, password&#x3D;dm_pwds, server&#x3D;dm_host, port&#x3D;dm_port,</span><br><span class="line">                      cursorclass&#x3D;dmPython.DictCursor)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"></span><br><span class="line">sql &#x3D; &quot;merge into %s.%s &quot; \</span><br><span class="line">      &quot;using (select ? sIP,? updatetime from dual) t &quot; \</span><br><span class="line">      &quot;on(%s.%s.sIP &#x3D; t.sIP) &quot; \</span><br><span class="line">      &quot;when matched then &quot; \</span><br><span class="line">      &quot;update set updatetime&#x3D;t.updatetime &quot; \</span><br><span class="line">      &quot;when not matched then &quot; \</span><br><span class="line">      &quot;insert (sIP, updatetime) values (t.sIP,t.updatetime)&quot; \</span><br><span class="line">      % (dm_db, baseline_table, dm_db, baseline_table)</span><br><span class="line">try:</span><br><span class="line">    cursor.executemany(sql, baseline_list_tuple)</span><br><span class="line">    db.commit()</span><br><span class="line">    print(&quot;更新成功&quot;)</span><br><span class="line">except Exception as e:</span><br><span class="line">    print(e)</span><br><span class="line">    db.rollback()</span><br><span class="line">finally:</span><br><span class="line">    cursor.close()</span><br><span class="line">    db.close()</span><br></pre></td></tr></table></figure>
 <p>注意事项：</p>
 <ul>
 <li>我看到的资料上面说on后面要跟主键信息，但是我这里使用的不是主键，但是能正常使用</li>
-<li>merge
-into是通过执⾏using后括号内的sql语句结果逐条与on括号内条件进⾏匹配，若匹配则执⾏更新，若不匹配则执⾏插⼊</li>
-<li>when matched then语句需在when not matched then
-之前，否则达梦数据库会报错</li>
+<li>merge into是通过执⾏using后括号内的sql语句结果逐条与on括号内条件进⾏匹配，若匹配则执⾏更新，若不匹配则执⾏插⼊</li>
+<li>when matched then语句需在when not matched then 之前，否则达梦数据库会报错</li>
 <li>关于dual表，我个⼈理解为类似于“缓存器”的表，你可以向它⾥⾯插⼊多条数据，删除多条数据，但你查询时，表中均只显⽰⼀个字段，⼀⾏数据。</li>
-<li>在使用merge
-into语句的时候我遇到了一个关于字符型数据的问题，在达梦数据库管理软件中只能使用<strong>单引号</strong>来框住字符串，用<strong>双引号</strong>则会报错，这其实不是merge
-into语句的问题，而是达梦sql语句的问题，很久没用其他数据库了，不知道这是数据库的通用规则，还是达梦的特殊规则。</li>
+<li>在使用merge into语句的时候我遇到了一个关于字符型数据的问题，在达梦数据库管理软件中只能使用<strong>单引号</strong>来框住字符串，用<strong>双引号</strong>则会报错，这其实不是merge into语句的问题，而是达梦sql语句的问题，很久没用其他数据库了，不知道这是数据库的通用规则，还是达梦的特殊规则。</li>
 </ul>
 
     </div>
@@ -894,13 +881,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

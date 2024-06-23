@@ -40,6 +40,27 @@
 <meta property="og:site_name" content="周小天的Blog">
 <meta property="og:description" content="昨天大致了解了一下什么是深度学习，深度学习，人工智能，机器学习之间有什么关系，深度学习框架的总览。今天来找找各个框架之间的对比和目前比较常用的tensorflow和pytorch一些资料。我觉得框架属实是个好东西，让我可以不用写CUDA，反正Django的ORM是属实舒服，轻松摆脱巨长的MySql，但是会有一些自己特殊的地方，比如插入一个带外键的数据时要先获取其主键Model，还是要多了解多记录。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013092727.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102123.svg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102157.svg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102221.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102339.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145302.svg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145314.svg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145332.svg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145408.svg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=+f%5Cleft(x%252Cy%5Cright)+%253D+xy+%252B+%5Cexp%5Cleft(xy%5Cright)+">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013112920.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013112944.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013113005.svg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013154423.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201014090128.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013155541.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160042.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160133.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160145.jpg">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013162209.webp">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013162223.webp">
 <meta property="article:published_time" content="2020-10-13T01:09:28.000Z">
 <meta property="article:modified_time" content="2024-06-16T08:10:22.835Z">
 <meta property="article:author" content="周小天">
@@ -48,6 +69,7 @@
 <meta property="article:tag" content="Tensorflow">
 <meta property="article:tag" content="Pytorch">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013092727.jpg">
 
 <link rel="canonical" href="zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%BA%8C)---%E6%A1%86%E6%9E%B6/">
 
@@ -294,14 +316,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.3k</span>
+              <span>7.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -316,23 +338,13 @@
         <p>昨天大致了解了一下什么是深度学习，深度学习，人工智能，机器学习之间有什么关系，深度学习框架的总览。今天来找找各个框架之间的对比和目前比较常用的tensorflow和pytorch一些资料。我觉得框架属实是个好东西，让我可以不用写CUDA，反正Django的ORM是属实舒服，轻松摆脱巨长的MySql，但是会有一些自己特殊的地方，比如插入一个带外键的数据时要先获取其主键Model，还是要多了解多记录。</p>
 <a id="more"></a>
 <h2 id="参考">参考</h2>
-<p>https://www.zhihu.com/question/330766768/answer/1398232292</p>
-<p>https://www.zhihu.com/question/66200879</p>
+<p><a href="https://www.zhihu.com/question/330766768/answer/1398232292" target="_blank" rel="noopener">https://www.zhihu.com/question/330766768/answer/1398232292</a></p>
+<p><a href="https://www.zhihu.com/question/66200879" target="_blank" rel="noopener">https://www.zhihu.com/question/66200879</a></p>
 <h2 id="总览">总览</h2>
 <p>上来先发一张图</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013092727.jpg"
-alt="v2-d2af0dc0108888b3eea1140d20656883_720w" />
-<figcaption
-aria-hidden="true">v2-d2af0dc0108888b3eea1140d20656883_720w</figcaption>
-</figure>
-<h2 id="caffe">Caffe</h2>
-<p><strong>概述：</strong>Caffe 是伯克利的贾扬清主导开发，以 C++/CUDA
-代码为主，最早的深度学习框架之一，比TensorFlow、Mxnet、Pytorch
-等都更早，需要进行编译安装。支持命令行、Python 和 Matlab
-接口，单机多卡、多机多卡等都可以很方便的使用。目前 master
-分支已经停止更新，intel 分支等还在维护，caffe 框架已经非常稳定。</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013092727.jpg" alt="v2-d2af0dc0108888b3eea1140d20656883_720w"></p>
+<h2 id="Caffe">Caffe</h2>
+<p>**概述：**Caffe 是伯克利的贾扬清主导开发，以 C++/CUDA 代码为主，最早的深度学习框架之一，比TensorFlow、Mxnet、Pytorch 等都更早，需要进行编译安装。支持命令行、Python 和 Matlab 接口，单机多卡、多机多卡等都可以很方便的使用。目前 master 分支已经停止更新，intel 分支等还在维护，caffe 框架已经非常稳定。</p>
 <p><strong>通用流程：</strong></p>
 <p>准备数据——定义网络——配置训练参数——训练/测试</p>
 <p>以上的流程相互之间是解耦合的，所以 caffe 的使用非常简单。</p>
@@ -351,302 +363,127 @@ aria-hidden="true">v2-d2af0dc0108888b3eea1140d20656883_720w</figcaption>
 <li>不支持模型级并行，只支持数据级并行</li>
 <li>不适合于非图像任务。</li>
 </ul>
-<h2 id="tensorflow">Tensorflow</h2>
-<p><strong>概述：</strong>TensorFlow 是 Google brain
-推出的开源机器学习库，可用作各类深度学习相关的任务。TensorFlow = Tensor
-+ Flow，Tensor 就是张量，代表 N 维数组，这与 Caffe 中的 blob
-是类似的；Flow 即流，代表基于数据流图的计算。</p>
-<p><strong>特点：</strong>TensorFlow
-最大的特点是计算图，即先定义好图，然后进行运算，而且代码都包含两部分：</p>
-<p>创建计算图，表示计算的数据流。可以将它看做是Caffe 中的 prototxt
-的定义过程。</p>
-<p>运行会话，执行图中的运算，可以看作是 Caffe 中的训练过程。会话比 Caffe
-灵活很多，由于是 Python 接口，取中间结果分析，Debug 等方便很多。</p>
-<h2 id="pytorch">Pytorch</h2>
-<p><strong>概述：</strong> Pytorch = Python + Torch。Torch
-是纽约大学的一个机器学习开源框架，但是由于使用的是一种绝大部分人绝对没有听过的
-Lua 语言，导致很多人都被吓退。后来随着 Python 的生态越来越完善，Facebook
-人工智能研究院推出了 Pytorch 并开源。Pytorch 不是简单的封装 Torch
-并提供Python 接口，而是对 Tensor 以上的所有代码进行了重构，同 TensorFlow
-一样，增加了自动求导。后来 Caffe2 全部并入
-Pytorch，如今已经成为了非常流行的框架。</p>
+<h2 id="Tensorflow">Tensorflow</h2>
+<p>**概述：**TensorFlow 是 Google brain 推出的开源机器学习库，可用作各类深度学习相关的任务。TensorFlow = Tensor + Flow，Tensor 就是张量，代表 N 维数组，这与 Caffe 中的 blob 是类似的；Flow 即流，代表基于数据流图的计算。</p>
+<p>**特点：**TensorFlow 最大的特点是计算图，即先定义好图，然后进行运算，而且代码都包含两部分：</p>
+<p>创建计算图，表示计算的数据流。可以将它看做是Caffe 中的 prototxt 的定义过程。</p>
+<p>运行会话，执行图中的运算，可以看作是 Caffe 中的训练过程。会话比 Caffe 灵活很多，由于是 Python 接口，取中间结果分析，Debug 等方便很多。</p>
+<h2 id="Pytorch">Pytorch</h2>
+<p><strong>概述：</strong> Pytorch = Python + Torch。Torch 是纽约大学的一个机器学习开源框架，但是由于使用的是一种绝大部分人绝对没有听过的 Lua 语言，导致很多人都被吓退。后来随着 Python 的生态越来越完善，Facebook 人工智能研究院推出了 Pytorch 并开源。Pytorch 不是简单的封装 Torch 并提供Python 接口，而是对 Tensor 以上的所有代码进行了重构，同 TensorFlow 一样，增加了自动求导。后来 Caffe2 全部并入 Pytorch，如今已经成为了非常流行的框架。</p>
 <p><strong>特点：</strong></p>
 <ul>
-<li>动态图计算。TensorFlow 从静态图发展到了动态图机制 Eager Execution
-，pytorch 则一开始就是动态图机制。动态图机制的好处就是随时随地修改，随处
-debug ，没有类似编译的过程。</li>
-<li>简单。相比 TensorFlow1.0 中 Tensor、Variable、Session
-等概念充斥，数据读取接口频繁更新，tf.nn、tf.layers、tf.contrib
-各自重复，Pytorch 则是从 Tensor 到 Variable 再到nn.Module
-，最新的Pytorch 已经将 Tensor 和 Variable
-合并，这分别就是从数据张量到网络的抽象层次的递进。</li>
+<li>动态图计算。TensorFlow 从静态图发展到了动态图机制 Eager Execution ，pytorch 则一开始就是动态图机制。动态图机制的好处就是随时随地修改，随处 debug ，没有类似编译的过程。</li>
+<li>简单。相比 TensorFlow1.0 中 Tensor、Variable、Session 等概念充斥，数据读取接口频繁更新，tf.nn、tf.layers、tf.contrib 各自重复，Pytorch 则是从 Tensor 到 Variable 再到nn.Module ，最新的Pytorch 已经将 Tensor 和 Variable 合并，这分别就是从数据张量到网络的抽象层次的递进。</li>
 </ul>
-<h2 id="mxnet">Mxnet</h2>
-<p><strong>概述：</strong> Mxnet
-是由李沐等人领导开发的非常灵活，扩展性很强的框架，被 Amazon
-定为官方框架。</p>
-<p><strong>特点：</strong> Mxnet
-同时拥有命令式编程和符号式编程的特点。在命令式编程上 MXNet
-提供张量运算，进行模型的迭代训练和更新中的控制逻辑；在声明式编程中 MXNet
-支持符号表达式，用来描述神经网络，并利用系统提供的自动求导来训练模型。Mxnet
-性能非常高，推荐资源不够的同学使用。</p>
-<h2 id="keras">Keras</h2>
-<p><strong>概述：</strong> Keras
-是一个对小白用户非常友好而简单的深度学习框架，严格来说并不是一个开源框架，而是一个高度模块化的神经网络库。Keras
-在高层可以调用 TensorFlow，CNTK，Theano ，还有更多的库也在被陆续支持中。
-Keras 的特点是能够快速实现模型的搭建，是高效地进行科学研究的关键。</p>
+<h2 id="Mxnet">Mxnet</h2>
+<p><strong>概述：</strong> Mxnet 是由李沐等人领导开发的非常灵活，扩展性很强的框架，被 Amazon 定为官方框架。</p>
+<p><strong>特点：</strong> Mxnet 同时拥有命令式编程和符号式编程的特点。在命令式编程上 MXNet 提供张量运算，进行模型的迭代训练和更新中的控制逻辑；在声明式编程中 MXNet 支持符号表达式，用来描述神经网络，并利用系统提供的自动求导来训练模型。Mxnet 性能非常高，推荐资源不够的同学使用。</p>
+<h2 id="Keras">Keras</h2>
+<p><strong>概述：</strong> Keras 是一个对小白用户非常友好而简单的深度学习框架，严格来说并不是一个开源框架，而是一个高度模块化的神经网络库。Keras 在高层可以调用 TensorFlow，CNTK，Theano ，还有更多的库也在被陆续支持中。 Keras 的特点是能够快速实现模型的搭建，是高效地进行科学研究的关键。</p>
 <p><strong>特点：</strong></p>
 <ul>
 <li>高度模块化，搭建网络非常简洁。</li>
 <li>API 很简单，具有统一的风格。</li>
 <li>容易扩展，只需使用 python 添加新类和函数。</li>
 </ul>
-<h2 id="paddlepaddle">Paddlepaddle</h2>
-<p><strong>概述：</strong> 正所谓 Google 有 Tensorflow，Facebook 有
-Pytorch，Amazon 有 Mxnet，作为国内机器学习的先驱，百度也有
-PaddlePaddle，其中 Paddle 即 Parallel Distributed Deep Learning
-(并行分布式深度学习)。</p>
-<p><strong>特点：</strong>paddle 的性能也很不错，整体使用起来与
-tensorflow
-非常类似，拥有中文帮助文档，在百度内部也被用于推荐等任务。另外，配套了一个可视化框架
-visualdl，与 tensorboard 也有异曲同工之妙。</p>
-<h2 id="cntk">CNTK</h2>
-<p><strong>概述：</strong>CNTK
-是微软开源的深度学习工具包，它通过有向图将神经网络描述为一系列计算步骤。在有向图中，叶节点表示输入值或网络参数，而其他节点表示其输入上的矩阵运算。CNTK
-允许用户非常轻松地实现和组合流行的模型，包括前馈
-DNN，卷积网络（CNN）和循环网络（RNN /
-LSTM）。与目前大部分框架一样，实现了自动求导，利用随机梯度下降方法进行优化。</p>
+<h2 id="Paddlepaddle">Paddlepaddle</h2>
+<p><strong>概述：</strong> 正所谓 Google 有 Tensorflow，Facebook 有 Pytorch，Amazon 有 Mxnet，作为国内机器学习的先驱，百度也有 PaddlePaddle，其中 Paddle 即 Parallel Distributed Deep Learning (并行分布式深度学习)。</p>
+<p>**特点：**paddle 的性能也很不错，整体使用起来与 tensorflow 非常类似，拥有中文帮助文档，在百度内部也被用于推荐等任务。另外，配套了一个可视化框架 visualdl，与 tensorboard 也有异曲同工之妙。</p>
+<h2 id="CNTK">CNTK</h2>
+<p>**概述：**CNTK 是微软开源的深度学习工具包，它通过有向图将神经网络描述为一系列计算步骤。在有向图中，叶节点表示输入值或网络参数，而其他节点表示其输入上的矩阵运算。CNTK 允许用户非常轻松地实现和组合流行的模型，包括前馈 DNN，卷积网络（CNN）和循环网络（RNN / LSTM）。与目前大部分框架一样，实现了自动求导，利用随机梯度下降方法进行优化。</p>
 <p><strong>特点：</strong></p>
 <ul>
 <li>CNTK 性能较高，按照其官方的说法，比其他的开源框架性能都更高。</li>
-<li>适合做语音，CNTK
-本就是微软语音团队开源的，自然是更合适做语音任务，使用 RNN
-等模型，以及在时空尺度分别进行卷积非常容易。</li>
+<li>适合做语音，CNTK 本就是微软语音团队开源的，自然是更合适做语音任务，使用 RNN 等模型，以及在时空尺度分别进行卷积非常容易。</li>
 </ul>
-<h2 id="matconvnet">Matconvnet</h2>
-<p><strong>概述：</strong>不同于各类深度学习框架广泛使用的语言
-Python，MatConvnet 是用 matlab 作为接口语言的开源深度学习库，底层语言是
-cuda。</p>
-<p><strong>特点：</strong>因为是在 matlab 下面，所以 debug
-的过程非常的方便，而且本身就有很多的研究者一直都使用 matlab 语言。</p>
-<h2 id="deeplearning4j">Deeplearning4j</h2>
-<p><strong>概述：</strong>不同于深度学习广泛应用的语言 Python，DL4J 是为
-java 和 jvm 编写的开源深度学习库，支持各种深度学习模型。</p>
-<p><strong>特点：</strong>DL4J 最重要的特点是支持分布式，可以在 Spark 和
-Hadoop 上运行，支持分布式 CPU 和 GPU 运行。DL4J
-是为商业环境，而非研究所设计的，因此更加贴近某些生产环境。</p>
-<h2 id="chainer">Chainer</h2>
-<p><strong>概述：</strong>chainer 也是一个基于 python
-的深度学习框架，能够轻松直观地编写复杂的神经网络架构，在日本企业中应用广泛。</p>
-<p><strong>特点：</strong> chainer 采用 “Define-by-Run”
-方案，即通过实际的前向计算动态定义网络。更确切地说，chainer
-存储计算历史而不是编程逻辑，pytorch 的动态图机制思想主要就来源于
-chaine。</p>
-<h2 id="lasagnetheano">Lasagne/Theano</h2>
-<p><strong>概述：</strong> Lasagen 其实就是封装了的
-theano，后者是一个很老牌的框架，在 2008 年的时候就由 Yoshua Bengio
-领导的蒙特利尔 LISA 组开源了。</p>
-<p><strong>特点：</strong> theano
-的使用成本高，需要从底层开始写代码构建模型，Lasagen 对其进行了封装，使得
-theano 使用起来更简单。</p>
-<h2 id="darknet">Darknet</h2>
-<p><strong>概述：</strong> Darknet 本身是 Joseph Redmon 为了 Yolo
-系列开发的框架。</p>
-<p><strong>特点：</strong> Darknet 几乎没有依赖库，是从 C 和 CUDA
-开始撰写的深度学习开源框架，支持 CPU 和 GPU。Darknet跟 caffe
-颇有几分相似之处，却更加轻量级，非常值得学习使用。</p>
+<h2 id="Matconvnet">Matconvnet</h2>
+<p>**概述：**不同于各类深度学习框架广泛使用的语言 Python，MatConvnet 是用 matlab 作为接口语言的开源深度学习库，底层语言是 cuda。</p>
+<p>**特点：**因为是在 matlab 下面，所以 debug 的过程非常的方便，而且本身就有很多的研究者一直都使用 matlab 语言。</p>
+<h2 id="Deeplearning4j">Deeplearning4j</h2>
+<p>**概述：**不同于深度学习广泛应用的语言 Python，DL4J 是为 java 和 jvm 编写的开源深度学习库，支持各种深度学习模型。</p>
+<p>**特点：**DL4J 最重要的特点是支持分布式，可以在 Spark 和 Hadoop 上运行，支持分布式 CPU 和 GPU 运行。DL4J 是为商业环境，而非研究所设计的，因此更加贴近某些生产环境。</p>
+<h2 id="Chainer">Chainer</h2>
+<p>**概述：**chainer 也是一个基于 python 的深度学习框架，能够轻松直观地编写复杂的神经网络架构，在日本企业中应用广泛。</p>
+<p><strong>特点：</strong> chainer 采用 “Define-by-Run” 方案，即通过实际的前向计算动态定义网络。更确切地说，chainer 存储计算历史而不是编程逻辑，pytorch 的动态图机制思想主要就来源于 chaine。</p>
+<h2 id="Lasagne-Theano">Lasagne/Theano</h2>
+<p><strong>概述：</strong> Lasagen 其实就是封装了的 theano，后者是一个很老牌的框架，在 2008 年的时候就由 Yoshua Bengio 领导的蒙特利尔 LISA 组开源了。</p>
+<p><strong>特点：</strong> theano 的使用成本高，需要从底层开始写代码构建模型，Lasagen 对其进行了封装，使得 theano 使用起来更简单。</p>
+<h2 id="Darknet">Darknet</h2>
+<p><strong>概述：</strong> Darknet 本身是 Joseph Redmon 为了 Yolo 系列开发的框架。</p>
+<p><strong>特点：</strong> Darknet 几乎没有依赖库，是从 C 和 CUDA 开始撰写的深度学习开源框架，支持 CPU 和 GPU。Darknet跟 caffe 颇有几分相似之处，却更加轻量级，非常值得学习使用。</p>
 <h2 id="模型的求导">模型的求导</h2>
-<p>在上面的学习中经常可以看到很多框架具有自动求导(Automatic
-Differentiation,AD)的功能，那么什么是自动求导功能呢，于是我又找了找资料记录如下：</p>
-<p>最近在上关于 自动求导 (Automatic Differentiation, AD) 的课程 (<a
-href="https://link.zhihu.com/?target=https%3A//harvard-iacs.github.io/2019-CS207/">CS207</a>)，正好来回答一下。
-其实不只是 TensorFlow，Pytorch 这些为深度学习设计的库用到
-AD，很多物理，化学等基础科学计算软件也在大量的使用
-AD。而且，其实TensorFlow、Pytorch 也并非只能用于deep
-learning，本质上他们是一种</p>
+<p>在上面的学习中经常可以看到很多框架具有自动求导(Automatic Differentiation,AD)的功能，那么什么是自动求导功能呢，于是我又找了找资料记录如下：</p>
+<p>最近在上关于 自动求导 (Automatic Differentiation, AD) 的课程 (<a href="https://link.zhihu.com/?target=https%3A//harvard-iacs.github.io/2019-CS207/">CS207</a>)，正好来回答一下。 其实不只是 TensorFlow，Pytorch 这些为深度学习设计的库用到 AD，很多物理，化学等基础科学计算软件也在大量的使用 AD。而且，其实TensorFlow、Pytorch 也并非只能用于deep learning，本质上他们是一种</p>
 <blockquote>
-<p>Tensor computation built on a tape-based autograd system
---引自Pytorch</p>
+<p>Tensor computation built on a tape-based autograd system --引自Pytorch</p>
 <p>张量计算建立在一个基于卷积的自动梯度系统之上(渣渣的自翻)</p>
 </blockquote>
-<p>自动求导分成两种模式，一种是 <code>Forward Mode</code>，另外一种是
-<code>Reverse Mode</code>。一般的机器学习库用的后一种，原因后面说。</p>
-<h3 id="forward-mode">Forward Mode</h3>
+<p>自动求导分成两种模式，一种是 <code>Forward Mode</code>，另外一种是 <code>Reverse Mode</code>。一般的机器学习库用的后一种，原因后面说。</p>
+<h3 id="Forward-Mode">Forward Mode</h3>
 <p>基于的就是就最基本的 <code>链式法则 chain rule</code>,</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102123.svg"
-alt="equation" />
-<figcaption aria-hidden="true">equation</figcaption>
-</figure>
-<p>这个 <code>Forward Mode</code> 就是用
-<code>chain rule</code>，像剥洋葱一样一层一层算出来，以</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102157.svg"
-alt="equation (1)" />
-<figcaption aria-hidden="true">equation (1)</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102123.svg" alt="equation"></p>
+<p>这个 <code>Forward Mode</code> 就是用 <code>chain rule</code>，像剥洋葱一样一层一层算出来，以</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102157.svg" alt="equation (1)"></p>
 <p>为例。我们可以把他的计算图画出来。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102221.jpg"
-alt="v2-e9c6ceeb331fc63e511e749c685af544_720w" />
-<figcaption
-aria-hidden="true">v2-e9c6ceeb331fc63e511e749c685af544_720w</figcaption>
-</figure>
-<p>假如我要计算<span
-class="math inline">\(f&#39;(\frac{\pi}{16})\)</span>，可以根据上面的图得到一个表格</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102339.jpg"
-alt="v2-084054f3b8b43c30ca32a7e33b0ae1b1_720w" />
-<figcaption
-aria-hidden="true">v2-084054f3b8b43c30ca32a7e33b0ae1b1_720w</figcaption>
-</figure>
-<p>那么上面这个表里，每一步我们既要算 forward 的值 <span
-class="math inline">\(f(a)\)</span> ，也要算 backward 的值<span
-class="math inline">\(f&#39;(a)\)</span>。</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102221.jpg" alt="v2-e9c6ceeb331fc63e511e749c685af544_720w"></p>
+<p>假如我要计算$f’(\frac{\pi}{16})$，可以根据上面的图得到一个表格</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013102339.jpg" alt="v2-084054f3b8b43c30ca32a7e33b0ae1b1_720w"></p>
+<p>那么上面这个表里，每一步我们既要算 forward 的值 $f(a)$ ，也要算 backward 的值$f’(a)$。</p>
 <p><strong>有没有办法同时把这两个值算出来呢？</strong></p>
 <p>首先引入一个新的概念，二元数。二元数其实跟复数差不多，也是一种实数的推广。我们回忆一下，一个复数可以写成这样的形式：</p>
 <p>二元数其实跟复数差不多，也是一种实数的推广。我们回忆一下，一个复数可以写成这样的形式：</p>
-<p><span class="math inline">\(z = a + ib\)</span> ; <span
-class="math inline">\(i^2 = -1\)</span></p>
-<p>对于复数的理解，一个比较直观的例子就是。本来实数都是在一个实数轴（x轴）的。复部
-<span class="math inline">\(ib\)</span> 相当于多了一个 y 轴出来。</p>
+<p>$z = a + ib$ ; $i^2 = -1$</p>
+<p>对于复数的理解，一个比较直观的例子就是。本来实数都是在一个实数轴（x轴）的。复部 $ib$ 相当于多了一个 y 轴出来。</p>
 <p>那么二元数是这个亚子：</p>
-<p><span class="math inline">\(z = a + \epsilon b\)</span> ; <span
-class="math inline">\(\epsilon^2 = 0\)</span></p>
-<p>这个二元数很神奇的一个性质是，你带着他做运算，得出来的二元部 <span
-class="math inline">\(\epsilon b\)</span>
-前面的系数，就是导数。举个栗子， 我们要求</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145302.svg"
-alt="equation (4)" />
-<figcaption aria-hidden="true">equation (4)</figcaption>
-</figure>
-<p>我们可以令 <span class="math inline">\(x = a + \epsilon
-b\)</span>，所以</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145314.svg"
-alt="equation (5)" />
-<figcaption aria-hidden="true">equation (5)</figcaption>
-</figure>
+<p>$z = a + \epsilon b$ ; $\epsilon^2 = 0$</p>
+<p>这个二元数很神奇的一个性质是，你带着他做运算，得出来的二元部 $\epsilon b$ 前面的系数，就是导数。举个栗子， 我们要求</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145302.svg" alt="equation (4)"></p>
+<p>我们可以令 $x = a + \epsilon b$，所以</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145314.svg" alt="equation (5)"></p>
 <p>我们把上面的三角函数展开，</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145332.svg"
-alt="equation (6)" />
-<figcaption aria-hidden="true">equation (6)</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145332.svg" alt="equation (6)"></p>
 <p>得到</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145408.svg"
-alt="equation (7)" />
-<figcaption aria-hidden="true">equation (7)</figcaption>
-</figure>
-<p>可以看到，二元部 <span class="math inline">\(\cos(a)\)</span>
-恰好就是原函数 <span class="math inline">\(\sin(a)\)</span> 的导数。</p>
-<h3 id="reverse-mode">Reverse Mode</h3>
-<p>这个模式就比较简单和直接了。就是说，上面那个表里面，我每次只计算每个“小运算”的梯度（也是是那个图里面的每个节点），最后我再根据
-<code>chain rule</code> 把“小运算”们的梯度串起来。其实
-<code>forward mode</code> 和 <code>reverse mode</code>
-并没有本质的区别，只是说，<code>reverse mode</code>在计算梯度先不考虑
-<code>chain rule</code>，最后再用 <code>chain rule</code>
-把梯度组起来。而前者则是直接就应用 <code>chain rule</code>
-来算梯度。</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013145408.svg" alt="equation (7)"></p>
+<p>可以看到，二元部 $\cos(a)$ 恰好就是原函数 $\sin(a)$ 的导数。</p>
+<h3 id="Reverse-Mode">Reverse Mode</h3>
+<p>这个模式就比较简单和直接了。就是说，上面那个表里面，我每次只计算每个“小运算”的梯度（也是是那个图里面的每个节点），最后我再根据 <code>chain rule</code> 把“小运算”们的梯度串起来。其实 <code>forward mode</code> 和 <code>reverse mode</code> 并没有本质的区别，只是说，<code>reverse mode</code>在计算梯度先不考虑 <code>chain rule</code>，最后再用 <code>chain rule</code> 把梯度组起来。而前者则是直接就应用 <code>chain rule</code> 来算梯度。</p>
 <p>下面总结一下 <code>reverse mode</code> 的流程：</p>
 <ul>
 <li>创建计算图</li>
 <li>计算前向传播的值及每个操作的梯度
 <ul>
 <li>这里没有 <code>chain rule</code> 的事</li>
-<li>比如这个操作是乘法 <span class="math inline">\(x_3 =
-x_1*x_2\)</span>，那么我们只需要把 <span
-class="math inline">\(\frac{\partial x_3}{\partial x_2}\)</span> 以及
-<span class="math inline">\(\frac{\partial x_3}{\partial x_1}\)</span>
-算出来就好了</li>
-</ul></li>
-<li>反向计算梯度从最后一个节点（操作）开始：<span
-class="math inline">\(\overline{x_N} = \frac{\partial f}{\partial x_N} =
-1\)</span> , <span class="math inline">\(f = x_N\)</span></li>
-<li>根据 <code>chain rule</code> 逐层推进 <span
-class="math inline">\(\overline{x_{N-1}} = \frac{\partial f}{\partial
-x_N}\frac{\partial x_N}{\partial x_{N-1}}\)</span></li>
-<li>假如有多条求导路径，我们要把他们加起来，例如 <span
-class="math inline">\(\overline{x_3} = \frac{\partial f}{\partial x_3} =
-\frac{\partial f}{\partial x_4}\frac{\partial x_4}{\partial x_3} +
-\frac{\partial f}{\partial x_5}\frac{\partial x_5}{\partial
-x_3}\)</span></li>
+<li>比如这个操作是乘法 $x_3 = x_1*x_2$，那么我们只需要把 $\frac{\partial x_3}{\partial x_2}$ 以及 $\frac{\partial x_3}{\partial x_1}$ 算出来就好了</li>
+</ul>
+</li>
+<li>反向计算梯度从最后一个节点（操作）开始：$\overline{x_N} = \frac{\partial f}{\partial x_N} = 1$ , $f = x_N$</li>
+<li>根据 <code>chain rule</code> 逐层推进 $\overline{x_{N-1}} = \frac{\partial f}{\partial x_N}\frac{\partial x_N}{\partial x_{N-1}}$</li>
+<li>假如有多条求导路径，我们要把他们加起来，例如 $\overline{x_3} = \frac{\partial f}{\partial x_3} = \frac{\partial f}{\partial x_4}\frac{\partial x_4}{\partial x_3} + \frac{\partial f}{\partial x_5}\frac{\partial x_5}{\partial x_3}$</li>
 </ul>
 <p>举个栗子，我们要计算函数</p>
-<figure>
-<img
-src="https://www.zhihu.com/equation?tex=+f%5Cleft%28x%2Cy%5Cright%29+%3D+xy+%2B+%5Cexp%5Cleft%28xy%5Cright%29+"
-alt="[公式]" />
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>在点 <span class="math inline">\(a = (1,2)\)</span> 的导数</p>
+<p><img src="https://www.zhihu.com/equation?tex=+f%5Cleft%28x%2Cy%5Cright%29+%3D+xy+%2B+%5Cexp%5Cleft%28xy%5Cright%29+" alt="[公式]"></p>
+<p>在点 $a = (1,2)$ 的导数</p>
 <p>首先还是先把计算图画出来</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013112920.jpg"
-alt="v2-96cc3ca7e23d04e7cadc721b547c94bf_720w" />
-<figcaption
-aria-hidden="true">v2-96cc3ca7e23d04e7cadc721b547c94bf_720w</figcaption>
-</figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013112944.jpg"
-alt="v2-9da449b7dea30cc4cfdb94d8c6bc7e85_720w" />
-<figcaption
-aria-hidden="true">v2-9da449b7dea30cc4cfdb94d8c6bc7e85_720w</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013112920.jpg" alt="v2-96cc3ca7e23d04e7cadc721b547c94bf_720w"></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013112944.jpg" alt="v2-9da449b7dea30cc4cfdb94d8c6bc7e85_720w"></p>
 <p>我们逐层的抽丝剥茧，</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013113005.svg"
-alt="equation (3)" />
-<figcaption aria-hidden="true">equation (3)</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013113005.svg" alt="equation (3)"></p>
 <h3 id="总结">总结</h3>
-<ol type="1">
-<li>可以很清楚的看到，在训练人工神经网络时常用的
-<code>backpropagation</code> 也是属于 <code>reverse mode</code>
-的。</li>
-<li>假如我们要计算的梯度的函数是 <span class="math inline">\(f : R^m
-\rightarrow R^n\)</span></li>
+<ol>
+<li>可以很清楚的看到，在训练人工神经网络时常用的 <code>backpropagation</code> 也是属于 <code>reverse mode</code> 的。</li>
+<li>假如我们要计算的梯度的函数是 $f : R^m \rightarrow R^n$</li>
 </ol>
 <ul>
 <li>如果 n 是相对比较大的话，用 <code>forward</code> 比较省计算</li>
 <li>如果 m 是相对比较大的话，用 <code>reverse</code> 比较省计算</li>
 </ul>
-<h2 id="tensorflow与pytorch之争">TensorFlow与PyTorch之争</h2>
-<h3 id="我们可以用-tensorflow-和-pytorch-构建什么">我们可以用 TensorFlow
-和 PyTorch 构建什么？</h3>
-<p>神经网络起初是被用于解决手写数字识别或用相机识别汽车注册车牌等简单的分类问题。但随着近来框架的发展以及英伟达高计算性能图形处理单元（GPU）的进步，我们可以在
-TB
-级的数据上训练神经网络并求解远远更加复杂的问题。一个值得提及的成就是在
-TensorFlow 和 PyTorch 中实现的卷积神经网络在 ImageNet
-上都达到了当前最佳的表现。训练后的模型可以用在不同的应用中，比如目标检测、图像语义分割等等。</p>
-<p>尽管神经网络架构可以基于任何框架实现，但结果却并不一样。训练过程有大量参数都与框架息息相关。举个例子，如果你在
-PyTorch 上训练一个数据集，那么你可以使用 GPU
-来增强其训练过程，因为它们运行在 CUDA（一种 C++ 后端）上。TensorFlow
-也能使用 GPU，但它使用的是自己内置的 GPU
-加速。因此，根据你所选框架的不同，训练模型的时间也总是各不相同。</p>
-<h3 id="pytorch-和-tensorflow-对比">PyTorch 和 TensorFlow 对比</h3>
-<p>PyTorch 和 TensorFlow
-的关键差异是它们执行代码的方式。这两个框架都基于基础数据类型张量（tensor）而工作。你可以将张量看作是下图所示的多维数组。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013154423.jpg"
-alt="v2-eb587bbfe2fc8c7ea156f40148f9466d_720w" />
-<figcaption
-aria-hidden="true">v2-eb587bbfe2fc8c7ea156f40148f9466d_720w</figcaption>
-</figure>
+<h2 id="TensorFlow与PyTorch之争">TensorFlow与PyTorch之争</h2>
+<h3 id="我们可以用-TensorFlow-和-PyTorch-构建什么？">我们可以用 TensorFlow 和 PyTorch 构建什么？</h3>
+<p>神经网络起初是被用于解决手写数字识别或用相机识别汽车注册车牌等简单的分类问题。但随着近来框架的发展以及英伟达高计算性能图形处理单元（GPU）的进步，我们可以在 TB 级的数据上训练神经网络并求解远远更加复杂的问题。一个值得提及的成就是在 TensorFlow 和 PyTorch 中实现的卷积神经网络在 ImageNet 上都达到了当前最佳的表现。训练后的模型可以用在不同的应用中，比如目标检测、图像语义分割等等。</p>
+<p>尽管神经网络架构可以基于任何框架实现，但结果却并不一样。训练过程有大量参数都与框架息息相关。举个例子，如果你在 PyTorch 上训练一个数据集，那么你可以使用 GPU 来增强其训练过程，因为它们运行在 CUDA（一种 C++ 后端）上。TensorFlow 也能使用 GPU，但它使用的是自己内置的 GPU 加速。因此，根据你所选框架的不同，训练模型的时间也总是各不相同。</p>
+<h3 id="PyTorch-和-TensorFlow-对比">PyTorch 和 TensorFlow 对比</h3>
+<p>PyTorch 和 TensorFlow 的关键差异是它们执行代码的方式。这两个框架都基于基础数据类型张量（tensor）而工作。你可以将张量看作是下图所示的多维数组。</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013154423.jpg" alt="v2-eb587bbfe2fc8c7ea156f40148f9466d_720w"></p>
 <p><strong>机制：动态图定义与静态图定义</strong></p>
 <p>TensorFlow 框架由两个核心构建模块组成：</p>
 <ul>
@@ -654,58 +491,21 @@ aria-hidden="true">v2-eb587bbfe2fc8c7ea156f40148f9466d_720w</figcaption>
 <li>一个具有许多优点的计算图（后面很快就会介绍这些优点）。</li>
 </ul>
 <p>计算图是一种将计算描述成有向图的抽象方式。图是一种由节点（顶点）和边构成的数据结构，是由有向的边成对连接的顶点的集合。</p>
-<p>当你在 TensorFlow
-中运行代码时，计算图是以静态方式定义的。与外部世界的所有通信都是通过
-tf.Sessionobject 和 tf.Placeholder
-执行，它们是在运行时会被外部数据替换的张量。例如，看看以下代码段：</p>
+<p>当你在 TensorFlow 中运行代码时，计算图是以静态方式定义的。与外部世界的所有通信都是通过 tf.Sessionobject 和 tf.Placeholder 执行，它们是在运行时会被外部数据替换的张量。例如，看看以下代码段：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">15</span></span><br><span class="line">b = <span class="number">5</span></span><br><span class="line">prod = a * b</span><br><span class="line">sum = a + b</span><br><span class="line">result = prod / sum</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
-<p>下图是 TensorFlow
-中运行代码之前以静态方式生成计算图的方式。计算图的核心优势是能实现并行化或依赖驱动式调度（dependency
-driving scheduling），这能让训练速度更快，更有效率。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201014090128.jpg"
-alt="v2-55783f66a4883d2a06ff911c3f5ff647_720w" />
-<figcaption
-aria-hidden="true">v2-55783f66a4883d2a06ff911c3f5ff647_720w</figcaption>
-</figure>
+<p>下图是 TensorFlow 中运行代码之前以静态方式生成计算图的方式。计算图的核心优势是能实现并行化或依赖驱动式调度（dependency driving scheduling），这能让训练速度更快，更有效率。</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201014090128.jpg" alt="v2-55783f66a4883d2a06ff911c3f5ff647_720w"></p>
 <p>类似于 TensorFlow，PyTorch 也有两个核心模块：</p>
 <ul>
 <li>计算图的按需和动态构建</li>
 <li>Autograd：执行动态图的自动微分</li>
 </ul>
-<p>可以在下图中看到，图会随着执行过程而改变和执行节点，没有特殊的会话接口或占位符。整体而言，这个框架与
-Python 语言的整合更紧密，大多数时候感觉更本地化。因此，PyTorch 是更
-Python 化的框架，而 TensorFlow 则感觉完全是一种新语言。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013155541.jpg"
-alt="v2-01031e3c22483574cc325c29a6f30a22_720w" />
-<figcaption
-aria-hidden="true">v2-01031e3c22483574cc325c29a6f30a22_720w</figcaption>
-</figure>
-<p>根据你所用的框架，在软件领域有很大的不同。TensorFlow 提供了使用
-TensorFlow Fold 库实现动态图的方式，而 PyTorch
-的动态图是内置的。<strong>分布式训练</strong>PyTorch 和 TensorFlow
-的一个主要差异特点是数据并行化。PyTorch 优化性能的方式是利用 Python
-对异步执行的本地支持。而用 TensorFlow
-时，你必须手动编写代码，并微调要在特定设备上运行的每个操作，以实现分布式训练。但是，你可以将
-PyTorch 中的所有功能都复现到 TensorFlow
-中，但这需要做很多工作。下面的代码片段展示了用 PyTorch
-为模型实现分布式训练的简单示例：</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160042.jpg"
-alt="v2-e1b0acf03e0f77506053395808253a17_720w" />
-<figcaption
-aria-hidden="true">v2-e1b0acf03e0f77506053395808253a17_720w</figcaption>
-</figure>
+<p>可以在下图中看到，图会随着执行过程而改变和执行节点，没有特殊的会话接口或占位符。整体而言，这个框架与 Python 语言的整合更紧密，大多数时候感觉更本地化。因此，PyTorch 是更 Python 化的框架，而 TensorFlow 则感觉完全是一种新语言。</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013155541.jpg" alt="v2-01031e3c22483574cc325c29a6f30a22_720w"></p>
+<p>根据你所用的框架，在软件领域有很大的不同。TensorFlow 提供了使用 TensorFlow Fold 库实现动态图的方式，而 PyTorch 的动态图是内置的。<strong>分布式训练</strong>PyTorch 和 TensorFlow 的一个主要差异特点是数据并行化。PyTorch 优化性能的方式是利用 Python 对异步执行的本地支持。而用 TensorFlow 时，你必须手动编写代码，并微调要在特定设备上运行的每个操作，以实现分布式训练。但是，你可以将 PyTorch 中的所有功能都复现到 TensorFlow 中，但这需要做很多工作。下面的代码片段展示了用 PyTorch 为模型实现分布式训练的简单示例：</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160042.jpg" alt="v2-e1b0acf03e0f77506053395808253a17_720w"></p>
 <p><strong>可视化</strong></p>
-<p>在训练过程的可视化方面，TensorFlow
-更有优势。可视化能帮助开发者跟踪训练过程以及实现更方便的调试。TensorFlow
-的可视化库名为 TensorBoard。PyTorch 开发者则使用 Visdom，但是 Visdom
-提供的功能很简单且有限，所以 TensorBoard
-在训练过程可视化方面更好。TensorBoard 的特性：</p>
+<p>在训练过程的可视化方面，TensorFlow 更有优势。可视化能帮助开发者跟踪训练过程以及实现更方便的调试。TensorFlow 的可视化库名为 TensorBoard。PyTorch 开发者则使用 Visdom，但是 Visdom 提供的功能很简单且有限，所以 TensorBoard 在训练过程可视化方面更好。TensorBoard 的特性：</p>
 <ul>
 <li>跟踪和可视化损失和准确度等指标</li>
 <li>可视化计算图（操作和层）</li>
@@ -713,63 +513,22 @@ aria-hidden="true">v2-e1b0acf03e0f77506053395808253a17_720w</figcaption>
 <li>展示图像、文本和音频数据</li>
 <li>分析 TensorFlow 程序</li>
 </ul>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160133.jpg"
-alt="v2-453ad86b4424b3cb8a8677bdb367aa32_720w" />
-<figcaption
-aria-hidden="true">v2-453ad86b4424b3cb8a8677bdb367aa32_720w</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160133.jpg" alt="v2-453ad86b4424b3cb8a8677bdb367aa32_720w"></p>
 <p>Visdom 的特性</p>
 <ul>
 <li>处理回调</li>
 <li>绘制图表和细节</li>
 <li>管理环境</li>
 </ul>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160145.jpg"
-alt="v2-6b37a9f7b32fa35d84514613a78f6169_720w" />
-<figcaption
-aria-hidden="true">v2-6b37a9f7b32fa35d84514613a78f6169_720w</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013160145.jpg" alt="v2-6b37a9f7b32fa35d84514613a78f6169_720w"></p>
 <p><strong>生产部署</strong></p>
-<p>在将训练好的模型部署到生产方面，TensorFlow
-显然是赢家。我们可以直接使用 TensorFlow serving 在 TensorFlow
-中部署模型，这是一种使用了 REST Client API 的框架。使用 PyTorch
-时，在最新的 1.0
-稳定版中，生产部署要容易一些，但它没有提供任何用于在网络上直接部署模型的框架。你必须使用
-Flask 或 Django 作为后端服务器。所以，如果要考虑性能，TensorFlow serving
-可能是更好的选择。</p>
+<p>在将训练好的模型部署到生产方面，TensorFlow 显然是赢家。我们可以直接使用 TensorFlow serving 在 TensorFlow 中部署模型，这是一种使用了 REST Client API 的框架。使用 PyTorch 时，在最新的 1.0 稳定版中，生产部署要容易一些，但它没有提供任何用于在网络上直接部署模型的框架。你必须使用 Flask 或 Django 作为后端服务器。所以，如果要考虑性能，TensorFlow serving 可能是更好的选择。</p>
 <p><strong>用 PyTorch 和 TensorFlow 定义一个简单的神经网络</strong></p>
-<p>我们比较一下如何在 PyTorch 和 TensorFlow 中声明神经网络。在 PyTorch
-中，神经网络是一个类，我们可以使用 torch.nn
-软件包导入构建架构所必需的层。所有的层都首先在 <strong>init</strong>()
-方法中声明，然后在 forward() 方法中定义输入 x
-在网络所有层中的遍历方式。最后，我们声明一个变量模型并将其分配给定义的架构（model
-= NeuralNet()）。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013162209.webp"
-alt="v2-ed5b9a19003e316bf892e8322f8d372b_720w" />
-<figcaption
-aria-hidden="true">v2-ed5b9a19003e316bf892e8322f8d372b_720w</figcaption>
-</figure>
-<p>近期 Keras 被合并到了 TensorFlow 库中，这是一个使用 TensorFlow
-作为后端的神经网络框架。从那时起，在 TensorFlow 中声明层的句法就与 Keras
-的句法类似了。首先，我们声明变量并将其分配给我们将要声明的架构类型，这里的例子是一个
-Sequential() 架构。接下来，我们使用 model.add()
-方法以序列方式直接添加层。层的类型可以从 tf.layers
-导入，如下代码片段所示：</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013162223.webp"
-alt="v2-ed5b9a19003e316bf892e8322f8d372b_720w (1)" />
-<figcaption aria-hidden="true">v2-ed5b9a19003e316bf892e8322f8d372b_720w
-(1)</figcaption>
-</figure>
-<h3 id="tensorflow-和-pytorch-的优缺点">TensorFlow 和 PyTorch
-的优缺点</h3>
+<p>我们比较一下如何在 PyTorch 和 TensorFlow 中声明神经网络。在 PyTorch 中，神经网络是一个类，我们可以使用 torch.nn 软件包导入构建架构所必需的层。所有的层都首先在 <strong>init</strong>() 方法中声明，然后在 forward() 方法中定义输入 x 在网络所有层中的遍历方式。最后，我们声明一个变量模型并将其分配给定义的架构（model = NeuralNet()）。</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013162209.webp" alt="v2-ed5b9a19003e316bf892e8322f8d372b_720w"></p>
+<p>近期 Keras 被合并到了 TensorFlow 库中，这是一个使用 TensorFlow 作为后端的神经网络框架。从那时起，在 TensorFlow 中声明层的句法就与 Keras 的句法类似了。首先，我们声明变量并将其分配给我们将要声明的架构类型，这里的例子是一个 Sequential() 架构。接下来，我们使用 model.add() 方法以序列方式直接添加层。层的类型可以从 tf.layers 导入，如下代码片段所示：</p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013162223.webp" alt="v2-ed5b9a19003e316bf892e8322f8d372b_720w (1)"></p>
+<h3 id="TensorFlow-和-PyTorch-的优缺点">TensorFlow 和 PyTorch 的优缺点</h3>
 <p>TensorFlow和PyTorch各有其优缺点。</p>
 <p><strong>TensorFlow 的优点：</strong></p>
 <ul>
@@ -824,13 +583,13 @@ alt="v2-ed5b9a19003e316bf892e8322f8d372b_720w (1)" />
       <div class="popular-posts-title"><a href="\深度学习笔记(三)---基础理解\" rel="bookmark">深度学习笔记(三)---基础理解</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\深度学习笔记(四)---优化方法理解\" rel="bookmark">深度学习笔记(四)---优化方法理解</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\深度学习笔记(一)---基础\" rel="bookmark">深度学习笔记(一)---基础</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\深度学习笔记(零)---英语\" rel="bookmark">深度学习笔记(零)---英语</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\深度学习笔记(四)---优化方法理解\" rel="bookmark">深度学习笔记(四)---优化方法理解</a></div>
     </li>
   </ul>
 
@@ -968,9 +727,7 @@ alt="v2-ed5b9a19003e316bf892e8322f8d372b_720w (1)" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总览"><span class="nav-text">总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#caffe"><span class="nav-text">Caffe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tensorflow"><span class="nav-text">Tensorflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pytorch"><span class="nav-text">Pytorch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mxnet"><span class="nav-text">Mxnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keras"><span class="nav-text">Keras</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paddlepaddle"><span class="nav-text">Paddlepaddle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cntk"><span class="nav-text">CNTK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matconvnet"><span class="nav-text">Matconvnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deeplearning4j"><span class="nav-text">Deeplearning4j</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chainer"><span class="nav-text">Chainer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lasagnetheano"><span class="nav-text">Lasagne&#x2F;Theano</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#darknet"><span class="nav-text">Darknet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型的求导"><span class="nav-text">模型的求导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#forward-mode"><span class="nav-text">Forward Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reverse-mode"><span class="nav-text">Reverse Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tensorflow与pytorch之争"><span class="nav-text">TensorFlow与PyTorch之争</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#我们可以用-tensorflow-和-pytorch-构建什么"><span class="nav-text">我们可以用 TensorFlow
-和 PyTorch 构建什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pytorch-和-tensorflow-对比"><span class="nav-text">PyTorch 和 TensorFlow 对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow-和-pytorch-的优缺点"><span class="nav-text">TensorFlow 和 PyTorch
-的优缺点</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总览"><span class="nav-text">总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Caffe"><span class="nav-text">Caffe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tensorflow"><span class="nav-text">Tensorflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pytorch"><span class="nav-text">Pytorch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mxnet"><span class="nav-text">Mxnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keras"><span class="nav-text">Keras</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paddlepaddle"><span class="nav-text">Paddlepaddle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CNTK"><span class="nav-text">CNTK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Matconvnet"><span class="nav-text">Matconvnet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deeplearning4j"><span class="nav-text">Deeplearning4j</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chainer"><span class="nav-text">Chainer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lasagne-Theano"><span class="nav-text">Lasagne&#x2F;Theano</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Darknet"><span class="nav-text">Darknet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型的求导"><span class="nav-text">模型的求导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Forward-Mode"><span class="nav-text">Forward Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reverse-Mode"><span class="nav-text">Reverse Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorFlow与PyTorch之争"><span class="nav-text">TensorFlow与PyTorch之争</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#我们可以用-TensorFlow-和-PyTorch-构建什么？"><span class="nav-text">我们可以用 TensorFlow 和 PyTorch 构建什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PyTorch-和-TensorFlow-对比"><span class="nav-text">PyTorch 和 TensorFlow 对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow-和-PyTorch-的优缺点"><span class="nav-text">TensorFlow 和 PyTorch 的优缺点</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1342,13 +1099,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

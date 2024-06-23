@@ -33,19 +33,34 @@
     var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。 参考：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;weihengblog&#x2F;p&#x2F;9656257.html">
+  <meta name="description" content="服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。 参考：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;weihengblog&#x2F;p&#x2F;9656257.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pycharm远程调试项目">
 <meta property="og:url" content="zchsakura.github.io/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/index.html">
 <meta property="og:site_name" content="周小天的Blog">
-<meta property="og:description" content="服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。 参考：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;weihengblog&#x2F;p&#x2F;9656257.html">
+<meta property="og:description" content="服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。 参考：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;weihengblog&#x2F;p&#x2F;9656257.html">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105507.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105650.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105658.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105705.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105836.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105842.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105846.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105852.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105900.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110011.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110017.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110030.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110034.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110042.png">
 <meta property="article:published_time" content="2020-05-20T14:27:45.000Z">
 <meta property="article:modified_time" content="2024-06-16T08:10:22.748Z">
 <meta property="article:author" content="周小天">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="pycharm">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105507.png">
 
 <link rel="canonical" href="zchsakura.github.io/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/">
 
@@ -292,7 +307,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
+              <span>928</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -312,138 +327,51 @@
 
       
         <p>服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。</p>
-<p>参考：https://www.cnblogs.com/weihengblog/p/9656257.html</p>
+<p>参考：<a href="https://www.cnblogs.com/weihengblog/p/9656257.html" target="_blank" rel="noopener">https://www.cnblogs.com/weihengblog/p/9656257.html</a></p>
 <a id="more"></a>
 <p>pycharm是一个非常强大的python开发工具，现在很多代码最终在线上跑的环境都是linux，而开发环境可能还是windows下开发，这就需要经常在linux上进行调试，或者在linux对代码进行编写，而pycharm提供了非常便捷的方式。具体实现在windows上远程linux开发和调试的代码步骤如下：</p>
-<ol type="1">
-<li><p>本地和远程同步</p></li>
-<li><p>配置Project Interpreter（使用远程的Python解释器）</p></li>
-<li><p>设置Terminal运行的Python版本</p></li>
-<li><p>使用Terminal登陆到Linux服务器</p></li>
+<ol>
+<li>
+<p>本地和远程同步</p>
+</li>
+<li>
+<p>配置Project Interpreter（使用远程的Python解释器）</p>
+</li>
+<li>
+<p>设置Terminal运行的Python版本</p>
+</li>
+<li>
+<p>使用Terminal登陆到Linux服务器</p>
+</li>
 </ol>
-<h3 id="一本地和远程代码同步">一、本地和远程代码同步</h3>
+<h3 id="一、本地和远程代码同步">一、本地和远程代码同步</h3>
 <p>首先，在本地和远程拥有相同的项目代码：</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105507.png"
-alt="1321568-20180916144244833-1490970117" />
-<figcaption
-aria-hidden="true">1321568-20180916144244833-1490970117</figcaption>
-</figure>
-<p><strong>在windows平台使用Pycharm打开项目,然后：Tools -&gt; Deployment
--&gt; configuration，然后新建远程服务器</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105650.png"
-alt="1321568-20180916144731393-549531962" />
-<figcaption
-aria-hidden="true">1321568-20180916144731393-549531962</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105507.png" alt="1321568-20180916144244833-1490970117"></p>
+<p><strong>在windows平台使用Pycharm打开项目,然后：Tools -&gt; Deployment -&gt; configuration，然后新建远程服务器</strong></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105650.png" alt="1321568-20180916144731393-549531962"></p>
 <p><strong>然后进行服务器配置</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105658.png"
-alt="1321568-20180916145358775-782073356" />
-<figcaption
-aria-hidden="true">1321568-20180916145358775-782073356</figcaption>
-</figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105705.png"
-alt="1321568-20180916145549234-784619187" />
-<figcaption
-aria-hidden="true">1321568-20180916145549234-784619187</figcaption>
-</figure>
-<p><strong>点击Ok</strong>，<strong>经过上面步骤的配置后，我们可以在PyCharm
-界面的右边查看远端代码，如下图：</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105836.png"
-alt="1321568-20180916145725516-1886186686" />
-<figcaption
-aria-hidden="true">1321568-20180916145725516-1886186686</figcaption>
-</figure>
-<p><strong>切记！勾选 Automatic Upload
-实现本地自动同步到远端</strong></p>
-<h3 id="二配置project-interpreter使用远程的python解释器">二、配置Project
-Interpreter（使用远程的Python解释器）</h3>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105842.png"
-alt="1321568-20180916145905889-619698935" />
-<figcaption
-aria-hidden="true">1321568-20180916145905889-619698935</figcaption>
-</figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105846.png"
-alt="1321568-20180916150051936-1448125681" />
-<figcaption
-aria-hidden="true">1321568-20180916150051936-1448125681</figcaption>
-</figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105852.png"
-alt="1321568-20180916150149777-1149968755" />
-<figcaption
-aria-hidden="true">1321568-20180916150149777-1149968755</figcaption>
-</figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105900.png"
-alt="1321568-20180916150602788-417269814" />
-<figcaption
-aria-hidden="true">1321568-20180916150602788-417269814</figcaption>
-</figure>
-<p><strong>点击 OK 保存，点击Finish完成。然后在编辑新添加的Python
-Interpreter，如下图所示：</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110011.png"
-alt="1321568-20180916151536382-1761728586" />
-<figcaption
-aria-hidden="true">1321568-20180916151536382-1761728586</figcaption>
-</figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110017.png"
-alt="1321568-20180916151652947-1922094213" />
-<figcaption
-aria-hidden="true">1321568-20180916151652947-1922094213</figcaption>
-</figure>
-<p><strong>这样，本地和远程的项目
-以来的pip都是相同的，解释器也是相同的。</strong></p>
-<h3
-id="三设置terminal运行的python版本">三、设置Terminal运行的Python版本</h3>
-<p><strong>File -&gt; Settings -&gt; Tools -&gt; SSH Terminal，在
-Deployment server
-选择Linux服务器的Python版本路径。（配置已经存在，只要选择即可）</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110030.png"
-alt="1321568-20180916151811986-1349908586" />
-<figcaption
-aria-hidden="true">1321568-20180916151811986-1349908586</figcaption>
-</figure>
-<h3
-id="四使用terminal登陆到linux服务器">四、使用Terminal登陆到Linux服务器</h3>
-<p><strong>选择 Tools -&gt; Start SSH session，默认会开启Linux
-ssh会话窗口，如下图：</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110034.png"
-alt="1321568-20180916151852453-923493946" />
-<figcaption
-aria-hidden="true">1321568-20180916151852453-923493946</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105658.png" alt="1321568-20180916145358775-782073356"></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105705.png" alt="1321568-20180916145549234-784619187"></p>
+<p><strong>点击Ok</strong>，<strong>经过上面步骤的配置后，我们可以在PyCharm 界面的右边查看远端代码，如下图：</strong></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105836.png" alt="1321568-20180916145725516-1886186686"></p>
+<p><strong>切记！勾选 Automatic Upload  实现本地自动同步到远端</strong></p>
+<h3 id="二、配置Project-Interpreter（使用远程的Python解释器）">二、配置Project Interpreter（使用远程的Python解释器）</h3>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105842.png" alt="1321568-20180916145905889-619698935"></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105846.png" alt="1321568-20180916150051936-1448125681"></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105852.png" alt="1321568-20180916150149777-1149968755"></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012105900.png" alt="1321568-20180916150602788-417269814"></p>
+<p><strong>点击 OK 保存，点击Finish完成。然后在编辑新添加的Python Interpreter，如下图所示：</strong></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110011.png" alt="1321568-20180916151536382-1761728586"></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110017.png" alt="1321568-20180916151652947-1922094213"></p>
+<p><strong>这样，本地和远程的项目 以来的pip都是相同的，解释器也是相同的。</strong></p>
+<h3 id="三、设置Terminal运行的Python版本">三、设置Terminal运行的Python版本</h3>
+<p><strong>File -&gt; Settings -&gt; Tools -&gt; SSH Terminal，在 Deployment server 选择Linux服务器的Python版本路径。（配置已经存在，只要选择即可）</strong></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110030.png" alt="1321568-20180916151811986-1349908586"></p>
+<h3 id="四、使用Terminal登陆到Linux服务器">四、使用Terminal登陆到Linux服务器</h3>
+<p><strong>选择 Tools -&gt; Start SSH session，默认会开启Linux ssh会话窗口，如下图：</strong></p>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110034.png" alt="1321568-20180916151852453-923493946"></p>
 <p><strong>就可以执行Linux命令了，在远程Linux主机上，如下图：</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110042.png"
-alt="1321568-20180916152101674-143914985" />
-<figcaption
-aria-hidden="true">1321568-20180916152101674-143914985</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012110042.png" alt="1321568-20180916152101674-143914985"></p>
 
     </div>
 
@@ -471,13 +399,13 @@ aria-hidden="true">1321568-20180916152101674-143914985</figcaption>
       <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
+      <div class="popular-posts-title"><a href="\python中-和is的区别\" rel="bookmark">python中==和is的区别</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\python赋值-浅拷贝-深拷贝\" rel="bookmark">python赋值&浅拷贝&深拷贝</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
     </li>
   </ul>
 
@@ -613,8 +541,7 @@ aria-hidden="true">1321568-20180916152101674-143914985</figcaption>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一本地和远程代码同步"><span class="nav-text">一、本地和远程代码同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二配置project-interpreter使用远程的python解释器"><span class="nav-text">二、配置Project
-Interpreter（使用远程的Python解释器）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三设置terminal运行的python版本"><span class="nav-text">三、设置Terminal运行的Python版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四使用terminal登陆到linux服务器"><span class="nav-text">四、使用Terminal登陆到Linux服务器</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、本地和远程代码同步"><span class="nav-text">一、本地和远程代码同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、配置Project-Interpreter（使用远程的Python解释器）"><span class="nav-text">二、配置Project Interpreter（使用远程的Python解释器）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、设置Terminal运行的Python版本"><span class="nav-text">三、设置Terminal运行的Python版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、使用Terminal登陆到Linux服务器"><span class="nav-text">四、使用Terminal登陆到Linux服务器</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -986,13 +913,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

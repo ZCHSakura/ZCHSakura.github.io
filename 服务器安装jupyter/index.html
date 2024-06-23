@@ -40,12 +40,15 @@
 <meta property="og:site_name" content="周小天的Blog">
 <meta property="og:description" content="属实不想用xshell上的ipython，命令行也确实没有jupyter方便，毕竟jupyter还可以保存运行过程，还可以进行拓展。所以我在服务器上搭建了一个jupyter">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101310.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101630.png">
 <meta property="article:published_time" content="2020-10-15T02:07:28.000Z">
 <meta property="article:modified_time" content="2024-06-16T08:10:22.831Z">
 <meta property="article:author" content="周小天">
 <meta property="article:tag" content="服务器">
 <meta property="article:tag" content="jupyter">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101310.png">
 
 <link rel="canonical" href="zchsakura.github.io/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85jupyter/">
 
@@ -292,7 +295,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -314,57 +317,47 @@
         <p>属实不想用xshell上的ipython，命令行也确实没有jupyter方便，毕竟jupyter还可以保存运行过程，还可以进行拓展。所以我在服务器上搭建了一个jupyter</p>
 <a id="more"></a>
 <h2 id="参考">参考</h2>
-<p>https://blog.csdn.net/qq_42137895/article/details/104283459?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param</p>
-<h2 id="安装jupyter服务">1. 安装jupyter服务</h2>
+<p><a href="https://blog.csdn.net/qq_42137895/article/details/104283459?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param" target="_blank" rel="noopener">https://blog.csdn.net/qq_42137895/article/details/104283459?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param</a></p>
+<h2 id="1-安装jupyter服务">1. 安装jupyter服务</h2>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3.7 install jupyter</span><br></pre></td></tr></table></figure>
-<h2 id="配置远程访问jupyter">2. 配置远程访问jupyter</h2>
+<h2 id="2-配置远程访问jupyter">2. 配置远程访问jupyter</h2>
 <p>先输入ipython进入交互模式 ，见图输入以下内容，设置好密码过后</p>
 <p>会自动生成一个<strong>Verify password</strong>复制保存下来</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101310.png"
-alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n" />
-<figcaption
-aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n</figcaption>
-</figure>
-<h3 id="生成配置文件">2.1生成配置文件</h3>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101310.png" alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDQwZTJmYjM4YjhjM2NkNDMwOTcucG5n"></p>
+<h3 id="2-1生成配置文件">2.1生成配置文件</h3>
 <p>在输入以下内容</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
 <p>就会自动在根目录下生成文件（~/.jupyter/jupyter_notebook_config.py），如果看不到，选项中选择显示隐藏文件</p>
-<h3 id="修改配置文件">2.2修改配置文件</h3>
+<h3 id="2-2修改配置文件">2.2修改配置文件</h3>
 <p>建议先把jupyter_notebook_config.py文件传输到本地修改完成再上传</p>
 <p>找到以下字符串进行修改</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'*'</span> <span class="comment"># 如果这里修过过后启动服务报错 则修改为c.NotebookApp.ip='0.0.0.0'</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1****'</span> <span class="comment">#就之前保存的验证密码</span></span><br><span class="line">c.NotebookApp.open_browser = <span class="literal">False</span> <span class="comment"># 设置是否自动打开浏览器</span></span><br><span class="line">c.NotebookApp.port = <span class="number">9999</span>  <span class="comment"># 设置端口</span></span><br><span class="line">c.NotebookApp.allow_remote_access = <span class="literal">True</span></span><br><span class="line">c.ContentsManager.root_dir = <span class="string">'/var/www/jupyter_python'</span>	<span class="comment"># 设置jupyter显示目录</span></span><br></pre></td></tr></table></figure>
-<h3 id="启动服务">3. 启动服务</h3>
+<h3 id="3-启动服务">3. 启动服务</h3>
 <p>这里推荐两种</p>
-<ol type="1">
-<li><p>入门：<code>jupyter notebook --allow-root</code></p>
+<ol>
+<li>
+<p>入门：<code>jupyter notebook --allow-root</code></p>
 <blockquote>
 <p>但这种会一直占着窗口，无法执行其他命令</p>
 <p>Ctrl + C 即可结束</p>
-</blockquote></li>
-<li><p>进阶: <code>nohup jupyter notebook --allow-root &amp;</code></p>
+</blockquote>
+</li>
+<li>
+<p>进阶: <code>nohup jupyter notebook --allow-root &amp;</code></p>
 <blockquote>
-<p>nohup表示no hang up, 就是不挂起, 于是这个命令执行后即使终端退出,
-也不会停止运行.</p>
+<p>nohup表示no hang up, 就是不挂起, 于是这个命令执行后即使终端退出, 也不会停止运行.</p>
 <p>但要手动结束</p>
 <p>lsof -i : {端口号}</p>
-<p>然后 kill -9 {对应pid} #
-9的意思是发送KILL信号，立刻结束，可能会有数据丢失</p>
-</blockquote></li>
+<p>然后 kill -9 {对应pid} # 9的意思是发送KILL信号，立刻结束，可能会有数据丢失</p>
+</blockquote>
+</li>
 </ol>
 <p>启动以后在本机 输入<code>http://{服务器ip}:9999</code>进行访问</p>
-<h2 id="安装增强功能自动补全之类">4. 安装增强功能（自动补全之类）</h2>
+<h2 id="4-安装增强功能（自动补全之类）">4. 安装增强功能（自动补全之类）</h2>
 <p>在终端中依次执行以下4行代码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line">jupyter contrib nbextension install --user</span><br><span class="line">pip install jupyter_nbextensions_configurator</span><br><span class="line">jupyter nbextensions_configurator enable --user</span><br></pre></td></tr></table></figure>
 <p><strong>执行完成以后，重启jupyter，即可看到附加项</strong></p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101630.png"
-alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n" />
-<figcaption
-aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201015101630.png" alt="aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkNGVlZjUucG5n"></p>
 
     </div>
 
@@ -525,7 +518,7 @@ aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkN
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装jupyter服务"><span class="nav-text">1. 安装jupyter服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置远程访问jupyter"><span class="nav-text">2. 配置远程访问jupyter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成配置文件"><span class="nav-text">2.1生成配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置文件"><span class="nav-text">2.2修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动服务"><span class="nav-text">3. 启动服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装增强功能自动补全之类"><span class="nav-text">4. 安装增强功能（自动补全之类）</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装jupyter服务"><span class="nav-text">1. 安装jupyter服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置远程访问jupyter"><span class="nav-text">2. 配置远程访问jupyter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1生成配置文件"><span class="nav-text">2.1生成配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2修改配置文件"><span class="nav-text">2.2修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-启动服务"><span class="nav-text">3. 启动服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-安装增强功能（自动补全之类）"><span class="nav-text">4. 安装增强功能（自动补全之类）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -897,13 +890,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

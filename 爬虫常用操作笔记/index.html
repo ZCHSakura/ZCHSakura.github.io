@@ -43,8 +43,8 @@
 <meta property="article:published_time" content="2020-05-09T09:09:46.000Z">
 <meta property="article:modified_time" content="2024-06-16T08:10:22.838Z">
 <meta property="article:author" content="周小天">
-<meta property="article:tag" content="python">
 <meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="python">
 <meta property="article:tag" content="scrapy">
 <meta name="twitter:card" content="summary">
 
@@ -314,7 +314,7 @@
       
         <p>记录一些常用的代码，免得老去翻代码</p>
 <a id="more"></a>
-<h3 id="配置">0.配置</h3>
+<h3 id="0-配置">0.配置</h3>
 <p><strong>创建项目</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy startproject adb</span><br></pre></td></tr></table></figure>
 <p><strong>创建爬虫</strong></p>
@@ -323,20 +323,20 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:\Anaconda3\Lib\site-packages\scrapy\cmdline.py</span><br></pre></td></tr></table></figure>
 <p><strong>参数</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crawl 爬虫名字</span><br></pre></td></tr></table></figure>
-<h3 id="翻页">1.翻页</h3>
+<h3 id="1-翻页">1.翻页</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 翻页</span></span><br><span class="line">next_page = response.xpath(<span class="string">'//div[@class="page"]/a[contains(text(),"下一页")]/@href'</span>).extract_first()</span><br><span class="line"><span class="keyword">if</span> next_page:</span><br><span class="line">	next_url = <span class="string">'https://www.2345daohang.com'</span> + next_page</span><br><span class="line">	<span class="keyword">yield</span> scrapy.Request(next_url, callback=self.bookList, meta=&#123;<span class="string">'category'</span>: response.meta[<span class="string">'category'</span>]&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="content处理">2.content处理</h3>
+<h3 id="2-content处理">2.content处理</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="批量入库">3.批量入库</h3>
+<h3 id="3-批量入库">3.批量入库</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"******\\yangsheng_info.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">sql = <span class="string">"INSERT INTO main_data_tougaolanmu(theme,name,content) VALUES(%s,%s,%s)"</span></span><br><span class="line">cursor.executemany(sql, data)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"数据库导入操作"</span>)</span><br><span class="line"></span><br><span class="line">db.commit()</span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="逐条入库">4.逐条入库</h3>
+<h3 id="4-逐条入库">4.逐条入库</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"***************\\minsu_info.csv"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> data:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    sql1 = <span class="string">"SELECT id from user_userInfo WHERE nickname = %s"</span></span><br><span class="line">    <span class="keyword">if</span> dd[<span class="number">1</span>] == <span class="string">'佚名'</span>:</span><br><span class="line">        dd[<span class="number">1</span>] = <span class="string">'官方2号'</span></span><br><span class="line">    cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">    results = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">    <span class="keyword">if</span> results:</span><br><span class="line">        sql2 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = results[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql2, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错1'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql3, dd[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错2'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">        result = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">        sql4 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql4, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'出错3'</span>)</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            db.rollback()</span><br><span class="line">    print(i, results)</span><br><span class="line"></span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="获取html">5.获取HTML</h3>
+<h3 id="5-获取HTML">5.获取HTML</h3>
 <p>scrapy的原生的<code>response</code>可以直接调用<code>.text()</code>函数，但是当<code>response</code>调用过<code>xpath</code>之后虽然使用<code>dir()</code>显示还是有<code>text</code>属性但是并不能调用，此时可以使用<code>getall()</code>获取对应的html，之后再用正则表达式，<code>split()</code>之类的进行数据的处理。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">content = response.xpath(<span class="string">'//div[@class="ct tt zooms"]'</span>)[<span class="number">0</span>].getall()[<span class="number">0</span>]</span><br><span class="line">item[<span class="string">'content'</span>] = re.sub(<span class="string">r'href="([^"])*[^=k]"'</span>, <span class="string">""</span>, content)</span><br></pre></td></tr></table></figure>
-<h3 id="创建csv">6.创建CSV</h3>
+<h3 id="6-创建CSV">6.创建CSV</h3>
 <figure class="highlight python"><figcaption><span>csv_init.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../../book_info.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [<span class="string">"category"</span>, <span class="string">"name"</span>, <span class="string">"cover"</span>, <span class="string">"author"</span>, <span class="string">"intro"</span>]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
-<h3 id="管道">7.管道</h3>
+<h3 id="7-管道">7.管道</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'11_1900.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [item[<span class="string">"name"</span>], item[<span class="string">"othername"</span>], item[<span class="string">'author'</span>], item[<span class="string">'country'</span>], item[<span class="string">'time'</span>], item[<span class="string">'intro'</span>]]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -365,13 +365,13 @@
       <div class="popular-posts-title"><a href="\基于redis使用scrapy下载中间件实现简单的增量爬虫\" rel="bookmark">基于redis使用scrapy下载中间件实现简单的增量爬虫</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\MySQL最左前缀\" rel="bookmark">MySQL最左前缀</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\Ubuntu安装mysql\" rel="bookmark">Ubuntu安装MySQL</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\Django学习笔记\" rel="bookmark">Django学习笔记</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
     </li>
   </ul>
 
@@ -430,8 +430,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
               <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
               <a href="/tags/scrapy/" rel="tag"><i class="fa fa-tag"></i> scrapy</a>
           </div>
 
@@ -508,7 +508,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-text">0.配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#翻页"><span class="nav-text">1.翻页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#content处理"><span class="nav-text">2.content处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量入库"><span class="nav-text">3.批量入库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逐条入库"><span class="nav-text">4.逐条入库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取html"><span class="nav-text">5.获取HTML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建csv"><span class="nav-text">6.创建CSV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-text">7.管道</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-配置"><span class="nav-text">0.配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-翻页"><span class="nav-text">1.翻页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-content处理"><span class="nav-text">2.content处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-批量入库"><span class="nav-text">3.批量入库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-逐条入库"><span class="nav-text">4.逐条入库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-获取HTML"><span class="nav-text">5.获取HTML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-创建CSV"><span class="nav-text">6.创建CSV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-管道"><span class="nav-text">7.管道</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -880,13 +880,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

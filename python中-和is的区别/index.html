@@ -315,23 +315,15 @@
 <h3 id="问题出现">问题出现</h3>
 <p>在py文件中</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">"hello"</span></span><br><span class="line">b = <span class="string">"hello"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 True </span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 False</span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True </span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">b = a</span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 True </span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br></pre></td></tr></table></figure>
-<p>官方文档中说 is 表示的是对象标示符（object identity），而 ==
-表示的是相等（equality）。is
-的作用是用来检查对象的标示符是否一致，也就是比较两个对象在内存中的地址是否一样，而
-== 是用来检查两个对象是否相等。</p>
-<p>我们在检查 a is b 的时候，其实相当于检查 id(a) == id(b)。而检查 a ==
-b 的时候，实际是调用了对象 a 的 <code>__eq()__</code>方法，a == b 相当于
-<code>a.__eq__(b)</code>。</p>
-<p>一般情况下，如果 a is b 返回True的话，即 a 和 b
-指向同一块内存地址的话，a == b 也返回True，即 a 和 b 的值也相等。</p>
+<p>官方文档中说 is 表示的是对象标示符（object identity），而 == 表示的是相等（equality）。is 的作用是用来检查对象的标示符是否一致，也就是比较两个对象在内存中的地址是否一样，而 == 是用来检查两个对象是否相等。</p>
+<p>我们在检查 a is b 的时候，其实相当于检查 id(a) == id(b)。而检查 a == b 的时候，实际是调用了对象 a 的 <code>__eq()__</code>方法，a == b 相当于 <code>a.__eq__(b)</code>。</p>
+<p>一般情况下，如果 a is b 返回True的话，即 a 和 b 指向同一块内存地址的话，a == b 也返回True，即 a 和 b 的值也相等。</p>
 <p>接下来再看下面的代码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">"hello"</span></span><br><span class="line">b = <span class="string">"hello"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 True </span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">"hello world"</span></span><br><span class="line">b = <span class="string">"hello world"</span></span><br><span class="line">print(a <span class="keyword">is</span> b)  <span class="comment"># 输出 False</span></span><br><span class="line">print(a == b)  <span class="comment"># 输出 True</span></span><br></pre></td></tr></table></figure>
-<p>这里我们又发现hello使用is判断为True，但hello
-world判断为False。这就和python中的小整数对象池和大整数对象池和intern机制有关系了。</p>
+<p>这里我们又发现hello使用is判断为True，但hello world判断为False。这就和python中的小整数对象池和大整数对象池和intern机制有关系了。</p>
 <h3 id="小整数对象池">小整数对象池</h3>
 <p>python解释器为了提升运行速度使用了小整数对象池，来避免为整数频繁定义与销毁内存空间。</p>
-<p>小整数对象池定义的范围<strong>[-5,256]</strong>在这个范围的整数对象都是提前创建好的，不会被垃圾回收机制以内存垃圾回收，在这个范围内的整数使用的都是同一个对象(引用
-id内存地址值相同)</p>
+<p>小整数对象池定义的范围**[-5,256]**在这个范围的整数对象都是提前创建好的，不会被垃圾回收机制以内存垃圾回收，在这个范围内的整数使用的都是同一个对象(引用 id内存地址值相同)</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a=-5</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b=-5</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a=256</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b=256</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a is b</span></span><br><span class="line">True</span><br></pre></td></tr></table></figure>
 <h3 id="大整数对象池">大整数对象池</h3>
 <p>大整数对象池是在上述范围之外</p>
@@ -372,10 +364,10 @@ id内存地址值相同)</p>
       <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
+      <div class="popular-posts-title"><a href="\python赋值-浅拷贝-深拷贝\" rel="bookmark">python赋值&浅拷贝&深拷贝</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
+      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
     </li>
   </ul>
 
@@ -882,13 +874,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

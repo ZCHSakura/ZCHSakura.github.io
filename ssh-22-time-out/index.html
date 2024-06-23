@@ -316,19 +316,17 @@
 <p>这里主要记录下网络原因引起的time out该怎么办。</p>
 <h3 id="检测">检测</h3>
 <p><code>ssh -T git@github.com</code></p>
-<p>如果出现：You’ve successfully
-authenticated，那么连接成功可以使用了。如果出现：ssh: connect to host
-github.com port 22: Connection timed out，就说明连接超时。</p>
+<p>如果出现：You’ve successfully authenticated，那么连接成功可以使用了。如果出现：ssh: connect to host <a href="http://github.com" target="_blank" rel="noopener">github.com</a> port 22: Connection timed out，就说明连接超时。</p>
 <p>连接失败后，可以同样试试<code>ssh -T -p 443 git@github.com</code>，检查是否有异常。</p>
 <p>如果加上443之后能够success的话基本就是网络问题，我们需要使用443端口去连接git。</p>
 <h3 id="配置">配置</h3>
-<ol type="1">
+<ol>
 <li>cd ~/.ssh</li>
 <li>配置或新建config文件</li>
 <li>编辑文件内容并保存退出</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">User 你的邮箱</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
+<ol start="4">
 <li>使用<code>ssh -T git@github.com</code>测试下</li>
 </ol>
 
@@ -859,13 +857,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

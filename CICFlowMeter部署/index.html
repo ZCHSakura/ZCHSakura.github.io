@@ -40,11 +40,24 @@
 <meta property="og:site_name" content="周小天的Blog">
 <meta property="og:description" content="记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639724.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639887.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640674.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640724.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640701.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061641290.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061643419.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061644038.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645003.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645493.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061646710.png">
+<meta property="og:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061724179.png">
 <meta property="article:published_time" content="2022-07-06T02:54:45.000Z">
 <meta property="article:modified_time" content="2024-06-16T08:59:56.330Z">
 <meta property="article:author" content="周小天">
 <meta property="article:tag" content="CICFlowMeter">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639724.png">
 
 <link rel="canonical" href="zchsakura.github.io/CICFlowMeter%E9%83%A8%E7%BD%B2/">
 
@@ -315,18 +328,20 @@
 <h2 id="部署整体流程">部署整体流程</h2>
 <p>下面我把CICFlowMeter简写为CIC。这里先说一下联网部署的整体流程，在联网情况下部署一般只有一个问题，就是jnetpcap依赖的安装。</p>
 <blockquote>
-<p>在这里特别提醒一下，尽量不要使用open
-jdk，笔者使用openjdk就会有问题，建议最好使用Oracle的JDK！！！！！！</p>
+<p>在这里特别提醒一下，尽量不要使用open jdk，笔者使用openjdk就会有问题，建议最好使用Oracle的JDK！！！！！！</p>
 <p>还有就是笔者尝试过在相同操作系统，相同架构的电脑上完成打包的CIC是可以直接复制到别的电脑上的，这就意味着在另一台电脑上不用配置mvn和gradle这些内容，只需要配置JDK然后把打出来的压缩包复制过去，然后配置好libpcap-dev和jnetpcap依赖就可以使用了，不同系统和架构的笔者没有尝试过。</p>
 </blockquote>
 <h3 id="环境配置">环境配置</h3>
 <p>笔者使用是自己下载的软件包，所以要自己配置下环境</p>
 <ul>
-<li><p>/etc/profile</p></li>
-<li><p>/home/user(用户名)/.bashrc</p></li>
+<li>
+<p>/etc/profile</p>
+</li>
+<li>
+<p>/home/user(用户名)/.bashrc</p>
+</li>
 </ul>
-<p>在上述两个文件末尾中添加下列环境变量，添加完成后使用source
-etc/profile和source /home/user/.bashrc</p>
+<p>在上述两个文件末尾中添加下列环境变量，添加完成后使用source etc/profile和source /home/user/.bashrc</p>
 <ul>
 <li>配置jdk 1.8.0_311</li>
 </ul>
@@ -341,16 +356,27 @@ etc/profile和source /home/user/.bashrc</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GRADLE_HOME&#x3D;&#x2F;***&#x2F;Traffic_arm&#x2F;gradle-3.3</span><br><span class="line">export PATH&#x3D;$GRADLE_HOME&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
 <h3 id="验证环境是否配置成功">验证环境是否配置成功</h3>
 <ul>
-<li><p>使用java -version查看java版本是否与环境变量中一致</p></li>
-<li><p>使用which java查看路径是否与环境变量一致</p></li>
-<li><p>如果which
-java显示与环境变量不一致，而是/usr/bin/java之类的路径则使用以下命令（这种情况主要是机子上本身存在jdk，理论上将如果在配置环境变量时如果把新的路径放在$PATH前的话是不会出现这个问题的）</p></li>
+<li>
+<p>使用java -version查看java版本是否与环境变量中一致</p>
+</li>
+<li>
+<p>使用which java查看路径是否与环境变量一致</p>
+</li>
+<li>
+<p>如果which java显示与环境变量不一致，而是/usr/bin/java之类的路径则使用以下命令（这种情况主要是机子上本身存在jdk，理论上将如果在配置环境变量时如果把新的路径放在$PATH前的话是不会出现这个问题的）</p>
+</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br><span class="line">sudo ln -s &#x2F;***&#x2F;Traffic_x86&#x2F;jdk1.8.0_311&#x2F;bin&#x2F;java &#x2F;usr&#x2F;bin&#x2F;java（which java 结果）</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>再使用java -version和which java验证环境配置结果</p></li>
-<li><p>如果还没有生效尝试关闭shell重开一个shell或切换用户看有无生效</p></li>
-<li><p>如果出现权限不够的情况，使用sudo chmod 777 path 修改权限</p></li>
+<li>
+<p>再使用java -version和which java验证环境配置结果</p>
+</li>
+<li>
+<p>如果还没有生效尝试关闭shell重开一个shell或切换用户看有无生效</p>
+</li>
+<li>
+<p>如果出现权限不够的情况，使用sudo chmod 777 path 修改权限</p>
+</li>
 </ul>
 <h3 id="导入jnetpcap">导入jnetpcap</h3>
 <ul>
@@ -374,137 +400,80 @@ java显示与环境变量不一致，而是/usr/bin/java之类的路径则使用
 <h3 id="相关描述">相关描述</h3>
 <ul>
 <li>按照上述操作在有网的x86的Ubuntu中应该是不会出现问题的，笔者已经在多台X86的Ubuntu中成功部署。</li>
-<li>在一个全新的机子上部署是要走完以上全部流程的，但是笔者本身不会JAVA所以不是很清楚mvn和gradle这样使用的原理，<a
-href="https://github.com/ahlashkari/CICFlowMeter">CICgithub</a>上作者就是这么用的，github上的流程是在为了在IDE上能使用，但是我们希望把他变成一个工具在任何地方都可以通过命令行使用，所以要把两个so动态库放到jre里面去，这个大概就是要我们在命令行全局使用的时候能找到jnetpcap的动态链接库，这就涉及到了JAVA本身的依赖管理，<del>笔者确实不懂JAVA，都是师兄教的😀。</del></li>
+<li>在一个全新的机子上部署是要走完以上全部流程的，但是笔者本身不会JAVA所以不是很清楚mvn和gradle这样使用的原理，<a href="https://github.com/ahlashkari/CICFlowMeter" target="_blank" rel="noopener">CICgithub</a>上作者就是这么用的，github上的流程是在为了在IDE上能使用，但是我们希望把他变成一个工具在任何地方都可以通过命令行使用，所以要把两个so动态库放到jre里面去，这个大概就是要我们在命令行全局使用的时候能找到jnetpcap的动态链接库，这就涉及到了JAVA本身的依赖管理，<s>笔者确实不懂JAVA，都是师兄教的😀。</s></li>
 <li>在X86的Ubuntu上使用上述步骤理论上讲不存在问题了，但是在别的操作系统或者非X86架构上还是存在问题，一般主要是遇到下面这个问题</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cic.cs.unb.ca.ifm.Cmd You select: &#x2F;Integ&#x2F;pcapsource&#x2F;d1&#x2F;1_00001_20210104112753.pcap</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd Out folder: .&#x2F;</span><br><span class="line">cic.cs.unb.ca.ifm.Cmd CICFlowMeter received 1 pcap file</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava&#x2F;lang&#x2F;String;)J</span><br><span class="line">        at com.slytechs.library.NativeLibrary.dlopen(Native Method)</span><br><span class="line">        at com.slytechs.library.NativeLibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.&lt;init&gt;(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.loadLibrary(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at com.slytechs.library.JNILibrary.register(Unknown Source)</span><br><span class="line">        at org.jnetpcap.Pcap.&lt;clinit&gt;(Unknown Source)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.config(PacketReader.java:58)</span><br><span class="line">        at cic.cs.unb.ca.jnetpcap.PacketReader.&lt;init&gt;(PacketReader.java:52)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.readPcapFile(Cmd.java:128)</span><br><span class="line">        at cic.cs.unb.ca.ifm.Cmd.main(Cmd.java:80)</span><br></pre></td></tr></table></figure>
 <ul>
-<li>这个问题根据笔者自己的尝试和网上的 <a
-href="https://blog.csdn.net/lizheng2017/article/details/121455590">参考</a>
-基本可以确定是由于jnetpcap这个东西引起的，应该是jnetpcap这个东西在不同架构下不兼容的问题，在arm架构上使用CICgithub中提供的so是不行的，必须要自己重新编译，甚至我之后在部署一台X86的centos的时候这个os也不能用最后还是笔者自己重新编译之后才能使用，这个东西的兼容性确实很差，实在不行了需要编译安装的时候可以看下面的内容。</li>
+<li>这个问题根据笔者自己的尝试和网上的 <a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">参考</a> 基本可以确定是由于jnetpcap这个东西引起的，应该是jnetpcap这个东西在不同架构下不兼容的问题，在arm架构上使用CICgithub中提供的so是不行的，必须要自己重新编译，甚至我之后在部署一台X86的centos的时候这个os也不能用最后还是笔者自己重新编译之后才能使用，这个东西的兼容性确实很差，实在不行了需要编译安装的时候可以看下面的内容。</li>
 </ul>
-<h2 id="x86架构">X86架构</h2>
+<h2 id="X86架构">X86架构</h2>
 <blockquote>
 <p>对X86架构下的Ubuntu系统来讲，按照上述流程应该不会存在问题，github上提供的jnetpcap的so本身是适配ubuntu的。</p>
 <p>对X86架构下的Centos和其他系统来讲，可能会遇到上面jnetpcap报错的问题，那应该就是github上提供的so依赖和系统不兼容，需要重新编译，或者看网上有没有好心人提供编译好的，或者看下面的jnetpcap编译安装部分。</p>
 </blockquote>
-<h2 id="arm架构">ARM架构</h2>
+<h2 id="ARM架构">ARM架构</h2>
 <blockquote>
-<p>ARM架构下的部署，最主要的问题还是在jnetpcap上，github上提供的so肯定是用不了的，笔者也亲身体验过，确实不行。但是笔者这里在CSDN上搜到了一个好心老哥自己在银河麒麟V10，
-aarch64架构上编译出来的结果，这里贴出来供大家参考。</p>
+<p>ARM架构下的部署，最主要的问题还是在jnetpcap上，github上提供的so肯定是用不了的，笔者也亲身体验过，确实不行。但是笔者这里在CSDN上搜到了一个好心老哥自己在银河麒麟V10， aarch64架构上编译出来的结果，这里贴出来供大家参考。</p>
 </blockquote>
-<p><a
-href="https://blog.csdn.net/lizheng2017/article/details/121455590">ARM架构依赖</a></p>
+<p><a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">ARM架构依赖</a></p>
 <h2 id="jnetpcap编译安装">jnetpcap编译安装</h2>
-<p>以下内容全部来源于上面ARM架构中提到的好心老哥，而且他还提供了他编译好的so，真的是大善人，我怕他的博客哪天没了所以我这里复制一遍<a
-href="https://blog.csdn.net/lizheng2017/article/details/121455590">ARM架构依赖</a></p>
-<hr />
-<p><strong>编译环境</strong>：银河麒麟V10， aarch64架构
+<p>以下内容全部来源于上面ARM架构中提到的好心老哥，而且他还提供了他编译好的so，真的是大善人，我怕他的博客哪天没了所以我这里复制一遍<a href="https://blog.csdn.net/lizheng2017/article/details/121455590" target="_blank" rel="noopener">ARM架构依赖</a></p>
+<hr>
+<p><strong>编译环境</strong>：银河麒麟V10， aarch64架构<br>
 网上很容易下载到jnetpcap的包，但是却没有arm64架构的编译好的so，于是下载源码包自己编译。下面是遇到的问题解决，整个流程耗时6个多小时：</p>
-<ol type="1">
+<ol>
 <li>下载jnetpcap-src-1.4.r1425-1.zip并解压：</li>
 </ol>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639724.png"
-alt="解压的文件" />
-<figcaption aria-hidden="true">解压的文件</figcaption>
-</figure>
-<ol start="2" type="1">
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639724.png" alt="解压的文件"></p>
+<ol start="2">
 <li>安装ant， 命令大概是：</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ant</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>编译，问题1，xml:119: taskdef class org . vafer.jdeb . ant
-DebAntTask cannot be found using the classloader AntclassL oader[ ]</li>
+<ol start="3">
+<li>编译，问题1，xml:119: taskdef class org . vafer.jdeb . ant DebAntTask cannot be found using the classloader AntclassL oader[ ]</li>
 </ol>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639887.png"
-alt="问题1" />
-<figcaption aria-hidden="true">问题1</figcaption>
-</figure>
-<p>​ 方法：直接将build.xml第119行删除，不是debian系统。</p>
-<ol start="4" type="1">
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061639887.png" alt="问题1"></p>
+<p>​	方法：直接将build.xml第119行删除，不是debian系统。</p>
+<ol start="4">
 <li>编译，问题2，use aresiurce collection to copy directories.</li>
 </ol>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640674.png"
-alt="问题2" />
-<figcaption aria-hidden="true">问题2</figcaption>
-</figure>
-<p>​
-根据提示，xml的611行有问题，直接找到你系统的libpcap.so的路径，填入xml：</p>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640724.png"
-alt="问题行" />
-<figcaption aria-hidden="true">问题行</figcaption>
-</figure>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640701.png"
-alt="解决方法" />
-<figcaption aria-hidden="true">解决方法</figcaption>
-</figure>
-<ol start="5" type="1">
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640674.png" alt="问题2"></p>
+<p>​	根据提示，xml的611行有问题，直接找到你系统的libpcap.so的路径，填入xml：</p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640724.png" alt="问题行"></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061640701.png" alt="解决方法"></p>
+<ol start="5">
 <li>编译，问题3，网上的答案都说是xml的问题，但在这里其实是少了cpptask.jar的原因。</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Problem: failed to create task or type cc</span><br><span class="line">Cause: The name is undefined.</span><br><span class="line">Action: Check the spelling.</span><br><span class="line">Action: Check that any custom tasks&#x2F;types have been declared.</span><br><span class="line">Action: Check that any &lt;presetdef&gt;&#x2F;&lt;macrodef&gt; declarations have taken place.</span><br></pre></td></tr></table></figure>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061641290.png"
-alt="问题3" />
-<figcaption aria-hidden="true">问题3</figcaption>
-</figure>
-<p>​ 解决办法：下载cpptasks-1.0b4.jar，放到jnetpcap的lib文件夹下。</p>
-<p>​
-这里的具体cpptasks.jar的版本需要你查看xml文件，放的路径也是要看xml，直接在xml中搜索cpptask相信你能找到线索的。</p>
-<p>​
-ps：我这里是放的路径是[项目路径]/cpptasks-1.0b4/cpptasks.jar，然后在xml里面路径直接写死</p>
-<ol start="6" type="1">
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061641290.png" alt="问题3"></p>
+<p>​	解决办法：下载cpptasks-1.0b4.jar，放到jnetpcap的lib文件夹下。</p>
+<p>​	这里的具体cpptasks.jar的版本需要你查看xml文件，放的路径也是要看xml，直接在xml中搜索cpptask相信你能找到线索的。</p>
+<p>​	ps：我这里是放的路径是[项目路径]/cpptasks-1.0b4/cpptasks.jar，然后在xml里面路径直接写死</p>
+<ol start="6">
 <li>编译，问题四：</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;C ommand- line&gt;:0: 19: error: token “”is not valid in preprocessor expressions&#x2F;home&#x2F;ka&#x2F; jnetpcap-src-1.4.1425-1&#x2F;src&#x2F;c&#x2F;jnetpcap_pcap100.cpp:87:6: note: in expansion of macro &#39; L IBPCAP_ VERSION &#39;</span><br><span class="line">#if (L IBPCAP VERSION &lt; L IBPCAP PCAP CREATE )</span><br></pre></td></tr></table></figure>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061643419.png"
-alt="问题四" />
-<figcaption aria-hidden="true">问题四</figcaption>
-</figure>
-<p>​
-解决，明显是找不到LIBPCAP_VERSION，即libpcap的版本号没有，我们编辑Linux.properties文件，添加如下行</p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061643419.png" alt="问题四"></p>
+<p>​	解决，明显是找不到LIBPCAP_VERSION，即libpcap的版本号没有，我们编辑Linux.properties文件，添加如下行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">complier.LIBPCAP_VERSION &#x3D; 174</span><br><span class="line">(具体版本可用apt list|grep libpcap获取，填个很大的数就行)，这里一定是一个数字，不能像1.7.4这样。</span><br></pre></td></tr></table></figure>
-<p><img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061644038.png" /></p>
-<ol start="7" type="1">
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061644038.png" alt=""></p>
+<ol start="7">
 <li>问题五</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">	[javac] 注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。</span><br><span class="line">    [javac] 注: 某些输入文件使用了未经检查或不安全的操作。</span><br><span class="line">    [javac] 注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。</span><br><span class="line">    [javac] 78 个错误</span><br><span class="line"></span><br><span class="line">BUILD FAILED</span><br><span class="line">&#x2F;home&#x2F;ka&#x2F;jnetpcap-src-1.4.r1425-1&#x2F;build.xml:1090: Compile failed; see the compiler error output for details.</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.compile(Javac.java:1181)</span><br><span class="line">        at org.apache.tools.ant.taskdefs.Javac.execute(Javac.java:936)</span><br><span class="line">        at org.apache.tools.ant.UnknownElement.execute(UnknownElement.java:293)</span><br><span class="line">        at sun.reflect.GeneratedMethodAccessor4.invoke(Unknown Source)</span><br><span class="line">        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">        at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line">        at org.apache.tools.ant.dispatch.DispatchUtils.execute(DispatchUtils.java:106)</span><br><span class="line">        at org.apache.tools.ant.Task.perform(Task.java:348)</span><br><span class="line">        at org.apache.tools.ant.Target.execute(Target.java:435)</span><br><span class="line">        at org.apache.tools.ant.Target.performTasks(Target.java:456)</span><br><span class="line">        at org.apache.tools.ant.Project.executeSortedTargets(Project.java:1405)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTarget(Project.java:1376)</span><br><span class="line">        at org.apache.tools.ant.helper.DefaultExecutor.executeTargets(DefaultExecutor.java:41)</span><br><span class="line">        at org.apache.tools.ant.Project.executeTargets(Project.java:1260)</span><br><span class="line">        at org.apache.tools.ant.Main.runBuild(Main.java:853)</span><br><span class="line">        at org.apache.tools.ant.Main.startAnt(Main.java:235)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.run(Launcher.java:285)</span><br><span class="line">        at org.apache.tools.ant.launch.Launcher.main(Launcher.java:112)</span><br></pre></td></tr></table></figure>
-<p><img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645003.png" /></p>
-<p>​
-这个问题可能是我没有下载正确版本的cpptask的原因，要根据build.xml里的要求来下载。
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645003.png" alt=""></p>
+<p>​	这个问题可能是我没有下载正确版本的cpptask的原因，要根据build.xml里的要求来下载。<br>
 但是检查./build/obj/我已经得到了我们想要的so文件</p>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645493.png"
-alt="大功告成" />
-<figcaption aria-hidden="true">大功告成</figcaption>
-</figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061645493.png" alt="大功告成"></p>
 <p>程序终于跑起来了！！！！！！！</p>
-<p><img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061646710.png" /></p>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061646710.png" alt=""></p>
 <h3 id="附编译好的文件链接">附编译好的文件链接</h3>
-<p>https://download.csdn.net/download/lizheng2017/46217421</p>
+<p><a href="https://download.csdn.net/download/lizheng2017/46217421" target="_blank" rel="noopener">https://download.csdn.net/download/lizheng2017/46217421</a></p>
 <h2 id="离线部署">离线部署</h2>
 <p>离线部署其实挺麻烦的，如果平时没有经常使用Linux服务器的话还是比较恼火的，最好的方法还是让机子联网，但是确实有很多情况下没法联网，笔者这里也只能提供我在尝试离线部署过程中的一些经验</p>
 <ul>
-<li>尽量找到一台相同系统相同架构的能联网的机器，这会让离线部署简单得多，apt和yum都提供了下载安装包的功能，我们可以在能联网的机子上先下载好适配的离线包然后复制到不能联网的机子上进行编译安装，这样的成功率就会很高，也比较方便，这里贴两个参考<a
-href="https://blog.csdn.net/qq_17576885/article/details/122070612">apt离线包下载</a>，<a
-href="https://www.codeleading.com/article/78986008408/">yum离线包下载</a></li>
+<li>尽量找到一台相同系统相同架构的能联网的机器，这会让离线部署简单得多，apt和yum都提供了下载安装包的功能，我们可以在能联网的机子上先下载好适配的离线包然后复制到不能联网的机子上进行编译安装，这样的成功率就会很高，也比较方便，这里贴两个参考<a href="https://blog.csdn.net/qq_17576885/article/details/122070612" target="_blank" rel="noopener">apt离线包下载</a>，<a href="https://www.codeleading.com/article/78986008408/" target="_blank" rel="noopener">yum离线包下载</a></li>
 <li>相同系统相同架构的机器不用每个都使用mvn和gradle，只要有一台成功打出了压缩包后面就可以直接复制，只要配置新机器的JDK和各种依赖就行了</li>
 </ul>
 <h2 id="其他问题">其他问题</h2>
@@ -519,12 +488,7 @@ href="https://www.codeleading.com/article/78986008408/">yum离线包下载</a></
 <blockquote>
 <p>问题描述：在实际使用中我们发现提取出来的协议号基本只有0，6，17。6代表TCP，17代表UDP，剩下其他所有协议全部被识别为0，例如ARP，ICMP，SEP之类的全部识别为0，而且组流的情况看起来也不是很好，绝大部分列都是全为0，简单看了下代码发现CIC本事就只对有限的几种protocol做了处理，泛用性不是很广。</p>
 </blockquote>
-<figure>
-<img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061724179.png"
-alt="protocol" />
-<figcaption aria-hidden="true">protocol</figcaption>
-</figure>
+<p><img src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202207061724179.png" alt="protocol"></p>
 
     </div>
 
@@ -681,7 +645,7 @@ alt="protocol" />
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#部署整体流程"><span class="nav-text">部署整体流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证环境是否配置成功"><span class="nav-text">验证环境是否配置成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入jnetpcap"><span class="nav-text">导入jnetpcap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关描述"><span class="nav-text">相关描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#x86架构"><span class="nav-text">X86架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#arm架构"><span class="nav-text">ARM架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jnetpcap编译安装"><span class="nav-text">jnetpcap编译安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#附编译好的文件链接"><span class="nav-text">附编译好的文件链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离线部署"><span class="nav-text">离线部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他问题"><span class="nav-text">其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题1"><span class="nav-text">问题1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题2"><span class="nav-text">问题2</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#部署整体流程"><span class="nav-text">部署整体流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证环境是否配置成功"><span class="nav-text">验证环境是否配置成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入jnetpcap"><span class="nav-text">导入jnetpcap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关描述"><span class="nav-text">相关描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#X86架构"><span class="nav-text">X86架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARM架构"><span class="nav-text">ARM架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jnetpcap编译安装"><span class="nav-text">jnetpcap编译安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#附编译好的文件链接"><span class="nav-text">附编译好的文件链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离线部署"><span class="nav-text">离线部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他问题"><span class="nav-text">其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题1"><span class="nav-text">问题1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题2"><span class="nav-text">问题2</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1053,13 +1017,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

@@ -329,13 +329,11 @@
 <li>2、工厂函数：b = list(a)</li>
 <li>3、copy函数：b = copy.copy(a) #使用时要import copy模块</li>
 </ul>
-<p>浅拷贝产生的b不再是a了，使用is可以发现他们不是同一个对象，使用id查看，发现它们也不指向同一片内存。但是当我们使用
-id(x) for x in a 和 id(x) for x in b
-时，可以看到二者包含的元素的地址是相同的。</p>
+<p>浅拷贝产生的b不再是a了，使用is可以发现他们不是同一个对象，使用id查看，发现它们也不指向同一片内存。但是当我们使用 id(x) for x in a 和 id(x) for x in b 时，可以看到二者包含的元素的地址是相同的。</p>
 <p>在这种情况下，a和b是不同的对象，修改b理论上不会影响a。比如b.append([4,5])。</p>
 <p><strong>代码效果如下：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, [<span class="string">'yellow'</span>, <span class="string">'red'</span>]]</span><br><span class="line">b = a[:]  <span class="comment"># 采用了切片操作对列表b进行赋值</span></span><br><span class="line">b.append(<span class="string">'green'</span>) <span class="comment"># 对列表b执行添加元素操作</span></span><br><span class="line">print(<span class="string">'a = &#123;&#125;'</span>.format(a))</span><br><span class="line">print(<span class="string">'b = &#123;&#125;'</span>.format(b))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面是输出结果：</span></span><br><span class="line">a = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, [<span class="string">'yellow'</span>, <span class="string">'red'</span>]]  <span class="comment"># a中的元素不发生变化</span></span><br><span class="line">b = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, [<span class="string">'yellow'</span>, <span class="string">'red'</span>], <span class="string">'green'</span>]  <span class="comment"># b中增加了一个元素'green'</span></span><br></pre></td></tr></table></figure>
-<p><strong>但是要注意：</strong>浅拷贝之所以称为浅拷贝，是它仅仅只拷贝了一层，在a中有一个嵌套的list，如果我们修改了它，情况就不一样了。</p>
+<p>**但是要注意：**浅拷贝之所以称为浅拷贝，是它仅仅只拷贝了一层，在a中有一个嵌套的list，如果我们修改了它，情况就不一样了。</p>
 <p>a[3].append(“blue”)。查看b，你将发现b也发生了变化。这是因为，你修改了嵌套的list。修改外层元素，会修改它的引用，让它们指向别的位置，修改嵌套列表中的元素，列表的地址并为发生变化，指向的都是同一个位置。</p>
 <p><strong>代码如下：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, [<span class="string">'yellow'</span>, <span class="string">'red'</span>]]</span><br><span class="line">b = a[:]  <span class="comment"># 采用了切片操作对列表b进行赋值</span></span><br><span class="line">a[<span class="number">3</span>].append(<span class="string">'blue'</span>)  <span class="comment"># 在a列表中的第3个元素中增加元素'blue'，由于a[3]本身也是一个列表，从而是在列表后增加了元素'blue'，从输出结果中可以看出来。</span></span><br><span class="line">print(<span class="string">'a = &#123;&#125;'</span>.format(a))</span><br><span class="line">print(<span class="string">'b = &#123;&#125;'</span>.format(b))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面是输出结果：</span></span><br><span class="line">a = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, [<span class="string">'yellow'</span>, <span class="string">'red'</span>, <span class="string">'blue'</span>]]</span><br><span class="line">b = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, [<span class="string">'yellow'</span>, <span class="string">'red'</span>, <span class="string">'blue'</span>]]</span><br></pre></td></tr></table></figure>
@@ -354,12 +352,11 @@ id(x) for x in a 和 id(x) for x in b
 <li>对于非容器类型，如数字，字符，以及其它“原子”类型，没有拷贝一说。产生的都是原对象的引用。</li>
 <li>如果元组变量值包含原子类型对象，即使采用了深拷贝，也只能得到浅拷贝。</li>
 </ul>
-<h2 id="list.append的浅拷贝问题">list.append()的浅拷贝问题</h2>
+<h2 id="list-append-的浅拷贝问题">list.append()的浅拷贝问题</h2>
 <p>Python中的append方法是一个常用的方法，可以将一个对象添加到列表末尾，这里面可以存在一个浅拷贝的大坑！</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a = [1, 3, 5, <span class="string">"a"</span>]</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b = []</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b.append(a)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b</span></span><br><span class="line">[[1, 3, 5, 'a']]</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; a.append(<span class="string">"aha"</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; b    <span class="comment"># surprise?</span></span></span><br><span class="line">[[1, 3, 5, 'a', 'aha']]</span><br></pre></td></tr></table></figure>
 <p>事实上，append方法是浅拷贝。在Python中，对象赋值实际上是对象的引用，当创建一个对象，然后把它赋值给另一个变量的时候，Python并没有拷贝这个对象，而只是拷贝了这个对象的引用，这就是浅拷贝。</p>
-<p>我们逐步来看。首先，b.append(a)就是对a进行了浅拷贝，结果为b=[[1, 3,
-5, 'a']]，但b[0]与a引用的对象是相同的，这可以通过id函数进行验证：</p>
+<p>我们逐步来看。首先，b.append(a)就是对a进行了浅拷贝，结果为b=[[1, 3, 5, ‘a’]]，但b[0]与a引用的对象是相同的，这可以通过id函数进行验证：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(b[0])</span></span><br><span class="line">3145735177480</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; id(a)</span></span><br><span class="line">3145735177480</span><br></pre></td></tr></table></figure>
 <p>所以，在日常使用append函数的时候，就需要将浅拷贝变为深拷贝（其实也不能叫深拷贝，应该是双重浅拷贝，可以看上面浅拷贝的内容，只拷贝一层），有两个解决方案：</p>
 <ul>
@@ -393,13 +390,13 @@ id(x) for x in a 和 id(x) for x in b
       <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python中-和is的区别\" rel="bookmark">python中==和is的区别</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
     </li>
   </ul>
 
@@ -534,7 +531,7 @@ id(x) for x in a 和 id(x) for x in b
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#赋值"><span class="nav-text">赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浅拷贝"><span class="nav-text">浅拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深拷贝"><span class="nav-text">深拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于拷贝操作的提醒"><span class="nav-text">关于拷贝操作的提醒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list.append的浅拷贝问题"><span class="nav-text">list.append()的浅拷贝问题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#赋值"><span class="nav-text">赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浅拷贝"><span class="nav-text">浅拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深拷贝"><span class="nav-text">深拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于拷贝操作的提醒"><span class="nav-text">关于拷贝操作的提醒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list-append-的浅拷贝问题"><span class="nav-text">list.append()的浅拷贝问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -906,13 +903,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

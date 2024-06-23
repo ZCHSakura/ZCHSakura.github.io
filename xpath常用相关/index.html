@@ -313,94 +313,79 @@
       
         <p>xpath常用语法</p>
 <a id="more"></a>
-<h3 id="匹配文本">1.匹配文本</h3>
+<h3 id="1-匹配文本">1.匹配文本</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[contains(text(),<span class="string">"百度搜索"</span>)]</span><br></pre></td></tr></table></figure>
-<h3 id="匹配属性">2.匹配属性</h3>
+<h3 id="2-匹配属性">2.匹配属性</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input[contains(@name,<span class="string">'na'</span>)]</span><br></pre></td></tr></table></figure>
-<h3 id="节点关系">3.节点关系</h3>
+<h3 id="3-节点关系">3.节点关系</h3>
 <table>
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 75%" />
-</colgroup>
 <thead>
-<tr class="header">
-<th style="text-align: left;">轴名称</th>
-<th style="text-align: left;">结果</th>
+<tr>
+<th style="text-align:left">轴名称</th>
+<th style="text-align:left">结果</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;">ancestor</td>
-<td
-style="text-align: left;">选取当前节点的所有先辈（父、祖父等）。</td>
+<tr>
+<td style="text-align:left">ancestor</td>
+<td style="text-align:left">选取当前节点的所有先辈（父、祖父等）。</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">ancestor-or-self</td>
-<td
-style="text-align: left;">选取当前节点的所有先辈（父、祖父等）以及当前节点本身。</td>
+<tr>
+<td style="text-align:left">ancestor-or-self</td>
+<td style="text-align:left">选取当前节点的所有先辈（父、祖父等）以及当前节点本身。</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">attribute</td>
-<td style="text-align: left;">选取当前节点的所有属性。</td>
+<tr>
+<td style="text-align:left">attribute</td>
+<td style="text-align:left">选取当前节点的所有属性。</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">child</td>
-<td style="text-align: left;">选取当前节点的所有子元素。</td>
+<tr>
+<td style="text-align:left">child</td>
+<td style="text-align:left">选取当前节点的所有子元素。</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">descendant</td>
-<td
-style="text-align: left;">选取当前节点的所有后代元素（子、孙等）。</td>
+<tr>
+<td style="text-align:left">descendant</td>
+<td style="text-align:left">选取当前节点的所有后代元素（子、孙等）。</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">descendant-or-self</td>
-<td
-style="text-align: left;">选取当前节点的所有后代元素（子、孙等）以及当前节点本身。</td>
+<tr>
+<td style="text-align:left">descendant-or-self</td>
+<td style="text-align:left">选取当前节点的所有后代元素（子、孙等）以及当前节点本身。</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">following</td>
-<td
-style="text-align: left;">选取文档中当前节点的结束标签之后的所有节点。</td>
+<tr>
+<td style="text-align:left">following</td>
+<td style="text-align:left">选取文档中当前节点的结束标签之后的所有节点。</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">following-sibling</td>
-<td style="text-align: left;">选取当前节点之后的所有兄弟节点</td>
+<tr>
+<td style="text-align:left">following-sibling</td>
+<td style="text-align:left">选取当前节点之后的所有兄弟节点</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">namespace</td>
-<td style="text-align: left;">选取当前节点的所有命名空间节点。</td>
+<tr>
+<td style="text-align:left">namespace</td>
+<td style="text-align:left">选取当前节点的所有命名空间节点。</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">parent</td>
-<td style="text-align: left;">选取当前节点的父节点。</td>
+<tr>
+<td style="text-align:left">parent</td>
+<td style="text-align:left">选取当前节点的父节点。</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">preceding</td>
-<td
-style="text-align: left;">选取文档中当前节点的开始标签之前的所有节点。</td>
+<tr>
+<td style="text-align:left">preceding</td>
+<td style="text-align:left">选取文档中当前节点的开始标签之前的所有节点。</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">preceding-sibling</td>
-<td style="text-align: left;">选取当前节点之前的所有同级节点。</td>
+<tr>
+<td style="text-align:left">preceding-sibling</td>
+<td style="text-align:left">选取当前节点之前的所有同级节点。</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">self</td>
-<td style="text-align: left;">选取当前节点。</td>
+<tr>
+<td style="text-align:left">self</td>
+<td style="text-align:left">选取当前节点。</td>
 </tr>
 </tbody>
 </table>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"1"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第1个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>我是p标签<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"2"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第2个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"3"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第3个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"4"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第4个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>我是p标签<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"5"</span> <span class="attr">href</span>=<span class="string">"www.baidu.com"</span>&gt;</span>我是第5个a标签<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>获取第三个a标签的下一个a标签："//a<span class="citation"
-data-cites="id">[@id='3']</span>/following-sibling::a[1]"</p>
-<p>获取第三个a标签后面的第N个标签："//a<span class="citation"
-data-cites="id">[@id='3']</span>/following-sibling::*[N]"</p>
-<p>获取第三个a标签的上一个a标签："//a<span class="citation"
-data-cites="id">[@id='3']</span>/preceding-sibling::a[1]"</p>
-<p>获取第三个a标签的前面的第N个标签："//a<span class="citation"
-data-cites="id">[@id='3']</span>/preceding-sibling::*[N]"</p>
-<p>获取第三个a标签的父标签："//a<span class="citation"
-data-cites="id">[@id=='3']</span>/.."</p>
+<p>获取第三个a标签的下一个a标签：“//a[@id=‘3’]/following-sibling::a[1]”</p>
+<p>获取第三个a标签后面的第N个标签：“//a[@id=‘3’]/following-sibling:😗[N]”</p>
+<p>获取第三个a标签的上一个a标签：“//a[@id=‘3’]/preceding-sibling::a[1]”</p>
+<p>获取第三个a标签的前面的第N个标签：“//a[@id=‘3’]/preceding-sibling:😗[N]”</p>
+<p>获取第三个a标签的父标签：“//a[@id==‘3’]/…”</p>
 
     </div>
 
@@ -434,7 +419,7 @@ data-cites="id">[@id=='3']</span>/.."</p>
       <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
+      <div class="popular-posts-title"><a href="\python中-和is的区别\" rel="bookmark">python中==和is的区别</a></div>
     </li>
   </ul>
 
@@ -570,7 +555,7 @@ data-cites="id">[@id=='3']</span>/.."</p>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配文本"><span class="nav-text">1.匹配文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配属性"><span class="nav-text">2.匹配属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点关系"><span class="nav-text">3.节点关系</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-匹配文本"><span class="nav-text">1.匹配文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-匹配属性"><span class="nav-text">2.匹配属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-节点关系"><span class="nav-text">3.节点关系</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -942,13 +927,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

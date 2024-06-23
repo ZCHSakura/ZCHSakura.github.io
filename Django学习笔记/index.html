@@ -33,19 +33,24 @@
     var CONFIG = {"hostname":"zchsakura.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideRightBigIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录Django学习笔记 https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1rx411X717">
+  <meta name="description" content="记录Django学习笔记 https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1rx411X717">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django学习笔记">
 <meta property="og:url" content="zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="周小天的Blog">
-<meta property="og:description" content="记录Django学习笔记 https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1rx411X717">
+<meta property="og:description" content="记录Django学习笔记 https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1rx411X717">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182816.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182932.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200518175701.png">
+<meta property="og:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200608171058.png">
 <meta property="article:published_time" content="2020-05-18T10:32:33.000Z">
 <meta property="article:modified_time" content="2024-06-16T08:10:22.744Z">
 <meta property="article:author" content="周小天">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="Django">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182816.png">
 
 <link rel="canonical" href="zchsakura.github.io/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
@@ -292,7 +297,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.9k</span>
+              <span>9.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -312,24 +317,14 @@
 
       
         <p>记录Django学习笔记</p>
-<p>https://www.bilibili.com/video/BV1rx411X717</p>
+<p><a href="https://www.bilibili.com/video/BV1rx411X717" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1rx411X717</a></p>
 <a id="more"></a>
 <h3 id="创建工程">创建工程</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject HelloDjango</span><br></pre></td></tr></table></figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182816.png"
-alt="image-20200513182805245" />
-<figcaption aria-hidden="true">image-20200513182805245</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182816.png" alt="image-20200513182805245"></p>
 <h3 id="创建应用">创建应用</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp App</span><br></pre></td></tr></table></figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182932.png"
-alt="image-20200513182930988" />
-<figcaption aria-hidden="true">image-20200513182930988</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200513182932.png" alt="image-20200513182930988"></p>
 <p>在setting.py中注册应用：</p>
 <figure class="highlight diff"><figcaption><span>setting.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    'django.contrib.admin',</span><br><span class="line">    'django.contrib.auth',</span><br><span class="line">    'django.contrib.contenttypes',</span><br><span class="line">    'django.contrib.sessions',</span><br><span class="line">    'django.contrib.messages',</span><br><span class="line">    'django.contrib.staticfiles',</span><br><span class="line"><span class="addition">+   'learn1',</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h3 id="开发者服务器">开发者服务器</h3>
@@ -350,25 +345,23 @@ alt="image-20200513182930988" />
 <ul>
 <li>只需在App的根目录创建templates文件夹即可</li>
 <li>如果想让代码自动提示，我们应该标记文件夹为模板文件夹</li>
-</ul></li>
+</ul>
+</li>
 <li>在项目目录中进行模板配置
 <ul>
 <li>需要在项目目录中创建templates文件夹并标记</li>
 <li>需要在settings中进行注册</li>
-</ul></li>
+</ul>
+</li>
 <li>在开发中使用第二种
 <ul>
 <li>模板可以继承，复用</li>
-</ul></li>
 </ul>
-<hr />
+</li>
+</ul>
+<hr>
 <p>在HelloDjango中新建templates文件夹并设置为模板文件夹（方便代码提示），在其中新建html模板</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200518175701.png"
-alt="image-20200518175638301" />
-<figcaption aria-hidden="true">image-20200518175638301</figcaption>
-</figure>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200518175701.png" alt="image-20200518175638301"></p>
 <p>然后再settings.py中加入templates路径</p>
 <figure class="highlight diff"><figcaption><span>settings.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">TEMPLATES = [</span><br><span class="line">    &#123;</span><br><span class="line">        'BACKEND': 'django.template.backends.django.DjangoTemplates',</span><br><span class="line">        'DIRS': [</span><br><span class="line"><span class="addition">+           os.path.join(BASE_DIR, 'templates'),</span></span><br><span class="line">        ],</span><br><span class="line">        'APP_DIRS': True,</span><br><span class="line">        'OPTIONS': &#123;</span><br><span class="line">            'context_processors': [</span><br><span class="line">                'django.template.context_processors.debug',</span><br><span class="line">                'django.template.context_processors.request',</span><br><span class="line">                'django.contrib.auth.context_processors.auth',</span><br><span class="line">                'django.contrib.messages.context_processors.messages',</span><br><span class="line">            ],</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p><strong>HTML小技巧：</strong></p>
@@ -385,72 +378,78 @@ alt="image-20200518175638301" />
 <ul>
 <li>urlpatterns 路由规则列表</li>
 <li>在根urls中进行子路由的包含</li>
-</ul></li>
+</ul>
+</li>
 <li>子路由使用
 <ul>
 <li>根路由规则 + 子路由的规则</li>
-</ul></li>
-</ul></li>
 </ul>
-<hr />
-<p>在新建的应用learn2里面新建urls.py</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><a href="http://xn--learn2urls-eh3rq62e4fbha578wia7248d6dftq5mfmxa.py" target="_blank" rel="noopener">在新建的应用learn2里面新建urls.py</a></p>
 <figure class="highlight python"><figcaption><span>learn2/urls.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> learn2 <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'hello/'</span>, views.hello),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p>在HelloDjango的urls.py中导入learn2中的路由</p>
 <figure class="highlight diff"><figcaption><span>HelloDjango/urls.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path('admin/', admin.site.urls),</span><br><span class="line">    path('hello/', views.hello),</span><br><span class="line">    path('index/', views.index),</span><br><span class="line"><span class="addition">+   path('learn2/', include('learn2.urls')),</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h3 id="models-使用了orm技术">models 使用了ORM技术</h3>
+<h3 id="models-使用了ORM技术">models 使用了ORM技术</h3>
 <ul>
 <li>Object Relational Mapping 对象关系映射</li>
 <li>将业务逻辑进行了一个解耦合
 <ul>
 <li>object.save()</li>
 <li>object.delete()</li>
-</ul></li>
+</ul>
+</li>
 <li>关系型数据库
 <ul>
 <li>DDL</li>
-<li>通过models定义实现 数据库表的定义</li>
-</ul></li>
+<li>通过models定义实现  数据库表的定义</li>
+</ul>
+</li>
 <li>数据操作
 <ul>
 <li>增删改查</li>
 <li>存储
 <ul>
 <li>save()</li>
-</ul></li>
+</ul>
+</li>
 <li>查询
 <ul>
-<li>查所有 objects.all()</li>
+<li>查所有  objects.all()</li>
 <li>查单个 objects.get(pk=xx)</li>
-</ul></li>
+</ul>
+</li>
 <li>更新
 <ul>
 <li>基于查询的</li>
 <li>查好的对象，修改属性，然后save()</li>
-</ul></li>
+</ul>
+</li>
 <li>删除
 <ul>
 <li>基于查询的</li>
 <li>调用 delete()</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h3 id="快捷键">快捷键</h3>
 <ul>
 <li>control + p
 <ul>
 <li>参数提示</li>
-</ul></li>
 </ul>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200608171058.png"
-alt="image-20200608171048103" />
-<figcaption aria-hidden="true">image-20200608171048103</figcaption>
-</figure>
+</li>
+</ul>
+<p><img src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200608171058.png" alt="image-20200608171048103"></p>
 <ul>
 <li>shift + f6 重命名，重构</li>
-<li>.re 快捷生成return</li>
-<li>.if 多用点看看世界的美好</li>
+<li>.re  快捷生成return</li>
+<li>.if   多用点看看世界的美好</li>
 </ul>
 <h3 id="连接mysql驱动">连接mysql驱动</h3>
 <ul>
@@ -460,18 +459,22 @@ alt="image-20200608171048103" />
 <li>致命缺点
 <ul>
 <li>对mysql安装有要求，必须指定位置存在配置文件</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>python-mysql
 <ul>
 <li>python2 支持很好</li>
 <li>python3 不支持</li>
-</ul></li>
+</ul>
+</li>
 <li>pymysql
 <ul>
 <li>python2，python3都支持</li>
 <li>它还可以伪装成前面的库</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <figure class="highlight python"><figcaption><span>__init__.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line">pymysql.version_info = (<span class="number">1</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="string">'final'</span>, <span class="number">0</span>)  <span class="comment"># change mysqlclient version</span></span><br><span class="line">pymysql.install_as_MySQLdb()</span><br></pre></td></tr></table></figure>
 <h3 id="重新建立-migration-文件">重新建立 migration 文件</h3>
@@ -484,20 +487,16 @@ alt="image-20200608171048103" />
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git_hook</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">guardian</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">kombu_transport_django</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">message</span><br><span class="line"> (no migrations)</span><br><span class="line">order</span><br><span class="line"> [X] 0001_initial</span><br><span class="line">pay</span><br><span class="line"> [X] 0001_initial</span><br><span class="line"> [x] 0002_add_model</span><br><span class="line">sessions</span><br><span class="line"> [X] 0001_initial</span><br></pre></td></tr></table></figure>
 <p>3.通过执行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate –fake pay zero</span><br></pre></td></tr></table></figure>
-<p>这里的 pay就是你要重置的app 4.之后再执行
-<code>python manage.pu showmigrations</code>，你会发现 文件前的 [x]
-变成了[ ]</p>
-<p>现在，你可以删除pay 这个 app下的migrations模块中 除 init.py
-之外的所有文件。</p>
+<p>这里的 pay就是你要重置的app<br>
+4.之后再执行 <code>python manage.pu showmigrations</code>，你会发现 文件前的 [x] 变成了[ ]</p>
+<p>现在，你可以删除pay 这个 app下的migrations模块中 除 <a href="http://init.py" target="_blank" rel="noopener">init.py</a> 之外的所有文件。</p>
 <p>5.之后，执行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br></pre></td></tr></table></figure>
 <p>程序会再次为这个app 生成 0001_initial.py 之类的文件</p>
 <p>6.最重要的一步来了, 执行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate –fake-inital</span><br></pre></td></tr></table></figure>
-<p>–fake-inital 会在数据库中的 migrations表中记录当前这个app 执行到
-0001_initial.py ，但是它不会真的执行该文件中的 代码。
-这样就做到了，既不对现有的数据库改动，而又可以重置 migraion
-文件，妈妈再也不用在 migration模块中看到一推文件了。</p>
+<p>–fake-inital 会在数据库中的 migrations表中记录当前这个app 执行到 0001_initial.py ，但是它不会真的执行该文件中的 代码。<br>
+这样就做到了，既不对现有的数据库改动，而又可以重置 migraion 文件，妈妈再也不用在 migration模块中看到一推文件了。</p>
 <h3 id="重新生成数据库中的某张表">重新生成数据库中的某张表</h3>
 <p>1.删除数据库中的django_migration 表中对应的记录以及你要重新导的表</p>
 <p>2.将你要导的那个app中的migrate 文件删除掉</p>
@@ -506,75 +505,102 @@ alt="image-20200608171048103" />
 <p>这样就完成了。</p>
 <h3 id="表关系">表关系</h3>
 <ul>
-<li><p>分类</p>
+<li>
+<p>分类</p>
 <ul>
-<li><p>ForeignKey：一对多，将字段定义在多的端中</p></li>
-<li><p>ManyToManyField：多对多，将字段定义在两端</p></li>
-<li><p>OneToOneField：一对一，将字段定义在任意一端中</p></li>
-</ul></li>
-<li><p>用一访问多</p>
+<li>
+<p>ForeignKey：一对多，将字段定义在多的端中</p>
+</li>
+<li>
+<p>ManyToManyField：多对多，将字段定义在两端</p>
+</li>
+<li>
+<p>OneToOneField：一对一，将字段定义在任意一端中</p>
+</li>
+</ul>
+</li>
+<li>
+<p>用一访问多</p>
 <ul>
 <li>格式
 <ul>
 <li>对象.模型类小写_set</li>
-</ul></li>
+</ul>
+</li>
 <li>示例
 <ul>
 <li>grade.students_set</li>
-</ul></li>
-</ul></li>
-<li><p>用一访问一</p>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>用一访问一</p>
 <ul>
 <li>格式
 <ul>
 <li>对象.模型类小写</li>
-</ul></li>
+</ul>
+</li>
 <li>示例
 <ul>
 <li>grade.students</li>
-</ul></li>
-</ul></li>
-<li><p>访问id</p>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>访问id</p>
 <ul>
 <li>格式
 <ul>
 <li>对象.属性_id</li>
-</ul></li>
+</ul>
+</li>
 <li>示例
 <ul>
 <li>student.sgrade_id</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h3 id="模型过滤">模型过滤</h3>
 <ul>
 <li>filter()：返回符合筛选条件的结果</li>
 <li>exclude()：返回不符合筛选条件的结果</li>
 <li>all()：返回所有数据</li>
-<li>order_by('id')：排序，如果要逆序就加个<code>-</code></li>
+<li>order_by(‘id’)：排序，如果要逆序就加个<code>-</code></li>
 <li>values()：一条数据就是一个字典，返回一个列表</li>
 <li>连续使用
 <ul>
 <li>链式调用</li>
 <li>Person.objects.filter().filter().xxxx.eclude().exclude().yyyy</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <h3 id="方法">方法</h3>
 <ul>
-<li><p>对象方法</p>
+<li>
+<p>对象方法</p>
 <ul>
 <li>可以调用对象的属性，也可以调用类的属性</li>
-</ul></li>
-<li><p>类方法</p>
+</ul>
+</li>
+<li>
+<p>类方法</p>
 <ul>
 <li>不能调用对象属性，只能调用类属性</li>
 </ul>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@classmethod</span><br><span class="line">def create(cls, p_name, p_age&#x3D;100):</span><br><span class="line">	return cls(p_name&#x3D;p_name, p_age&#x3D;p_age)</span><br></pre></td></tr></table></figure></p></li>
-<li><p>静态方法</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@classmethod</span><br><span class="line">def create(cls, p_name, p_age&#x3D;100):</span><br><span class="line">	return cls(p_name&#x3D;p_name, p_age&#x3D;p_age)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>静态方法</p>
 <ul>
 <li>啥都不能调用，不能获取对象属性，也不能获取类属性</li>
 <li>只是寄生在我们这个类上而已</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <h3 id="获取单个对象">获取单个对象</h3>
 <ul>
@@ -582,7 +608,8 @@ alt="image-20200608171048103" />
 <ul>
 <li>查询条件没有匹配的对象，会抛异常，DoesNotExist</li>
 <li>如果查询条件对应多个对象，会抛异常，MultipleObjectsReturned</li>
-</ul></li>
+</ul>
+</li>
 <li>first</li>
 <li>last</li>
 <li>count</li>
@@ -596,16 +623,19 @@ alt="image-20200608171048103" />
 <li>可能会出现 first和last获取到的是相同的对象
 <ul>
 <li>显式，手动写排序规则（先order_by）</li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h3 id="切片">切片</h3>
 <ul>
 <li>和python中的切片不太一样</li>
-<li>QuerySet[5:15] 获取第五条到第十五条数据
+<li>QuerySet[5:15]  获取第五条到第十五条数据
 <ul>
 <li>相当于SQL中limit和offset</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <h3 id="缓存集">缓存集</h3>
 <ul>
@@ -617,7 +647,8 @@ alt="image-20200608171048103" />
 <li>懒查询
 <ul>
 <li>为了优化我们结构和查询</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <h3 id="查询条件">查询条件</h3>
 <ul>
@@ -627,9 +658,9 @@ alt="image-20200608171048103" />
 <li>gte 大于等于</li>
 <li>lte 小于等于</li>
 <li>in 在某一集合中</li>
-<li>contains 类似于 模糊查询 like</li>
-<li>startswith 以xx开始 本质也是like</li>
-<li>endswith 以 xx 结束 也是like</li>
+<li>contains  类似于 模糊查询 like</li>
+<li>startswith  以xx开始  本质也是like</li>
+<li>endswith 以 xx 结束  也是like</li>
 <li>exact</li>
 <li>前面同时添加i , ignore 忽略
 <ul>
@@ -637,72 +668,84 @@ alt="image-20200608171048103" />
 <li>icontains</li>
 <li>istartswith</li>
 <li>iendswith</li>
-</ul></li>
+</ul>
+</li>
 <li>django中查询条件有时区问题
 <ul>
 <li>关闭django中自定义的时区</li>
 <li>在数据库中创建对应的时区表</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <h3 id="模型成员">模型成员</h3>
 <ul>
 <li>显性属性
 <ul>
 <li>开发者手动书写的属性</li>
-</ul></li>
+</ul>
+</li>
 <li>隐性属性
 <ul>
 <li>开发者没有书写，ORM自动生成的</li>
 <li>如果你把隐性属性手动声明了，系统就不会为你产生隐性属性了</li>
-</ul></li>
 </ul>
-<h3 id="从mysql到model">从MySql到model</h3>
+</li>
+</ul>
+<h3 id="从MySql到model">从MySql到model</h3>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py inspectdb &gt; backstage/models.py</span><br></pre></td></tr></table></figure>
 <h3 id="sort排序">sort排序</h3>
-<p>2）key参数/函数
-从python2.4开始，list.sort()和sorted()函数增加了key参数来指定一个函数，此函数将在每个元素比较前被调用。
-例如通过key指定的函数来忽略字符串的大小写： 代码如下:</p>
+<p>2）key参数/函数<br>
+从python2.4开始，list.sort()和sorted()函数增加了key参数来指定一个函数，此函数将在每个元素比较前被调用。 例如通过key指定的函数来忽略字符串的大小写：<br>
+代码如下:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sorted(<span class="string">"This is a test string from Andrew"</span>.split(), key=str.lower)</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'Andrew'</span>, <span class="string">'from'</span>, <span class="string">'is'</span>, <span class="string">'string'</span>, <span class="string">'test'</span>, <span class="string">'This'</span>]</span><br></pre></td></tr></table></figure>
 <p>key参数的值为一个函数，此函数只有一个参数且返回一个值用来进行比较。这个技术是快速的因为key指定的函数将准确地对每个元素调用。</p>
 <p>更广泛的使用情况是用复杂对象的某些值来对复杂对象的序列排序，例如：</p>
 <p>代码如下:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">student_tuples = [</span><br><span class="line">(<span class="string">'john'</span>, <span class="string">'A'</span>, <span class="number">15</span>),</span><br><span class="line">(<span class="string">'jane'</span>, <span class="string">'B'</span>, <span class="number">12</span>),</span><br><span class="line">(<span class="string">'dave'</span>, <span class="string">'B'</span>, <span class="number">10</span>),</span><br><span class="line">]</span><br><span class="line">sorted(student_tuples, key=<span class="keyword">lambda</span> student: student[<span class="number">2</span>])   <span class="comment"># sort by age</span></span><br><span class="line">[(<span class="string">'dave'</span>, <span class="string">'B'</span>, <span class="number">10</span>), (<span class="string">'jane'</span>, <span class="string">'B'</span>, <span class="number">12</span>), (<span class="string">'john'</span>, <span class="string">'A'</span>, <span class="number">15</span>)]</span><br></pre></td></tr></table></figure>
-<h3 id="paginator分页">Paginator分页</h3>
+<h3 id="Paginator分页">Paginator分页</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.core.paginator <span class="keyword">import</span> Paginator</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行分页</span></span><br><span class="line">pagenator = Paginator(result_list, limit)</span><br><span class="line">result = pagenator.page(page).object_list</span><br></pre></td></tr></table></figure>
-<h3 id="pop间接修改键的key值">pop()间接修改键的key值</h3>
+<h3 id="pop-间接修改键的key值">pop()间接修改键的key值</h3>
 <p>pop()一般用作删除列表中元素，但是它的返回值很有趣</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pop(key[,default])</span><br></pre></td></tr></table></figure>
 <ul>
 <li>key: 要删除的键/值对所对应的键</li>
-<li>default:
-可选参数，给定键不在字典中时必须设置，否者会报错(没有默认值)，此时返回default值，</li>
+<li>default: 可选参数，给定键不在字典中时必须设置，否者会报错(没有默认值)，此时返回default值，</li>
 </ul>
-<p>Python 字典 pop()
-方法删除给定键所对应的键/值对，并返回被删除的值。给定键如果不在字典中，则必须设置一个default值，否则会报错，此时返回的就是default值。</p>
-<h3 id="model_to_dict单个对象转字典">model_to_dict()单个对象转字典</h3>
+<p>Python 字典 pop() 方法删除给定键所对应的键/值对，并返回被删除的值。给定键如果不在字典中，则必须设置一个default值，否则会报错，此时返回的就是default值。</p>
+<h3 id="model-to-dict-单个对象转字典">model_to_dict()单个对象转字典</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from django.forms import model_to_dict</span><br><span class="line"></span><br><span class="line">result &#x3D; UserUserinfo.objects.filter(nickname__contains&#x3D;key).first()</span><br><span class="line">result &#x3D; model_to_dict(result)</span><br></pre></td></tr></table></figure>
 <h3 id="取日期区间">取日期区间</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> dateutil.relativedelta <span class="keyword">import</span> relativedelta</span><br><span class="line"></span><br><span class="line">now_date = datetime.datetime.now().date()</span><br><span class="line">dates = &#123;</span><br><span class="line">    <span class="string">'1'</span>: now_date - datetime.timedelta(days=<span class="number">1</span>),  <span class="comment"># 近一天</span></span><br><span class="line">    <span class="string">'2'</span>: now_date - datetime.timedelta(weeks=<span class="number">1</span>),  <span class="comment"># 近一周</span></span><br><span class="line">    <span class="string">'3'</span>: now_date - relativedelta(months=<span class="number">1</span>)  <span class="comment"># 近一月</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">parameter_time = dates.get(<span class="string">'%s'</span> % time)</span><br><span class="line">obj_list = Customer.objects.filter(deal_date__gte=parameter_time, deal_date__lte=cur_date)</span><br></pre></td></tr></table></figure>
-<h3
-id="django中通过model名字获取model">django中通过model名字获取model</h3>
+<h3 id="django中通过model名字获取model">django中通过model名字获取model</h3>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; from django.apps import apps</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; apps.get_app_config(<span class="string">'auth'</span>) </span></span><br><span class="line">&lt;AuthConfig: auth&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 注意得到的结果是迭代器(iterator)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; auth = apps.get_app_config(<span class="string">'auth'</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; auth.get_models()</span></span><br><span class="line">&lt;generator object get_models at 0x31422d0&gt;</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> auth.get_models():</span></span><br><span class="line">...  print i</span><br><span class="line">... </span><br><span class="line">&lt;class 'django.contrib.auth.models.Permission'&gt;</span><br><span class="line">&lt;class 'django.contrib.auth.models.Group'&gt;</span><br><span class="line">&lt;class 'django.contrib.auth.models.User'&gt;</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; auth.get_model(<span class="string">'User'</span>)         </span></span><br><span class="line">&lt;class 'django.contrib.auth.models.User'&gt;</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; User = auth.get_model(<span class="string">'User'</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; User.objects.all()[0]</span></span><br><span class="line">&lt;User: root&gt;</span><br></pre></td></tr></table></figure>
 <h3 id="时间类型">时间类型</h3>
-<ol type="1">
-<li><p>default=datetime.now()</p>
-<p>model每次初始化，都会自动设置该字段的默认值为初始化时间。</p></li>
-<li><p>default=datetime.now</p>
-<p>model每次进行新增或修改操作，都会自动设置该字段的值为操作时间。设置后仍可以使用ORM手动修改该字段。</p></li>
-<li><p>auto_now_add=True</p>
-<p>默认值为False，若设置为True，model每次进行新增操作，都会自动设置该字段的值为操作时间。设置为True后无法使用ORM手动修改该字段，哪怕填充了字段的值也会被覆盖。</p></li>
-<li><p>auto_now=True</p>
-<p>默认值为False，若设置为True，model每次进行新增或修改操作，都会自动设置该字段的值为操作时间。设置为True后无法使用ORM手动修改该字段，哪怕填充了字段的值也会被覆盖。</p></li>
-<li><p>要注意的点</p>
+<ol>
+<li>
+<p>default=datetime.now()</p>
+<p>model每次初始化，都会自动设置该字段的默认值为初始化时间。</p>
+</li>
+<li>
+<p>default=datetime.now</p>
+<p>model每次进行新增或修改操作，都会自动设置该字段的值为操作时间。设置后仍可以使用ORM手动修改该字段。</p>
+</li>
+<li>
+<p>auto_now_add=True</p>
+<p>默认值为False，若设置为True，model每次进行新增操作，都会自动设置该字段的值为操作时间。设置为True后无法使用ORM手动修改该字段，哪怕填充了字段的值也会被覆盖。</p>
+</li>
+<li>
+<p>auto_now=True</p>
+<p>默认值为False，若设置为True，model每次进行新增或修改操作，都会自动设置该字段的值为操作时间。设置为True后无法使用ORM手动修改该字段，哪怕填充了字段的值也会被覆盖。</p>
+</li>
+<li>
+<p>要注意的点</p>
 <p>除非想设置动态默认时间为项目的启动时间，否则default=datetime.now()这种用法是错误的，会得到期望之外的结果。</p>
 <p>使用User.objects.update方法时，设置的default=datetime.now和auto_now=True都不会生效，由于设置了auto_now=True的字段不能手动修改，此时只能使用save方法修改数据，这对于多个数据的更新是不友好的。</p>
-<p>因此如果设置动态默认时间的字段，应该使用default=datetime.now和auto_now_add=True来实现。</p></li>
+<p>因此如果设置动态默认时间的字段，应该使用default=datetime.now和auto_now_add=True来实现。</p>
+</li>
 </ol>
 <h3 id="djang获取models字段方法">djang获取models字段方法</h3>
-<p>通过._meta.fields获取 以Student这个model为例</p>
+<p>通过._meta.fields获取<br>
+以Student这个model为例</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">In [59]: Student._meta.fields</span><br><span class="line">Out[59]: </span><br><span class="line">(&lt;django.db.models.fields.AutoField: id&gt;,</span><br><span class="line"> &lt;django.db.models.fields.CharField: stu_name&gt;,</span><br><span class="line"> &lt;django.db.models.fields.CharField: stu_no&gt;,</span><br><span class="line"> &lt;django.db.models.fields.CharField: stu_sex&gt;,</span><br><span class="line"> &lt;django.db.models.fields.IntegerField: stu_age&gt;,</span><br><span class="line"> &lt;django.db.models.fields.DateTimeField: stu_birth&gt;)</span><br></pre></td></tr></table></figure>
 <p>获取字段名：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In [62]: stu = Student._meta.fields </span><br><span class="line">In [62]: [stu[i].name for i in range(len(stu))]</span><br><span class="line">Out[62]: [u'id', 'stu_name', 'stu_no', 'stu_sex', 'stu_age', 'stu_birth']</span><br></pre></td></tr></table></figure>
@@ -717,7 +760,6 @@ id="django中通过model名字获取model">django中通过model名字获取model
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    'django.contrib.admin',</span><br><span class="line">    'django.contrib.auth',</span><br><span class="line">    'django.contrib.contenttypes',</span><br><span class="line">    'django.contrib.sessions',</span><br><span class="line">    'django.contrib.messages',</span><br><span class="line">    'django.contrib.staticfiles',</span><br><span class="line"><span class="addition">+   'corsheaders',  # 跨域</span></span><br><span class="line">    'learn1',</span><br><span class="line">    'backstage',</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    'django.middleware.security.SecurityMiddleware',</span><br><span class="line">    'django.contrib.sessions.middleware.SessionMiddleware',</span><br><span class="line"><span class="addition">+   'corsheaders.middleware.CorsMiddleware',  # 解决跨域</span></span><br><span class="line">    'django.middleware.common.CommonMiddleware',</span><br><span class="line">    'django.middleware.csrf.CsrfViewMiddleware',</span><br><span class="line">    'django.contrib.auth.middleware.AuthenticationMiddleware',</span><br><span class="line">    'django.contrib.messages.middleware.MessageMiddleware',</span><br><span class="line">    'django.middleware.clickjacking.XFrameOptionsMiddleware',</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 跨域增加忽略</span></span><br><span class="line">CORS_ALLOW_CREDENTIALS = <span class="literal">True</span></span><br><span class="line">CORS_ORIGIN_ALLOW_ALL = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">CORS_ALLOW_METHODS = (</span><br><span class="line">    <span class="string">'DELETE'</span>,</span><br><span class="line">    <span class="string">'GET'</span>,</span><br><span class="line">    <span class="string">'OPTIONS'</span>,</span><br><span class="line">    <span class="string">'PATCH'</span>,</span><br><span class="line">    <span class="string">'POST'</span>,</span><br><span class="line">    <span class="string">'PUT'</span>,</span><br><span class="line">    <span class="string">'VIEW'</span>,</span><br><span class="line">)</span><br><span class="line">CORS_ALLOW_HEADERS = (</span><br><span class="line">    <span class="string">'XMLHttpRequest'</span>,</span><br><span class="line">    <span class="string">'X_FILENAME'</span>,</span><br><span class="line">    <span class="string">'accept-encoding'</span>,</span><br><span class="line">    <span class="string">'authorization'</span>,</span><br><span class="line">    <span class="string">'content-type'</span>,</span><br><span class="line">    <span class="string">'dnt'</span>,</span><br><span class="line">    <span class="string">'origin'</span>,</span><br><span class="line">    <span class="string">'user-agent'</span>,</span><br><span class="line">    <span class="string">'x-csrftoken'</span>,</span><br><span class="line">    <span class="string">'x-requested-with'</span>,</span><br><span class="line">    <span class="string">'token'</span>,    <span class="comment"># token</span></span><br><span class="line">    <span class="string">'authentication'</span>,   <span class="comment"># token</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
     </div>
 
     
@@ -741,16 +783,16 @@ id="django中通过model名字获取model">django中通过model名字获取model
       <div class="popular-posts-title"><a href="\lxml相关操作\" rel="bookmark">lxml相关操作</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python中-和is的区别\" rel="bookmark">python中==和is的区别</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\python赋值-浅拷贝-深拷贝\" rel="bookmark">python赋值&浅拷贝&深拷贝</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
     </li>
   </ul>
 
@@ -886,7 +928,7 @@ id="django中通过model名字获取model">django中通过model名字获取model
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建工程"><span class="nav-text">创建工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建应用"><span class="nav-text">创建应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发者服务器"><span class="nav-text">开发者服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#允许访问范围"><span class="nav-text">允许访问范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言和时区设置"><span class="nav-text">语言和时区设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迁移"><span class="nav-text">迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册路由"><span class="nav-text">注册路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#html模板"><span class="nav-text">html模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分发路由"><span class="nav-text">分发路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-使用了orm技术"><span class="nav-text">models 使用了ORM技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快捷键"><span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接mysql驱动"><span class="nav-text">连接mysql驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新建立-migration-文件"><span class="nav-text">重新建立 migration 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新生成数据库中的某张表"><span class="nav-text">重新生成数据库中的某张表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表关系"><span class="nav-text">表关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型过滤"><span class="nav-text">模型过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取单个对象"><span class="nav-text">获取单个对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#first和last"><span class="nav-text">first和last</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切片"><span class="nav-text">切片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存集"><span class="nav-text">缓存集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询条件"><span class="nav-text">查询条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型成员"><span class="nav-text">模型成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从mysql到model"><span class="nav-text">从MySql到model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort排序"><span class="nav-text">sort排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#paginator分页"><span class="nav-text">Paginator分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pop间接修改键的key值"><span class="nav-text">pop()间接修改键的key值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model_to_dict单个对象转字典"><span class="nav-text">model_to_dict()单个对象转字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取日期区间"><span class="nav-text">取日期区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#django中通过model名字获取model"><span class="nav-text">django中通过model名字获取model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间类型"><span class="nav-text">时间类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#djang获取models字段方法"><span class="nav-text">djang获取models字段方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改数据库中部分信息"><span class="nav-text">修改数据库中部分信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键不能直接插入"><span class="nav-text">外键不能直接插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去重查询"><span class="nav-text">去重查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决跨域"><span class="nav-text">解决跨域</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建工程"><span class="nav-text">创建工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建应用"><span class="nav-text">创建应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发者服务器"><span class="nav-text">开发者服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#允许访问范围"><span class="nav-text">允许访问范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言和时区设置"><span class="nav-text">语言和时区设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迁移"><span class="nav-text">迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册路由"><span class="nav-text">注册路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#html模板"><span class="nav-text">html模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分发路由"><span class="nav-text">分发路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-使用了ORM技术"><span class="nav-text">models 使用了ORM技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快捷键"><span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接mysql驱动"><span class="nav-text">连接mysql驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新建立-migration-文件"><span class="nav-text">重新建立 migration 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新生成数据库中的某张表"><span class="nav-text">重新生成数据库中的某张表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表关系"><span class="nav-text">表关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型过滤"><span class="nav-text">模型过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取单个对象"><span class="nav-text">获取单个对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#first和last"><span class="nav-text">first和last</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切片"><span class="nav-text">切片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存集"><span class="nav-text">缓存集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询条件"><span class="nav-text">查询条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型成员"><span class="nav-text">模型成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从MySql到model"><span class="nav-text">从MySql到model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sort排序"><span class="nav-text">sort排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Paginator分页"><span class="nav-text">Paginator分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pop-间接修改键的key值"><span class="nav-text">pop()间接修改键的key值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model-to-dict-单个对象转字典"><span class="nav-text">model_to_dict()单个对象转字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取日期区间"><span class="nav-text">取日期区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#django中通过model名字获取model"><span class="nav-text">django中通过model名字获取model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间类型"><span class="nav-text">时间类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#djang获取models字段方法"><span class="nav-text">djang获取models字段方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改数据库中部分信息"><span class="nav-text">修改数据库中部分信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键不能直接插入"><span class="nav-text">外键不能直接插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去重查询"><span class="nav-text">去重查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决跨域"><span class="nav-text">解决跨域</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1258,13 +1300,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

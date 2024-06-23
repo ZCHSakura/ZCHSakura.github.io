@@ -313,11 +313,10 @@
       
         <p>记录下使用达梦数据库遇到的大小写问题，达梦数据库在建库的时候可以选择不区分大小写，默认是选择区分的，我看网上的博客很多都建议取消区分大小写，但是我对接的用户这边建库的时候没有取消，然后dm好像有把字段名全部大写，就算他们建表时写的小写，没有仔细研究，我这里主要只是做了有无大写判断。</p>
 <a id="more"></a>
-<h4 id="cursor.fetchall">cursor.fetchall()</h4>
+<h4 id="cursor-fetchall">cursor.fetchall()</h4>
 <p>对从数据库中获得的列数较少的数据实际上都不用判断里面字段名是大写还是小写，可以直接用try、expect来处理</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>.lower()]</span><br></pre></td></tr></table></figure>
-<h4 id="df-pd.dataframe.from_recordsdb_data">df =
-pd.DataFrame.from_records(db_data)</h4>
+<h4 id="df-pd-DataFrame-from-records-db-data">df = pd.DataFrame.from_records(db_data)</h4>
 <p>为了对数据进行更好的处理，在Python中经常会使用到pandas来处理数据，当我们在<code>dmPython.connect</code>中设置了<code>cursorclass=dmPython.DictCursor</code>时，我们<code>cursor.fetchall()</code>回来的数据会是一个list包裹若干dict的形式，每一个dict是数据库中的一行，dict中的key就是数据表中的列名。此时我们可以采用<code>pd.DataFrame.from_records()</code>将这种list直接变为pandas的DataFrame格式来进行处理。</p>
 <p>这里我需要将数据库中取出来的数据先修改类型，使用<code>df.astype()</code>可以直接修改df的列数据类型，这里需要用到一个dict来完成数据类型修改，dict的key是df的列名，value是要修改成的数据类型，如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data_types_dict &#x3D; &#123;</span><br><span class="line">    &quot;time_start&quot;: float,</span><br><span class="line">    &quot;ip_client&quot;: str,</span><br><span class="line">    &quot;byte_up&quot;: float,</span><br><span class="line">    &quot;byte_dn&quot;: float</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -488,8 +487,7 @@ pd.DataFrame.from_records(db_data)</h4>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#cursor.fetchall"><span class="nav-text">cursor.fetchall()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#df-pd.dataframe.from_recordsdb_data"><span class="nav-text">df &#x3D;
-pd.DataFrame.from_records(db_data)</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#cursor-fetchall"><span class="nav-text">cursor.fetchall()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#df-pd-DataFrame-from-records-db-data"><span class="nav-text">df &#x3D; pd.DataFrame.from_records(db_data)</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -861,13 +859,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 

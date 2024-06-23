@@ -314,41 +314,40 @@
       
         <p>scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。</p>
 <a id="more"></a>
-<h2 id="如何构建对象">1.如何构建对象</h2>
+<h2 id="1-如何构建对象">1.如何构建对象</h2>
 <p>首先我们要引入lxml（html也是lxml的一种）包，然后调用<code>etree.HTML()</code>函数解析html来构建Element</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">element = etree.HTML(response.text).xpath(<span class="string">'//div[@class="con_main"]'</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h2 id="去除特定节点">2.去除特定节点</h2>
-<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a
-href="https://lxml.de/api/lxml.etree._Element-class.html">lxml官方文档</a>。</p>
+<h2 id="2-去除特定节点">2.去除特定节点</h2>
+<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a href="https://lxml.de/api/lxml.etree._Element-class.html" target="_blank" rel="noopener">lxml官方文档</a>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> pp <span class="keyword">in</span> element.findall(<span class="string">'p[@style]'</span>):</span><br><span class="line">    element.remove(pp)</span><br></pre></td></tr></table></figure>
-<h2 id="完成信息提取">3.完成信息提取</h2>
+<h2 id="3-完成信息提取">3.完成信息提取</h2>
 <p>之后就是正常的完成对所需信息的处理，去毛刺，格式化，列表化等操作：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"><span class="comment"># 这一句是去除列表中的空元素</span></span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
 <p><strong>注意：</strong></p>
 <ul>
 <li>虽然<code>Element</code>和scrapy的<code>selector</code>都可以是调用<code>xpath</code>方法形式上也很类似但是<code>Element</code>对象<code>xpath('string(.)')</code>之后是不用<code>extract_first()</code>的</li>
 </ul>
-<h2 id="extract和extract_first">4.extract（）和extract_first（）</h2>
+<h2 id="4-extract（）和extract-first（）">4.extract（）和extract_first（）</h2>
 <p>如果您是Scrapy的长期用户，则可能熟悉<code>.extract()</code>和<code>.extract_first()</code>选择器方法。许多博客文章和教程也正在使用它们。Scrapy仍支持这些方法，<strong>没有计划</strong>弃用它们。</p>
-<p>但是，Scrapy用法文档现在使用<code>.get()</code>和
-<code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
+<p>但是，Scrapy用法文档现在使用<code>.get()</code>和 <code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
 <p>以下示例显示了这些方法如何相互映射：</p>
-<ol type="1">
-<li><p><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>：
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure></p></li>
-<li><p><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</p></li>
+<ol>
+<li><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).getall()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
+<ol start="3">
 <li><code>Selector.get()</code>与<code>Selector.extract()</code>：</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].extract()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
+<ol start="4">
 <li>为了保持一致性，还有<code>Selector.getall()</code>，它返回一个列表：</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].getall()</span></span><br><span class="line">['image1.html']</span><br></pre></td></tr></table></figure>
-<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code>
-始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
+<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code> 始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
 
     </div>
 
@@ -376,13 +375,13 @@ href="https://lxml.de/api/lxml.etree._Element-class.html">lxml官方文档</a>�
       <div class="popular-posts-title"><a href="\Django学习笔记\" rel="bookmark">Django学习笔记</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\python中-和is的区别\" rel="bookmark">python中==和is的区别</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\pycharm远程调试项目\" rel="bookmark">pycharm远程调试项目</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python调用CIC\" rel="bookmark">python调用CIC</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\python操作redis大全\" rel="bookmark">python操作redis大全</a></div>
+      <div class="popular-posts-title"><a href="\python赋值-浅拷贝-深拷贝\" rel="bookmark">python赋值&浅拷贝&深拷贝</a></div>
     </li>
   </ul>
 
@@ -519,7 +518,7 @@ href="https://lxml.de/api/lxml.etree._Element-class.html">lxml官方文档</a>�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何构建对象"><span class="nav-text">1.如何构建对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除特定节点"><span class="nav-text">2.去除特定节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完成信息提取"><span class="nav-text">3.完成信息提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#extract和extract_first"><span class="nav-text">4.extract（）和extract_first（）</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-如何构建对象"><span class="nav-text">1.如何构建对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-去除特定节点"><span class="nav-text">2.去除特定节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-完成信息提取"><span class="nav-text">3.完成信息提取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-extract（）和extract-first（）"><span class="nav-text">4.extract（）和extract_first（）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -891,13 +890,13 @@ if(canvas.getContext){
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">127k</span>
+    <span title="站点总字数">124k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:52</span>
 </div>
 
 
