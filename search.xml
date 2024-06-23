@@ -1,46 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>MySQL最左前缀</title>
-    <url>/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/</url>
-    <content><![CDATA[<p>记录下MySQL中索引的最左前缀原则和联合索引有什么好处</p>
-<a id="more"></a>
-<h3 id="最左前缀原则">最左前缀原则</h3>
-<p>最左匹配原则就是指在联合索引中，如果你的 SQL
-语句中用到了联合索引中的最左边的索引，那么这条 SQL
-语句就可以利用这个联合索引去进行匹配。例如某表现有索引(a,b,c)，现在你有如下语句：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b&#x3D;1 and c &#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b,c</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1 and b&#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b</span><br><span class="line"></span><br><span class="line">select * from t where b&#x3D;1 and a&#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b（mysql有查询优化器）</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1;     #这样也可以利用到定义的索引（a,b,c）,用上a</span><br><span class="line"></span><br><span class="line">select * from t where b&#x3D;1 and c&#x3D;1;     #这样不可以利用到定义的索引（a,b,c）</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1 and c&#x3D;1;     #这样可以利用到定义的索引（a,b,c），但只用上a索引，b,c索引用不到</span><br></pre></td></tr></table></figure>
-<p><strong>当遇到范围查询(&gt;、&lt;、between、like)就会停止匹配</strong>。也就是：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b&gt;1 and c &#x3D;1; #这样a,b可以用到（a,b,c），c索引用不到</span><br></pre></td></tr></table></figure>
-<p>这条语句只有 a,b 会用到索引，c
-都不能用到索引。这个原因可以从联合索引的结构来解释。</p>
-<p>但是如果是建立(a,c,b)联合索引，则a,b,c都可以使用索引，因为优化器会自动改写为最优查询语句</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b &gt;1 and c&#x3D;1;  #如果是建立(a,c,b)联合索引，则a,b,c都可以使用索引</span><br><span class="line">#优化器改写为</span><br><span class="line">select * from t where a&#x3D;1 and c&#x3D;1 and b &gt;1;</span><br></pre></td></tr></table></figure>
-<p>以index
-（a,b,c）为例建立这样的索引相当于建立了索引a、ab、abc三个索引。</p>
-<h3 id="联合索引优点">联合索引优点</h3>
-<ul>
-<li><strong>减少开销。</strong>建一个联合索引(col1,col2,col3)，实际相当于建了(col1),(col1,col2),(col1,col2,col3)三个索引。每多一个索引，都会增加写操作的开销和磁盘空间的开销。对于大量数据的表，使用联合索引会大大的减少开销！</li>
-<li><strong>覆盖索引。</strong>对联合索引(col1,col2,col3)，如果有如下的sql:
-select col1,col2,col3 from test where col1=1 and
-col2=2。那么MySQL可以直接通过遍历索引取得数据，而无需回表，这减少了很多的随机io操作。减少io操作，特别的随机io其实是dba主要的优化策略。所以，在真正的实际应用中，覆盖索引是主要的提升性能的优化手段之一。</li>
-<li><strong>效率高。</strong>索引列越多，通过索引筛选出的数据越少。有1000W条数据的表，有如下sql:select
-from table where col1=1 and col2=2 and
-col3=3,假设假设每个条件可以筛选出10%的数据，如果只有单值索引，那么通过该索引能筛选出1000W
-* 10%=100w条数据，然后再回表从100w条数据中找到符合col2=2 and col3=
-3的数据，然后再排序，再分页；如果是联合索引，通过索引筛选出1000w *10%
-*10% *10%=1w，效率提升可想而知！</li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CICFlowMeter部署</title>
     <url>/CICFlowMeter%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>记录下在X86和arm架构上部署CICFlowMeter的整体流程和各种问题，笔者在部署的时候真的是遇到过很多问题，部署到ARM上更是难搞，这里记录下顺便看能不能帮助其他人。</p>
@@ -268,97 +228,43 @@ alt="protocol" />
       </tags>
   </entry>
   <entry>
-    <title>Python常用内置函数</title>
-    <url>/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p>记录Python常用的内置函数</p>
+    <title>MySQL最左前缀</title>
+    <url>/MySQL%E6%9C%80%E5%B7%A6%E5%89%8D%E7%BC%80/</url>
+    <content><![CDATA[<p>记录下MySQL中索引的最左前缀原则和联合索引有什么好处</p>
 <a id="more"></a>
-<p>Python给我们内置了大量功能函数，官方文档上列出了69个，有些是我们是平时开发中经常遇到的，也有一些函数很少被用到，这里列举被开发者使用最频繁的8个函数以及他们的详细用法</p>
-<figure>
-<img
-src="https:////upload-images.jianshu.io/upload_images/15801507-d86739dc54bc18fa.jpg!web?imageMogr2/auto-orient/strip%7CimageView2/2/w/550/format/webp"
-alt="img" />
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3 id="print">print()</h3>
-<p>print函数是你学Python接触到的第一个函数，它将对象输出到标准输出流，可将任意多个对象打印出来，函数的具体定义：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(*objects, sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-<p>objects 是可变参数，所以你可以同时将任意多个对象打印出来</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)  </span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>默认使用空格分隔每个对象，通过指定sep参数可以使用逗号分隔</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>)  </span><br><span class="line"><span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>对象默认输出的是标准输出流，你也可以将内容保存到文件中</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>, file=open(<span class="string">"hello.txt"</span>, <span class="string">"w"</span>))</span><br></pre></td></tr></table></figure>
-<h3 id="isinstance">isinstance()</h3>
-<p>可以用 isinstance
-函数判断某个对象是否属于某个类的实例，函数的定义</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">isinstance(object, classinfo)</span><br></pre></td></tr></table></figure>
-<p>classinfo
-既可以是单个类型对象，也可以是由多个类型对象组成的元组，只要object的类型是元组中任意一个就返回True，否则返回False</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="string">""</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], dict)  </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<h3 id="range">range()</h3>
-<p>range函数是个工厂方法，用于构造一个从[start, stop)
-（不包含stop）之间的连续的不可变的整数序列对象，这个序列功能上和列表非常类似，函数定义：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">range([start,] stop [, step]) -&gt; range object</span><br></pre></td></tr></table></figure>
+<h3 id="最左前缀原则">最左前缀原则</h3>
+<p>最左匹配原则就是指在联合索引中，如果你的 SQL
+语句中用到了联合索引中的最左边的索引，那么这条 SQL
+语句就可以利用这个联合索引去进行匹配。例如某表现有索引(a,b,c)，现在你有如下语句：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b&#x3D;1 and c &#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b,c</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1 and b&#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b</span><br><span class="line"></span><br><span class="line">select * from t where b&#x3D;1 and a&#x3D;1;     #这样可以利用到定义的索引（a,b,c）,用上a,b（mysql有查询优化器）</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1;     #这样也可以利用到定义的索引（a,b,c）,用上a</span><br><span class="line"></span><br><span class="line">select * from t where b&#x3D;1 and c&#x3D;1;     #这样不可以利用到定义的索引（a,b,c）</span><br><span class="line"></span><br><span class="line">select * from t where a&#x3D;1 and c&#x3D;1;     #这样可以利用到定义的索引（a,b,c），但只用上a索引，b,c索引用不到</span><br></pre></td></tr></table></figure>
+<p><strong>当遇到范围查询(&gt;、&lt;、between、like)就会停止匹配</strong>。也就是：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b&gt;1 and c &#x3D;1; #这样a,b可以用到（a,b,c），c索引用不到</span><br></pre></td></tr></table></figure>
+<p>这条语句只有 a,b 会用到索引，c
+都不能用到索引。这个原因可以从联合索引的结构来解释。</p>
+<p>但是如果是建立(a,c,b)联合索引，则a,b,c都可以使用索引，因为优化器会自动改写为最优查询语句</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from t where a&#x3D;1 and b &gt;1 and c&#x3D;1;  #如果是建立(a,c,b)联合索引，则a,b,c都可以使用索引</span><br><span class="line">#优化器改写为</span><br><span class="line">select * from t where a&#x3D;1 and c&#x3D;1 and b &gt;1;</span><br></pre></td></tr></table></figure>
+<p>以index
+（a,b,c）为例建立这样的索引相当于建立了索引a、ab、abc三个索引。</p>
+<h3 id="联合索引优点">联合索引优点</h3>
 <ul>
-<li>start 可选参数，序列的起点，默认是0</li>
-<li>stop 必选参数，序列的终点（不包含）</li>
-<li>step 可选参数，序列的步长，默认是1，生成的元素规律是 r[i] = start +
-step*i</li>
+<li><strong>减少开销。</strong>建一个联合索引(col1,col2,col3)，实际相当于建了(col1),(col1,col2),(col1,col2,col3)三个索引。每多一个索引，都会增加写操作的开销和磁盘空间的开销。对于大量数据的表，使用联合索引会大大的减少开销！</li>
+<li><strong>覆盖索引。</strong>对联合索引(col1,col2,col3)，如果有如下的sql:
+select col1,col2,col3 from test where col1=1 and
+col2=2。那么MySQL可以直接通过遍历索引取得数据，而无需回表，这减少了很多的随机io操作。减少io操作，特别的随机io其实是dba主要的优化策略。所以，在真正的实际应用中，覆盖索引是主要的提升性能的优化手段之一。</li>
+<li><strong>效率高。</strong>索引列越多，通过索引筛选出的数据越少。有1000W条数据的表，有如下sql:select
+from table where col1=1 and col2=2 and
+col3=3,假设假设每个条件可以筛选出10%的数据，如果只有单值索引，那么通过该索引能筛选出1000W
+* 10%=100w条数据，然后再回表从100w条数据中找到符合col2=2 and col3=
+3的数据，然后再排序，再分页；如果是联合索引，通过索引筛选出1000w *10%
+*10% *10%=1w，效率提升可想而知！</li>
 </ul>
-<p>生成0~5的列表</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">5</span>)  </span><br><span class="line">range(<span class="number">0</span>, <span class="number">5</span>)     </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">5</span>))  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
-<p>默认从0开始，生成0到4之间的5个整数，不包含5，step
-默认是1，每次都是在前一次加1</p>
-<p>如果你想将某个操作重复执行n遍，就可以使用for循环配置range函数实现</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):  </span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"hello python"</span>)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">hello python  </span><br><span class="line">hello python  </span><br><span class="line">hello python</span><br></pre></td></tr></table></figure>
-<p>步长为2</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line">range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>))  </span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
-<p>起点从1开始，终点10，步长为2，每次都在前一个元素的基础上加2，构成1到10之间的奇数。</p>
-<h3 id="enumerate">enumerate()</h3>
-<p>用于枚举可迭代对象，同时还可以得到每次元素的下表索引值，函数定义：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">enumerate(iterable, start=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
-<p>index 默认从0开始，如果显式指定参数start，下标索引就从start开始</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>, start=<span class="number">1</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">1</span> p  </span><br><span class="line"><span class="number">2</span> y  </span><br><span class="line"><span class="number">3</span> t  </span><br><span class="line"><span class="number">4</span> h  </span><br><span class="line"><span class="number">5</span> o  </span><br><span class="line"><span class="number">6</span> n</span><br></pre></td></tr></table></figure>
-<p>如果不使用enumerate函数，要获取元素的下标索引，则需要更多的代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_enumerate</span><span class="params">(sequence, start=<span class="number">0</span>)</span>:</span>  </span><br><span class="line">    n = start  </span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> sequence:  </span><br><span class="line">        <span class="keyword">yield</span> n, e  </span><br><span class="line">        n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> my_enumerate(<span class="string">"python"</span>):  </span><br><span class="line">    print(index, value)  </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
-<h3 id="len">len</h3>
-<p>len 用于获取容器对象中的元素个数，例如判断列表是否为空可以用 len
-函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])  </span><br><span class="line"><span class="number">3</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="string">"python"</span>)  </span><br><span class="line"><span class="number">6</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> len([]) == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-<p>并不是所有对象都支持len操作的，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="literal">True</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;  </span><br><span class="line">TypeError: object of type <span class="string">'bool'</span> has no len()</span><br></pre></td></tr></table></figure>
-<p>除了序列对象和集合对象，自定义类必须实现了 <strong>len</strong>
-方法能作用在len函数上</p>
-<h3 id="reversed">reversed()</h3>
-<p>reversed()
-反转序列对象，你可以将字符串进行反转，将列表进行反转，将元组反转</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(reversed([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="open">open()</h3>
-<p>open 函数用于构造文件对象，构建后可对其进行内容的读写操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">open(file, mode=<span class="string">'r'</span>, encoding=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>读操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从当前路径打开文件 test.txt， 默认以读的方式  </span></span><br><span class="line">&gt;&gt;&gt;f = open(<span class="string">"test.txt"</span>)  </span><br><span class="line">&gt;&gt;&gt;f.read()  </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>有时还需要指定编码格式，否则会遇到乱码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"test.txt"</span>, encoding=<span class="string">'utf8'</span>)</span><br></pre></td></tr></table></figure>
-<p>写操作</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;f = open(<span class="string">"hello.text"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">&gt;&gt;&gt;f.write(<span class="string">"hello python"</span>))</span><br></pre></td></tr></table></figure>
-<p>文件中存在内容时原来的内容将别覆盖，如果不想被覆盖，直接将新的内容追加到文件末尾，可以使用
-a 模式</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"hello.text"</span>, <span class="string">'a'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">f.write(<span class="string">"!!!"</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="sorted">sorted()</h3>
-<p>sroted
-是对列表进行重新排序，当然其他可迭代对象都支持重新排放，返回一个新对象，原对象保持不变</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">1</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>])  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>Python</category>
+        <category>MySQL</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -471,6 +377,100 @@ id="使用python操作mysql之1064错误">3.5使用Python操作mysql之1064错�
         <tag>MySQL</tag>
         <tag>Ubuntu</tag>
         <tag>utf8mb4</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python常用内置函数</title>
+    <url>/Python%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>记录Python常用的内置函数</p>
+<a id="more"></a>
+<p>Python给我们内置了大量功能函数，官方文档上列出了69个，有些是我们是平时开发中经常遇到的，也有一些函数很少被用到，这里列举被开发者使用最频繁的8个函数以及他们的详细用法</p>
+<figure>
+<img
+src="https:////upload-images.jianshu.io/upload_images/15801507-d86739dc54bc18fa.jpg!web?imageMogr2/auto-orient/strip%7CimageView2/2/w/550/format/webp"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="print">print()</h3>
+<p>print函数是你学Python接触到的第一个函数，它将对象输出到标准输出流，可将任意多个对象打印出来，函数的具体定义：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(*objects, sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>objects 是可变参数，所以你可以同时将任意多个对象打印出来</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)  </span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>默认使用空格分隔每个对象，通过指定sep参数可以使用逗号分隔</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>)  </span><br><span class="line"><span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>对象默认输出的是标准输出流，你也可以将内容保存到文件中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>, sep=<span class="string">','</span>, file=open(<span class="string">"hello.txt"</span>, <span class="string">"w"</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="isinstance">isinstance()</h3>
+<p>可以用 isinstance
+函数判断某个对象是否属于某个类的实例，函数的定义</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">isinstance(object, classinfo)</span><br></pre></td></tr></table></figure>
+<p>classinfo
+既可以是单个类型对象，也可以是由多个类型对象组成的元组，只要object的类型是元组中任意一个就返回True，否则返回False</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="string">""</span>, (int, str))  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], dict)  </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="range">range()</h3>
+<p>range函数是个工厂方法，用于构造一个从[start, stop)
+（不包含stop）之间的连续的不可变的整数序列对象，这个序列功能上和列表非常类似，函数定义：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">range([start,] stop [, step]) -&gt; range object</span><br></pre></td></tr></table></figure>
+<ul>
+<li>start 可选参数，序列的起点，默认是0</li>
+<li>stop 必选参数，序列的终点（不包含）</li>
+<li>step 可选参数，序列的步长，默认是1，生成的元素规律是 r[i] = start +
+step*i</li>
+</ul>
+<p>生成0~5的列表</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">5</span>)  </span><br><span class="line">range(<span class="number">0</span>, <span class="number">5</span>)     </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">5</span>))  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>默认从0开始，生成0到4之间的5个整数，不包含5，step
+默认是1，每次都是在前一次加1</p>
+<p>如果你想将某个操作重复执行n遍，就可以使用for循环配置range函数实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):  </span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"hello python"</span>)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">hello python  </span><br><span class="line">hello python  </span><br><span class="line">hello python</span><br></pre></td></tr></table></figure>
+<p>步长为2</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line">range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>))  </span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<p>起点从1开始，终点10，步长为2，每次都在前一个元素的基础上加2，构成1到10之间的奇数。</p>
+<h3 id="enumerate">enumerate()</h3>
+<p>用于枚举可迭代对象，同时还可以得到每次元素的下表索引值，函数定义：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">enumerate(iterable, start=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
+<p>index 默认从0开始，如果显式指定参数start，下标索引就从start开始</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(<span class="string">"python"</span>, start=<span class="number">1</span>):  </span><br><span class="line"><span class="meta">... </span>    print(index, value)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="number">1</span> p  </span><br><span class="line"><span class="number">2</span> y  </span><br><span class="line"><span class="number">3</span> t  </span><br><span class="line"><span class="number">4</span> h  </span><br><span class="line"><span class="number">5</span> o  </span><br><span class="line"><span class="number">6</span> n</span><br></pre></td></tr></table></figure>
+<p>如果不使用enumerate函数，要获取元素的下标索引，则需要更多的代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_enumerate</span><span class="params">(sequence, start=<span class="number">0</span>)</span>:</span>  </span><br><span class="line">    n = start  </span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> sequence:  </span><br><span class="line">        <span class="keyword">yield</span> n, e  </span><br><span class="line">        n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, value <span class="keyword">in</span> my_enumerate(<span class="string">"python"</span>):  </span><br><span class="line">    print(index, value)  </span><br><span class="line"><span class="number">0</span> p  </span><br><span class="line"><span class="number">1</span> y  </span><br><span class="line"><span class="number">2</span> t  </span><br><span class="line"><span class="number">3</span> h  </span><br><span class="line"><span class="number">4</span> o  </span><br><span class="line"><span class="number">5</span> n</span><br></pre></td></tr></table></figure>
+<h3 id="len">len</h3>
+<p>len 用于获取容器对象中的元素个数，例如判断列表是否为空可以用 len
+函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])  </span><br><span class="line"><span class="number">3</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="string">"python"</span>)  </span><br><span class="line"><span class="number">6</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> len([]) == <span class="number">0</span>:  </span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>并不是所有对象都支持len操作的，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="literal">True</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;  </span><br><span class="line">TypeError: object of type <span class="string">'bool'</span> has no len()</span><br></pre></td></tr></table></figure>
+<p>除了序列对象和集合对象，自定义类必须实现了 <strong>len</strong>
+方法能作用在len函数上</p>
+<h3 id="reversed">reversed()</h3>
+<p>reversed()
+反转序列对象，你可以将字符串进行反转，将列表进行反转，将元组反转</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(reversed([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="open">open()</h3>
+<p>open 函数用于构造文件对象，构建后可对其进行内容的读写操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">open(file, mode=<span class="string">'r'</span>, encoding=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>读操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从当前路径打开文件 test.txt， 默认以读的方式  </span></span><br><span class="line">&gt;&gt;&gt;f = open(<span class="string">"test.txt"</span>)  </span><br><span class="line">&gt;&gt;&gt;f.read()  </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>有时还需要指定编码格式，否则会遇到乱码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"test.txt"</span>, encoding=<span class="string">'utf8'</span>)</span><br></pre></td></tr></table></figure>
+<p>写操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt;f = open(<span class="string">"hello.text"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">&gt;&gt;&gt;f.write(<span class="string">"hello python"</span>))</span><br></pre></td></tr></table></figure>
+<p>文件中存在内容时原来的内容将别覆盖，如果不想被覆盖，直接将新的内容追加到文件末尾，可以使用
+a 模式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = open(<span class="string">"hello.text"</span>, <span class="string">'a'</span>, encoding=<span class="string">'utf8'</span>)  </span><br><span class="line">f.write(<span class="string">"!!!"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="sorted">sorted()</h3>
+<p>sroted
+是对列表进行重新排序，当然其他可迭代对象都支持重新排放，返回一个新对象，原对象保持不变</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">1</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>])  </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -893,6 +893,57 @@ id="django中通过model名字获取model">django中通过model名字获取model
       </tags>
   </entry>
   <entry>
+    <title>lxml相关操作</title>
+    <url>/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。</p>
+<a id="more"></a>
+<h2 id="如何构建对象">1.如何构建对象</h2>
+<p>首先我们要引入lxml（html也是lxml的一种）包，然后调用<code>etree.HTML()</code>函数解析html来构建Element</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">element = etree.HTML(response.text).xpath(<span class="string">'//div[@class="con_main"]'</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="去除特定节点">2.去除特定节点</h2>
+<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a
+href="https://lxml.de/api/lxml.etree._Element-class.html">lxml官方文档</a>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pp <span class="keyword">in</span> element.findall(<span class="string">'p[@style]'</span>):</span><br><span class="line">    element.remove(pp)</span><br></pre></td></tr></table></figure>
+<h2 id="完成信息提取">3.完成信息提取</h2>
+<p>之后就是正常的完成对所需信息的处理，去毛刺，格式化，列表化等操作：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"><span class="comment"># 这一句是去除列表中的空元素</span></span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<ul>
+<li>虽然<code>Element</code>和scrapy的<code>selector</code>都可以是调用<code>xpath</code>方法形式上也很类似但是<code>Element</code>对象<code>xpath('string(.)')</code>之后是不用<code>extract_first()</code>的</li>
+</ul>
+<h2 id="extract和extract_first">4.extract（）和extract_first（）</h2>
+<p>如果您是Scrapy的长期用户，则可能熟悉<code>.extract()</code>和<code>.extract_first()</code>选择器方法。许多博客文章和教程也正在使用它们。Scrapy仍支持这些方法，<strong>没有计划</strong>弃用它们。</p>
+<p>但是，Scrapy用法文档现在使用<code>.get()</code>和
+<code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
+<p>以下示例显示了这些方法如何相互映射：</p>
+<ol type="1">
+<li><p><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>：
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure></p></li>
+<li><p><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</p></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).getall()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li><code>Selector.get()</code>与<code>Selector.extract()</code>：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].extract()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>为了保持一致性，还有<code>Selector.getall()</code>，它返回一个列表：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].getall()</span></span><br><span class="line">['image1.html']</span><br></pre></td></tr></table></figure>
+<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code>
+始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
+        <tag>信息提取</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>pycharm远程调试项目</title>
     <url>/pycharm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E9%A1%B9%E7%9B%AE/</url>
     <content><![CDATA[<p>服务器上没有IDE，编写代码很不方便，所以我选择在本地用pycharm远程调试程序，但是我没有选择在本地pycharm使用ssh连接Terminal，因为真的太卡了，我还是用xshell作为命令行使用。</p>
@@ -1080,57 +1131,6 @@ id内存地址值相同)</p>
       </categories>
       <tags>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lxml相关操作</title>
-    <url>/lxml%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>scrapy作为爬虫框架还是比较全能的，但是我之前遇到过一个问题就是要将一个节点的某些子节点删除，这个操作好像scrapy的selector好像不能实现，也有可能是我自己没找到方法。我的解决方法是直接将response的内容构建成lxml然后再进行节点删除和信息提取。</p>
-<a id="more"></a>
-<h2 id="如何构建对象">1.如何构建对象</h2>
-<p>首先我们要引入lxml（html也是lxml的一种）包，然后调用<code>etree.HTML()</code>函数解析html来构建Element</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">element = etree.HTML(response.text).xpath(<span class="string">'//div[@class="con_main"]'</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h2 id="去除特定节点">2.去除特定节点</h2>
-<p>构建完对象后，我们选择<code>find</code>,<code>findall</code>,<code>getchildren</code>等方法选定想要剔除的节点，然后再调用<code>remove</code>函数将其去掉，Element还有很多的方法我也没有全部用过，如果有需要可以参见<a
-href="https://lxml.de/api/lxml.etree._Element-class.html">lxml官方文档</a>。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pp <span class="keyword">in</span> element.findall(<span class="string">'p[@style]'</span>):</span><br><span class="line">    element.remove(pp)</span><br></pre></td></tr></table></figure>
-<h2 id="完成信息提取">3.完成信息提取</h2>
-<p>之后就是正常的完成对所需信息的处理，去毛刺，格式化，列表化等操作：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line"><span class="comment"># 这一句是去除列表中的空元素</span></span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong></p>
-<ul>
-<li>虽然<code>Element</code>和scrapy的<code>selector</code>都可以是调用<code>xpath</code>方法形式上也很类似但是<code>Element</code>对象<code>xpath('string(.)')</code>之后是不用<code>extract_first()</code>的</li>
-</ul>
-<h2 id="extract和extract_first">4.extract（）和extract_first（）</h2>
-<p>如果您是Scrapy的长期用户，则可能熟悉<code>.extract()</code>和<code>.extract_first()</code>选择器方法。许多博客文章和教程也正在使用它们。Scrapy仍支持这些方法，<strong>没有计划</strong>弃用它们。</p>
-<p>但是，Scrapy用法文档现在使用<code>.get()</code>和
-<code>.getall()</code>方法编写。我们认为这些新方法可以使代码更简洁易读。</p>
-<p>以下示例显示了这些方法如何相互映射：</p>
-<ol type="1">
-<li><p><code>SelectorList.get()</code>与<code>SelectorList.extract_first()</code>：
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract_first()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure></p></li>
-<li><p><code>SelectorList.getall()</code>与<code>SelectorList.extract()</code>：</p></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).getall()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>).extract()</span></span><br><span class="line">['image1.html', 'image2.html', 'image3.html', 'image4.html', 'image5.html']</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li><code>Selector.get()</code>与<code>Selector.extract()</code>：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].get()</span></span><br><span class="line">'image1.html'</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].extract()</span></span><br><span class="line">'image1.html'</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>为了保持一致性，还有<code>Selector.getall()</code>，它返回一个列表：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; response.css(<span class="string">'a::attr(href)'</span>)[0].getall()</span></span><br><span class="line">['image1.html']</span><br></pre></td></tr></table></figure>
-<p>因此，主要区别在于<code>.get()</code>和<code>.getall()</code>方法的输出更可预测：<code>.get()</code>始终返回单个结果，<code>.getall()</code>
-始终返回所有提取结果的列表。使用<code>.extract()</code>method时，结果是否为列表并不总是很明显；得到一个结果<code>.extract()</code>或者<code>.extract_first()</code>应该被调用。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>爬虫</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>爬虫</tag>
-        <tag>信息提取</tag>
       </tags>
   </entry>
   <entry>
@@ -1392,6 +1392,33 @@ amount=1.0)</li>
       </tags>
   </entry>
   <entry>
+    <title>python调用CIC</title>
+    <url>/python%E8%B0%83%E7%94%A8CIC/</url>
+    <content><![CDATA[<p>在这里记录下使用python通过命令行调用CIC的过程，包含给pcap整体打标签，多个pcap整合等内容</p>
+<a id="more"></a>
+<blockquote>
+<p>整体思路比较简单，使用python自带的<strong>subprocess</strong>来通过命令行调用我们部署好的CIC程序，然后将多个pcap包提取出的CSV进行打标签和整合</p>
+</blockquote>
+<h3 id="部分介绍">部分介绍</h3>
+<p>首先是引入必要的库，其中的<strong>CIC_dfm</strong>就是CIC部署成功后dfm文件的绝对路径</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> utils.db_config <span class="keyword">import</span> CIC_dfm</span><br></pre></td></tr></table></figure>
+<p>然后是调用CIC部分</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line"><span class="comment"># 调CIC</span></span><br><span class="line">p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 阻塞等待CIC执行完成</span></span><br><span class="line">return_code = p.wait()</span><br></pre></td></tr></table></figure>
+<p>之后就是对PCAP列表中的每一个PCAP包调用CIC进行处理，然后将处理完的结果放到一个df里最后再存成CSV</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pcap_path <span class="keyword">in</span> pcap_list:</span><br><span class="line">    pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">    cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">    <span class="comment"># 调CIC</span></span><br><span class="line">    p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">    return_code = p.wait()</span><br><span class="line">    csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">    <span class="keyword">if</span> pcap_path == pcap_list[<span class="number">0</span>]:</span><br><span class="line">        df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">        df = pd.concat([df, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># 删除中间结果</span></span><br><span class="line">    os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">csv_save_path = os.path.join(csv_save_folder, <span class="string">'%s.csv'</span> % time_now)</span><br><span class="line">df.to_csv(csv_save_path, index=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="完整程序">完整程序</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> utils.db_config <span class="keyword">import</span> CIC_dfm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unsupervise_extract</span><span class="params">(mode_id: int, pcap_list: list, csv_save_folder: str)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    无监督算法流量特征提取，包含训练，离线测试和在线测试</span></span><br><span class="line"><span class="string">    :param mode_id:</span></span><br><span class="line"><span class="string">        1为训练;</span></span><br><span class="line"><span class="string">        2为离线测试;</span></span><br><span class="line"><span class="string">        3为在线测试;</span></span><br><span class="line"><span class="string">    :param pcap_list: 要进行特征提取的pcap包路径列表(在线测试时里面只能包含一个)</span></span><br><span class="line"><span class="string">    :param csv_save_folder: 提取出的csv文件要保存的目录</span></span><br><span class="line"><span class="string">    :return: csv_save_path: 提取出的csv文件路径</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    time_now = time.strftime(<span class="string">"%Y%m%d-%H%M%S"</span>, time.localtime())</span><br><span class="line">    os.makedirs(csv_save_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">if</span> mode_id <span class="keyword">not</span> <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]:</span><br><span class="line">        print(<span class="string">'mode_id出错'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> mode_id == <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">assert</span> len(pcap_list) == <span class="number">1</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'在线测试时pcap_list中只能包含一个pcap包'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> pcap_path <span class="keyword">in</span> pcap_list:</span><br><span class="line">        pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">        cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">        <span class="comment"># 调CIC</span></span><br><span class="line">        p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">        return_code = p.wait()</span><br><span class="line">        csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">        <span class="keyword">if</span> pcap_path == pcap_list[<span class="number">0</span>]:</span><br><span class="line">            df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">            df = pd.concat([df, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># 删除中间结果</span></span><br><span class="line">        os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">    csv_save_path = os.path.join(csv_save_folder, <span class="string">'%s.csv'</span> % time_now)</span><br><span class="line">    df.to_csv(csv_save_path, index=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> csv_save_path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">supervise_extract</span><span class="params">(mode_id: int, pcap_list: list, norm_pcap_list: list,</span></span></span><br><span class="line"><span class="function"><span class="params">                      abnorm_pcap_list: list, csv_save_folder: str)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    有监督算法流量特征提取，包含训练，离线测试和在线测试</span></span><br><span class="line"><span class="string">    :param mode_id:</span></span><br><span class="line"><span class="string">        1为训练;</span></span><br><span class="line"><span class="string">        2为离线测试;</span></span><br><span class="line"><span class="string">        3为在线测试;</span></span><br><span class="line"><span class="string">    :param pcap_list: 在线测试要进行特征提取的pcap包路径列表(里面只能包含一个)</span></span><br><span class="line"><span class="string">    :param norm_pcap_list: 训练和离线测试要进行特征提取的全正常流量pcap包路径列表(至少包含一个)</span></span><br><span class="line"><span class="string">    :param abnorm_pcap_list: 训练和离线测试要进行特征提取的全异常流量pcap包路径列表(至少包含一个)</span></span><br><span class="line"><span class="string">    :param csv_save_folder: 提取出的csv文件要保存的目录</span></span><br><span class="line"><span class="string">    :return: csv_save_path: 提取出的csv文件路径</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    time_now = time.strftime(<span class="string">"%Y%m%d-%H%M%S"</span>, time.localtime())</span><br><span class="line">    os.makedirs(csv_save_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">if</span> mode_id <span class="keyword">not</span> <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]:</span><br><span class="line">        print(<span class="string">'mode_id出错'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> mode_id == <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">assert</span> len(pcap_list) == <span class="number">1</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'在线测试时pcap_list中只能包含一个pcap包'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">assert</span> len(norm_pcap_list) &gt; <span class="number">0</span> <span class="keyword">and</span> len(abnorm_pcap_list) &gt; <span class="number">0</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'需要同时包含正常和异常pcap包'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> mode_id == <span class="number">3</span>:</span><br><span class="line">        pcap_path = pcap_list[<span class="number">0</span>]</span><br><span class="line">        pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">        cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">        <span class="comment"># 调CIC</span></span><br><span class="line">        p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">        return_code = p.wait()</span><br><span class="line">        csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">        df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> pcap_path <span class="keyword">in</span> norm_pcap_list:</span><br><span class="line">            pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">            cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">            <span class="comment"># 调CIC</span></span><br><span class="line">            p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">            return_code = p.wait()</span><br><span class="line">            csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">            <span class="keyword">if</span> pcap_path == norm_pcap_list[<span class="number">0</span>]:</span><br><span class="line">                df_norm = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">                df_norm = pd.concat([df_norm, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">            df_norm[<span class="string">'Label'</span>] = <span class="number">0</span></span><br><span class="line">            <span class="comment"># 删除中间结果</span></span><br><span class="line">            os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> pcap_path <span class="keyword">in</span> abnorm_pcap_list:</span><br><span class="line">            pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">            cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">            <span class="comment"># 调CIC</span></span><br><span class="line">            p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">            return_code = p.wait()</span><br><span class="line">            csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">            <span class="keyword">if</span> pcap_path == abnorm_pcap_list[<span class="number">0</span>]:</span><br><span class="line">                df_abnorm = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">                df_abnorm = pd.concat([df_abnorm, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">            df_abnorm[<span class="string">'Label'</span>] = <span class="number">1</span></span><br><span class="line">            <span class="comment"># 删除中间结果</span></span><br><span class="line">            os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">        df = pd.concat([df_abnorm, df_norm], ignore_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    csv_save_path = os.path.join(csv_save_folder, <span class="string">'%s.csv'</span> % time_now)</span><br><span class="line">    df.to_csv(csv_save_path, index=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> csv_save_path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    pcap_list = [<span class="string">'/home/*/test1.pcap'</span>, <span class="string">'/home/*/test2.pcap'</span>, <span class="string">'/home/*/test3.pcap'</span>]</span><br><span class="line">    <span class="comment"># pcap_list = ['/home/*/test1.pcap']</span></span><br><span class="line">    csv_save_folder = <span class="string">'/home/*'</span></span><br><span class="line">    mode_id = <span class="number">1</span></span><br><span class="line">    _ = unsupervise_extract(mode_id, pcap_list, csv_save_folder)</span><br><span class="line"></span><br><span class="line">    norm_pcap_list = [<span class="string">'/home/*/test1.pcap'</span>, <span class="string">'/home/*/test3.pcap'</span>]</span><br><span class="line">    abnorm_pcap_list = [<span class="string">'/home/*/test2.pcap'</span>]</span><br><span class="line">    pcap_list = [<span class="string">'/home/*/test1.pcap'</span>]</span><br><span class="line">    mode_id = <span class="number">2</span></span><br><span class="line">    _ = supervise_extract(mode_id, pcap_list, norm_pcap_list, abnorm_pcap_list, csv_save_folder)</span><br><span class="line"></span><br><span class="line">    print(_)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>CICFlowMeter</category>
+      </categories>
+      <tags>
+        <tag>CICFlowMeter</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python赋值&amp;浅拷贝&amp;深拷贝</title>
     <url>/python%E8%B5%8B%E5%80%BC-%E6%B5%85%E6%8B%B7%E8%B4%9D-%E6%B7%B1%E6%8B%B7%E8%B4%9D/</url>
     <content><![CDATA[<p>记录Python中赋值&amp;浅拷贝&amp;深拷贝和区别，同时还有list.append()时浅拷贝的问题</p>
@@ -1460,30 +1487,35 @@ id(x) for x in a 和 id(x) for x in b
       </tags>
   </entry>
   <entry>
-    <title>python调用CIC</title>
-    <url>/python%E8%B0%83%E7%94%A8CIC/</url>
-    <content><![CDATA[<p>在这里记录下使用python通过命令行调用CIC的过程，包含给pcap整体打标签，多个pcap整合等内容</p>
+    <title>scrapy中的yield请求未被正常抛出</title>
+    <url>/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/</url>
+    <content><![CDATA[<p>有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个<code>scrapy.Request</code>执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。</p>
 <a id="more"></a>
-<blockquote>
-<p>整体思路比较简单，使用python自带的<strong>subprocess</strong>来通过命令行调用我们部署好的CIC程序，然后将多个pcap包提取出的CSV进行打标签和整合</p>
-</blockquote>
-<h3 id="部分介绍">部分介绍</h3>
-<p>首先是引入必要的库，其中的<strong>CIC_dfm</strong>就是CIC部署成功后dfm文件的绝对路径</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> utils.db_config <span class="keyword">import</span> CIC_dfm</span><br></pre></td></tr></table></figure>
-<p>然后是调用CIC部分</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line"><span class="comment"># 调CIC</span></span><br><span class="line">p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 阻塞等待CIC执行完成</span></span><br><span class="line">return_code = p.wait()</span><br></pre></td></tr></table></figure>
-<p>之后就是对PCAP列表中的每一个PCAP包调用CIC进行处理，然后将处理完的结果放到一个df里最后再存成CSV</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> pcap_path <span class="keyword">in</span> pcap_list:</span><br><span class="line">    pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">    cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">    <span class="comment"># 调CIC</span></span><br><span class="line">    p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">    return_code = p.wait()</span><br><span class="line">    csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">    <span class="keyword">if</span> pcap_path == pcap_list[<span class="number">0</span>]:</span><br><span class="line">        df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">        df = pd.concat([df, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># 删除中间结果</span></span><br><span class="line">    os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">csv_save_path = os.path.join(csv_save_folder, <span class="string">'%s.csv'</span> % time_now)</span><br><span class="line">df.to_csv(csv_save_path, index=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="完整程序">完整程序</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> utils.db_config <span class="keyword">import</span> CIC_dfm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unsupervise_extract</span><span class="params">(mode_id: int, pcap_list: list, csv_save_folder: str)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    无监督算法流量特征提取，包含训练，离线测试和在线测试</span></span><br><span class="line"><span class="string">    :param mode_id:</span></span><br><span class="line"><span class="string">        1为训练;</span></span><br><span class="line"><span class="string">        2为离线测试;</span></span><br><span class="line"><span class="string">        3为在线测试;</span></span><br><span class="line"><span class="string">    :param pcap_list: 要进行特征提取的pcap包路径列表(在线测试时里面只能包含一个)</span></span><br><span class="line"><span class="string">    :param csv_save_folder: 提取出的csv文件要保存的目录</span></span><br><span class="line"><span class="string">    :return: csv_save_path: 提取出的csv文件路径</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    time_now = time.strftime(<span class="string">"%Y%m%d-%H%M%S"</span>, time.localtime())</span><br><span class="line">    os.makedirs(csv_save_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">if</span> mode_id <span class="keyword">not</span> <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]:</span><br><span class="line">        print(<span class="string">'mode_id出错'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> mode_id == <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">assert</span> len(pcap_list) == <span class="number">1</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'在线测试时pcap_list中只能包含一个pcap包'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> pcap_path <span class="keyword">in</span> pcap_list:</span><br><span class="line">        pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">        cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">        <span class="comment"># 调CIC</span></span><br><span class="line">        p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">        return_code = p.wait()</span><br><span class="line">        csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">        <span class="keyword">if</span> pcap_path == pcap_list[<span class="number">0</span>]:</span><br><span class="line">            df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">            df = pd.concat([df, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># 删除中间结果</span></span><br><span class="line">        os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">    csv_save_path = os.path.join(csv_save_folder, <span class="string">'%s.csv'</span> % time_now)</span><br><span class="line">    df.to_csv(csv_save_path, index=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> csv_save_path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">supervise_extract</span><span class="params">(mode_id: int, pcap_list: list, norm_pcap_list: list,</span></span></span><br><span class="line"><span class="function"><span class="params">                      abnorm_pcap_list: list, csv_save_folder: str)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    有监督算法流量特征提取，包含训练，离线测试和在线测试</span></span><br><span class="line"><span class="string">    :param mode_id:</span></span><br><span class="line"><span class="string">        1为训练;</span></span><br><span class="line"><span class="string">        2为离线测试;</span></span><br><span class="line"><span class="string">        3为在线测试;</span></span><br><span class="line"><span class="string">    :param pcap_list: 在线测试要进行特征提取的pcap包路径列表(里面只能包含一个)</span></span><br><span class="line"><span class="string">    :param norm_pcap_list: 训练和离线测试要进行特征提取的全正常流量pcap包路径列表(至少包含一个)</span></span><br><span class="line"><span class="string">    :param abnorm_pcap_list: 训练和离线测试要进行特征提取的全异常流量pcap包路径列表(至少包含一个)</span></span><br><span class="line"><span class="string">    :param csv_save_folder: 提取出的csv文件要保存的目录</span></span><br><span class="line"><span class="string">    :return: csv_save_path: 提取出的csv文件路径</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    time_now = time.strftime(<span class="string">"%Y%m%d-%H%M%S"</span>, time.localtime())</span><br><span class="line">    os.makedirs(csv_save_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">if</span> mode_id <span class="keyword">not</span> <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]:</span><br><span class="line">        print(<span class="string">'mode_id出错'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> mode_id == <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">assert</span> len(pcap_list) == <span class="number">1</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'在线测试时pcap_list中只能包含一个pcap包'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">assert</span> len(norm_pcap_list) &gt; <span class="number">0</span> <span class="keyword">and</span> len(abnorm_pcap_list) &gt; <span class="number">0</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'需要同时包含正常和异常pcap包'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> mode_id == <span class="number">3</span>:</span><br><span class="line">        pcap_path = pcap_list[<span class="number">0</span>]</span><br><span class="line">        pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">        cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">        <span class="comment"># 调CIC</span></span><br><span class="line">        p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">        return_code = p.wait()</span><br><span class="line">        csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">        df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> pcap_path <span class="keyword">in</span> norm_pcap_list:</span><br><span class="line">            pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">            cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">            <span class="comment"># 调CIC</span></span><br><span class="line">            p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">            return_code = p.wait()</span><br><span class="line">            csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">            <span class="keyword">if</span> pcap_path == norm_pcap_list[<span class="number">0</span>]:</span><br><span class="line">                df_norm = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">                df_norm = pd.concat([df_norm, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">            df_norm[<span class="string">'Label'</span>] = <span class="number">0</span></span><br><span class="line">            <span class="comment"># 删除中间结果</span></span><br><span class="line">            os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> pcap_path <span class="keyword">in</span> abnorm_pcap_list:</span><br><span class="line">            pcap_name = pcap_path.split(os.sep)[<span class="number">-1</span>].replace(<span class="string">'.pcap'</span>, <span class="string">''</span>)</span><br><span class="line">            cmd = <span class="string">'%s %s %s'</span> % (CIC_dfm, pcap_path, csv_save_folder)</span><br><span class="line">            <span class="comment"># 调CIC</span></span><br><span class="line">            p = subprocess.Popen(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">            return_code = p.wait()</span><br><span class="line">            csv_path = os.path.join(csv_save_folder, pcap_name + <span class="string">'.pcap_Flow.csv'</span>)</span><br><span class="line">            <span class="keyword">if</span> pcap_path == abnorm_pcap_list[<span class="number">0</span>]:</span><br><span class="line">                df_abnorm = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                temp_df = pd.read_csv(csv_path, skipinitialspace=<span class="literal">True</span>)</span><br><span class="line">                df_abnorm = pd.concat([df_abnorm, temp_df], ignore_index=<span class="literal">True</span>)</span><br><span class="line">            df_abnorm[<span class="string">'Label'</span>] = <span class="number">1</span></span><br><span class="line">            <span class="comment"># 删除中间结果</span></span><br><span class="line">            os.remove(csv_path)</span><br><span class="line"></span><br><span class="line">        df = pd.concat([df_abnorm, df_norm], ignore_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    csv_save_path = os.path.join(csv_save_folder, <span class="string">'%s.csv'</span> % time_now)</span><br><span class="line">    df.to_csv(csv_save_path, index=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> csv_save_path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    pcap_list = [<span class="string">'/home/*/test1.pcap'</span>, <span class="string">'/home/*/test2.pcap'</span>, <span class="string">'/home/*/test3.pcap'</span>]</span><br><span class="line">    <span class="comment"># pcap_list = ['/home/*/test1.pcap']</span></span><br><span class="line">    csv_save_folder = <span class="string">'/home/*'</span></span><br><span class="line">    mode_id = <span class="number">1</span></span><br><span class="line">    _ = unsupervise_extract(mode_id, pcap_list, csv_save_folder)</span><br><span class="line"></span><br><span class="line">    norm_pcap_list = [<span class="string">'/home/*/test1.pcap'</span>, <span class="string">'/home/*/test3.pcap'</span>]</span><br><span class="line">    abnorm_pcap_list = [<span class="string">'/home/*/test2.pcap'</span>]</span><br><span class="line">    pcap_list = [<span class="string">'/home/*/test1.pcap'</span>]</span><br><span class="line">    mode_id = <span class="number">2</span></span><br><span class="line">    _ = supervise_extract(mode_id, pcap_list, norm_pcap_list, abnorm_pcap_list, csv_save_folder)</span><br><span class="line"></span><br><span class="line">    print(_)</span><br></pre></td></tr></table></figure>
+<p>参考：https://blog.csdn.net/qq_32670879/article/details/85042464</p>
+<p>问题来源：我在爬取医书的时候因为是书籍所以存在章节信息，在书籍的介绍页既有书籍简介，又有目录，我想要写两个函数来分别处理，当书籍简介获取完之后要进入获取目录信息函数的时候不能正确进入。</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509152400.png"
+alt="image-20200509152349586" />
+<figcaption aria-hidden="true">image-20200509152349586</figcaption>
+</figure>
+<p>经过在网上查找信息发现应该是我调用下面函数的时候，因为又请求了之前请求过的<code>response.url</code>导致scrapy自带的去重机制将本次请求全部拦截了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509153757.png"
+alt="20181216232557785" />
+<figcaption aria-hidden="true">20181216232557785</figcaption>
+</figure>
+<p>解决方法：在函数参数中加入<code>dont_filter=True</code>，结果如下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;, dont_filter=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>CICFlowMeter</category>
+        <category>爬虫</category>
       </categories>
       <tags>
-        <tag>CICFlowMeter</tag>
-        <tag>python</tag>
+        <tag>scrapy</tag>
       </tags>
   </entry>
   <entry>
@@ -1524,68 +1556,68 @@ src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202308072154838.png" /><
       </tags>
   </entry>
   <entry>
-    <title>scrapy中的yield请求未被正常抛出</title>
-    <url>/scrapy%E4%B8%AD%E7%9A%84yield%E8%AF%B7%E6%B1%82%E6%9C%AA%E8%A2%AB%E6%AD%A3%E5%B8%B8%E6%8A%9B%E5%87%BA/</url>
-    <content><![CDATA[<p>有一次爬医书的时候有一个函数不会被执行，找了半天没有找到问题所在，只知道是上一个<code>scrapy.Request</code>执行完并没有正确的触发接下来的函数，根据查找的信息应该是由于scrapy自带的去重机制将我的请求给抛弃了。</p>
+    <title>准备毕业啦</title>
+    <url>/%E5%87%86%E5%A4%87%E6%AF%95%E4%B8%9A%E5%95%A6/</url>
+    <content><![CDATA[<p>终于要毕业啦，要结束20年的学生生涯咯！</p>
 <a id="more"></a>
-<p>参考：https://blog.csdn.net/qq_32670879/article/details/85042464</p>
-<p>问题来源：我在爬取医书的时候因为是书籍所以存在章节信息，在书籍的介绍页既有书籍简介，又有目录，我想要写两个函数来分别处理，当书籍简介获取完之后要进入获取目录信息函数的时候不能正确进入。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509152400.png"
-alt="image-20200509152349586" />
-<figcaption aria-hidden="true">image-20200509152349586</figcaption>
-</figure>
-<p>经过在网上查找信息发现应该是我调用下面函数的时候，因为又请求了之前请求过的<code>response.url</code>导致scrapy自带的去重机制将本次请求全部拦截了。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;)</span><br></pre></td></tr></table></figure>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20200509153757.png"
-alt="20181216232557785" />
-<figcaption aria-hidden="true">20181216232557785</figcaption>
-</figure>
-<p>解决方法：在函数参数中加入<code>dont_filter=True</code>，结果如下</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">yield</span> scrapy.Request(response.url, callback=self.chapterList, meta=&#123;<span class="string">'bookName'</span>: item[<span class="string">'name'</span>]&#125;, dont_filter=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>这两天在学校等着参加毕业典礼拿毕业证了，闲着没事干在我的新电脑上重新部署一下我的博客，之前老的电脑壮烈牺牲了，问就是机械革命，革命失败（等等我去找个图:clock1:）。</p>
+<p><img
+src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202406221557237.jpg" /></p>
+<p>机械革命笔记本的用户只需要学习《计算机组成原理》就好了，其他品牌的用户要考虑的可就多了。我学软件的，从小学一年级就开始玩电脑了，平时电脑使用习惯真没问题吧，前段时间开始出现启动困难，启动十几分钟才能启动成功，经常会死机。后来拿去店里看了一下检测完是CPU坏了，就离谱，CPU也说坏就坏的。想着后面反正也要出差，没办法又买了个商务本，这下我的台式机计划要延后了。</p>
+<p>后面工作了之后可能没多少机会记录技术方面的东西了吧（我猜的），感觉以后主要就写碎碎念了。学校的毕业论文致谢还不让超过一页，真离谱，都不让我好好的抒发一下情感，我论文都写了110多页，多写两页致谢怎么了，怎么了（拍桌）！那我只能在这里记录下我的流水账碎碎念了:laughing:，写的也没什么逻辑，就想到哪里就写哪里咯。</p>
+<p>日子真的过得好快啊，幼儿园的时候还住在姥姥家，我真的是对幼儿园的生活完全没有一点印象，我只能记得我的幼儿园在哪里，其他完全没有任何记忆，里面长什么样子也完全想不起来一点。小学在学校里面的印象也不是很深刻了，但大体还是能记得学校里面长什么样子XD，记得学校操场最后面有一个沙坑和滑梯，那简直是课间最好的玩具。冬天的时候下了雪大家就在操场上找一个地方来来回回的压实做一个冰道出来滑冰，后来就会专门有老师来铲我们的冰道，呜呜。小学时期在校外的生活还是很丰富的，我们家那里其实就是厂家属区，就和影视剧里面的东北老工业基地一样，我们那里有两个很大的航空工业厂，基本周边都是厂子在管，爸妈们也都是厂职工，我们都是厂子弟。他们每天中午也能回家做饭吃饭，下午回来吃完饭之后经常还会出去打羽毛球，最开始的时候厂子里还建羽毛球馆，大家就在街坊里面自己支网子打，我们也就跟着一起在街坊里面玩。现在还在联系的小学同学基本也都是父母同事的孩子，都是跟着父母从小就在一起玩。因为父母他们厂子做的不是重工业，当时也没受到老工业基地那种下岗潮的影像，说起来也是一辈子的铁饭碗。直到我现在要毕业了要找工作的时候我才发现我还是挺向往那种大家庭的感觉的，厂子就是这个大家庭的家长，我们在这个大家庭里生活的都很惬意。现在随着国企的改革，周边的管理基本也都交还给地方了，厂子也就是单独的厂子，在我们的小县城都没有这种大家庭了，更别说西安这种大省会城市了，感觉我找工作的时候受小时候生活的影像还蛮多的，跑题了跑题了，讲学生生涯，后面再说工作相关的！</p>
+<p>我小学没有一直在家旁边上完，当时父母也都是有先见之明，觉得中学要去西安上，但是我又没有学奥数，没法去参加西安学校的考试，所以整了个曲线救国，先去咸阳读了半个学期六年级下和初一上，然后去西安参加插班生考试，之后在西安上了初中。初中生活还是挺丰富多彩的，当时在铁一中分校嘛，因为学校本身比较好各种课余生活也挺丰富的，从软件到硬件条件都很不错。虽然我小学也没学过什么奥数，没补过课，但是我的成绩还是挺不错的（骄傲.jpg），基本都是班里前几名吧。说实话我感觉我脑子还是挺够用的，从小到现在，哪怕是研究生阶段的课程，就理科方面我从来没有出现过讲过之后还不能理解的内容。（英语和语文是真学不会，我现在能够理解到很多语文中的魅力，诗词的魅力，但当时我是真不行，然而英语现在也领会不到...）。我也确实不是那种刻苦类型的学生，从初中开始就相互抄作业，从中学一路抄到大学，但是有一说一，不抄作业真写不完吧。虽然我从小就玩电脑，但是我基本也就是光打游戏，也不在网上逛来逛去，所以初中当时的思想还是非常单纯的，在学校就是学习，除了睡觉就是学习，当然在上课的时候也没少睡觉:laughing:。我初中的时候真的完全是非常单纯的小孩子，平时也没形象可言吧（现在有一点，但不多），整个初中就都是寸头，完全没有一点形象管理意识，主打一个情窦未开。当时班主任可能也是看出来我不是谈恋爱的人，所以我周边日常坐了一圈女生，我和她们也玩的很好，都是我毕业之后才知道还有老师觉得我们在谈恋爱。但其实当时我真没那个想法，就完全没有男女之情这种想法，大家都是好兄弟。当时不是毕业都要写同学录嘛，其实后来看起来还是夹杂了很多的青涩情愫，但是这种事情就像是过期了的彩票吧，错过了也就错过了，毕竟在我当时心里我们也都没什么。这些东西也都是在我高中遇到了我现在的老婆大人，情窦开了之后才发现的，我们的感情也一直都很好，一年内应该就要结婚了，也没什么必要太去缅怀这些过去的故事。</p>
+<p>我们中考那年，因为分比往年低一些，刚出成绩的时候问铁一中，高新一中这些学校感觉都不太愿意要吧，反正就说回去等消息，下午的时候我和父母就去了三中招生会，最后也是签了三中。第二天我们班主任就打电话给我妈，问要不要去铁一读，学籍挂在滨河，高新一中也打电话问。但是我们当时已经签了三中，而且可以在三中上最好的爱心班，还便宜，随后想了想还是决定去三中，班主任还把我妈骂了一顿:sweat_smile:。那年三中收的生源是真的好，一大批本来能上五大名校的最后去了三中，虽然最后也没培养出来一个清北，但是我们那一届的升学率和大学质量在五大名校之外还是遥遥领先的。最后感觉这个选择也蛮好的，去铁一那肯定就是普通班，也不一定就比三中爱心班好太多，学费还贵得多，而且我对现在的大学和工作也都挺满意的，也没什么后悔的必要，更别说我还遇到了未来要陪伴我一生的人。高一的时候和老婆大人分在了一个班，有一段时间坐的很近，而且我和她同桌是舍友，交流也相对多一点吧，其实刚开始的时候也属于情窦未开叭，就是单纯的找她玩，后来时间长了也有了一些莫名的感觉，但是当时的我可能也不太懂这是恋爱的感觉，就是想找她玩。后来我们两个因为机缘巧合在一起了，但是没过多久这个坏女人就无情的抛弃了我！那时候我才更深刻地意识到我对她的感情吧，就感觉好难受，真的是只有失去了才懂得珍惜。后来我们重新在一起之后我也是很珍惜这段感情，虽然我们本科加硕士整整异地了七年，但是中间我们的感情始终都很好，现在也是终于熬过了这段异地，熬过异地就是一辈子。其实现在和高中同学的联系还比较多，初中的时候我确实还是小孩子，除了学习就是玩，后面也没有刻意的去维护和同学的关系，导致现在和初中同学基本上都没什么联系了。这些高中同学大家的生活圈子更加相近，未来也都准备在西安生活，所以交流都还多一些:grin:。​</p>
+<p>高考的发挥也还算是中规中矩叭，没有考的很好也没有考的很烂，可能比平时要稍差一点点吧。但有些时候确实也是选择大于努力，最后选择了沙河的软件工程专业，当时选的时候其实也不太懂什么互联网的发展，就是从小就玩电脑，觉得和电脑打交道的这个专业还不错，分数也还合适，那就这个了！本科的时候第一年在清水河进行学习，体验了一下国内顶尖高校（的硬件），被迫在清水河偌大的校园中学会了骑自行车。之后搬到沙河之后就变成了老破小宿舍，好处就是水泥地板不显脏，但至少也是四人间上床下桌叭，也不错了！整个本科感觉好像没有什么特别的事情发生，就是循规蹈矩的上课玩耍，上课玩耍，既没有在学校混吃等死，也没有太努力发奋吧，就是一个很平衡的状态，干该干的事，没有怎么主动探索任务之外的事务，主打一个普通。本科前三年成天晚上和于🐥一起打游戏，感觉和于🐥一起刚开始打古网的时候是真的快乐，那应该是19年后半年快上大三的时候吧，其实我还一直挺喜欢玩这种MMORPG的，有点操作感觉，而且还带点社交属性吧，上一个非常喜欢的还是剑灵，但是它现在显然已经褒姒了。我对游戏的画质和画风要求还蛮高的，剑三，WOW这些游戏我是怎么都玩不进去。刚知道古网的时候我简直惊为天人，国风武侠，画质又好，还很有操作感，爱了爱了。那时候还是廊泉界桥的版本，团本上去就是打排云仙诗，被干死之后就说我不是被选中的人:sob:。也是打廊桥的时候我们遇见了一个亲友团，那段时间成天和他们一起打本聊天讲相声，一起刷日常本，一起开荒团本。到大三下就慢慢忙起来了，要准备考研的事情了，而且古网本身也慢慢出了些问题吧，古网哪里都好，就是不好玩，现在虽然不太一起打游戏了但还是在群里成天聊天，也算是网上认识的一群好友吧。我是一个比较宅的人，搬到了市中心一环之后也没太在周边怎么探索，活动范围基本上局限于走路15分钟能到的地方，偶尔会和同学们出去远一点的地方吃饭吧。虽然我懒得出门但是我还是很喜欢和同学们一起在学校周围活动的:laughing:，就是单纯的不想走远。三年疫情其实对我们这一届来说可能没有特别大的影响，主要就是大三下的实习取消了，我们当时也已经上完了所有的课程，也没有体验过上网课的感觉。当时在准备考研的我在九月底的时候才突然得知由于保研名额扩大的原因自己也能获得推免名额，那是真的开心，我们当时应该是从12%扩到了14%左右吧，结果今年有个师弟问我保研过程，他们竟然已经扩到了24%，就我们这种专业都这么多读研的，本科不好找工作的那些专业我都不敢想考研竞争得有多么激烈。</p>
+<p>获得了推免名额之后我也是成功上岸了本院，整个研究生生涯怎么说呢，就是平淡的充实吧（感觉我的生活一直都很平淡呢，有可能是因为我神经大条吧:laughing:）。我们实验室确实任务还是比较多的，从确定保研之后大四的11月开始就进入实验室开始学习和逐渐参与一些工程项目。我们这边说轻松那肯定是假的，但是有一说一我们这一届的实力至少是前无古人吧，后有没有来者就不知道了，我们五个人三个本院，还有两个从夏大、哈工大来技术扶贫的，我们五个简直是先天打工圣体，抗压能力MAX，工作能力MAX，还没有刺头，在我们这一届去实习之前简直为弟弟妹妹们承担了太多。所以虽然工作还是挺多的，但也不至于影响到日常生活，反正就是不轻松就对了，在这里狠狠地锻炼抗压能力了属于是，我感觉我后面要去的工作搞不好都没有在实验室读研强度大:laughing:。我们实验室的关系感觉也更团结一些，毕竟平时有那么多事情一起干，不团结也不行啊，这都不是一起同过窗了，这都可以算一起扛过枪了吧，真别说在实验室还真有点大家庭的味道，大家都是好兄弟好姐妹，有好玩的一起玩，有苦也一起吃。当然在实验室这么多工作量的情况下，我们的毕业论文也都完成的比较简单，就把自己做的东西整理出来就行了，整个写毕业论文的过程基本还是轻松加愉快的。这下读完研是真的不读博了，当时本科毕业的时候其实互联网行业的就业水平还处于巅峰状态，但是当时的就业意愿其实不是太强烈，虽然我们这个专业读研的必要性不是那么大，本科毕业的时候那些互联网大厂就算没得挑，但至少也有两三个选择。感觉主要一方面读研感觉看起来比工作轻松一些，还可以提高学历。另一方面就是我爸我妈家往上多少年也都没出一个读书的，连本科都没有，更别说研究生了，我想着能读还是再读一下吧。研究生的两座大山应该就是毕业和就业了，毕业对我来说没什么问题，就业方面目前我感觉我还是选择了一个比较适合我的路子吧，世界上的道路千千万，能找到适合自己的才是最好的。</p>
+<p>其实我找工作的时候也考虑了挺多的，一开始因为我们这个专业软件工程也属于计算机嘛，这可是宇宙机！而且以我们学校的档次，说实话用心准备大厂还是基本都能去的，只不过是35W和40W的区别吧。我实习的时候去了北京的一个基金公司，他真的是那种电视剧里的那种公司吧，在高档CBD里面，要穿正装和皮鞋，真的是看起来就非常的有档次。但是下班了之后回到我的老破小出租屋里面就完全是另一个感觉，大城市的繁荣真好，但是那不属于我。我组的那个超小的老破小筒子楼，11平的一个房间，厨房几乎没法用，厕所也超级小，我坐着上厕所都费劲，因为我是短租，只能找自如那种官方，一个月下来租金也要3500。对我这种不会去远处探索的人来说，这样的居住空间简直就是折磨。说实话我对居住环境要求真不高，我们宿舍也没有独立卫生间，地上瓷砖啥的也都没有，但我觉得这都不是问题，只要住的舒心不憋屈就行了，只要有床有电有网就行，我上个厕所都费劲的地方我是真顶不住了。在北京实习一个多月我完全失去了对大城市梦想，尤其是北京上海吧，深圳和广州应该还好点。虽然我在北京实习的时候没怎么和当地人交流，没感受到被排外，但是北京的居住，饮食和气候真的给我的印象分极差，我本身去基金实习钱就不多，基本就够个房子租金。吃饭在食堂吃，味道也就还将就吧，我在北京点的外卖那更是极品，我在北京短短一个月多点就吃到了我人生中最难吃的冒菜和烧烤，就这玩意也叫重庆冒菜，要不是我真吃过我就信了。可能是没钱才会吃不好住不好吧，但是我都去北京打工赚钱了，我住那么好吃那么好还咋赚钱呢，别到时既攒不下来钱，有没得生活质量，那不是纯欻欻吗。上海大致也是相同的境遇吧，广州和深圳应该能还一点，但也好的有限，说白了你要去这种大城市赚钱就必须要有牺牲生活质量的决心，不管是平时的加班还是居住环境的差劲，都是赚钱所要牺牲的。最后想了又想还是没有付出生活质量赚大钱的这种决心，这只是工作考量的一方面吧，更重要的还是西安对我来说优势太多了太多了。</p>
+<p>虽然我在西安发展赚的钱不如北上广深多，但是现在互联网的情况谁又能说清能干多久，有多大的发展空间呢，到时再回西安找工作的话大概率找不到校招这样的工作了，如果再没有攒下一大笔钱来那就很伤了。在西安的话，女朋友在西安工作，父母也在西安周边，作为新一线生活压力也小的多，工作性质也比较稳定，干一干也买得起房子，感觉整个生活就非常的巴适，虽然赚不到什么大钱，但是整个人的生活质量是非常高的。而且姥姥走了之后我也觉得可能去外地打拼背井离乡对我们这一代人来说可能不是特别好的选择，以前孩子多总有人在父母身边看着，出个什么事也能及时处理，现在我们我们这一代人都是独身子女，如果我去外地工作要么就和老婆继续异地，要么就俩人一起去奋斗，这样的话两家老人就都没有人照顾了。最后想来想去我也不是一个颇具奋斗精神的人，生活还是要知足常乐，钱再多也买不来生活中的小确幸，我现在在西安上班不说多了，至少每个月能回家待几天吧，等父母都退休了以后也可以接到西安来，我想到时候在西安租个房子或者买个小户型也不是太困难的事，还是要找到适合自己的路，我感觉我现在的方向看起来还行，但未来的路谁又能知道呢，90年代的人也没想过会经历下岗潮吧，只能在有限的未来中找一个相对合适的，自己别后悔就行了。</p>
+<p>以前的我还很喜欢发QQ空间，不知道从什么时候开始不太有这种欲望了，有很多东西既想让别人知道又不想让别人知道，就挺矛盾的，所以我就写到我的小博客里，也算是个半公开的地方吧:grin:。我也没什么文笔，就快毕业了没事干，后面可能也没有这么悠闲的时光了，所以找个机会记录一下我的学生生涯。最后就祝大家身体健康，万事如意吧！​</p>
+<p>手执烟火以谋生，心怀诗意以谋爱。</p>
+<p>以上</p>
 ]]></content>
       <categories>
-        <category>技术</category>
-        <category>爬虫</category>
+        <category>碎碎念</category>
       </categories>
-      <tags>
-        <tag>scrapy</tag>
-      </tags>
   </entry>
   <entry>
-    <title>ssh 22 time out</title>
-    <url>/ssh-22-time-out/</url>
-    <content><![CDATA[<p>这里记录一下git使用过程中总是碰到的一个错误，<code>ssh: connect to host github.com port 22: Connection timed out</code>。</p>
+    <title>创建python虚拟环境</title>
+    <url>/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<p>如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本，
+如果不使用虚拟环境， 在同一个目录下安装或者更新，
+新版本会覆盖以前的版本， 其它的项目就无法运行了。</p>
 <a id="more"></a>
-<p>我碰过的这个错误基本是由两种原因引起的，一种是公钥没配置好，另一种就是网络原因。</p>
-<p>这里主要记录下网络原因引起的time out该怎么办。</p>
-<h3 id="检测">检测</h3>
-<p><code>ssh -T git@github.com</code></p>
-<p>如果出现：You’ve successfully
-authenticated，那么连接成功可以使用了。如果出现：ssh: connect to host
-github.com port 22: Connection timed out，就说明连接超时。</p>
-<p>连接失败后，可以同样试试<code>ssh -T -p 443 git@github.com</code>，检查是否有异常。</p>
-<p>如果加上443之后能够success的话基本就是网络问题，我们需要使用443端口去连接git。</p>
-<h3 id="配置">配置</h3>
-<ol type="1">
-<li>cd ~/.ssh</li>
-<li>配置或新建config文件</li>
-<li>编辑文件内容并保存退出</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">User 你的邮箱</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>使用<code>ssh -T git@github.com</code>测试下</li>
-</ol>
+<h2 id="安装虚拟环境">1.安装虚拟环境</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
+<p>virtualenvwrapper类似于一个虚拟环境管理工具会比原生的virtualenv方便一些</p>
+<p>安装完虚拟环境如果找不到mkvirtualenv命令，须配置环境变量：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1、在~（家目录）下创建目录用来存放虚拟环境</span><br><span class="line">mkdir .virtualenvs</span><br><span class="line"></span><br><span class="line"># 2、打开~&#x2F;.bashrc文件，并添加如下：</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs</span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"># 3、运行</span><br><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+<h2 id="创建虚拟环境">2.创建虚拟环境</h2>
+<p>如果不指定Python版本，默认安装的是Python2的虚拟环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在python2中，创建虚拟环境</span><br><span class="line">mkvirtualenv 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv py_flask</span><br></pre></td></tr></table></figure>
+<p>如果想要指定python版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkvirtualenv -p python3 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv -p python3 py3_flask</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<p>所有的虚拟环境都位于/~/下的隐藏目录.virtualenvs下</p>
+<h2 id="使用虚拟环境">3.使用虚拟环境</h2>
+<h3 id="查看已有虚拟环境">3.1查看已有虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon</span><br></pre></td></tr></table></figure>
+<h3 id="进入虚拟环境">3.2进入虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon 虚拟环境名称</span><br></pre></td></tr></table></figure>
+<h3 id="退出虚拟环境">3.3退出虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deativate</span><br></pre></td></tr></table></figure>
+<h3 id="删除虚拟环境">3.4删除虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">先退出：deactivate</span><br><span class="line">再删除：rmvirtualenv py3_flask</span><br></pre></td></tr></table></figure>
+<h2 id="虚拟环境工具包位置">4.虚拟环境工具包位置</h2>
+<p>~/.virtualenvs/虚拟环境名称/lib/python3.5/site-packages</p>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>服务器配置</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>git</tag>
+        <tag>python</tag>
+        <tag>虚拟环境</tag>
       </tags>
   </entry>
   <entry>
@@ -1717,130 +1749,36 @@ data-cites="id">[@id=='3']</span>/.."</p>
       </categories>
   </entry>
   <entry>
-    <title>创建python虚拟环境</title>
-    <url>/%E5%88%9B%E5%BB%BApython%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<p>如果在一台电脑上，想开发多个不同的项目， 需要用到同一个包的不同版本，
-如果不使用虚拟环境， 在同一个目录下安装或者更新，
-新版本会覆盖以前的版本， 其它的项目就无法运行了。</p>
+    <title>ssh 22 time out</title>
+    <url>/ssh-22-time-out/</url>
+    <content><![CDATA[<p>这里记录一下git使用过程中总是碰到的一个错误，<code>ssh: connect to host github.com port 22: Connection timed out</code>。</p>
 <a id="more"></a>
-<h2 id="安装虚拟环境">1.安装虚拟环境</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pip install virtualenv</span><br><span class="line">sudo pip install virtualenvwrapper</span><br></pre></td></tr></table></figure>
-<p>virtualenvwrapper类似于一个虚拟环境管理工具会比原生的virtualenv方便一些</p>
-<p>安装完虚拟环境如果找不到mkvirtualenv命令，须配置环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1、在~（家目录）下创建目录用来存放虚拟环境</span><br><span class="line">mkdir .virtualenvs</span><br><span class="line"></span><br><span class="line"># 2、打开~&#x2F;.bashrc文件，并添加如下：</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs</span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"># 3、运行</span><br><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
-<h2 id="创建虚拟环境">2.创建虚拟环境</h2>
-<p>如果不指定Python版本，默认安装的是Python2的虚拟环境</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在python2中，创建虚拟环境</span><br><span class="line">mkvirtualenv 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv py_flask</span><br></pre></td></tr></table></figure>
-<p>如果想要指定python版本</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkvirtualenv -p python3 虚拟环境名称</span><br><span class="line">例 ：</span><br><span class="line">mkvirtualenv -p python3 py3_flask</span><br></pre></td></tr></table></figure>
-<p>提示：</p>
-<p>所有的虚拟环境都位于/~/下的隐藏目录.virtualenvs下</p>
-<h2 id="使用虚拟环境">3.使用虚拟环境</h2>
-<h3 id="查看已有虚拟环境">3.1查看已有虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon</span><br></pre></td></tr></table></figure>
-<h3 id="进入虚拟环境">3.2进入虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">workon 虚拟环境名称</span><br></pre></td></tr></table></figure>
-<h3 id="退出虚拟环境">3.3退出虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deativate</span><br></pre></td></tr></table></figure>
-<h3 id="删除虚拟环境">3.4删除虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">先退出：deactivate</span><br><span class="line">再删除：rmvirtualenv py3_flask</span><br></pre></td></tr></table></figure>
-<h2 id="虚拟环境工具包位置">4.虚拟环境工具包位置</h2>
-<p>~/.virtualenvs/虚拟环境名称/lib/python3.5/site-packages</p>
+<p>我碰过的这个错误基本是由两种原因引起的，一种是公钥没配置好，另一种就是网络原因。</p>
+<p>这里主要记录下网络原因引起的time out该怎么办。</p>
+<h3 id="检测">检测</h3>
+<p><code>ssh -T git@github.com</code></p>
+<p>如果出现：You’ve successfully
+authenticated，那么连接成功可以使用了。如果出现：ssh: connect to host
+github.com port 22: Connection timed out，就说明连接超时。</p>
+<p>连接失败后，可以同样试试<code>ssh -T -p 443 git@github.com</code>，检查是否有异常。</p>
+<p>如果加上443之后能够success的话基本就是网络问题，我们需要使用443端口去连接git。</p>
+<h3 id="配置">配置</h3>
+<ol type="1">
+<li>cd ~/.ssh</li>
+<li>配置或新建config文件</li>
+<li>编辑文件内容并保存退出</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">User 你的邮箱</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>使用<code>ssh -T git@github.com</code>测试下</li>
+</ol>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>虚拟环境</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>图片转视频</title>
-    <url>/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/</url>
-    <content><![CDATA[<p>使用python的cv2库完成图片转视频，解决灰度图片和中文路径问题</p>
-<a id="more"></a>
-<p>先上代码</p>
-<figure class="highlight python"><figcaption><span>img2video.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">img_array = []</span><br><span class="line"><span class="comment"># 取图片的时候排序</span></span><br><span class="line"><span class="keyword">for</span> filename <span class="keyword">in</span> sorted(glob.glob(<span class="string">r'***\0X1AA30623C1AE4641\*.png'</span>), key=<span class="keyword">lambda</span> x: int(x.split(<span class="string">'.'</span>)[<span class="number">0</span>].split(<span class="string">'_'</span>)[<span class="number">-1</span>])):</span><br><span class="line">	<span class="comment"># 注意读图方式</span></span><br><span class="line">    img = cv2.imdecode(np.fromfile(filename, dtype=np.uint8), <span class="number">1</span>)</span><br><span class="line">    img_array.append(img)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">height, width, channel = img_array[<span class="number">0</span>].shape</span><br><span class="line">size = (width, height)</span><br><span class="line"></span><br><span class="line"><span class="comment"># avi：视频类型，mp4也可以</span></span><br><span class="line"><span class="comment"># cv2.VideoWriter_fourcc(*'I420')：编码格式</span></span><br><span class="line"><span class="comment"># 50：视频帧率</span></span><br><span class="line"><span class="comment"># size:视频中图片大小</span></span><br><span class="line">out = cv2.VideoWriter(<span class="string">r'***\0X1AA30623C1AE4641_predict.avi'</span>,</span><br><span class="line">                      cv2.VideoWriter_fourcc(*<span class="string">'I420'</span>),</span><br><span class="line">                      <span class="number">50</span>, size)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> img_array:</span><br><span class="line">    out.write(img)</span><br><span class="line"></span><br><span class="line">out.release()</span><br></pre></td></tr></table></figure>
-<h3 id="中文路径">中文路径</h3>
-<p>cv2在读取带有中文路径图片的时候不能直接使用<code>cv2.imread()</code>，读出来是None。需要使用<code>cv2.imdecode(np.fromfile(filepath, dtype=np.uint8), -1)</code>，注意后面的数字带有具体含义，下面将灰度图的时候说明。</p>
-<h3 id="灰度图片">灰度图片</h3>
-<p><code>cv2.imdecode(np.fromfile(filepath, dtype=np.uint8), flag=-1)</code></p>
-<p>此处的<strong>flag</strong>带有明确含义：</p>
-<ul>
-<li>flag = -1, 8位深度，原通道，此时读取的是原来的图像</li>
-<li>flag = 0, 8位深度，1通道，读取的是灰度图</li>
-<li>flag = 1， 8位深度，3通道彩图</li>
-<li>flag = 2， 原深度， 灰度</li>
-<li>flag = 3，原深度，彩图</li>
-<li>flag = 4， 8位深度， 3通道彩图</li>
-</ul>
-<p>我最终的结果是一张灰度图，需要读成三通道彩图才能进行保存，注意cv2读出来的是BGR而不是RGB，只要中途不经过PIL之类的转化，直接再<code>cv2.VideoWriter</code>的话其实不影响。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>处理dm字段大小写</title>
-    <url>/%E5%A4%84%E7%90%86dm%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F%E5%86%99/</url>
-    <content><![CDATA[<p>记录下使用达梦数据库遇到的大小写问题，达梦数据库在建库的时候可以选择不区分大小写，默认是选择区分的，我看网上的博客很多都建议取消区分大小写，但是我对接的用户这边建库的时候没有取消，然后dm好像有把字段名全部大写，就算他们建表时写的小写，没有仔细研究，我这里主要只是做了有无大写判断。</p>
-<a id="more"></a>
-<h4 id="cursor.fetchall">cursor.fetchall()</h4>
-<p>对从数据库中获得的列数较少的数据实际上都不用判断里面字段名是大写还是小写，可以直接用try、expect来处理</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>.lower()]</span><br></pre></td></tr></table></figure>
-<h4 id="df-pd.dataframe.from_recordsdb_data">df =
-pd.DataFrame.from_records(db_data)</h4>
-<p>为了对数据进行更好的处理，在Python中经常会使用到pandas来处理数据，当我们在<code>dmPython.connect</code>中设置了<code>cursorclass=dmPython.DictCursor</code>时，我们<code>cursor.fetchall()</code>回来的数据会是一个list包裹若干dict的形式，每一个dict是数据库中的一行，dict中的key就是数据表中的列名。此时我们可以采用<code>pd.DataFrame.from_records()</code>将这种list直接变为pandas的DataFrame格式来进行处理。</p>
-<p>这里我需要将数据库中取出来的数据先修改类型，使用<code>df.astype()</code>可以直接修改df的列数据类型，这里需要用到一个dict来完成数据类型修改，dict的key是df的列名，value是要修改成的数据类型，如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data_types_dict &#x3D; &#123;</span><br><span class="line">    &quot;time_start&quot;: float,</span><br><span class="line">    &quot;ip_client&quot;: str,</span><br><span class="line">    &quot;byte_up&quot;: float,</span><br><span class="line">    &quot;byte_dn&quot;: float</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里就涉及到判断从数据库中取出来的数据字段名是大写还是小写，可以用以下代码完成数据修改，主要思路就是当我判断数据库字段名是大写的时候把我的dict的key也改为大写：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if &#39;time_start&#39; in df.columns.tolist():</span><br><span class="line">    df &#x3D; df.astype(data_types_dict)</span><br><span class="line">elif &#39;time_start&#39;.upper() in df.columns.tolist():</span><br><span class="line">    data_types_dict_upper &#x3D; &#123;&#125;</span><br><span class="line">    for i, j in data_types_dict.items():</span><br><span class="line">        data_types_dict_upper[i.upper()] &#x3D; j</span><br><span class="line">    # print(&#39;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#39;, data_types_dict_upper)</span><br><span class="line">    df &#x3D; df.astype(data_types_dict_upper)</span><br></pre></td></tr></table></figure>
-<p>如果需要进行列名修改也是类似的：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rename_col &#x3D; &#123;</span><br><span class="line">    &#39;time_start&#39;: &#39;time&#39;,</span><br><span class="line">    &#39;ip_client&#39;: &#39;sIP&#39;,</span><br><span class="line">    &#39;byte_up&#39;: &#39;outlen&#39;,</span><br><span class="line">    &#39;byte_dn&#39;: &#39;inlen&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if &#39;time_start&#39; in df.columns.tolist():</span><br><span class="line">    df &#x3D; df.rename(columns&#x3D;rename_col)</span><br><span class="line">elif &#39;time_start&#39;.upper() in df.columns.tolist():</span><br><span class="line">    rename_col_upper &#x3D; &#123;&#125;</span><br><span class="line">    for i, j in rename_col.items():</span><br><span class="line">        rename_col_upper[i.upper()] &#x3D; j</span><br><span class="line">    # print(&#39;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#39;, rename_col_upper)</span><br><span class="line">    df &#x3D; df.rename(columns&#x3D;rename_col_upper)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>达梦</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>达梦</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>多台电脑同步博客</title>
-    <url>/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>记录一下在多台电脑上同时写博客时候的同步问题</p>
-<p><a href="https://www.zhihu.com/question/23934523" target="_blank" rel="noopener">参考</a></p>
-<a id="more"></a>
-<h3 id="环境安装">环境安装</h3>
-<h4 id="nodejs">nodejs</h4>
-<p>首先在自己的电脑上安装 Node.js，下载地址：<a
-href="https://nodejs.org/zh-cn/download/">node.js</a></p>
-<p>建议下载nodejs
-14以下的版本，14以上的版本和一些老版的hexo不兼容，会报错</p>
-<h4 id="hexo">hexo</h4>
-<p>使用如下命令安装hexo，-g可以全局安装，在所有文件夹都能使用</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<h3 id="git同步">git同步</h3>
-<p>我这里默认已经至少在一个电脑上配置好博客站点信息了，就不写怎么配置站点信息了，直接写如何在git上新建分支存放hexo源码</p>
-<p>在博客根目录下在git bash中使用以下命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b source</span><br><span class="line">git add -A</span><br><span class="line">git commit -m &quot;init blog&quot;</span><br><span class="line">git remote add origin git@github.com:&#123;username&#125;&#x2F;&#123;username&#125;.github.io.git</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
-<p>如果是在第二台电脑上要拉取的话就新建一个博客文件夹使用init之后将clone下来的文件放到博客文件夹里再执行后续操作就好了</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>博客</category>
+        <category>服务器配置</category>
       </categories>
       <tags>
         <tag>git</tag>
-        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -1985,22 +1923,30 @@ href="http://nginx.com/">Nginx</a>是轻量级、性能强、占用资源少，�
       </tags>
   </entry>
   <entry>
-    <title>强制关闭端口</title>
-    <url>/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/</url>
-    <content><![CDATA[<p>很多情况下我们会遇到程序非正常退出那么它所占用的端口很有可能就没有被正常释放，导致我们下一次启动他的时候无法启动，这时候我们就需要手动释放端口。</p>
-<p>参考：https://blog.csdn.net/why444216978/article/details/84062977</p>
+    <title>处理dm字段大小写</title>
+    <url>/%E5%A4%84%E7%90%86dm%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F%E5%86%99/</url>
+    <content><![CDATA[<p>记录下使用达梦数据库遇到的大小写问题，达梦数据库在建库的时候可以选择不区分大小写，默认是选择区分的，我看网上的博客很多都建议取消区分大小写，但是我对接的用户这边建库的时候没有取消，然后dm好像有把字段名全部大写，就算他们建表时写的小写，没有仔细研究，我这里主要只是做了有无大写判断。</p>
 <a id="more"></a>
-<p>1、强制杀死该端口进程</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo fuser -k -n tcp 80</span><br></pre></td></tr></table></figure>
-<p>2、根据PID关闭某个被占用的端口</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">netstat -tunlp | grep 80</span><br><span class="line"></span><br><span class="line">lsof -i:80</span><br><span class="line"></span><br><span class="line">sudo kill -9 PID</span><br></pre></td></tr></table></figure>
+<h4 id="cursor.fetchall">cursor.fetchall()</h4>
+<p>对从数据库中获得的列数较少的数据实际上都不用判断里面字段名是大写还是小写，可以直接用try、expect来处理</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    folder_path = save_folder[<span class="number">0</span>][<span class="string">'SAVE_FOLDER'</span>.lower()]</span><br></pre></td></tr></table></figure>
+<h4 id="df-pd.dataframe.from_recordsdb_data">df =
+pd.DataFrame.from_records(db_data)</h4>
+<p>为了对数据进行更好的处理，在Python中经常会使用到pandas来处理数据，当我们在<code>dmPython.connect</code>中设置了<code>cursorclass=dmPython.DictCursor</code>时，我们<code>cursor.fetchall()</code>回来的数据会是一个list包裹若干dict的形式，每一个dict是数据库中的一行，dict中的key就是数据表中的列名。此时我们可以采用<code>pd.DataFrame.from_records()</code>将这种list直接变为pandas的DataFrame格式来进行处理。</p>
+<p>这里我需要将数据库中取出来的数据先修改类型，使用<code>df.astype()</code>可以直接修改df的列数据类型，这里需要用到一个dict来完成数据类型修改，dict的key是df的列名，value是要修改成的数据类型，如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">data_types_dict &#x3D; &#123;</span><br><span class="line">    &quot;time_start&quot;: float,</span><br><span class="line">    &quot;ip_client&quot;: str,</span><br><span class="line">    &quot;byte_up&quot;: float,</span><br><span class="line">    &quot;byte_dn&quot;: float</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就涉及到判断从数据库中取出来的数据字段名是大写还是小写，可以用以下代码完成数据修改，主要思路就是当我判断数据库字段名是大写的时候把我的dict的key也改为大写：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if &#39;time_start&#39; in df.columns.tolist():</span><br><span class="line">    df &#x3D; df.astype(data_types_dict)</span><br><span class="line">elif &#39;time_start&#39;.upper() in df.columns.tolist():</span><br><span class="line">    data_types_dict_upper &#x3D; &#123;&#125;</span><br><span class="line">    for i, j in data_types_dict.items():</span><br><span class="line">        data_types_dict_upper[i.upper()] &#x3D; j</span><br><span class="line">    # print(&#39;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#39;, data_types_dict_upper)</span><br><span class="line">    df &#x3D; df.astype(data_types_dict_upper)</span><br></pre></td></tr></table></figure>
+<p>如果需要进行列名修改也是类似的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rename_col &#x3D; &#123;</span><br><span class="line">    &#39;time_start&#39;: &#39;time&#39;,</span><br><span class="line">    &#39;ip_client&#39;: &#39;sIP&#39;,</span><br><span class="line">    &#39;byte_up&#39;: &#39;outlen&#39;,</span><br><span class="line">    &#39;byte_dn&#39;: &#39;inlen&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if &#39;time_start&#39; in df.columns.tolist():</span><br><span class="line">    df &#x3D; df.rename(columns&#x3D;rename_col)</span><br><span class="line">elif &#39;time_start&#39;.upper() in df.columns.tolist():</span><br><span class="line">    rename_col_upper &#x3D; &#123;&#125;</span><br><span class="line">    for i, j in rename_col.items():</span><br><span class="line">        rename_col_upper[i.upper()] &#x3D; j</span><br><span class="line">    # print(&#39;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#39;, rename_col_upper)</span><br><span class="line">    df &#x3D; df.rename(columns&#x3D;rename_col_upper)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>服务器配置</category>
+        <category>达梦</category>
       </categories>
       <tags>
-        <tag>服务器</tag>
+        <tag>Python</tag>
+        <tag>达梦</tag>
       </tags>
   </entry>
   <entry>
@@ -2071,233 +2017,82 @@ aria-hidden="true">aHR0cHM6Ly9waWMuZG93bmsuY2MvaXRlbS81ZTQzZDhiYTJmYjM4YjhjM2NkN
       </tags>
   </entry>
   <entry>
-    <title>深度学习笔记(一)---基础</title>
-    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<p>待录取已经下来了，应该没什么意外就尘埃落定了，这几天都没怎么睡好，下午困得很。今天下午和晚上就看看什么是深度学习，稍微了解一下，晚上跑个步回去早点睡。</p>
+    <title>图片转视频</title>
+    <url>/%E5%9B%BE%E7%89%87%E8%BD%AC%E8%A7%86%E9%A2%91/</url>
+    <content><![CDATA[<p>使用python的cv2库完成图片转视频，解决灰度图片和中文路径问题</p>
 <a id="more"></a>
-<h2 id="参考">参考</h2>
-<p>https://baike.baidu.com/item/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/3729729?fr=aladdin</p>
-<p>https://www.zhihu.com/question/24097648</p>
-<p>https://blog.csdn.net/testcs_dn/article/details/85009917</p>
-<h2 id="什么是深度学习">什么是深度学习</h2>
-<p>人工智能、机器学习、深度学习这几个名词都很火热，但是他们到底是什么意思呢。</p>
-<p>根据我的查找发现，机器学习是实现人工智能的一种方式，而深度学习又是实现机器学习的一种方式，所以他们应该是一种包含的关系。类似于下图</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012154552.png"
-alt="20181218165055573" />
-<figcaption aria-hidden="true">20181218165055573</figcaption>
-</figure>
-<h2 id="机器学习神经网络深度学习">机器学习、神经网络、深度学习</h2>
-<h3 id="机器学习">机器学习</h3>
-<p>简单的说机器学习就是让机器去分析数据找规律，并通过找到的规律对新的数据进行处理。</p>
-<p>机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。<strong>机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。</strong>因为学习算法中涉及了大量的统计学理论，机器学习与推断统计学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可以实现的，行之有效的学习算法。很多推论问题属于无程序可循难度，所以部分的机器学习研究是开发容易处理的近似算法。</p>
-<h3 id="神经网络">神经网络</h3>
-<p>神经网络简单点将就是由好多个神经元组成的系统。这是模拟人类的神经网络。</p>
-<p>神经元是一个简单的分类器。</p>
-<p>比如我们有一大堆猫、狗照片，把每一张照片送进一个机器里，机器需要判断这幅照片里的东西是猫还是狗。我们把猫狗图片处理一下，左边是狗的特征向量，右边是猫的。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160259.png"
-alt="20181218165203514" />
-<figcaption aria-hidden="true">20181218165203514</figcaption>
-</figure>
-<p>神经元一个缺点是：它只能切一刀！你给我说说一刀怎么能把下面这两类分开吧。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160321.png"
-alt="20181218165215861" />
-<figcaption aria-hidden="true">20181218165215861</figcaption>
-</figure>
-<p>解决办法是多层神经网络，底层神经元的输出是高层神经元的输入。我们可以在中间横着砍一刀，竖着砍一刀，然后把左上和右下的部分合在一起，与右上的左下部分分开；也可以围着左上角的边沿砍10刀把这一部分先挖出来，然后和右下角合并。</p>
-<p>每砍一刀，其实就是使用了一个神经元，把不同砍下的半平面做交、并等运算，就是把这些神经元的输出当作输入，后面再连接一个神经元。这个例子中特征的形状称为异或，这种情况一个神经元搞不定，但是两层神经元就能正确对其进行分类。</p>
-<p>只要你能砍足够多刀，把结果拼在一起，什么奇怪形状的边界神经网络都能够表示，所以说神经网络在理论上可以表示很复杂的函数/空间分布。但是真实的神经网络是否能摆动到正确的位置还要看网络初始值设置、样本容量和分布。</p>
-<h3 id="深度学习">深度学习</h3>
-<p>那什么是深度学习呢？深度学习简单点说就是一种为了让层数较多的多层神经网络可以训练，能够运行起来而演化出来的一系列的新的结构和新的方法。</p>
-<p><strong>深度学习（Deep
-Learning）</strong>是机器学习研究中的一个新的领域，其动机在于建立、模拟人脑进行分析学习的神经网络，<strong>它模仿人脑的机制来解释数据</strong>，例如图像，声音和文本。深度学习是无监督学习的一种。</p>
-<p>深度学习的概念源于人工神经网络的研究。含多隐层的多层感知器就是一种深度学习结构。深度学习通过组合低层特征形成更加抽象的高层表示属性类别或特征，以发现数据的分布式特征表示。</p>
-<p>就像下图</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160356.png"
-alt="20181218165227159" />
-<figcaption aria-hidden="true">20181218165227159</figcaption>
-</figure>
-<p>普通的神经网络可能只有几层，深度学习可以达到十几层。深度学习中的深度二字也代表了神经网络的层数。现在流行的深度学习网络结构有"CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的等。</p>
-<p>机器学习是人工智能的一个子集，深度学习又是机器学习的一个子集。机器学习与深度学习都是需要大量数据支撑的，是大数据技术上的一个应用，同时深度学习还需要更高的运算能力支撑，如GPU。</p>
-<h2 id="深度学习典型模型">深度学习典型模型</h2>
-<p>典型的深度学习模型有卷积神经网络( convolutional neural
-network)、DBN和堆栈自编码网络(stacked auto-encoder
-network)模型等，下面对这些模型进行描述。</p>
-<h3 id="卷积神经网络模型">卷积神经网络模型</h3>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012161738.jpg"
-alt="bd3eb13533fa828b269a8a0ff31f4134960a5aa4" />
-<figcaption
-aria-hidden="true">bd3eb13533fa828b269a8a0ff31f4134960a5aa4</figcaption>
-</figure>
-<p>在无监督预训练出现之前，训练深度神经网络通常非常困难，而其中一个特例是卷积神经网络。卷积神经网络受视觉系统的结构启发而产生。第一个卷积神经网络计算模型是在Fukushima(D的神经认知机中提出的，基于神经元之间的局部连接和分层组织图像转换，将有相同参数的神经元应用于前一层神经网络的不同位置，得到一种平移不变神经网络结构形式。后来，Le
-Cun等人在该思想的基础上，用误差梯度设计并训练卷积神经网络，在一些模式识别任务上得到优越的性能。至今，基于卷积神经网络的模式识别系统是最好的实现系统之一，尤其在手写体字符识别任务上表现出非凡的性能。</p>
-<h3 id="深度信任网络模型">深度信任网络模型</h3>
-<p>DBN可以解释为贝叶斯概率生成模型，由多层随机隐变量组成，上面的两层具有无向对称连接，下面的层得到来自上一层的自顶向下的有向连接，最底层单元的状态为可见输入数据向量。DBN由若2F结构单元堆栈组成，结构单元通常为RBM（RestIlcted
-Boltzmann
-Machine，受限玻尔兹曼机）。堆栈中每个RBM单元的可视层神经元数量等于前一RBM单元的隐层神经元数量。根据深度学习机制，采用输入样例训练第一层RBM单元，并利用其输出训练第二层RBM模型，将RBM模型进行堆栈通过增加层来改善模型性能。在无监督预训练过程中，DBN编码输入到顶层RBM后，解码顶层的状态到最底层的单元，实现输入的重构。RBM作为DBN的结构单元，与每一层DBN共享参数。</p>
-<h3 id="堆栈自编码网络模型">堆栈自编码网络模型</h3>
-<p>堆栈自编码网络的结构与DBN类似，由若干结构单元堆栈组成，不同之处在于其结构单元为自编码模型(
-auto-en-coder)而不是RBM。自编码模型是一个两层的神经网络，第一层称为编码层，第二层称为解码层。</p>
-<h2 id="cuadcompute-unified-device-architecture">CUAD（Compute Unified
-Device Architecture）</h2>
-<p>CUDA（Compute Unified Device Architecture），是显卡厂商<a
-href="https://baike.baidu.com/item/NVIDIA">NVIDIA</a>推出的运算平台。
-CUDA™是一种由NVIDIA推出的通用<a
-href="https://baike.baidu.com/item/并行计算/113443">并行计算</a>架构，该架构使<a
-href="https://baike.baidu.com/item/GPU">GPU</a>能够解决复杂的计算问题。
-它包含了CUDA<a
-href="https://baike.baidu.com/item/指令集架构">指令集架构</a>（<a
-href="https://baike.baidu.com/item/ISA">ISA</a>）以及GPU内部的并行计算引擎。
-开发人员可以使用<a
-href="https://baike.baidu.com/item/C语言">C语言</a>来为CUDA™架构编写程序，C语言是应用最广泛的一种高级编程语言。所编写出的程序可以在支持CUDA™的处理器上以超高性能运行。CUDA3.0已经开始支持<a
-href="https://baike.baidu.com/item/C%2B%2B">C++</a>和<a
-href="https://baike.baidu.com/item/FORTRAN">FORTRAN</a>。</p>
-<p>在上文提到了，深度学习需要多的数据来进行学习，那么计算能力就是很重要的一环。</p>
-<p>随着GPU的不断发展，它在计算能力上已经超过了通用CPU，仅仅用来做显卡有点浪费了。于是开发人员就将目光瞄向了GPU。</p>
-<p>像许多的技术方向一样，深度学习也拥有着自己的框架，它可以让开发人员不需要手写CUDA就能跑GPU。</p>
-<h2 id="深度学习框架">深度学习框架</h2>
-<p><strong>为何要用深度学习框架？</strong></p>
+<p>先上代码</p>
+<figure class="highlight python"><figcaption><span>img2video.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">img_array = []</span><br><span class="line"><span class="comment"># 取图片的时候排序</span></span><br><span class="line"><span class="keyword">for</span> filename <span class="keyword">in</span> sorted(glob.glob(<span class="string">r'***\0X1AA30623C1AE4641\*.png'</span>), key=<span class="keyword">lambda</span> x: int(x.split(<span class="string">'.'</span>)[<span class="number">0</span>].split(<span class="string">'_'</span>)[<span class="number">-1</span>])):</span><br><span class="line">	<span class="comment"># 注意读图方式</span></span><br><span class="line">    img = cv2.imdecode(np.fromfile(filename, dtype=np.uint8), <span class="number">1</span>)</span><br><span class="line">    img_array.append(img)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">height, width, channel = img_array[<span class="number">0</span>].shape</span><br><span class="line">size = (width, height)</span><br><span class="line"></span><br><span class="line"><span class="comment"># avi：视频类型，mp4也可以</span></span><br><span class="line"><span class="comment"># cv2.VideoWriter_fourcc(*'I420')：编码格式</span></span><br><span class="line"><span class="comment"># 50：视频帧率</span></span><br><span class="line"><span class="comment"># size:视频中图片大小</span></span><br><span class="line">out = cv2.VideoWriter(<span class="string">r'***\0X1AA30623C1AE4641_predict.avi'</span>,</span><br><span class="line">                      cv2.VideoWriter_fourcc(*<span class="string">'I420'</span>),</span><br><span class="line">                      <span class="number">50</span>, size)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> img_array:</span><br><span class="line">    out.write(img)</span><br><span class="line"></span><br><span class="line">out.release()</span><br></pre></td></tr></table></figure>
+<h3 id="中文路径">中文路径</h3>
+<p>cv2在读取带有中文路径图片的时候不能直接使用<code>cv2.imread()</code>，读出来是None。需要使用<code>cv2.imdecode(np.fromfile(filepath, dtype=np.uint8), -1)</code>，注意后面的数字带有具体含义，下面将灰度图的时候说明。</p>
+<h3 id="灰度图片">灰度图片</h3>
+<p><code>cv2.imdecode(np.fromfile(filepath, dtype=np.uint8), flag=-1)</code></p>
+<p>此处的<strong>flag</strong>带有明确含义：</p>
 <ul>
-<li>不需要手写CUDA就能跑GPU</li>
-<li>自动帮你复杂复合函数的梯度</li>
+<li>flag = -1, 8位深度，原通道，此时读取的是原来的图像</li>
+<li>flag = 0, 8位深度，1通道，读取的是灰度图</li>
+<li>flag = 1， 8位深度，3通道彩图</li>
+<li>flag = 2， 原深度， 灰度</li>
+<li>flag = 3，原深度，彩图</li>
+<li>flag = 4， 8位深度， 3通道彩图</li>
 </ul>
-<p>深度学习从此变得傻瓜！</p>
-<h3 id="框架总览">框架总览</h3>
-<p>现如今开源生态非常完善，深度学习相关的开源框架众多，光是为人熟知的就有caffe，tensorflow，pytorch/caffe2，keras，mxnet，paddldpaddle，theano，cntk，deeplearning4j，matconvnet等。</p>
-<p>如何选择最适合你的开源框架是一个问题。有三AI在前段时间里，给大家整理了<strong>12个深度学习开源框架快速入门的教程和代码</strong>，供初学者进行挑选，一个合格的深度学习算法工程师怎么着得熟悉其中的3个以上吧。</p>
-<p>下面是各大开源框架的一个总览。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012165318.jpg"
-alt="v2-d2af0dc0108888b3eea1140d20656883_720w" />
-<figcaption
-aria-hidden="true">v2-d2af0dc0108888b3eea1140d20656883_720w</figcaption>
-</figure>
-<p><strong>(1)
-不管怎么说，tensorflow/pytorch你都必须会，这是目前开发者最喜欢，开源项目最丰富的两个框架。</strong></p>
-<p><strong>(2)
-如果你要进行移动端算法的开发，那么Caffe是不能不会的。</strong></p>
-<p><strong>(3)
-如果你非常熟悉Matlab，matconvnet你不应该错过。</strong></p>
-<p><strong>(4)
-如果你追求高效轻量，那么darknet和mxnet你不能不熟悉。</strong></p>
-<p><strong>(5)
-如果你很懒，想写最少的代码完成任务，那么用keras吧。</strong></p>
-<p><strong>(6)
-如果你是java程序员，那么掌握deeplearning4j没错的。</strong></p>
-<p><strong>其他的框架，也自有它的特点，大家可以自己多去用用。</strong></p>
-<h2 id="监督学习与非监督学习">监督学习与非监督学习</h2>
-<h3 id="监督学习supervised-learning">监督学习（supervised
-learning）</h3>
-<p>从给定的训练数据集中学习出一个函数（模型参数），当新的数据到来时，可以根据这个函数预测结果。监督学习的训练集要求包括输入输出，也可以说是特征和目标。训练集中的目标是由人标注的。监督学习就是最常见的分类（注意和聚类区分）问题，通过已有的训练样本（即已知数据及其对应的输出）去训练得到一个最优模型（这个模型属于某个函数的集合，最优表示某个评价准则下是最佳的），再利用这个模型将所有的输入映射为相应的输出，对输出进行简单的判断从而实现分类的目的。也就具有了对未知数据分类的能力。监督学习的目标往往是让计算机去学习我们已经创建好的分类系统（模型）。</p>
-<p>监督学习是训练神经网络和决策树的常见技术。这两种技术高度依赖事先确定的分类系统给出的信息，对于神经网络，分类系统利用信息判断网络的错误，然后不断调整网络参数。对于决策树，分类系统用它来判断哪些属性提供了最多的信息。</p>
-<p>常见的有监督学习算法：回归分析和统计分类。最典型的算法是KNN和SVM。</p>
-<p>有监督学习最常见的就是：regression&amp;classification</p>
-<p>Regression：Y是实数vector。回归问题，就是拟合(x,y)的一条曲线，使得价值函数(costfunction)
-L最小</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165823.gif"
-alt="20150919203859752" />
-<figcaption aria-hidden="true">20150919203859752</figcaption>
-</figure>
-<p>Classification：Y是一个有穷数(finitenumber)，可以看做类标号，分类问题首先要给定有lable的数据训练分类器，故属于有监督学习过程。分类过程中cost
-function l(X,Y)是X属于类Y的概率的负对数。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165841.gif"
-alt="20150919203917364" />
-<figcaption aria-hidden="true">20150919203917364</figcaption>
-</figure>
-<p>其中fi(X)=P(Y=i|X)。</p>
-<figure>
-<img
-src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165858.gif"
-alt="20150919203935408" />
-<figcaption aria-hidden="true">20150919203935408</figcaption>
-</figure>
-<h3 id="无监督学习unsupervised-learning">无监督学习（unsupervised
-learning）</h3>
-<p>输入数据没有被标记，也没有确定的结果。样本数据类别未知，需要根据样本间的相似性对样本集进行分类（聚类，clustering）试图使类内差距最小化，类间差距最大化。通俗点将就是实际应用中，不少情况下无法预先知道样本的标签，也就是说没有训练样本对应的类别，因而只能从原先没有样本标签的样本集开始学习分类器设计。</p>
-<p>非监督学习目标不是告诉计算机怎么做，而是让它（计算机）自己去学习怎样做事情。非监督学习有两种思路。第一种思路是在指导Agent时不为其指定明确分类，而是在成功时，采用某种形式的激励制度。需要注意的是，这类训练通常会置于决策问题的框架里，因为它的目标不是为了产生一个分类系统，而是做出最大回报的决定，这种思路很好的概括了现实世界，agent可以对正确的行为做出激励，而对错误行为做出惩罚。</p>
-<p>无监督学习的方法分为两大类：</p>
-<ol type="1">
-<li><p>一类为基于概率密度函数估计的直接方法：指设法找到各类别在特征空间的分布参数，再进行分类。</p></li>
-<li><p>另一类是称为基于样本间相似性度量的简洁聚类方法：其原理是设法定出不同类别的核心或初始内核，然后依据样本与核心之间的相似性度量将样本聚集成不同的类别。</p></li>
-</ol>
-<p>利用聚类结果，可以提取数据集中隐藏信息，对未来数据进行分类和预测。应用于数据挖掘，模式识别，图像处理等。</p>
-<p>PCA和很多deep learning算法都属于无监督学习。</p>
-<h3 id="两者的不同点">两者的不同点</h3>
-<ol type="1">
-<li><p>有监督学习方法必须要有训练集与测试样本。在训练集中找规律，而对测试样本使用这种规律。而非监督学习没有训练集，只有一组数据，在该组数据集内寻找规律。</p></li>
-<li><p>有监督学习的方法就是识别事物，识别的结果表现在给待识别数据加上了标签。因此训练样本集必须由带标签的样本组成。而非监督学习方法只有要分析的数据集的本身，预先没有什么标签。如果发现数据集呈现某种聚集性，则可按自然的聚集性分类，但不予以某种预先分类标签对上号为目的。</p></li>
-<li><p>非监督学习方法在寻找数据集中的规律性，这种规律性并不一定要达到划分数据集的目的，也就是说不一定要“分类”。</p>
-<p>这一点是比有监督学习方法的用途要广。
-譬如分析一堆数据的主分量，或分析数据集有什么特点都可以归于非监督学习方法的范畴。</p></li>
-<li><p>用非监督学习方法分析数据集的主分量与用K-L变换计算数据集的主分量又有区别。后者从方法上讲不是学习方法。因此用K-L变换找主分量不属于无监督学习方法，即方法上不是。而通过学习逐渐找到规律性这体现了学习方法这一点。在人工神经元网络中寻找主分量的方法属于无监督学习方法。</p></li>
-</ol>
-<h3 id="何时采用哪种方法">何时采用哪种方法</h3>
-<p>简单的方法就是从定义入手，有训练样本则考虑采用监督学习方法；无训练样本，则一定不能用监督学习方法。但是，现实问题中，即使没有训练样本，我们也能够凭借自己的双眼，从待分类的数据中，人工标注一些样本，并把它们作为训练样本，这样的话，可以把条件改善，用监督学习方法来做。对于不同的场景，正负样本的分布如果会存在偏移（可能大的偏移，可能比较小），这样的话，监督学习的效果可能就不如用非监督学习了。</p>
+<p>我最终的结果是一张灰度图，需要读成三通道彩图才能进行保存，注意cv2读出来的是BGR而不是RGB，只要中途不经过PIL之类的转化，直接再<code>cv2.VideoWriter</code>的话其实不影响。</p>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>深度学习</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
-        <tag>CUAD</tag>
-        <tag>神经网络</tag>
-        <tag>机器学习</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
-    <title>深度学习笔记(三)---基础理解</title>
-    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<p>稍微记录一下看吴恩达课程后对深度学习各种概念的理解</p>
+    <title>强制关闭端口</title>
+    <url>/%E5%BC%BA%E5%88%B6%E5%85%B3%E9%97%AD%E7%AB%AF%E5%8F%A3/</url>
+    <content><![CDATA[<p>很多情况下我们会遇到程序非正常退出那么它所占用的端口很有可能就没有被正常释放，导致我们下一次启动他的时候无法启动，这时候我们就需要手动释放端口。</p>
+<p>参考：https://blog.csdn.net/why444216978/article/details/84062977</p>
 <a id="more"></a>
-<h2 id="深度学习的大致过程">深度学习的大致过程</h2>
-<p>在看了吴恩达的第一节课之后我对深度学习的理解是这样的：</p>
-<p>深度学习其实就是一个寻找拟合函数的过程，让数据通过这个函数之后能输出和人看法相似的结果。</p>
-<p>首先我们先需要选定一个/几个模型，确定需要的参数，超参数之类的</p>
-<p>然后我们要将已有的数据划分为训练集，验证集和测试集，以往的比例是60，20，20之类的，但是由于现在已经是大数据时代了，有些数据集已经足够大了，我们不需要那么大的验证集和测试集，可以适当减少Dev和Test的占比，比如1，0.5之类的。<strong>还有一点要注意</strong>，我们很有可能训练集和验证，测试集的来源不一样，难以保证同分布，吴恩达老师建议大家要确保验证集和测试集的数据来自同一分布</p>
-<p>之后我们要将参数初始化，注意初始化的时候参数是否能为0，是否需要进行归一化。当然训练集的输入输出也要进行预处理，但是预处理的方法目前还没有进行太多的讲解，只有一个将图像拉成一维向量</p>
-<p>之后就是让神经网络通过训练找到合适的参数使得训练集的成本函数不断降低。整个过程主要包括前向传播和后向传播。在我看来，前向传播就是为了计算出成本函数，后向传播就是让成本函数对各个参数求导，然后通过梯度下降的方法让成本函数进一步降低。</p>
-<p>前后向传播的迭代次数和梯度下降学习率都通过超参数来控制，最后将训练出来的各种参数保存下来，这样就完成了一个模型的简单训练。当然其中还有很多的正则化，归一化之类的操作，但是最简单的一个模型（比如逻辑回归）大致就是这些步骤了。</p>
-<p>然后在验证集上通过运行同一网络不同超参数和不同网络之间的模型来比较模型性能，然后再跑测试集。</p>
-<h2 id="为什么要向量化">为什么要向量化</h2>
-<p>因为输入数据肯定是一个庞大的数据集，如果用单纯的标量那么一定需要很多的循环，但是循环的效率是很低的，所以我们需要引入向量操作，向量操作一次性可以完成整个循环的所有运算，效率提升极大。</p>
-<h2 id="为什么要非线性的激活函数">为什么要非线性的激活函数</h2>
-<p>因为如果使用线性的激活函数那么正向传播的输出仅仅是输入的线性组合，根本没有改变，不管你使用多少隐层都和单隐层是一样的效果。</p>
-<h2 id="参数初始化">参数初始化</h2>
-<p>为什么w参数不能直接初始化为全0？</p>
-<p>当你这一层只有一个节点的时候，你是可以将这个节点的w参数初始化为0的。但是如果你这一层不止一个节点，而且采用了全连接的话，你还将W矩阵初始化成了0矩阵，那么你这一层每个节点的w参数之间是一个线性关系，和只有一个节点效果是一样的。</p>
-<h2 id="为什么要用深层表示">为什么要用深层表示</h2>
-<p>你可以直觉上把这种神经网络的前几层当作探测简单的函数，比如边缘，之后把它们跟后几层结合在一起，那么总体上就能学习更多复杂的函数。一般你会从比较小的细节入手，比如边缘，然后再一步步到更大更复杂的区域，比如一只眼睛或是一个鼻子，再把眼睛鼻子装一块组成更复杂的部分。</p>
-<h2 id="超参数">超参数</h2>
-<p>比如算法中的<strong>learning rate</strong> $ a $
-（学习率）、<strong>iterations</strong>(梯度下降法循环的数量)、$ L $
-（隐藏层数目）、$ n^{[l]} $ （隐藏层单元数目）、<strong>choice of
-activation
-function</strong>（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数$
-W $ 和 $ b
-$的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
-<p>超参数的取值并没有明确的规定，这目前还是一个经验性的过程，新手上路最多的还是要不断的尝试，通过不断地修改超参数对比结果来不断修正最后找到一个相对合适的。</p>
+<p>1、强制杀死该端口进程</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo fuser -k -n tcp 80</span><br></pre></td></tr></table></figure>
+<p>2、根据PID关闭某个被占用的端口</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">netstat -tunlp | grep 80</span><br><span class="line"></span><br><span class="line">lsof -i:80</span><br><span class="line"></span><br><span class="line">sudo kill -9 PID</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>深度学习</category>
+        <category>服务器配置</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多台电脑同步博客</title>
+    <url>/%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E5%90%8C%E6%AD%A5%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>记录一下在多台电脑上同时写博客时候的同步问题</p>
+<p><a href="https://www.zhihu.com/question/23934523" target="_blank" rel="noopener">参考</a></p>
+<a id="more"></a>
+<h3 id="环境安装">环境安装</h3>
+<h4 id="nodejs">nodejs</h4>
+<p>首先在自己的电脑上安装 Node.js，下载地址：<a
+href="https://nodejs.org/zh-cn/download/">node.js</a></p>
+<p>建议下载nodejs
+14以下的版本，14以上的版本和一些老版的hexo不兼容，会报错</p>
+<h4 id="hexo">hexo</h4>
+<p>使用如下命令安装hexo，-g可以全局安装，在所有文件夹都能使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h3 id="git同步">git同步</h3>
+<p>我这里默认已经至少在一个电脑上配置好博客站点信息了，就不写怎么配置站点信息了，直接写如何在git上新建分支存放hexo源码</p>
+<p>在博客根目录下在git bash中使用以下命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git checkout -b source</span><br><span class="line">git add -A</span><br><span class="line">git commit -m &quot;init blog&quot;</span><br><span class="line">git remote add origin git@github.com:&#123;username&#125;&#x2F;&#123;username&#125;.github.io.git</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
+<p>如果是在第二台电脑上要拉取的话就新建一个博客文件夹使用init之后将clone下来的文件放到博客文件夹里再执行后续操作就好了</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -2348,60 +2143,8 @@ $的值，所以它们被称作超参数。后面还有很多超参数我还有�
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>机器学习</tag>
         <tag>线程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>深度学习笔记(零)---英语</title>
-    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/</url>
-    <content><![CDATA[<p>记录一下常用英语词汇</p>
-<a id="more"></a>
-<p>监督学习 supervised learning</p>
-<p>无监督学习 unsupervised learning</p>
-<p>统一计算设备架构 CUAD（Compute Unified Device Architecture）</p>
-<p>微分 Differentiate</p>
-<p>卷积神经网络 convolutional neural network</p>
-<p>循环神经网络 Circulating neural network</p>
-<p>链式法则 chain rule</p>
-<p>正向传播 forward propagation</p>
-<p>反向传播 backward propagation</p>
-<p>广播 broadcasting</p>
-<p>变平 flatten</p>
-<p>标量 scalar</p>
-<p>偏移量，偏差 bias</p>
-<p>方差 variance</p>
-<p>拟合 fit</p>
-<p>正则化 regularization</p>
-<p>归一化 Normalization</p>
-<p>范数 norm</p>
-<p>验证集 validation/development</p>
-<p>弗罗贝尼乌斯范数 Frobenius norm</p>
-<p>正交化 orthogonalization</p>
-<p>滤波器 filter</p>
-<p>核 kernal</p>
-<p>填充 padding</p>
-<p>批处理 batch</p>
-<p>优化 optimization</p>
-<p>算法 algorithm</p>
-<p>动量 momentum</p>
-<p>衰减 decay</p>
-<p>离散 discrete</p>
-<p>鞍点 saddle point</p>
-<p>鱼子酱 caviar</p>
-<p>隐藏 hidden</p>
-<p>层 layer</p>
-<p>线性 linear</p>
-<p>非线性 nonlinear</p>
-<p>边界 boundaries</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>英语</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2904,6 +2647,47 @@ alt="v2-ed5b9a19003e316bf892e8322f8d372b_720w (1)" />
         <tag>框架</tag>
         <tag>Tensorflow</tag>
         <tag>Pytorch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习笔记(三)---基础理解</title>
+    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)---%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<p>稍微记录一下看吴恩达课程后对深度学习各种概念的理解</p>
+<a id="more"></a>
+<h2 id="深度学习的大致过程">深度学习的大致过程</h2>
+<p>在看了吴恩达的第一节课之后我对深度学习的理解是这样的：</p>
+<p>深度学习其实就是一个寻找拟合函数的过程，让数据通过这个函数之后能输出和人看法相似的结果。</p>
+<p>首先我们先需要选定一个/几个模型，确定需要的参数，超参数之类的</p>
+<p>然后我们要将已有的数据划分为训练集，验证集和测试集，以往的比例是60，20，20之类的，但是由于现在已经是大数据时代了，有些数据集已经足够大了，我们不需要那么大的验证集和测试集，可以适当减少Dev和Test的占比，比如1，0.5之类的。<strong>还有一点要注意</strong>，我们很有可能训练集和验证，测试集的来源不一样，难以保证同分布，吴恩达老师建议大家要确保验证集和测试集的数据来自同一分布</p>
+<p>之后我们要将参数初始化，注意初始化的时候参数是否能为0，是否需要进行归一化。当然训练集的输入输出也要进行预处理，但是预处理的方法目前还没有进行太多的讲解，只有一个将图像拉成一维向量</p>
+<p>之后就是让神经网络通过训练找到合适的参数使得训练集的成本函数不断降低。整个过程主要包括前向传播和后向传播。在我看来，前向传播就是为了计算出成本函数，后向传播就是让成本函数对各个参数求导，然后通过梯度下降的方法让成本函数进一步降低。</p>
+<p>前后向传播的迭代次数和梯度下降学习率都通过超参数来控制，最后将训练出来的各种参数保存下来，这样就完成了一个模型的简单训练。当然其中还有很多的正则化，归一化之类的操作，但是最简单的一个模型（比如逻辑回归）大致就是这些步骤了。</p>
+<p>然后在验证集上通过运行同一网络不同超参数和不同网络之间的模型来比较模型性能，然后再跑测试集。</p>
+<h2 id="为什么要向量化">为什么要向量化</h2>
+<p>因为输入数据肯定是一个庞大的数据集，如果用单纯的标量那么一定需要很多的循环，但是循环的效率是很低的，所以我们需要引入向量操作，向量操作一次性可以完成整个循环的所有运算，效率提升极大。</p>
+<h2 id="为什么要非线性的激活函数">为什么要非线性的激活函数</h2>
+<p>因为如果使用线性的激活函数那么正向传播的输出仅仅是输入的线性组合，根本没有改变，不管你使用多少隐层都和单隐层是一样的效果。</p>
+<h2 id="参数初始化">参数初始化</h2>
+<p>为什么w参数不能直接初始化为全0？</p>
+<p>当你这一层只有一个节点的时候，你是可以将这个节点的w参数初始化为0的。但是如果你这一层不止一个节点，而且采用了全连接的话，你还将W矩阵初始化成了0矩阵，那么你这一层每个节点的w参数之间是一个线性关系，和只有一个节点效果是一样的。</p>
+<h2 id="为什么要用深层表示">为什么要用深层表示</h2>
+<p>你可以直觉上把这种神经网络的前几层当作探测简单的函数，比如边缘，之后把它们跟后几层结合在一起，那么总体上就能学习更多复杂的函数。一般你会从比较小的细节入手，比如边缘，然后再一步步到更大更复杂的区域，比如一只眼睛或是一个鼻子，再把眼睛鼻子装一块组成更复杂的部分。</p>
+<h2 id="超参数">超参数</h2>
+<p>比如算法中的<strong>learning rate</strong> $ a $
+（学习率）、<strong>iterations</strong>(梯度下降法循环的数量)、$ L $
+（隐藏层数目）、$ n^{[l]} $ （隐藏层单元数目）、<strong>choice of
+activation
+function</strong>（激活函数的选择）都需要你来设置，这些数字实际上控制了最后的参数$
+W $ 和 $ b
+$的值，所以它们被称作超参数。后面还有很多超参数我还有没学到，总的来讲就是能影响参数的更高级参数。</p>
+<p>超参数的取值并没有明确的规定，这目前还是一个经验性的过程，新手上路最多的还是要不断的尝试，通过不断地修改超参数对比结果来不断修正最后找到一个相对合适的。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -3511,46 +3295,6 @@ aria-hidden="true">c357c15e4133152bd8bb262789e71765</figcaption>
       </tags>
   </entry>
   <entry>
-    <title>爬虫常用操作笔记</title>
-    <url>/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>记录一些常用的代码，免得老去翻代码</p>
-<a id="more"></a>
-<h3 id="配置">0.配置</h3>
-<p><strong>创建项目</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scrapy startproject adb</span><br></pre></td></tr></table></figure>
-<p><strong>创建爬虫</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd adb</span><br><span class="line">scrapy genspider 爬虫名字 ***.com</span><br></pre></td></tr></table></figure>
-<p><strong>解释器地址</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">D:\Anaconda3\Lib\site-packages\scrapy\cmdline.py</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crawl 爬虫名字</span><br></pre></td></tr></table></figure>
-<h3 id="翻页">1.翻页</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 翻页</span></span><br><span class="line">next_page = response.xpath(<span class="string">'//div[@class="page"]/a[contains(text(),"下一页")]/@href'</span>).extract_first()</span><br><span class="line"><span class="keyword">if</span> next_page:</span><br><span class="line">	next_url = <span class="string">'https://www.2345daohang.com'</span> + next_page</span><br><span class="line">	<span class="keyword">yield</span> scrapy.Request(next_url, callback=self.bookList, meta=&#123;<span class="string">'category'</span>: response.meta[<span class="string">'category'</span>]&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="content处理">2.content处理</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="批量入库">3.批量入库</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"******\\yangsheng_info.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">sql = <span class="string">"INSERT INTO main_data_tougaolanmu(theme,name,content) VALUES(%s,%s,%s)"</span></span><br><span class="line">cursor.executemany(sql, data)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"数据库导入操作"</span>)</span><br><span class="line"></span><br><span class="line">db.commit()</span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="逐条入库">4.逐条入库</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"***************\\minsu_info.csv"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> data:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    sql1 = <span class="string">"SELECT id from user_userInfo WHERE nickname = %s"</span></span><br><span class="line">    <span class="keyword">if</span> dd[<span class="number">1</span>] == <span class="string">'佚名'</span>:</span><br><span class="line">        dd[<span class="number">1</span>] = <span class="string">'官方2号'</span></span><br><span class="line">    cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">    results = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">    <span class="keyword">if</span> results:</span><br><span class="line">        sql2 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = results[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql2, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错1'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql3, dd[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错2'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">        result = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">        sql4 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql4, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'出错3'</span>)</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            db.rollback()</span><br><span class="line">    print(i, results)</span><br><span class="line"></span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
-<h3 id="获取html">5.获取HTML</h3>
-<p>scrapy的原生的<code>response</code>可以直接调用<code>.text()</code>函数，但是当<code>response</code>调用过<code>xpath</code>之后虽然使用<code>dir()</code>显示还是有<code>text</code>属性但是并不能调用，此时可以使用<code>getall()</code>获取对应的html，之后再用正则表达式，<code>split()</code>之类的进行数据的处理。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = response.xpath(<span class="string">'//div[@class="ct tt zooms"]'</span>)[<span class="number">0</span>].getall()[<span class="number">0</span>]</span><br><span class="line">item[<span class="string">'content'</span>] = re.sub(<span class="string">r'href="([^"])*[^=k]"'</span>, <span class="string">""</span>, content)</span><br></pre></td></tr></table></figure>
-<h3 id="创建csv">6.创建CSV</h3>
-<figure class="highlight python"><figcaption><span>csv_init.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../../book_info.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [<span class="string">"category"</span>, <span class="string">"name"</span>, <span class="string">"cover"</span>, <span class="string">"author"</span>, <span class="string">"intro"</span>]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
-<h3 id="管道">7.管道</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'11_1900.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [item[<span class="string">"name"</span>], item[<span class="string">"othername"</span>], item[<span class="string">'author'</span>], item[<span class="string">'country'</span>], item[<span class="string">'time'</span>], item[<span class="string">'intro'</span>]]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>爬虫</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>python</tag>
-        <tag>scrapy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>研究生组会</title>
     <url>/%E7%A0%94%E7%A9%B6%E7%94%9F%E7%BB%84%E4%BC%9A/</url>
     <content><![CDATA[<p>记录组会内容</p>
@@ -3596,6 +3340,355 @@ aria-hidden="true">c357c15e4133152bd8bb262789e71765</figcaption>
       <tags>
         <tag>图像处理</tag>
         <tag>组会</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习笔记(一)---基础</title>
+    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>待录取已经下来了，应该没什么意外就尘埃落定了，这几天都没怎么睡好，下午困得很。今天下午和晚上就看看什么是深度学习，稍微了解一下，晚上跑个步回去早点睡。</p>
+<a id="more"></a>
+<h2 id="参考">参考</h2>
+<p>https://baike.baidu.com/item/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/3729729?fr=aladdin</p>
+<p>https://www.zhihu.com/question/24097648</p>
+<p>https://blog.csdn.net/testcs_dn/article/details/85009917</p>
+<h2 id="什么是深度学习">什么是深度学习</h2>
+<p>人工智能、机器学习、深度学习这几个名词都很火热，但是他们到底是什么意思呢。</p>
+<p>根据我的查找发现，机器学习是实现人工智能的一种方式，而深度学习又是实现机器学习的一种方式，所以他们应该是一种包含的关系。类似于下图</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012154552.png"
+alt="20181218165055573" />
+<figcaption aria-hidden="true">20181218165055573</figcaption>
+</figure>
+<h2 id="机器学习神经网络深度学习">机器学习、神经网络、深度学习</h2>
+<h3 id="机器学习">机器学习</h3>
+<p>简单的说机器学习就是让机器去分析数据找规律，并通过找到的规律对新的数据进行处理。</p>
+<p>机器学习理论主要是设计和分析一些让计算机可以自动“学习”的算法。<strong>机器学习算法是一类从数据中自动分析获得规律，并利用规律对未知数据进行预测的算法。</strong>因为学习算法中涉及了大量的统计学理论，机器学习与推断统计学联系尤为密切，也被称为统计学习理论。算法设计方面，机器学习理论关注可以实现的，行之有效的学习算法。很多推论问题属于无程序可循难度，所以部分的机器学习研究是开发容易处理的近似算法。</p>
+<h3 id="神经网络">神经网络</h3>
+<p>神经网络简单点将就是由好多个神经元组成的系统。这是模拟人类的神经网络。</p>
+<p>神经元是一个简单的分类器。</p>
+<p>比如我们有一大堆猫、狗照片，把每一张照片送进一个机器里，机器需要判断这幅照片里的东西是猫还是狗。我们把猫狗图片处理一下，左边是狗的特征向量，右边是猫的。</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160259.png"
+alt="20181218165203514" />
+<figcaption aria-hidden="true">20181218165203514</figcaption>
+</figure>
+<p>神经元一个缺点是：它只能切一刀！你给我说说一刀怎么能把下面这两类分开吧。</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160321.png"
+alt="20181218165215861" />
+<figcaption aria-hidden="true">20181218165215861</figcaption>
+</figure>
+<p>解决办法是多层神经网络，底层神经元的输出是高层神经元的输入。我们可以在中间横着砍一刀，竖着砍一刀，然后把左上和右下的部分合在一起，与右上的左下部分分开；也可以围着左上角的边沿砍10刀把这一部分先挖出来，然后和右下角合并。</p>
+<p>每砍一刀，其实就是使用了一个神经元，把不同砍下的半平面做交、并等运算，就是把这些神经元的输出当作输入，后面再连接一个神经元。这个例子中特征的形状称为异或，这种情况一个神经元搞不定，但是两层神经元就能正确对其进行分类。</p>
+<p>只要你能砍足够多刀，把结果拼在一起，什么奇怪形状的边界神经网络都能够表示，所以说神经网络在理论上可以表示很复杂的函数/空间分布。但是真实的神经网络是否能摆动到正确的位置还要看网络初始值设置、样本容量和分布。</p>
+<h3 id="深度学习">深度学习</h3>
+<p>那什么是深度学习呢？深度学习简单点说就是一种为了让层数较多的多层神经网络可以训练，能够运行起来而演化出来的一系列的新的结构和新的方法。</p>
+<p><strong>深度学习（Deep
+Learning）</strong>是机器学习研究中的一个新的领域，其动机在于建立、模拟人脑进行分析学习的神经网络，<strong>它模仿人脑的机制来解释数据</strong>，例如图像，声音和文本。深度学习是无监督学习的一种。</p>
+<p>深度学习的概念源于人工神经网络的研究。含多隐层的多层感知器就是一种深度学习结构。深度学习通过组合低层特征形成更加抽象的高层表示属性类别或特征，以发现数据的分布式特征表示。</p>
+<p>就像下图</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012160356.png"
+alt="20181218165227159" />
+<figcaption aria-hidden="true">20181218165227159</figcaption>
+</figure>
+<p>普通的神经网络可能只有几层，深度学习可以达到十几层。深度学习中的深度二字也代表了神经网络的层数。现在流行的深度学习网络结构有"CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的等。</p>
+<p>机器学习是人工智能的一个子集，深度学习又是机器学习的一个子集。机器学习与深度学习都是需要大量数据支撑的，是大数据技术上的一个应用，同时深度学习还需要更高的运算能力支撑，如GPU。</p>
+<h2 id="深度学习典型模型">深度学习典型模型</h2>
+<p>典型的深度学习模型有卷积神经网络( convolutional neural
+network)、DBN和堆栈自编码网络(stacked auto-encoder
+network)模型等，下面对这些模型进行描述。</p>
+<h3 id="卷积神经网络模型">卷积神经网络模型</h3>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012161738.jpg"
+alt="bd3eb13533fa828b269a8a0ff31f4134960a5aa4" />
+<figcaption
+aria-hidden="true">bd3eb13533fa828b269a8a0ff31f4134960a5aa4</figcaption>
+</figure>
+<p>在无监督预训练出现之前，训练深度神经网络通常非常困难，而其中一个特例是卷积神经网络。卷积神经网络受视觉系统的结构启发而产生。第一个卷积神经网络计算模型是在Fukushima(D的神经认知机中提出的，基于神经元之间的局部连接和分层组织图像转换，将有相同参数的神经元应用于前一层神经网络的不同位置，得到一种平移不变神经网络结构形式。后来，Le
+Cun等人在该思想的基础上，用误差梯度设计并训练卷积神经网络，在一些模式识别任务上得到优越的性能。至今，基于卷积神经网络的模式识别系统是最好的实现系统之一，尤其在手写体字符识别任务上表现出非凡的性能。</p>
+<h3 id="深度信任网络模型">深度信任网络模型</h3>
+<p>DBN可以解释为贝叶斯概率生成模型，由多层随机隐变量组成，上面的两层具有无向对称连接，下面的层得到来自上一层的自顶向下的有向连接，最底层单元的状态为可见输入数据向量。DBN由若2F结构单元堆栈组成，结构单元通常为RBM（RestIlcted
+Boltzmann
+Machine，受限玻尔兹曼机）。堆栈中每个RBM单元的可视层神经元数量等于前一RBM单元的隐层神经元数量。根据深度学习机制，采用输入样例训练第一层RBM单元，并利用其输出训练第二层RBM模型，将RBM模型进行堆栈通过增加层来改善模型性能。在无监督预训练过程中，DBN编码输入到顶层RBM后，解码顶层的状态到最底层的单元，实现输入的重构。RBM作为DBN的结构单元，与每一层DBN共享参数。</p>
+<h3 id="堆栈自编码网络模型">堆栈自编码网络模型</h3>
+<p>堆栈自编码网络的结构与DBN类似，由若干结构单元堆栈组成，不同之处在于其结构单元为自编码模型(
+auto-en-coder)而不是RBM。自编码模型是一个两层的神经网络，第一层称为编码层，第二层称为解码层。</p>
+<h2 id="cuadcompute-unified-device-architecture">CUAD（Compute Unified
+Device Architecture）</h2>
+<p>CUDA（Compute Unified Device Architecture），是显卡厂商<a
+href="https://baike.baidu.com/item/NVIDIA">NVIDIA</a>推出的运算平台。
+CUDA™是一种由NVIDIA推出的通用<a
+href="https://baike.baidu.com/item/并行计算/113443">并行计算</a>架构，该架构使<a
+href="https://baike.baidu.com/item/GPU">GPU</a>能够解决复杂的计算问题。
+它包含了CUDA<a
+href="https://baike.baidu.com/item/指令集架构">指令集架构</a>（<a
+href="https://baike.baidu.com/item/ISA">ISA</a>）以及GPU内部的并行计算引擎。
+开发人员可以使用<a
+href="https://baike.baidu.com/item/C语言">C语言</a>来为CUDA™架构编写程序，C语言是应用最广泛的一种高级编程语言。所编写出的程序可以在支持CUDA™的处理器上以超高性能运行。CUDA3.0已经开始支持<a
+href="https://baike.baidu.com/item/C%2B%2B">C++</a>和<a
+href="https://baike.baidu.com/item/FORTRAN">FORTRAN</a>。</p>
+<p>在上文提到了，深度学习需要多的数据来进行学习，那么计算能力就是很重要的一环。</p>
+<p>随着GPU的不断发展，它在计算能力上已经超过了通用CPU，仅仅用来做显卡有点浪费了。于是开发人员就将目光瞄向了GPU。</p>
+<p>像许多的技术方向一样，深度学习也拥有着自己的框架，它可以让开发人员不需要手写CUDA就能跑GPU。</p>
+<h2 id="深度学习框架">深度学习框架</h2>
+<p><strong>为何要用深度学习框架？</strong></p>
+<ul>
+<li>不需要手写CUDA就能跑GPU</li>
+<li>自动帮你复杂复合函数的梯度</li>
+</ul>
+<p>深度学习从此变得傻瓜！</p>
+<h3 id="框架总览">框架总览</h3>
+<p>现如今开源生态非常完善，深度学习相关的开源框架众多，光是为人熟知的就有caffe，tensorflow，pytorch/caffe2，keras，mxnet，paddldpaddle，theano，cntk，deeplearning4j，matconvnet等。</p>
+<p>如何选择最适合你的开源框架是一个问题。有三AI在前段时间里，给大家整理了<strong>12个深度学习开源框架快速入门的教程和代码</strong>，供初学者进行挑选，一个合格的深度学习算法工程师怎么着得熟悉其中的3个以上吧。</p>
+<p>下面是各大开源框架的一个总览。</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201012165318.jpg"
+alt="v2-d2af0dc0108888b3eea1140d20656883_720w" />
+<figcaption
+aria-hidden="true">v2-d2af0dc0108888b3eea1140d20656883_720w</figcaption>
+</figure>
+<p><strong>(1)
+不管怎么说，tensorflow/pytorch你都必须会，这是目前开发者最喜欢，开源项目最丰富的两个框架。</strong></p>
+<p><strong>(2)
+如果你要进行移动端算法的开发，那么Caffe是不能不会的。</strong></p>
+<p><strong>(3)
+如果你非常熟悉Matlab，matconvnet你不应该错过。</strong></p>
+<p><strong>(4)
+如果你追求高效轻量，那么darknet和mxnet你不能不熟悉。</strong></p>
+<p><strong>(5)
+如果你很懒，想写最少的代码完成任务，那么用keras吧。</strong></p>
+<p><strong>(6)
+如果你是java程序员，那么掌握deeplearning4j没错的。</strong></p>
+<p><strong>其他的框架，也自有它的特点，大家可以自己多去用用。</strong></p>
+<h2 id="监督学习与非监督学习">监督学习与非监督学习</h2>
+<h3 id="监督学习supervised-learning">监督学习（supervised
+learning）</h3>
+<p>从给定的训练数据集中学习出一个函数（模型参数），当新的数据到来时，可以根据这个函数预测结果。监督学习的训练集要求包括输入输出，也可以说是特征和目标。训练集中的目标是由人标注的。监督学习就是最常见的分类（注意和聚类区分）问题，通过已有的训练样本（即已知数据及其对应的输出）去训练得到一个最优模型（这个模型属于某个函数的集合，最优表示某个评价准则下是最佳的），再利用这个模型将所有的输入映射为相应的输出，对输出进行简单的判断从而实现分类的目的。也就具有了对未知数据分类的能力。监督学习的目标往往是让计算机去学习我们已经创建好的分类系统（模型）。</p>
+<p>监督学习是训练神经网络和决策树的常见技术。这两种技术高度依赖事先确定的分类系统给出的信息，对于神经网络，分类系统利用信息判断网络的错误，然后不断调整网络参数。对于决策树，分类系统用它来判断哪些属性提供了最多的信息。</p>
+<p>常见的有监督学习算法：回归分析和统计分类。最典型的算法是KNN和SVM。</p>
+<p>有监督学习最常见的就是：regression&amp;classification</p>
+<p>Regression：Y是实数vector。回归问题，就是拟合(x,y)的一条曲线，使得价值函数(costfunction)
+L最小</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165823.gif"
+alt="20150919203859752" />
+<figcaption aria-hidden="true">20150919203859752</figcaption>
+</figure>
+<p>Classification：Y是一个有穷数(finitenumber)，可以看做类标号，分类问题首先要给定有lable的数据训练分类器，故属于有监督学习过程。分类过程中cost
+function l(X,Y)是X属于类Y的概率的负对数。</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165841.gif"
+alt="20150919203917364" />
+<figcaption aria-hidden="true">20150919203917364</figcaption>
+</figure>
+<p>其中fi(X)=P(Y=i|X)。</p>
+<figure>
+<img
+src="http://zchsakura-blog.oss-cn-beijing.aliyuncs.com/20201013165858.gif"
+alt="20150919203935408" />
+<figcaption aria-hidden="true">20150919203935408</figcaption>
+</figure>
+<h3 id="无监督学习unsupervised-learning">无监督学习（unsupervised
+learning）</h3>
+<p>输入数据没有被标记，也没有确定的结果。样本数据类别未知，需要根据样本间的相似性对样本集进行分类（聚类，clustering）试图使类内差距最小化，类间差距最大化。通俗点将就是实际应用中，不少情况下无法预先知道样本的标签，也就是说没有训练样本对应的类别，因而只能从原先没有样本标签的样本集开始学习分类器设计。</p>
+<p>非监督学习目标不是告诉计算机怎么做，而是让它（计算机）自己去学习怎样做事情。非监督学习有两种思路。第一种思路是在指导Agent时不为其指定明确分类，而是在成功时，采用某种形式的激励制度。需要注意的是，这类训练通常会置于决策问题的框架里，因为它的目标不是为了产生一个分类系统，而是做出最大回报的决定，这种思路很好的概括了现实世界，agent可以对正确的行为做出激励，而对错误行为做出惩罚。</p>
+<p>无监督学习的方法分为两大类：</p>
+<ol type="1">
+<li><p>一类为基于概率密度函数估计的直接方法：指设法找到各类别在特征空间的分布参数，再进行分类。</p></li>
+<li><p>另一类是称为基于样本间相似性度量的简洁聚类方法：其原理是设法定出不同类别的核心或初始内核，然后依据样本与核心之间的相似性度量将样本聚集成不同的类别。</p></li>
+</ol>
+<p>利用聚类结果，可以提取数据集中隐藏信息，对未来数据进行分类和预测。应用于数据挖掘，模式识别，图像处理等。</p>
+<p>PCA和很多deep learning算法都属于无监督学习。</p>
+<h3 id="两者的不同点">两者的不同点</h3>
+<ol type="1">
+<li><p>有监督学习方法必须要有训练集与测试样本。在训练集中找规律，而对测试样本使用这种规律。而非监督学习没有训练集，只有一组数据，在该组数据集内寻找规律。</p></li>
+<li><p>有监督学习的方法就是识别事物，识别的结果表现在给待识别数据加上了标签。因此训练样本集必须由带标签的样本组成。而非监督学习方法只有要分析的数据集的本身，预先没有什么标签。如果发现数据集呈现某种聚集性，则可按自然的聚集性分类，但不予以某种预先分类标签对上号为目的。</p></li>
+<li><p>非监督学习方法在寻找数据集中的规律性，这种规律性并不一定要达到划分数据集的目的，也就是说不一定要“分类”。</p>
+<p>这一点是比有监督学习方法的用途要广。
+譬如分析一堆数据的主分量，或分析数据集有什么特点都可以归于非监督学习方法的范畴。</p></li>
+<li><p>用非监督学习方法分析数据集的主分量与用K-L变换计算数据集的主分量又有区别。后者从方法上讲不是学习方法。因此用K-L变换找主分量不属于无监督学习方法，即方法上不是。而通过学习逐渐找到规律性这体现了学习方法这一点。在人工神经元网络中寻找主分量的方法属于无监督学习方法。</p></li>
+</ol>
+<h3 id="何时采用哪种方法">何时采用哪种方法</h3>
+<p>简单的方法就是从定义入手，有训练样本则考虑采用监督学习方法；无训练样本，则一定不能用监督学习方法。但是，现实问题中，即使没有训练样本，我们也能够凭借自己的双眼，从待分类的数据中，人工标注一些样本，并把它们作为训练样本，这样的话，可以把条件改善，用监督学习方法来做。对于不同的场景，正负样本的分布如果会存在偏移（可能大的偏移，可能比较小），这样的话，监督学习的效果可能就不如用非监督学习了。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>深度学习</tag>
+        <tag>CUAD</tag>
+        <tag>神经网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习笔记(零)---英语</title>
+    <url>/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E9%9B%B6)---%E8%8B%B1%E8%AF%AD/</url>
+    <content><![CDATA[<p>记录一下常用英语词汇</p>
+<a id="more"></a>
+<p>监督学习 supervised learning</p>
+<p>无监督学习 unsupervised learning</p>
+<p>统一计算设备架构 CUAD（Compute Unified Device Architecture）</p>
+<p>微分 Differentiate</p>
+<p>卷积神经网络 convolutional neural network</p>
+<p>循环神经网络 Circulating neural network</p>
+<p>链式法则 chain rule</p>
+<p>正向传播 forward propagation</p>
+<p>反向传播 backward propagation</p>
+<p>广播 broadcasting</p>
+<p>变平 flatten</p>
+<p>标量 scalar</p>
+<p>偏移量，偏差 bias</p>
+<p>方差 variance</p>
+<p>拟合 fit</p>
+<p>正则化 regularization</p>
+<p>归一化 Normalization</p>
+<p>范数 norm</p>
+<p>验证集 validation/development</p>
+<p>弗罗贝尼乌斯范数 Frobenius norm</p>
+<p>正交化 orthogonalization</p>
+<p>滤波器 filter</p>
+<p>核 kernal</p>
+<p>填充 padding</p>
+<p>批处理 batch</p>
+<p>优化 optimization</p>
+<p>算法 algorithm</p>
+<p>动量 momentum</p>
+<p>衰减 decay</p>
+<p>离散 discrete</p>
+<p>鞍点 saddle point</p>
+<p>鱼子酱 caviar</p>
+<p>隐藏 hidden</p>
+<p>层 layer</p>
+<p>线性 linear</p>
+<p>非线性 nonlinear</p>
+<p>边界 boundaries</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>英语</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>达梦数据库插入或更新</title>
+    <url>/%E8%BE%BE%E6%A2%A6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E6%88%96%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p>记录下在国产达梦数据库中使用merge into来进行数据的更新或新增</p>
+<a id="more"></a>
+<blockquote>
+<p>使用达梦是因为有国产化需求，因为我这里还不是那种性能敏感的开发，所以对我来说除了在安装上稍微麻烦一点外，使用起来和mysql没有太大的区别，这里使用达梦自己的dmPython库来进行数据库操作</p>
+</blockquote>
+<h3 id="replace-into">replace into</h3>
+<blockquote>
+<p>这部分主要参考以下该篇<a
+href="https://blog.csdn.net/liu379702831/article/details/105819304/">博客</a></p>
+</blockquote>
+<p>首先说一下比较常见的replace into操作，在mysql中经常会用到replace
+into操作。</p>
+<p>replace into 首先尝试插入数据到表中：</p>
+<ol type="1">
+<li>如果发现表中已经有此行数据（根据主键或者唯一索引判断）则先删除此行数据，然后插入新的数据。</li>
+<li>否则，直接插入新数据</li>
+</ol>
+<p>用法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">replace into tbl_name(col_name, …) values(…)</span><br></pre></td></tr></table></figure>
+<p>注意事项：</p>
+<ul>
+<li>插入数据的表必须有主键或者是唯一索引！否则的话，replace into
+会直接插入数据，这将导致表中出现重复的数据。</li>
+<li>如果数据库里边有这条记录，则直接修改这条记录；如果没有则，则直接插入，在有外键的情况下，对主表进行这样操作时，因为如果主表存在一条记录，被从表所用时，直接使用replace
+into是会报错的，这和replace
+into的内部原理是相关（先删除然后再插入）。</li>
+<li>表中有一个自增的主键,会带来的问题：
+<ul>
+<li>replace操作在自增主键的情况下，遇到唯一键冲突时执行的是delete+insert，但是在记录binlog时，却记录成了update操作，update操作不会涉及到auto_increment的修改。备库应用了binlog之后，备库的表的auto_increment属性不变。如果主备库发生主从切换，备库变为原来的主库，写新的主库则有风险发生主键冲突。</li>
+<li>频繁的REPLACE INTO
+会造成新纪录的主键的值迅速增大。总有一天。达到最大值后就会因为数据太大溢出了。就没法再插入新纪录了。数据表满了，不是因为空间不够了，而是因为主键的值没法再增加了。</li>
+</ul></li>
+</ul>
+<h3 id="merge-into">merge into</h3>
+<blockquote>
+<p>达梦数据库不是每个版本都支持replace into命令的，而且replace
+into命令功能比较固定，而且在存在自增主键时还会有一些限制，所以这里我们采用merge
+into命令来完成达梦数据库的插入或更新</p>
+</blockquote>
+<p>merge
+into是Oracle的指令，达梦对Oracle的兼容性还比较好，而且开发文档里说明了支持merge
+into指令。</p>
+<p>用法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新增或更新基线</span><br><span class="line">db &#x3D; dmPython.connect(user&#x3D;dm_user, password&#x3D;dm_pwds, server&#x3D;dm_host, port&#x3D;dm_port,</span><br><span class="line">                      cursorclass&#x3D;dmPython.DictCursor)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"></span><br><span class="line">sql &#x3D; &quot;merge into %s.%s &quot; \</span><br><span class="line">      &quot;using (select ? sIP,? updatetime from dual) t &quot; \</span><br><span class="line">      &quot;on(%s.%s.sIP &#x3D; t.sIP) &quot; \</span><br><span class="line">      &quot;when matched then &quot; \</span><br><span class="line">      &quot;update set updatetime&#x3D;t.updatetime &quot; \</span><br><span class="line">      &quot;when not matched then &quot; \</span><br><span class="line">      &quot;insert (sIP, updatetime) values (t.sIP,t.updatetime)&quot; \</span><br><span class="line">      % (dm_db, baseline_table, dm_db, baseline_table)</span><br><span class="line">try:</span><br><span class="line">    cursor.executemany(sql, baseline_list_tuple)</span><br><span class="line">    db.commit()</span><br><span class="line">    print(&quot;更新成功&quot;)</span><br><span class="line">except Exception as e:</span><br><span class="line">    print(e)</span><br><span class="line">    db.rollback()</span><br><span class="line">finally:</span><br><span class="line">    cursor.close()</span><br><span class="line">    db.close()</span><br></pre></td></tr></table></figure>
+<p>注意事项：</p>
+<ul>
+<li>我看到的资料上面说on后面要跟主键信息，但是我这里使用的不是主键，但是能正常使用</li>
+<li>merge
+into是通过执⾏using后括号内的sql语句结果逐条与on括号内条件进⾏匹配，若匹配则执⾏更新，若不匹配则执⾏插⼊</li>
+<li>when matched then语句需在when not matched then
+之前，否则达梦数据库会报错</li>
+<li>关于dual表，我个⼈理解为类似于“缓存器”的表，你可以向它⾥⾯插⼊多条数据，删除多条数据，但你查询时，表中均只显⽰⼀个字段，⼀⾏数据。</li>
+<li>在使用merge
+into语句的时候我遇到了一个关于字符型数据的问题，在达梦数据库管理软件中只能使用<strong>单引号</strong>来框住字符串，用<strong>双引号</strong>则会报错，这其实不是merge
+into语句的问题，而是达梦sql语句的问题，很久没用其他数据库了，不知道这是数据库的通用规则，还是达梦的特殊规则。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>达梦</category>
+      </categories>
+      <tags>
+        <tag>达梦</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爬虫常用操作笔记</title>
+    <url>/%E7%88%AC%E8%99%AB%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>记录一些常用的代码，免得老去翻代码</p>
+<a id="more"></a>
+<h3 id="配置">0.配置</h3>
+<p><strong>创建项目</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scrapy startproject adb</span><br></pre></td></tr></table></figure>
+<p><strong>创建爬虫</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd adb</span><br><span class="line">scrapy genspider 爬虫名字 ***.com</span><br></pre></td></tr></table></figure>
+<p><strong>解释器地址</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">D:\Anaconda3\Lib\site-packages\scrapy\cmdline.py</span><br></pre></td></tr></table></figure>
+<p><strong>参数</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crawl 爬虫名字</span><br></pre></td></tr></table></figure>
+<h3 id="翻页">1.翻页</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 翻页</span></span><br><span class="line">next_page = response.xpath(<span class="string">'//div[@class="page"]/a[contains(text(),"下一页")]/@href'</span>).extract_first()</span><br><span class="line"><span class="keyword">if</span> next_page:</span><br><span class="line">	next_url = <span class="string">'https://www.2345daohang.com'</span> + next_page</span><br><span class="line">	<span class="keyword">yield</span> scrapy.Request(next_url, callback=self.bookList, meta=&#123;<span class="string">'category'</span>: response.meta[<span class="string">'category'</span>]&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="content处理">2.content处理</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = element.xpath(<span class="string">'string(.)'</span>).replace(<span class="string">'\xa0'</span>, <span class="string">''</span>).replace(<span class="string">'a("conten");'</span>, <span class="string">''</span>).split(<span class="string">'\n'</span>)</span><br><span class="line">item[<span class="string">'content'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> content <span class="keyword">if</span> i != <span class="string">''</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="批量入库">3.批量入库</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"******\\yangsheng_info.csv"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">sql = <span class="string">"INSERT INTO main_data_tougaolanmu(theme,name,content) VALUES(%s,%s,%s)"</span></span><br><span class="line">cursor.executemany(sql, data)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"数据库导入操作"</span>)</span><br><span class="line"></span><br><span class="line">db.commit()</span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
+<h3 id="逐条入库">4.逐条入库</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"***************\\minsu_info.csv"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    reader = csv.reader(f)</span><br><span class="line">    data = list(reader)</span><br><span class="line">    data.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(<span class="string">'182.92.226.**'</span>, <span class="string">'root'</span>, <span class="string">'密码'</span>, <span class="string">'theOld'</span>)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> data:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    sql1 = <span class="string">"SELECT id from user_userInfo WHERE nickname = %s"</span></span><br><span class="line">    <span class="keyword">if</span> dd[<span class="number">1</span>] == <span class="string">'佚名'</span>:</span><br><span class="line">        dd[<span class="number">1</span>] = <span class="string">'官方2号'</span></span><br><span class="line">    cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">    results = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">    <span class="keyword">if</span> results:</span><br><span class="line">        sql2 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = results[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql2, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错1'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sql3 = <span class="string">"INSERT INTO user_userInfo(nickname) VALUES(%s)"</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql3, dd[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            print(<span class="string">'出错2'</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        cursor.execute(sql1, dd[<span class="number">1</span>])  <span class="comment"># 执行SQL语句</span></span><br><span class="line">        result = cursor.fetchall()  <span class="comment"># 获取所有记录列表</span></span><br><span class="line">        sql4 = <span class="string">"INSERT INTO main_data_tougaolanmu(secondTypeId,name,userId,content,modifiedTime) VALUES(38,%s,%s,%s,NOW())"</span></span><br><span class="line">        dad = dd</span><br><span class="line">        dad[<span class="number">1</span>] = result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行SQL语句</span></span><br><span class="line">            cursor.execute(sql4, dad)</span><br><span class="line">            <span class="comment"># 提交修改</span></span><br><span class="line">            db.commit()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'出错3'</span>)</span><br><span class="line">            <span class="comment"># 发生错误时回滚</span></span><br><span class="line">            db.rollback()</span><br><span class="line">    print(i, results)</span><br><span class="line"></span><br><span class="line">db.close</span><br></pre></td></tr></table></figure>
+<h3 id="获取html">5.获取HTML</h3>
+<p>scrapy的原生的<code>response</code>可以直接调用<code>.text()</code>函数，但是当<code>response</code>调用过<code>xpath</code>之后虽然使用<code>dir()</code>显示还是有<code>text</code>属性但是并不能调用，此时可以使用<code>getall()</code>获取对应的html，之后再用正则表达式，<code>split()</code>之类的进行数据的处理。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">content = response.xpath(<span class="string">'//div[@class="ct tt zooms"]'</span>)[<span class="number">0</span>].getall()[<span class="number">0</span>]</span><br><span class="line">item[<span class="string">'content'</span>] = re.sub(<span class="string">r'href="([^"])*[^=k]"'</span>, <span class="string">""</span>, content)</span><br></pre></td></tr></table></figure>
+<h3 id="创建csv">6.创建CSV</h3>
+<figure class="highlight python"><figcaption><span>csv_init.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../../book_info.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [<span class="string">"category"</span>, <span class="string">"name"</span>, <span class="string">"cover"</span>, <span class="string">"author"</span>, <span class="string">"intro"</span>]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+<h3 id="管道">7.管道</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'11_1900.csv'</span>, <span class="string">'a'</span>, encoding=<span class="string">"utf-8"</span>, newline=<span class="string">''</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">    writer = csv.writer(file_obj)</span><br><span class="line">    row = [item[<span class="string">"name"</span>], item[<span class="string">"othername"</span>], item[<span class="string">'author'</span>], item[<span class="string">'country'</span>], item[<span class="string">'time'</span>], item[<span class="string">'intro'</span>]]</span><br><span class="line">    writer.writerow(row)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>爬虫</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>python</tag>
+        <tag>scrapy</tag>
       </tags>
   </entry>
   <entry>
@@ -3694,98 +3787,5 @@ servicename:ufw从/etc/services中找到对应service的端口，进行过滤。
       <tags>
         <tag>服务器</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>达梦数据库插入或更新</title>
-    <url>/%E8%BE%BE%E6%A2%A6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%92%E5%85%A5%E6%88%96%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>记录下在国产达梦数据库中使用merge into来进行数据的更新或新增</p>
-<a id="more"></a>
-<blockquote>
-<p>使用达梦是因为有国产化需求，因为我这里还不是那种性能敏感的开发，所以对我来说除了在安装上稍微麻烦一点外，使用起来和mysql没有太大的区别，这里使用达梦自己的dmPython库来进行数据库操作</p>
-</blockquote>
-<h3 id="replace-into">replace into</h3>
-<blockquote>
-<p>这部分主要参考以下该篇<a
-href="https://blog.csdn.net/liu379702831/article/details/105819304/">博客</a></p>
-</blockquote>
-<p>首先说一下比较常见的replace into操作，在mysql中经常会用到replace
-into操作。</p>
-<p>replace into 首先尝试插入数据到表中：</p>
-<ol type="1">
-<li>如果发现表中已经有此行数据（根据主键或者唯一索引判断）则先删除此行数据，然后插入新的数据。</li>
-<li>否则，直接插入新数据</li>
-</ol>
-<p>用法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">replace into tbl_name(col_name, …) values(…)</span><br></pre></td></tr></table></figure>
-<p>注意事项：</p>
-<ul>
-<li>插入数据的表必须有主键或者是唯一索引！否则的话，replace into
-会直接插入数据，这将导致表中出现重复的数据。</li>
-<li>如果数据库里边有这条记录，则直接修改这条记录；如果没有则，则直接插入，在有外键的情况下，对主表进行这样操作时，因为如果主表存在一条记录，被从表所用时，直接使用replace
-into是会报错的，这和replace
-into的内部原理是相关（先删除然后再插入）。</li>
-<li>表中有一个自增的主键,会带来的问题：
-<ul>
-<li>replace操作在自增主键的情况下，遇到唯一键冲突时执行的是delete+insert，但是在记录binlog时，却记录成了update操作，update操作不会涉及到auto_increment的修改。备库应用了binlog之后，备库的表的auto_increment属性不变。如果主备库发生主从切换，备库变为原来的主库，写新的主库则有风险发生主键冲突。</li>
-<li>频繁的REPLACE INTO
-会造成新纪录的主键的值迅速增大。总有一天。达到最大值后就会因为数据太大溢出了。就没法再插入新纪录了。数据表满了，不是因为空间不够了，而是因为主键的值没法再增加了。</li>
-</ul></li>
-</ul>
-<h3 id="merge-into">merge into</h3>
-<blockquote>
-<p>达梦数据库不是每个版本都支持replace into命令的，而且replace
-into命令功能比较固定，而且在存在自增主键时还会有一些限制，所以这里我们采用merge
-into命令来完成达梦数据库的插入或更新</p>
-</blockquote>
-<p>merge
-into是Oracle的指令，达梦对Oracle的兼容性还比较好，而且开发文档里说明了支持merge
-into指令。</p>
-<p>用法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新增或更新基线</span><br><span class="line">db &#x3D; dmPython.connect(user&#x3D;dm_user, password&#x3D;dm_pwds, server&#x3D;dm_host, port&#x3D;dm_port,</span><br><span class="line">                      cursorclass&#x3D;dmPython.DictCursor)</span><br><span class="line">cursor &#x3D; db.cursor()</span><br><span class="line"></span><br><span class="line">sql &#x3D; &quot;merge into %s.%s &quot; \</span><br><span class="line">      &quot;using (select ? sIP,? updatetime from dual) t &quot; \</span><br><span class="line">      &quot;on(%s.%s.sIP &#x3D; t.sIP) &quot; \</span><br><span class="line">      &quot;when matched then &quot; \</span><br><span class="line">      &quot;update set updatetime&#x3D;t.updatetime &quot; \</span><br><span class="line">      &quot;when not matched then &quot; \</span><br><span class="line">      &quot;insert (sIP, updatetime) values (t.sIP,t.updatetime)&quot; \</span><br><span class="line">      % (dm_db, baseline_table, dm_db, baseline_table)</span><br><span class="line">try:</span><br><span class="line">    cursor.executemany(sql, baseline_list_tuple)</span><br><span class="line">    db.commit()</span><br><span class="line">    print(&quot;更新成功&quot;)</span><br><span class="line">except Exception as e:</span><br><span class="line">    print(e)</span><br><span class="line">    db.rollback()</span><br><span class="line">finally:</span><br><span class="line">    cursor.close()</span><br><span class="line">    db.close()</span><br></pre></td></tr></table></figure>
-<p>注意事项：</p>
-<ul>
-<li>我看到的资料上面说on后面要跟主键信息，但是我这里使用的不是主键，但是能正常使用</li>
-<li>merge
-into是通过执⾏using后括号内的sql语句结果逐条与on括号内条件进⾏匹配，若匹配则执⾏更新，若不匹配则执⾏插⼊</li>
-<li>when matched then语句需在when not matched then
-之前，否则达梦数据库会报错</li>
-<li>关于dual表，我个⼈理解为类似于“缓存器”的表，你可以向它⾥⾯插⼊多条数据，删除多条数据，但你查询时，表中均只显⽰⼀个字段，⼀⾏数据。</li>
-<li>在使用merge
-into语句的时候我遇到了一个关于字符型数据的问题，在达梦数据库管理软件中只能使用<strong>单引号</strong>来框住字符串，用<strong>双引号</strong>则会报错，这其实不是merge
-into语句的问题，而是达梦sql语句的问题，很久没用其他数据库了，不知道这是数据库的通用规则，还是达梦的特殊规则。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>达梦</category>
-      </categories>
-      <tags>
-        <tag>达梦</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>准备毕业啦</title>
-    <url>/%E5%87%86%E5%A4%87%E6%AF%95%E4%B8%9A%E5%95%A6/</url>
-    <content><![CDATA[<p>终于要毕业啦，要结束20年的学生生涯咯！</p>
-<a id="more"></a>
-<p>这两天在学校等着参加毕业典礼拿毕业证了，闲着没事干在我的新电脑上重新部署一下我的博客，之前老的电脑壮烈牺牲了，问就是机械革命，革命失败（等等我去找个图:clock1:）。</p>
-<p><img
-src="https://zchsakura-blog.oss-cn-beijing.aliyuncs.com/202406221557237.jpg" /></p>
-<p>机械革命笔记本的用户只需要学习《计算机组成原理》就好了，其他品牌的用户要考虑的可就多了。我学软件的，从小学一年级就开始玩电脑了，平时电脑使用习惯真没问题吧，前段时间开始出现启动困难，启动十几分钟才能启动成功，经常会死机。后来拿去店里看了一下检测完是CPU坏了，就离谱，CPU也说坏就坏的。想着后面反正也要出差，没办法又买了个商务本，这下我的台式机计划要延后了。</p>
-<p>后面工作了之后可能没多少机会记录技术方面的东西了吧（我猜的），感觉以后主要就写碎碎念了。学校的毕业论文致谢还不让超过一页，真离谱，都不让我好好的抒发一下情感，我论文都写了110多页，多写两页致谢怎么了，怎么了（拍桌）！那我只能在这里记录下我的流水账碎碎念了:laughing:，写的也没什么逻辑，就想到哪里就写哪里咯。</p>
-<p>日子真的过得好快啊，幼儿园的时候还住在姥姥家，我真的是对幼儿园的生活完全没有一点印象，我只能记得我的幼儿园在哪里，其他完全没有任何记忆，里面长什么样子也完全想不起来一点。小学在学校里面的印象也不是很深刻了，但大体还是能记得学校里面长什么样子XD，记得学校操场最后面有一个沙坑和滑梯，那简直是课间最好的玩具。冬天的时候下了雪大家就在操场上找一个地方来来回回的压实做一个冰道出来滑冰，后来就会专门有老师来铲我们的冰道，呜呜。小学时期在校外的生活还是很丰富的，我们家那里其实就是厂家属区，就和影视剧里面的东北老工业基地一样，我们那里有两个很大的航空工业厂，基本周边都是厂子在管，爸妈们也都是厂职工，我们都是厂子弟。他们每天中午也能回家做饭吃饭，下午回来吃完饭之后经常还会出去打羽毛球，最开始的时候厂子里还建羽毛球馆，大家就在街坊里面自己支网子打，我们也就跟着一起在街坊里面玩。现在还在联系的小学同学基本也都是父母同事的孩子，都是跟着父母从小就在一起玩。因为父母他们厂子做的不是重工业，当时也没受到老工业基地那种下岗潮的影像，说起来也是一辈子的铁饭碗。直到我现在要毕业了要找工作的时候我才发现我还是挺向往那种大家庭的感觉的，厂子就是这个大家庭的家长，我们在这个大家庭里生活的都很惬意。现在随着国企的改革，周边的管理基本也都交还给地方了，厂子也就是单独的厂子，在我们的小县城都没有这种大家庭了，更别说西安这种大省会城市了，感觉我找工作的时候受小时候生活的影像还蛮多的，跑题了跑题了，讲学生生涯，后面再说工作相关的！</p>
-<p>我小学没有一直在家旁边上完，当时父母也都是有先见之明，觉得中学要去西安上，但是我又没有学奥数，没法去参加西安学校的考试，所以整了个曲线救国，先去咸阳读了半个学期六年级下和初一上，然后去西安参加插班生考试，之后在西安上了初中。初中生活还是挺丰富多彩的，当时在铁一中分校嘛，因为学校本身比较好各种课余生活也挺丰富的，从软件到硬件条件都很不错。虽然我小学也没学过什么奥数，没补过课，但是我的成绩还是挺不错的（骄傲.jpg），基本都是班里前几名吧。说实话我感觉我脑子还是挺够用的，从小到现在，哪怕是研究生阶段的课程，就理科方面我从来没有出现过讲过之后还不能理解的内容。（英语和语文是真学不会，我现在能够理解到很多语文中的魅力，诗词的魅力，但当时我是真不行，然而英语现在也领会不到...）。我也确实不是那种刻苦类型的学生，从初中开始就相互抄作业，从中学一路抄到大学，但是有一说一，不抄作业真写不完吧。虽然我从小就玩电脑，但是我基本也就是光打游戏，也不在网上逛来逛去，所以初中当时的思想还是非常单纯的，在学校就是学习，除了睡觉就是学习，当然在上课的时候也没少睡觉:laughing:。我初中的时候真的完全是非常单纯的小孩子，平时也没形象可言吧（现在有一点，但不多），整个初中就都是寸头，完全没有一点形象管理意识，主打一个情窦未开。当时班主任可能也是看出来我不是谈恋爱的人，所以我周边日常坐了一圈女生，我和她们也玩的很好，都是我毕业之后才知道还有老师觉得我们在谈恋爱。但其实当时我真没那个想法，就完全没有男女之情这种想法，大家都是好兄弟。当时不是毕业都要写同学录嘛，其实后来看起来还是夹杂了很多的青涩情愫，但是这种事情就像是过期了的彩票吧，错过了也就错过了，毕竟在我当时心里我们也都没什么。这些东西也都是在我高中遇到了我现在的老婆大人，情窦开了之后才发现的，我们的感情也一直都很好，一年内应该就要结婚了，也没什么必要太去缅怀这些过去的故事。</p>
-<p>我们中考那年，因为分比往年低一些，刚出成绩的时候问铁一中，高新一中这些学校感觉都不太愿意要吧，反正就说回去等消息，下午的时候我和父母就去了三中招生会，最后也是签了三中。第二天我们班主任就打电话给我妈，问要不要去铁一读，学籍挂在滨河，高新一中也打电话问。但是我们当时已经签了三中，而且可以在三中上最好的爱心班，还便宜，随后想了想还是决定去三中，班主任还把我妈骂了一顿:sweat_smile:。那年三中收的生源是真的好，一大批本来能上五大名校的最后去了三中，虽然最后也没培养出来一个清北，但是我们那一届的升学率和大学质量在五大名校之外还是遥遥领先的。最后感觉这个选择也蛮好的，去铁一那肯定就是普通班，也不一定就比三中爱心班好太多，学费还贵得多，而且我对现在的大学和工作也都挺满意的，也没什么后悔的必要，更别说我还遇到了未来要陪伴我一生的人。高一的时候和老婆大人分在了一个班，有一段时间坐的很近，而且我和她同桌是舍友，交流也相对多一点吧，其实刚开始的时候也属于情窦未开叭，就是单纯的找她玩，后来时间长了也有了一些莫名的感觉，但是当时的我可能也不太懂这是恋爱的感觉，就是想找她玩。后来我们两个因为机缘巧合在一起了，但是没过多久这个坏女人就无情的抛弃了我！那时候我才更深刻地意识到我对她的感情吧，就感觉好难受，真的是只有失去了才懂得珍惜。后来我们重新在一起之后我也是很珍惜这段感情，虽然我们本科加硕士整整异地了七年，但是中间我们的感情始终都很好，现在也是终于熬过了这段异地，熬过异地就是一辈子。其实现在和高中同学的联系还比较多，初中的时候我确实还是小孩子，除了学习就是玩，后面也没有刻意的去维护和同学的关系，导致现在和初中同学基本上都没什么联系了。这些高中同学大家的生活圈子更加相近，未来也都准备在西安生活，所以交流都还多一些:grin:。​</p>
-<p>高考的发挥也还算是中规中矩叭，没有考的很好也没有考的很烂，可能比平时要稍差一点点吧。但有些时候确实也是选择大于努力，最后选择了沙河的软件工程专业，当时选的时候其实也不太懂什么互联网的发展，就是从小就玩电脑，觉得和电脑打交道的这个专业还不错，分数也还合适，那就这个了！本科的时候第一年在清水河进行学习，体验了一下国内顶尖高校（的硬件），被迫在清水河偌大的校园中学会了骑自行车。之后搬到沙河之后就变成了老破小宿舍，好处就是水泥地板不显脏，但至少也是四人间上床下桌叭，也不错了！整个本科感觉好像没有什么特别的事情发生，就是循规蹈矩的上课玩耍，上课玩耍，既没有在学校混吃等死，也没有太努力发奋吧，就是一个很平衡的状态，干该干的事，没有怎么主动探索任务之外的事务，主打一个普通。本科前三年成天晚上和于🐥一起打游戏，感觉和于🐥一起刚开始打古网的时候是真的快乐，那应该是19年后半年快上大三的时候吧，其实我还一直挺喜欢玩这种MMORPG的，有点操作感觉，而且还带点社交属性吧，上一个非常喜欢的还是剑灵，但是它现在显然已经褒姒了。我对游戏的画质和画风要求还蛮高的，剑三，WOW这些游戏我是怎么都玩不进去。刚知道古网的时候我简直惊为天人，国风武侠，画质又好，还很有操作感，爱了爱了。那时候还是廊泉界桥的版本，团本上去就是打排云仙诗，被干死之后就说我不是被选中的人:sob:。也是打廊桥的时候我们遇见了一个亲友团，那段时间成天和他们一起打本聊天讲相声，一起刷日常本，一起开荒团本。到大三下就慢慢忙起来了，要准备考研的事情了，而且古网本身也慢慢出了些问题吧，古网哪里都好，就是不好玩，现在虽然不太一起打游戏了但还是在群里成天聊天，也算是网上认识的一群好友吧。我是一个比较宅的人，搬到了市中心一环之后也没太在周边怎么探索，活动范围基本上局限于走路15分钟能到的地方，偶尔会和同学们出去远一点的地方吃饭吧。虽然我懒得出门但是我还是很喜欢和同学们一起在学校周围活动的:laughing:，就是单纯的不想走远。三年疫情其实对我们这一届来说可能没有特别大的影响，主要就是大三下的实习取消了，我们当时也已经上完了所有的课程，也没有体验过上网课的感觉。当时在准备考研的我在九月底的时候才突然得知由于保研名额扩大的原因自己也能获得推免名额，那是真的开心，我们当时应该是从12%扩到了14%左右吧，结果今年有个师弟问我保研过程，他们竟然已经扩到了24%，就我们这种专业都这么多读研的，本科不好找工作的那些专业我都不敢想考研竞争得有多么激烈。</p>
-<p>获得了推免名额之后我也是成功上岸了本院，整个研究生生涯怎么说呢，就是平淡的充实吧（感觉我的生活一直都很平淡呢，有可能是因为我神经大条吧:laughing:）。我们实验室确实任务还是比较多的，从确定保研之后大四的11月开始就进入实验室开始学习和逐渐参与一些工程项目。我们这边说轻松那肯定是假的，但是有一说一我们这一届的实力至少是前无古人吧，后有没有来者就不知道了，我们五个人三个本院，还有两个从夏大、哈工大来技术扶贫的，我们五个简直是先天打工圣体，抗压能力MAX，工作能力MAX，还没有刺头，在我们这一届去实习之前简直为弟弟妹妹们承担了太多。所以虽然工作还是挺多的，但也不至于影响到日常生活，反正就是不轻松就对了，在这里狠狠地锻炼抗压能力了属于是，我感觉我后面要去的工作搞不好都没有在实验室读研强度大:laughing:。我们实验室的关系感觉也更团结一些，毕竟平时有那么多事情一起干，不团结也不行啊，这都不是一起同过窗了，这都可以算一起扛过枪了吧，真别说在实验室还真有点大家庭的味道，大家都是好兄弟好姐妹，有好玩的一起玩，有苦也一起吃。当然在实验室这么多工作量的情况下，我们的毕业论文也都完成的比较简单，就把自己做的东西整理出来就行了，整个写毕业论文的过程基本还是轻松加愉快的。这下读完研是真的不读博了，当时本科毕业的时候其实互联网行业的就业水平还处于巅峰状态，但是当时的就业意愿其实不是太强烈，虽然我们这个专业读研的必要性不是那么大，本科毕业的时候那些互联网大厂就算没得挑，但至少也有两三个选择。感觉主要一方面读研感觉看起来比工作轻松一些，还可以提高学历。另一方面就是我爸我妈家往上多少年也都没出一个读书的，连本科都没有，更别说研究生了，我想着能读还是再读一下吧。研究生的两座大山应该就是毕业和就业了，毕业对我来说没什么问题，就业方面目前我感觉我还是选择了一个比较适合我的路子吧，世界上的道路千千万，能找到适合自己的才是最好的。</p>
-<p>其实我找工作的时候也考虑了挺多的，一开始因为我们这个专业软件工程也属于计算机嘛，这可是宇宙机！而且以我们学校的档次，说实话用心准备大厂还是基本都能去的，只不过是35W和40W的区别吧。我实习的时候去了北京的一个基金公司，他真的是那种电视剧里的那种公司吧，在高档CBD里面，要穿正装和皮鞋，真的是看起来就非常的有档次。但是下班了之后回到我的老破小出租屋里面就完全是另一个感觉，大城市的繁荣真好，但是那不属于我。我组的那个超小的老破小筒子楼，11平的一个房间，厨房几乎没法用，厕所也超级小，我坐着上厕所都费劲，因为我是短租，只能找自如那种官方，一个月下来租金也要3500。对我这种不会去远处探索的人来说，这样的居住空间简直就是折磨。说实话我对居住环境要求真不高，我们宿舍也没有独立卫生间，地上瓷砖啥的也都没有，但我觉得这都不是问题，只要住的舒心不憋屈就行了，只要有床有电有网就行，我上个厕所都费劲的地方我是真顶不住了。在北京实习一个多月我完全失去了对大城市梦想，尤其是北京上海吧，深圳和广州应该还好点。虽然我在北京实习的时候没怎么和当地人交流，没感受到被排外，但是北京的居住，饮食和气候真的给我的印象分极差，我本身去基金实习钱就不多，基本就够个房子租金。吃饭在食堂吃，味道也就还将就吧，我在北京点的外卖那更是极品，我在北京短短一个月多点就吃到了我人生中最难吃的冒菜和烧烤，就这玩意也叫重庆冒菜，要不是我真吃过我就信了。可能是没钱才会吃不好住不好吧，但是我都去北京打工赚钱了，我住那么好吃那么好还咋赚钱呢，别到时既攒不下来钱，有没得生活质量，那不是纯欻欻吗。上海大致也是相同的境遇吧，广州和深圳应该能还一点，但也好的有限，说白了你要去这种大城市赚钱就必须要有牺牲生活质量的决心，不管是平时的加班还是居住环境的差劲，都是赚钱所要牺牲的。最后想了又想还是没有付出生活质量赚大钱的这种决心，这只是工作考量的一方面吧，更重要的还是西安对我来说优势太多了太多了。</p>
-<p>虽然我在西安发展赚的钱不如北上广深多，但是现在互联网的情况谁又能说清能干多久，有多大的发展空间呢，到时再回西安找工作的话大概率找不到校招这样的工作了，如果再没有攒下一大笔钱来那就很伤了。在西安的话，女朋友在西安工作，父母也在西安周边，作为新一线生活压力也小的多，工作性质也比较稳定，干一干也买得起房子，感觉整个生活就非常的巴适，虽然赚不到什么大钱，但是整个人的生活质量是非常高的。而且姥姥走了之后我也觉得可能去外地打拼背井离乡对我们这一代人来说可能不是特别好的选择，以前孩子多总有人在父母身边看着，出个什么事也能及时处理，现在我们我们这一代人都是独身子女，如果我去外地工作要么就和老婆继续异地，要么就俩人一起去奋斗，这样的话两家老人就都没有人照顾了。最后想来想去我也不是一个颇具奋斗精神的人，生活还是要知足常乐，钱再多也买不来生活中的小确幸，我现在在西安上班不说多了，至少每个月能回家待几天吧，等父母都退休了以后也可以接到西安来，我想到时候在西安租个房子或者买个小户型也不是太困难的事，还是要找到适合自己的路，我感觉我现在的方向看起来还行，但未来的路谁又能知道呢，90年代的人也没想过会经历下岗潮吧，只能在有限的未来中找一个相对合适的，自己别后悔就行了。</p>
-<p>以前的我还很喜欢发QQ空间，不知道从什么时候开始不太有这种欲望了，有很多东西既想让别人知道又不想让别人知道，就挺矛盾的，所以我就写到我的小博客里，也算是个半公开的地方吧:grin:。我也没什么文笔，就快毕业了没事干，后面可能也没有这么悠闲的时光了，所以找个机会记录一下我的学生生涯。最后就祝大家身体健康，万事如意吧！​</p>
-<p>手执烟火以谋生，心怀诗意以谋爱。</p>
-<p>以上</p>
-]]></content>
-      <categories>
-        <category>碎碎念</category>
-      </categories>
   </entry>
 </search>
