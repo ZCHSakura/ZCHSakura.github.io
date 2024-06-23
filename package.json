@@ -37,7 +37,10 @@
     "hexo-wordcount": "^6.0.1",
     "live2d-widget-model-shizuku": "^1.0.5",
     "live2d-widget-model-wanko": "^1.0.5",
+    "markdown-it-checkbox": "^1.1.0",
     "markdown-it-emoji": "^3.0.0",
+    "markdown-it-expandable": "^1.0.2",
+    "markdown-it-imsize": "^2.0.1",
     "regenerator": "^0.14.7"
   }
 }
