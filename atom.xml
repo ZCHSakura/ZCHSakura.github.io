@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="zchsakura.github.io/"/>
-  <updated>2024-06-23T14:57:06.606Z</updated>
+  <updated>2024-06-28T09:36:20.798Z</updated>
   <id>zchsakura.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>这下真要走啦</title>
+    <link href="zchsakura.github.io/%E8%BF%99%E4%B8%8B%E7%9C%9F%E8%A6%81%E8%B5%B0%E5%95%A6/"/>
+    <id>zchsakura.github.io/%E8%BF%99%E4%B8%8B%E7%9C%9F%E8%A6%81%E8%B5%B0%E5%95%A6/</id>
+    <published>2024-06-28T08:55:39.412Z</published>
+    <updated>2024-06-28T09:36:20.798Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;夏天对中国的孩子们来说是特别的，在人生的前半段，几乎所有重要的事情都发生在夏天。中考，高考，本科毕业，研究生毕业，一次又一次的相遇和离别。小时候的我并不在意分开时的告别，好像说了再见的舍友、同学在往后的时间中也能像之前一样。但是现在我已经明白了也许这次再见就真的是最后一面了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="碎碎念" scheme="zchsakura.github.io/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>准备毕业啦</title>
@@ -473,35 +492,6 @@
       <category term="Tensorflow" scheme="zchsakura.github.io/tags/Tensorflow/"/>
     
       <category term="Pytorch" scheme="zchsakura.github.io/tags/Pytorch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深度学习笔记(一)---基础</title>
-    <link href="zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/"/>
-    <id>zchsakura.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)---%E5%9F%BA%E7%A1%80/</id>
-    <published>2020-10-12T07:06:19.000Z</published>
-    <updated>2024-06-16T08:10:22.832Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;待录取已经下来了，应该没什么意外就尘埃落定了，这几天都没怎么睡好，下午困得很。今天下午和晚上就看看什么是深度学习，稍微了解一下，晚上跑个步回去早点睡。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="技术" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="深度学习" scheme="zchsakura.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="深度学习" scheme="zchsakura.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="机器学习" scheme="zchsakura.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="CUAD" scheme="zchsakura.github.io/tags/CUAD/"/>
-    
-      <category term="神经网络" scheme="zchsakura.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
     
   </entry>
   
